@@ -23,7 +23,7 @@ public class BoardController {
 			Model model){
 	
 		int numPerPage = 10;	// 한 페이지 당 게시글 수
-		
+		//asdf
 		// 1. 현재 페이지 컨텐츠 리스트 받아오기
 		List<Map<String, String>> list = boardService.selectBoardList(cPage, numPerPage);
 		
