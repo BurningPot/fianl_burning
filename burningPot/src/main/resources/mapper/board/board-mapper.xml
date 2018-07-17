@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="board">
+	<!-- HYD -->	
+	<select id="selectBoard" parameterType="string" resultType="Board">
+		SELECT BNUM, CATEGORY, BTITLE, MNUM, BDATE, MNAME ,MID, REPLY, BCOUNT 
+		FROM BOARD JOIN MEMBER USING(MNUM) WHERE CATEGORY = #{bCategory} ORDER BY REPLY, BNUM DESC, BDATE
+	</select>
+	<select id="selectCount" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM BOARD WHERE CATEGORY = #{bCategory}
+	</select>
+	
+	<select id="selectBoardDetail" parameterType="hashmap" resultType="Board">
+		SELECT BNUM, CATEGORY, MCATEGORY ,BTITLE, BDATE, MNAME , MID, REPLY, BCONTENT 
+		FROM BOARD JOIN MEMBER USING(MNUM) WHERE CATEGORY = #{bCategory} AND BNUM = #{bNum}
+	</select>
+	
+	<update id="updateBoardReply" parameterType="hashmap">
+		UPDATE BOARD SET REPLY = #{YorN} WHERE BNUM = #{bNum}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="_int">
+		DELETE BOARD WHERE BNUM = #{bNum}
+	</delete>
+	
+	
+	<!-- HYD -->
+	
+	<!-- 예찬 mapper 부분 -->
+	<select id="selectBoardList" resultMap="boardMem">
+		SELECT * FROM BOARD B JOIN MEMBER M ON(B.MNUM=M.MNUM) ORDER BY CATEGORY DESC, BNUM DESC
+	</select>
+	
+	<select id="selectBoardTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
+	
+	<select id="selectBaordOne" parameterType="_int" resultMap="boardMem">
+		SELECT * FROM BOARD B JOIN MEMBER M ON(B.MNUM=M.MNUM) WHERE BNUM = #{boardNo}
+	</select>
+	
+	<resultMap type="board" id="boardMem">
+		<result column="BNUM" property="bNum"/>
+		<result column="CATEGORY" property="category"/>
+		<result column="BTITLE" property="bTitle"/>
+		<result column="MNUM" property="mNum"/>
+		<result column="BDATE" property="bDate"/>
+		<result column="BCONTENT" property="bContent"/>
+		<result column="REPLY" property="reply"/>
+		<result column="BCOUNT" property="bCount"/>
+		<result column="MID" property="mId"/>
+		<result column="MNAME" property="mName"/>
+	</resultMap>
+	
+	<update id="updateBcount" parameterType="_int">
+		UPDATE BOARD SET BCOUNT = BCOUNT+1 WHERE BNUM = #{boardNo}
+	</update>
+	<!-- 예찬 mapper 부분  끝 -->
+
+</mapper>

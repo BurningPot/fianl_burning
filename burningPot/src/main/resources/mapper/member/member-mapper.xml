@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member">
+	<!-- HYD -->
+	<select id="selectMemberList" parameterType="hashmap" resultType="Member">
+		SELECT * FROM (SELECT ROWNUM RNUM, PAGING.* FROM (SELECT MNUM, MCATEGORY ,MID, EMAIL, MNAME, GENDER, BIRTHDATE, MPICTURE, EXPEL, ENROLLDATE FROM MEMBER 
+		WHERE EXPEL = 'N' AND MCATEGORY = '회원'	
+		<if test="customSelect != null">
+			<if test="keyword != null">
+			<bind name="keyword1" value="'%' + keyword + '%'"/>
+				<if test="customSelect == 'name'">					
+					AND MNAME LIKE #{keyword1}
+				</if>
+				<if test="customSelect == 'id'">
+					AND MID LIKE #{keyword1}
+				</if>
+				<if test="customSelect == 'gender'">
+					AND GENDER = #{keyword}
+				</if>							
+			</if>
+		</if>		
+		ORDER BY MNUM) PAGING) 
+		WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+		
+	</select>
+	
+	<select id="selectCountMember" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER WHERE EXPEL = 'N' AND MCATEGORY = '회원'		
+		<if test="customSelect != null">		
+			<if test="keyword != null">
+			<bind name="keyword1" value="'%' + keyword + '%'" />
+				<if test="customSelect == 'name'">					
+					AND MNAME LIKE #{keyword1}
+				</if>
+				<if test="customSelect == 'id'">
+					AND MID LIKE #{keyword1}
+				</if>
+				<if test="customSelect == 'gender'">
+					AND GENDER = #{keyword}
+				</if>							
+			</if>
+		</if>
+	</select>		
+	
+	<select id="selectOneMember" parameterType="string" resultType="Member">
+		SELECT MID, MNAME, EMAIL, GENDER, BIRTHDATE, MPICTURE FROM MEMBER WHERE MNUM = #{mNum}
+	</select>
+	<!-- HYD -->
+	
+	<!-- 예찬 mapper 부분 -->
+	<select id="checkIdDuplicate" resultType="_int">
+		SELECT COUNT(*) AS CNT FROM MEMBER WHERE MID = #{mId}
+	</select>
+	
+	<select id="checkEmailDuplicate" resultType="_int">
+		SELECT COUNT(*) AS CNT FROM MEMBER WHERE EMAIL = #{email}
+	</select>
+	
+	<select id="checkNameDuplicate" resultType="_int">
+		SELECT COUNT(*) AS CNT FROM MEMBER WHERE MNAME = #{mName}
+	</select>
+	
+<!-- 	
+	<select id="selectOneMember" parameterType="string" resultMap="memberMap">
+		SELECT * FROM MEMBER WHERE USERID = #{mId}
+	</select>
+	 -->
+	<insert id="insertMember" parameterType="Member">
+		INSERT INTO MEMBER VALUES(SEQ_MEMBER.NEXTVAL, #{mCategory}, 
+						#{mId}, #{password}, #{email}, #{mName}, #{gender}, #{birthDate}, DEFAULT ,
+						DEFAULT, SYSDATE)
+	</insert>
+	
+	<select id="selectMemberId" parameterType="string" resultType="Member">
+		SELECT * FROM MEMBER WHERE MID = #{userId}
+	</select>
+	
+	<insert id="createAuthKey" parameterType="hashmap">
+		INSERT INTO EMAIL_CONFIRM VALUES(#{email}, #{key}, DEFAULT)
+	</insert>
+	
+	<select id="chkAuth" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*) FROM EMAIL_CONFIRM WHERE EMAIL = #{email} AND TEMPKEY = #{key}
+	</select>
+	
+	<update id="userAuth" parameterType="string">
+		UPDATE EMAIL_CONFIRM SET ISPERMIT = 'Y' WHERE EMAIL = #{email} 
+	</update>
+	
+	<delete id="deleteMail"  parameterType="string" >
+		DELETE FROM EMAIL_CONFIRM WHERE EMAIL = #{emailAddr}
+	</delete>
+	
+	<select id="checkEmailConfirm" parameterType="string" resultType="string">
+		SELECT ISPERMIT FROM EMAIL_CONFIRM WHERE EMAIL = #{emailAddr}
+	</select>
+	
+	<!-- 예찬 mapper 부분 끝 -->
+</mapper>

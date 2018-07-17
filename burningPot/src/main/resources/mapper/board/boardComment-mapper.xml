@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardComment">
+	<!-- HYD -->	
+	
+	<select id="selectBoardComment" parameterType="_int" resultType="BoardComment">
+		SELECT BCNUM, BNUM, MNUM, MNAME, MID ,BCCONTENT, BCDATE FROM BOARD_COMMENT JOIN MEMBER USING(MNUM)
+		WHERE BNUM = #{bNum}
+	</select>
+	<insert id="insertBoardComment" parameterType="hashmap">
+		<selectKey keyProperty="bcNum" resultType="_int" order="AFTER">
+			SELECT SEQ_BOARD_COMMENT.CURRVAL FROM DUAL
+		</selectKey>
+		INSERT INTO BOARD_COMMENT VALUES(SEQ_BOARD_COMMENT.NEXTVAL, #{bNum}, #{mNum},#{comment}, DEFAULT)
+	</insert>
+	<delete id="deleteBoardComment" parameterType="_int">
+		DELETE BOARD_COMMENT WHERE BCNUM = #{bcNum}
+	</delete>
+	<!-- HYD -->
+
+</mapper>

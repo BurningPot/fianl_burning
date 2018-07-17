@@ -1,0 +1,77 @@
+.recipeBox {
+    border : solid 1px rgb(117, 79, 68);
+}
+
+.addBtnImg {
+    width : 20px;
+    height : 20px;
+    /*border : dotted 1px black;*/
+}
+
+.addBtn {
+    background-color : white!important;
+    border : none;
+}
+
+.ingredientStyle {
+    color : rgb(117, 79, 68);
+    font-size : 11pt;
+    background-color : rgb(253, 214, 146);
+    border-radius : 8px;
+}
+
+.dataTitle {
+    font-size : 17pt;
+}
+
+.textStyle {
+    border-radius : 5px!important;
+}
+
+.selectStyle {
+    border-radius : 5px!important;
+}
+
+.recipeContentStepCss {
+    color : rgb(117, 79, 68);
+    font-size : 18pt;
+}
+
+.recipeContent {
+    background-color : rgb(242, 239, 239);
+}
+
+.addRecipeImg {
+    width : 182px!important;
+    height : 182px!important;
+}
+
+.submitBtn {
+    background-color : rgb(117, 79, 68);
+    color : white;
+    border-radius : 5px;
+    border : none;
+}
+
+.submitBtn:hover {
+    cursor: pointer;
+}
+
+.cancleBtn {
+    background-color : rgb(236, 114, 87);
+    color : white;
+    border-radius : 5px;
+    border : none;
+}
+
+.cancleBtn:hover {
+    cursor: pointer;
+}
+
+#titleImgArea:hover {
+    cursor: pointer;
+}
+
+.subImgArea:hover {
+    cursor: pointer;
+}

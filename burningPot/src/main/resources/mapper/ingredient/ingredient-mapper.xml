@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ingredient">
+	
+	<select id="searchIngredientAjax" parameterType="string" resultType="Ingredient">				
+			SELECT * FROM INGREDIENT WHERE INAME LIKE '%'||#{keyword1}||'%'		
+	</select>
+	<select id="selectDistinctName" resultType="Ingredient">
+		SELECT CNAME FROM (SELECT DISTINCT SUBSTR(CATEGORY,0,1), CNAME FROM INGREDIENT_CATEGORY ORDER BY 1)
+	</select>
+	<select id="selectBigCategory" parameterType="string" resultType="Ingredient">
+		SELECT SUBCNAME, CATEGORY FROM INGREDIENT_CATEGORY WHERE CNAME = #{bCategory}
+	</select>
+	<select id="selectSubCategory" parameterType="string" resultType="Ingredient">
+		SELECT INUM, INAME, IIMAGE, CNAME, SUBCNAME, EXDATE FROM INGREDIENT 
+		JOIN INGREDIENT_CATEGORY USING(CATEGORY)  WHERE SUBCNAME = #{subCategory}
+	</select>
+	<select id="showIngSearchResult" parameterType="string" resultType="Ingredient">
+		SELECT INUM, INAME, IIMAGE, CNAME, SUBCNAME, EXDATE, KEYWORD FROM INGREDIENT
+		JOIN INGREDIENT_CATEGORY USING(CATEGORY) JOIN INGREDIENT_KEYWORD USING(INUM)
+		WHERE INAME = #{iName}
+	</select>
+	<delete id="deleteIngredient" parameterType="_int">
+		DELETE INGREDIENT WHERE INUM = #{iNum}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+	<!-- Logger Aspect 등록하기 -->
+	
+	<!-- XML을 통한 선언적 AOP 등록 방법 -->
+	<!-- <bean id="loggerAspect" class="com.kh.aop.common.aop.LoggerAspect"/>
+	<aop:config>
+		<aop:aspect id="loggerAspect" ref="loggerAspect">
+			<aop:pointcut expression="execution(* com.kh.aop.memo..*(..))" id="pointcutForAll"/>
+			<aop:around method="loggerAdvice" pointcut-ref="pointcutForAll"/>
+		</aop:aspect>
+	</aop:config>
+ -->
+	<!-- annotation을 통한 선언적 AOP 등록 방법 -->
+	
+	<aop:aspectj-autoproxy/>
+	
+	
+</beans>

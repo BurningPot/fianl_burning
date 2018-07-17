@@ -1,0 +1,302 @@
+@media(min-width:481px){
+	.cta {
+	  text-decoration: none;
+	  color: inherit;
+	  position: relative;
+	  margin: auto;
+	  padding: 19px 22px;
+	  transition: all 0.5s ease;
+	}
+	.cta:before {
+	  content: "";
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  display: block;
+	  border-radius: 28px;  
+      background: #ffab9d;
+	  width: 56px;
+	  height: 56px;
+	  transition: all 0.5s ease;
+	}
+	.cta span {
+	  position: relative;
+	  font-size: 16px;
+	  line-height: 18px;
+	  font-weight: 900;
+	  letter-spacing: 0.25em;
+	  vertical-align: middle;
+	  color : #000;
+	}
+	.cta svg {
+	  margin-top : 4.5vh;
+	  padding-left: 7vh;
+	  position: relative;
+	  fill: none;
+	  stroke-linecap: round;
+	  stroke-linejoin: round;
+	  stroke: #111;
+	  stroke-width: 2;
+	  transform: translateX(-5px);
+	  transition: all 0.5s ease;
+	}
+	.cta:hover:before {
+	  width: 100%;
+	  background: #ffab9d;
+	}
+	.cta:hover svg {
+	  transform: translateX(0);
+	}
+	.cta:active {
+	  transform: scale(0.96);
+	}
+	
+	.font {
+		font-family: 'Nanum Gothic', sans-serif;
+	}		
+    .recipe.row{
+            margin-right: -0.5px;
+            margin-left: -0.5px;
+    }
+    .ref{
+        background: url("../images/newRef.png");
+        background-position: center;
+        background-size: 275% 140%;
+        height:70vh;
+    }
+    .com{
+        color : #FBFFB9;
+        background: #754F44;
+        margin-top : 1rem;
+    }
+    .left-arrow:after{
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 35%;
+        width: 0;
+        height: 0;
+        border: 20px solid transparent;
+        border-right-color: rgba(182, 243, 208, 0.83);
+        border-left: 0;
+        border-top: 0;
+    }
+    .rounded{
+        border-radius: .80rem!important;
+    }
+    #real-ingre>div:hover{
+        cursor: pointer;
+    }
+    #real-ref>div:hover{
+        cursor: pointer;
+    }
+    .ingre{
+        z-index : 300;
+    }
+    .ingre>img{
+        height : 7vh;
+        width : 7vh;
+    }
+    .bg-1{
+        background : rgb(253, 214, 146);
+    }
+    .bg-2{
+        background : #AACD6E;
+    }
+    .bg-3{
+        background : rgb(236, 115, 87);
+    }
+    .bg-4{
+        background : #6AAFE6;
+    }
+	.bg-5{
+        background : rgb(251, 255, 185);
+    }
+    .bg-6{
+        background : #C5C6B6;
+    }    
+    .blank{
+        height : 22vh;
+    }
+    .m-r{
+        margin : 1.2rem; 
+    }
+    .p-r{
+        padding : 0.5rem;
+        background: rgb(218, 241, 238);
+        height:40vh;
+    }
+    #ingredient{
+        height : 76vh;
+    }
+    #real-ingre{
+        padding-left : 2vh;
+    }
+    #info{
+        float : right;
+    }
+    .ref-side{
+        height : 80vh;
+    }
+    .rec-side{
+        height : 77vh;
+        background:rgba(182, 243, 208, 0.83); 
+        margin-right:-13%;
+    }
+    .ui-tooltip, .arrow:after {
+        background: black !important;
+        border: 2px solid white !important;
+    }
+    .ui-tooltip {
+        padding: 10px 20px !important;
+        color: white !important;
+        border-radius: 20px !important;
+        font: bold 14px "Nanum Gothic", Sans-Serif !important;
+        box-shadow: 0 0 7px black ;      
+    }
+    .arrow {
+        width: 70px;
+        height: 16px;
+        overflow: hidden;
+        position: absolute;
+        left: 50%;
+        margin-left: -35px;
+        bottom: -16px;
+    }
+    .arrow.top {
+        top: -16px;
+        bottom: auto;
+    }
+    .arrow.left {
+      left: 20%;
+    }
+    .arrow:after {
+        content: "";
+        position: absolute;
+        left: 20px;
+        top: -20px;
+        width: 25px;
+        height: 25px;
+        box-shadow: 6px 5px 9px -9px black;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    .arrow.top:after {
+        bottom: -20px;
+        top: auto;
+    }
+}
+
+@media(max-width:481px){
+	.font {
+		font-family: 'Nanum Gothic', sans-serif;
+	}
+	.recipe.row{
+		margin-right: -0.5px;
+		margin-left: -0.5px;
+    }
+    .com{
+        color : #FBFFB9;
+        background: #754F44;
+    }
+    .rounded{
+        border-radius: .80rem!important;
+    }
+    #real-ingre>div:hover{
+        cursor: pointer;
+    }
+    #real-ref>div:hover{
+        cursor: pointer;
+    }
+    #real-ingre{
+        padding-left : 3.2vh;
+    }
+    .ingre{
+        z-index : 300;
+    }
+    .ingre>img{
+        height : 7vh;
+        width : 7vh;
+    }
+    .bg-1{
+        background : rgb(253, 214, 146);
+    }
+    .bg-2{
+        background : #AACD6E;
+    }
+    .bg-3{
+        background : rgb(236, 115, 87);
+    }
+    .bg-4{
+        background : #6AAFE6;
+    }
+	.bg-5{
+        background : rgb(251, 255, 185);
+    }
+    .bg-6{
+        background : #C5C6B6;
+    }    
+    .m-r{
+        margin : 0px;
+    }
+    .p-r{
+        padding-left : 0.6rem;
+        padding-top : 0.9rem;
+        background: rgb(218, 241, 238);
+        height:35vh;
+    }
+    #ingredient{
+        height : 38vh;
+    }
+    #info{
+        display: none;
+    }
+    .rec-side{
+        height : 95vh;
+        background:rgba(182, 243, 208, 0.83); 
+    }
+    .ui-tooltip, .arrow:after {
+        background: black !important;
+        border: 2px solid white !important;
+    }
+    .ui-tooltip {
+        padding: 10px 20px !important;
+        color: white !important;
+        border-radius: 20px !important;
+        font: bold 14px "Nanum Gothic", Sans-Serif !important;
+        box-shadow: 0 0 7px black ;      
+    }
+    .arrow {
+        width: 70px;
+        height: 16px;
+        overflow: hidden;
+        position: absolute;
+        left: 50%;
+        margin-left: -35px;
+        bottom: -16px;
+    }
+    .arrow.top {
+        top: -16px;
+        bottom: auto;
+    }
+    .arrow.left {
+      left: 20%;
+    }
+    .arrow:after {
+        content: "";
+        position: absolute;
+        left: 20px;
+        top: -20px;
+        width: 25px;
+        height: 25px;
+        box-shadow: 6px 5px 9px -9px black;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    .arrow.top:after {
+        bottom: -20px;
+        top: auto;
+    }    
+}

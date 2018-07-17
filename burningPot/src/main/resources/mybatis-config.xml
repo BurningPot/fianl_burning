@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0/EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<typeAliases>
+		<!-- VO / DTO 객체의 풀네임을 대신 사용할 별칭 선언 -->
+		<typeAlias type="com.kh.pot.member.model.vo.Member" alias="member"/>
+		<typeAlias type="com.kh.pot.board.model.vo.Board" alias="board"/>
+		<typeAlias type="com.kh.pot.fridge.model.vo.Fridge" alias="fridge"/>
+		<typeAlias type="com.kh.pot.ingredient.model.vo.Ingredient" alias="ingredient"/>
+		<typeAlias type="com.kh.pot.recipe.model.vo.Recipe" alias="recipe"/>
+		<typeAlias type="com.kh.pot.board.model.vo.BoardComment" alias="boardComment"></typeAlias>
+	</typeAliases>
+	
+	<!-- <typeHandlers>
+		해당패키지의 모든 TypeHandler구현클래스를 등록함
+		<package name="com.kh.spring.common.typehandler"/>
+	</typeHandlers>
+ -->
+ </configuration>

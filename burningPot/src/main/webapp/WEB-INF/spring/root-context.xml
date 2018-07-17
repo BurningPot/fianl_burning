@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- 메일 보내기 (SEND) -->
+   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+      <property name="host" value="smtp.gmail.com" />
+      <property name="port" value="587" />
+      <property name="username" value="burningpotdo@gmail.com" />
+      <property name="password" value="enfjdrkrtl**" />
+    
+
+      <!-- email 요청시는 SMTP -->
+      <property name="javaMailProperties">
+         <props>
+            <prop key="mail.transport.protocol">smtp</prop>
+            <prop key="mail.smtp.auth">true</prop>
+            <prop key="mail.smtp.starttls.enable">true</prop>
+            <prop key="mail.debug">true</prop>
+         </props>
+      </property>
+   </bean>
+	
+	<!-- 1. myBatis(JDBC)설정 연결 설정하기 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="FINDB"/>
+		<property name="password" value="FINDB"/>
+	</bean>
+	
+	<!-- 1-1 log4jdbc 설정 적용하기 -->
+	<!-- <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="realDataSource"/>
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE"/>
+				<property name="sqlPrefix" value="[SQL]"/>
+			</bean>
+		</property>	
+	</bean> -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	    
+	<!-- 2. myBatis(JDBC)설정 : SqlSessionFactory-->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- name=datasource => 빈객체sqlSessionFactoryBean의  property명 datasource임(setter)
+		ref의 dataSource는 위에서 선언한 datasource 빈객체를 의미함. -->
+		<property name="dataSource" ref="dataSource"/>
+		
+		<!-- 앞으로 생성할 모든 mapper파일을 한번에 읽어오도록하자.
+		여기서 classpath는 target/classes를 의미한다.
+		src/main/resources 디렉토리에서 작성된 파일들은 classpath로 이동함. -->
+		<property name="mapperLocations" value="classpath*:mapper/**/*.xml"/>
+		
+		<!-- mybatis-config.xml파일 위치를 명시함. -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+	
+	<!-- 서버재시작 없이 mapper파일 reload가능한 RefreshableSqlSessionFactory를 지정 --> 
+	<!-- <bean id="sqlSessionFactoryBean" 
+		  class="com.kh.spring.common.sql.RefreshableSqlSessionFactoryBean"
+		  p:dataSource-ref="dataSource"
+		  p:mapperLocations="classpath*:mapper/**/*.xml"
+		  p:configLocation="classpath:mybatis-config.xml"/> -->
+	
+	<!-- 3. SqlSessionTemplate 마이바티스 스프링 연동모듈의 핵심기능. -->
+	<!-- SqlSessionTemplate : SqlSession 인터페이스를 구현클래스-->
+	<!-- 여러 dao에서 공유하므로 메모리관리에 있어 최적화된 테크닉. -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+	</bean>
+	
+	<!-- Transaction 설정 적용하기 -->
+	<!-- 트랜잭션 설정 시 롤백 시점을 결정짓는 옵션 -->
+	<!-- rollback-for ="Exception" : 어떠한 예외가 발생했을 때 롤백해라 -->
+	<!-- no-rollbakc-for="Exception" : 어떠한 예외가 발생하더라도 커밋시켜라-->
+	<!-- read-only : 트랜잭션을 읽기 전용으로 설정하여 insert, update, delete 작업을 제한하는 특성 
+		이렇게 쓰기 작업이 제한된 트랜잭션은 DataBase에서 동작시 훨씬 빠르게 동작할 수 있다.-->
+	<!-- propagation : (전파) 직접 트랜잭션을 생성하거나 기존에 만들어진 트랜잭션을 이용하겠다는 설정
+		 DEFAULT 
+		 REQUIRED : 기본속성 / 이전에 실행된 트랜잭션이 있다면 참가하고, 없다면 새로 만들어 실행한다
+		 SUPPORTS : 이전에 실행된 트랜잭션이 있다면 참가하고, 없다면 트랜잭션 없이 수행한다
+		 NOT_SUPPORTED : 트랜잭션을 사용하지 않겠다(이미 진행중인 트랜잭션이 있다면 중지시킨다)
+		 NEVER : 트랜잭션을 사용하지 않도록 강제화 시킨다. 만약 실행중인 트랜잭션이 있다면 예외를 발생시킨다		 
+	-->
+	
+	<!-- 트랜잭션 적용할 경우 사용하자  -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="select*" rollback-for="Exception" read-only="true"/>
+			<tx:method name="checkId*" rollback-for="Exception" read-only="true"/>
+			<tx:method name="insert*" rollback-for="Exception" />
+			<tx:method name="update*" rollback-for="Exception" />
+			<tx:method name="delete*" rollback-for="Exception" />			
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- tx AOP등록하기 -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="serviceMethod" expression="execution(* com.kh.spring..*ServiceImpl.*(..))"/>
+		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice"/><!-- pointcut + advice -->
+	</aop:config>
+	
+	
+   
+   
+</beans>
