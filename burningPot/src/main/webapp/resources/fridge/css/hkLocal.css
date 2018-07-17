@@ -1,62 +1,64 @@
 @media(min-width:481px){
 	.cta {
-	  text-decoration: none;
-	  color: inherit;
-	  position: relative;
-	  margin: auto;
-	  padding: 19px 22px;
-	  transition: all 0.5s ease;
+		text-decoration: none;
+		color: inherit;
+		position: relative;
+		margin: auto;
+		padding: 19px 22px;
+		transition: all 0.5s ease;
 	}
 	.cta:before {
-	  content: "";
-	  position: absolute;
-	  top: 0;
-	  left: 0;
-	  display: block;
-	  border-radius: 28px;  
-      background: #ffab9d;
-	  width: 56px;
-	  height: 56px;
-	  transition: all 0.5s ease;
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		border-radius: 28px;  
+		background: #ffab9d;
+		width: 56px;
+		height: 56px;
+		transition: all 0.5s ease;
 	}
 	.cta span {
-	  position: relative;
-	  font-size: 16px;
-	  line-height: 18px;
-	  font-weight: 900;
-	  letter-spacing: 0.25em;
-	  vertical-align: middle;
-	  color : #000;
+		position: relative;
+		font-size: 16px;
+		line-height: 18px;
+		font-weight: 900;
+		letter-spacing: 0.25em;
+		vertical-align: middle;
+		color : #000;
 	}
 	.cta svg {
-	  margin-top : 4.5vh;
-	  padding-left: 7vh;
-	  position: relative;
-	  fill: none;
-	  stroke-linecap: round;
-	  stroke-linejoin: round;
-	  stroke: #111;
-	  stroke-width: 2;
-	  transform: translateX(-5px);
-	  transition: all 0.5s ease;
+		margin-top : 4.5vh;
+		padding-left: 7vh;
+		position: relative;
+		fill: none;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke: #111;
+		stroke-width: 2;
+		transform: translateX(-5px);
+		transition: all 0.5s ease;
 	}
 	.cta:hover:before {
-	  width: 100%;
-	  background: #ffab9d;
+		width: 100%;
+		background: #ffab9d;
 	}
 	.cta:hover svg {
-	  transform: translateX(0);
+		transform: translateX(0);
 	}
 	.cta:active {
-	  transform: scale(0.96);
+		transform: scale(0.96);
 	}
-	
+	.mainBtn{
+		height: 8vh;
+	}
 	.font {
 		font-family: 'Nanum Gothic', sans-serif;
 	}		
     .recipe.row{
-            margin-right: -0.5px;
-            margin-left: -0.5px;
+		margin-right: -0.5px;
+		margin-left: -0.5px;
     }
     .ref{
         background: url("../images/newRef.png");
@@ -84,6 +86,32 @@
     .rounded{
         border-radius: .80rem!important;
     }
+    #refrigerator{
+    	overflow-y: scroll;
+    }
+    /* width */
+	#refrigerator::-webkit-scrollbar {
+	    width: 10px;
+	}
+	.rec-side::-webkit-scrollbar {
+	    width: 10px;
+	}
+	/* Track */
+	#refrigerator::-webkit-scrollbar-track {
+	    background: rgb(218, 241, 238);
+	}
+	.rec-side::-webkit-scrollbar-track {
+	    background: rgba(182, 243, 208, 0.83);
+	}
+	/* Handle */
+	.rec-side::-webkit-scrollbar-thumb, #refrigerator::-webkit-scrollbar-thumb {
+	    background: #888;
+		border-radius: 10px;
+	}
+	/* Handle on hover */
+	.rec-side::-webkit-scrollbar-thumb:hover, #refrigerator::-webkit-scrollbar-thumb:hover {
+	    background: #555; 
+	}
     #real-ingre>div:hover{
         cursor: pointer;
     }
@@ -142,6 +170,7 @@
         height : 77vh;
         background:rgba(182, 243, 208, 0.83); 
         margin-right:-13%;
+        overflow-y: scroll;
     }
     .ui-tooltip, .arrow:after {
         background: black !important;
@@ -168,7 +197,7 @@
         bottom: auto;
     }
     .arrow.left {
-      left: 20%;
+		left: 20%;
     }
     .arrow:after {
         content: "";
@@ -189,6 +218,60 @@
 }
 
 @media(max-width:481px){
+	.cta {
+		text-decoration: none;
+		color: inherit;
+		position: relative;
+		margin: auto;
+		padding: 19px 22px;
+		transition: all 0.5s ease;
+	}
+	.cta:before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		border-radius: 28px;  
+		background: #ffab9d;
+		width: 56px;
+		height: 56px;
+		transition: all 0.5s ease;
+	}
+	.cta span {
+		position: relative;
+		font-size: 16px;
+		line-height: 18px;
+		font-weight: 900;
+		letter-spacing: 0.25em;
+		vertical-align: middle;
+		color : #000;
+	}
+	.cta svg {
+		margin-top : 4.5vh;
+		padding-left: 7vh;
+		position: relative;
+		fill: none;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke: #111;
+		stroke-width: 2;
+		transform: translateX(-5px);
+		transition: all 0.5s ease;
+	}
+	.cta:hover:before {
+		width: 100%;
+		background: #ffab9d;
+	}
+	.cta:hover svg {
+		transform: translateX(0);
+	}
+	.cta:active {
+		transform: scale(0.96);
+	}
+	.mainBtn{
+		height: 11vh;
+	}
 	.font {
 		font-family: 'Nanum Gothic', sans-serif;
 	}
@@ -203,6 +286,13 @@
     .rounded{
         border-radius: .80rem!important;
     }
+    #refrigerator{
+    	overflow-y: scroll;
+    }
+    /* width */
+	#refrigerator::-webkit-scrollbar {
+	    width: 10px;
+	}
     #real-ingre>div:hover{
         cursor: pointer;
     }
@@ -253,9 +343,26 @@
         display: none;
     }
     .rec-side{
-        height : 95vh;
-        background:rgba(182, 243, 208, 0.83); 
+        height : 70vh;
+        background:rgba(182, 243, 208, 0.83);
+        overflow-y: scroll;
     }
+	/* Track */
+	#refrigerator::-webkit-scrollbar-track {
+	    background: rgb(218, 241, 238);
+	}
+	.rec-side::-webkit-scrollbar-track {
+	    background: rgba(182, 243, 208, 0.83);
+	}
+	/* Handle */
+	.rec-side::-webkit-scrollbar-thumb, #refrigerator::-webkit-scrollbar-thumb {
+	    background: #888;
+		border-radius: 10px;
+	}
+	/* Handle on hover */
+	.rec-side::-webkit-scrollbar-thumb:hover, #refrigerator::-webkit-scrollbar-thumb:hover {
+	    background: #555; 
+	}
     .ui-tooltip, .arrow:after {
         background: black !important;
         border: 2px solid white !important;
@@ -281,7 +388,7 @@
         bottom: auto;
     }
     .arrow.left {
-      left: 20%;
+		left: 20%;
     }
     .arrow:after {
         content: "";
