@@ -11,7 +11,7 @@ public class HomeController {
 
 	
 	@Autowired
-	BoardService boardService;
+	BoardService boardService; 
 	
 	@Autowired
 	FridgeService fridgeService;
