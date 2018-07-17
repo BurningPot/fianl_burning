@@ -129,8 +129,10 @@ function hoveringDiv(){
         				</div>        				
         			</div>
         		</div>
+        		
         		<div class="col-lg-6 ing search-detail test no-padding">        			
         		</div>
+        	
         	</div>
         	
         	<script>	
@@ -222,28 +224,9 @@ function hoveringDiv(){
 				삭제하기는 바로 alert창에서 컨펌을 받은 후 삭제를 진행하고 다시 해당 페이지로 돌아오기한다        	
         	 -->
         	<div class="col-lg-12">
-        		<button class="btn btn-primary" data-toggle="modal" data-target=".modify-ing">수정하기</button>
+        		<button class="btn btn-primary" id="ing-update" onclick="updateIngInfo();">수정하기</button>
         		<button class="btn btn-danger" id="ing-delete" onclick="deleteIngredient();">삭제하기</button>
         	</div>
-        	
-        	<div class="modal fade modify-ing" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
- 				<div class="modal-dialog modal-lg">    				
-    				<div class="modal-content">
-    					<div class="modal-header">
-    						<h5 class="modal-title">재료 간단 검색</h5>
-    						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-         						<span aria-hidden="true">&times;</span>
-        					</button>
-    					</div>
-    					<div class="modal-body">
-    						재료수정 메뉴들
-    					</div>
-    					<div class="modal-footer">
-    						버튼
-    					</div>
-    				</div>
- 				 </div>
-			</div>
         	
         	
         	<br /><br /><br />
@@ -292,27 +275,28 @@ function hoveringDiv(){
         				exdate ="";
         			}
         			for(var i =0; i< data.length; i++){        				
-        				keywordList += '#'+data[i].keyword+'&nbsp;';
+        				keywordList += "#"+data[i].keyword;
         			}
         			
 					html += '<div class="row">';   
 					html += '<div class="col-lg-4">';
 					html += '<img src="${pageContext.request.contextPath}/resources/img/ingredient/'+data[0].iImage+'" class="col-lg-12"/>';
-        			html += '<br /><br>';        			
+        			html += '<br /><br /><button class="btn btn-default">수정하기</button><br /><br>';        			
  					html += '</div>';       
  					html += '<div class="col-lg-8 no-padding" style="font-size: 130%;">';
  					html += '<div class="row col-lg-12 no-padding ing-info-firstLine">';
- 					html += '<div class="col-lg-6">'+data[0].cName+'>'+data[0].subCName+'</div>';
- 					html += '<div class="col-lg-6">유통기한 : <span>'+exdate+'</span>일</div>';
+ 					html += '<div class="col-lg-6">'+data[0].cName+'&nbsp;&gt&nbsp;'+data[0].subCName+'</div>';
+ 					html += '<div class="col-lg-6"><div class="row">유통기한 :&nbsp;<input type="text" class="form-control col-lg-3 ing-exdate" value="'+exdate+'"/>일</div></div>';
  					html += '</div>';
- 					html += '<div class="col-lg-12 ing-info-secondLine">[<span id="iNumber">'+data[0].iNum+'</span>]&nbsp;'+data[0].iName+'</div>';
+ 					html += '<div class="col-lg-12 ing-info-secondLine">[<span id="iNumber">'+data[0].iNum+'</span>]&nbsp;<input type="text" class="col-lg-6" value="'+data[0].iName+'"/></div>';
  					html += '<div class="col-lg-12 no-padding ing-info-thirdLine">';
  					html += '<div class="col-lg-12">관련키워드</div>';
- 					html += '<div class="col-lg-12">'+keywordList+'</div>';
+ 					html += '<div class="col-lg-12"><input type="text" class="form-control col-lg-12" value="'+keywordList+'"/></div>';
  					html += '</div></div></div>';
  					
  					$('.ingredient-information').empty();
         			$('.ingredient-information').append(html);  
+        			
         			
         		}, error: function(data){
         			console.log('조회실패.. ㅠㅠ');
@@ -320,6 +304,44 @@ function hoveringDiv(){
         	});
         	});
         	}   
+        	
+        	function updateIngInfo(){
+        		var imgSrc = $('.ingredient-information').children().children().children().attr('src');
+        		
+        		var iNumber = $('.ingredient-information').find('span').text();
+        		var imgName = imgSrc.substring(imgSrc.length ,imgSrc.lastIndexOf('/')+1)
+        		var exdate ="";
+        		var ingName = $('.ingredient-information').children().find('input').eq(1).val(); 
+        		var keyword = $('.ingredient-information').children().find('input').eq(2).val();
+        			
+        		if($('.ing-exdate').val()==""){
+        			exdate = 0;
+        		}else{
+        			exdate = $('.ing-exdate').val();
+        		}        				
+        		console.log('번호 : '+iNumber);
+        		console.log('이름만 잘라내보자 : '+imgName);
+        		console.log('exdate : '+exdate);
+        		console.log('ingName : '+ingName); 
+        		console.log('keyword : '+keyword);
+        		
+        		$.ajax({
+        			url:"${pageContext.request.contextPath}/admin/updateIngInfo.do",
+        			data:{
+        				iNum: iNumber,
+        				img:imgName,
+        				exdate: exdate,
+        				iName: ingName,
+        				keyword: keyword
+        			}, success: function(data){
+        				alert("재료번호 ["+data+"] 의 정보를 수정하였습니다");
+        				location.href="${pageContext.request.contextPath}/admin/goIng.do";
+        			}, error: function(data){
+        				alert("재료정보 수정에 실패하였습니다");
+        			}
+        		})
+        	}      	
+        	
         	</script>
         	
         	

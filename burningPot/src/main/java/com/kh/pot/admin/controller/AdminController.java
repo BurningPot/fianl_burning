@@ -341,5 +341,23 @@ public class AdminController {
 	public int deleteIngredient(@RequestParam int iNumber){
 		return ingService.deleteIngredient(iNumber);
 	}
+	/*iNum: iNumber,
+	img:imgName,
+	exdate: exdate,
+	iName: ingName,
+	keyword: keyword*/
+	@ResponseBody
+	@RequestMapping("admin/updateIngInfo.do")
+	public int updateIngInfo(@RequestParam int iNum, @RequestParam String img, @RequestParam(value="exdate", required=false, defaultValue="0") int exdate, 
+			@RequestParam String iName, @RequestParam String keyword){
+		//1. 재료의 정보를 수정한다
+		int result1 = ingService.updateIngInfo(iNum, img, exdate, iName);
+		System.out.println("재료정보 업데이트 : "+result1);
+		
+		//2. 재료의 관련 키워드를 수정한다
+		/*int result2 = ingService.updateIngKeyword(iNum, keyword);*/
+		
+		return iNum;
+	}
 	
 }

@@ -23,5 +23,12 @@
 	<delete id="deleteIngredient" parameterType="_int">
 		DELETE INGREDIENT WHERE INUM = #{iNum}
 	</delete>
+	<update id="updateIngInfo" parameterType="hashmap">
+		UPDATE INGREDIENT SET INAME = #{iName}, IIMAGE = #{iImage}
+		<if test="exDate != 0">
+		,EXDATE = #{exDate} 
+		</if>		
+		WHERE INUM = #{iNum}
+	</update>
 	
 </mapper>
