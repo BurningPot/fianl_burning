@@ -7,7 +7,7 @@ import com.kh.pot.board.model.service.BoardService;
 import com.kh.pot.fridge.model.service.FridgeService;
 
 @Controller
-public class HomeController {
+public class MainController {
 
 	
 	@Autowired
