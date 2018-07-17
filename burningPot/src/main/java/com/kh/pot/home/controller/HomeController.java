@@ -16,4 +16,6 @@ public class HomeController {
 	@Autowired
 	FridgeService fridgeService;
 	
+	
+	
 }
