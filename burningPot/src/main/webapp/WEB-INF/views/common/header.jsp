@@ -1350,26 +1350,51 @@
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
-			        <div class="login_btn_after">
-		          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button">
-		          			<i class="far fa-user fa-3x"></i>
-			            </button>
-			        </div>
-			        <div class="regist_recipe_btn_after">
-			          <button class="menuBtn_after" data-tooltip-text="Recipe Regist!!">
-			              <i class="fas fa-utensils fa-3x"></i>
-			          </button>
-			        </div>
-			        <div class="board_btn_after" data-tooltip-text="Board!!">
-			          <button class="menuBtn_after">
-			              <i class="far fa-list-alt fa-3x"></i>
-			          </button>
-			        </div>
-			        <div class="logOut_btn_after" data-tooltip-text="Logout!!">
-			          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'">
-			              <i class="fas fa-sign-out-alt fa-3x"></i>
-			          </button>
-			        </div>
+					<c:if test="${m.mId != 'admin'}" >
+				        <div class="login_btn_after">
+			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button">
+			          			<i class="far fa-user fa-3x"></i>
+				            </button>
+				        </div>
+				        <div class="regist_recipe_btn_after">
+				          <button class="menuBtn_after" data-tooltip-text="Recipe Regist!!">
+				              <i class="fas fa-utensils fa-3x"></i>
+				          </button>
+				        </div>
+				        <div class="board_btn_after" data-tooltip-text="Board!!">
+				          <button class="menuBtn_after">
+				              <i class="far fa-list-alt fa-3x"></i>
+				          </button>
+				        </div>
+				        <div class="logOut_btn_after" data-tooltip-text="Logout!!">
+				          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'">
+				              <i class="fas fa-sign-out-alt fa-3x"></i>
+				          </button>
+				        </div>
+			        </c:if>
+			        <c:if test="${m.mId == 'admin'}" >
+				        <div class="login_btn_after">
+			          		<button class="menuBtn_after" data-tooltip-text="관리자페이지!!" type="button" onclick="location.href='${pageContext.request.contextPath}/admin/goAdmin.do'">
+			          			<i class="far fa-user fa-3x"></i>
+				            </button>
+				        </div>
+				        <div class="regist_recipe_btn_after">
+				          <button class="menuBtn_after" data-tooltip-text="Recipe Regist!!">
+				              <i class="fas fa-utensils fa-3x"></i>
+				          </button>
+				        </div>
+				        <div class="board_btn_after" data-tooltip-text="Board!!">
+				          <button class="menuBtn_after">
+				              <i class="far fa-list-alt fa-3x"></i>
+				          </button>
+				        </div>
+				        <div class="logOut_btn_after" data-tooltip-text="Logout!!">
+				          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/member/memberLogout.do'">
+				              <i class="fas fa-sign-out-alt fa-3x"></i>
+				          </button>
+				        </div>
+			        </c:if>
+			        
 		       	</div>
 		       	<div class="b-seg-right nav navbar-nav navbar-right">
 					<div class="seg_btn_area">
