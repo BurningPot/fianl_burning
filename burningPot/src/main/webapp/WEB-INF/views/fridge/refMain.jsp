@@ -22,29 +22,19 @@
 	                <div class="blank"></div>
 	                <div class="rounded p-r m-r">
 	                    <div class="recipe row">
-	                        <div class="m-1 ingre">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/33.png" alt="ingredient image" class="rounded-circle" title="꼬막">
-	                        </div>
-	                        <div class="m-1 ingre">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/47.png" alt="ingredient image" class="rounded-circle" title="고등어">
-	                        </div>
-	                        <div class="m-1 ingre">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/55.png" alt="ingredient image" class="rounded-circle" title="주꾸미">
-	                        </div>
-	                        <div class="m-1 ingre">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/47.png" alt="ingredient image" class="rounded-circle" title="고등어">
-	                        </div>    
-	                        <div class="m-1 ingre">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/33.png" alt="ingredient image" class="rounded-circle" title="꼬막">
-	                        </div>
-	                        <div class="m-1 ingre">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/47.png" alt="ingredient image" class="rounded-circle" title="고등어">
-	                        </div>    
-	                            
+							<div class="ingre m-1">
+								<img src="${pageContext.request.contextPath}/resources/img/ingredient/ing_104.jpg" alt="ingredient image" class="rounded-circle inIngre" title="오징어">
+							</div>
+							<div class="ingre m-1">
+								<img src="${pageContext.request.contextPath}/resources/img/ingredient/ing_24.jpg" alt="ingredient image" class="rounded-circle inIngre" title="고사리">
+							</div>    
+							<div class="ingre m-1">
+								<img src="${pageContext.request.contextPath}/resources/img/ingredient/ing_4.jpg" alt="ingredient image" class="rounded-circle inIngre" title="LSD">
+							</div>    							    
 	                    </div>                        
 	                </div>
 	            </div>
-	            <div class="text-center" style="height:8vh;">
+	            <div class="text-center mainBtn">
 					<a href="${pageContext.request.contextPath}/fridge/refUpdate.do" class="cta" style="text-decoration: none;">
 						<span>냉장고 수정</span>
 						<svg width="15vh" height="2vh" viewBox="0 0 13 10">
@@ -58,7 +48,7 @@
 	        <div class="col-sm-1" style="margin-right:-5%"></div>
 	
 	        <div class="col-sm-7">
-	            <div class="p-4 rounded rec-side left-arrow">
+	            <div class="p-4 rounded rec-side left-arrow ttt">
 	                <div class="recipe row">
 	                    <div class="col-sm-4">
 	                        <div style="height: 12vh">
