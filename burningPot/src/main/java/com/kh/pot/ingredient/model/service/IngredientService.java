@@ -19,6 +19,8 @@ public interface IngredientService {
 
 	int deleteIngredient(int iNum);
 
+	int updateIngInfo(int iNum, String img, int exdate, String iName);
+
 	
 	
 	

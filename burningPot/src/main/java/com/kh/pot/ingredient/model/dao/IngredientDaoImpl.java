@@ -1,6 +1,7 @@
 package com.kh.pot.ingredient.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -50,6 +51,14 @@ public class IngredientDaoImpl implements IngredientDao {
 		
 		return sqlSession.delete("ingredient.deleteIngredient", iNum);
 	}
+
+	@Override
+	public int updateIngInfo(HashMap<String, Object> map) {
+		
+		return sqlSession.update("ingredient.updateIngInfo", map);
+	}
+
+	
 	
 	
 }

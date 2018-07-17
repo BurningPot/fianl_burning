@@ -1,6 +1,6 @@
 package com.kh.pot.ingredient.model.service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +49,18 @@ public class IngredientServiceImpl implements IngredientService {
 	public int deleteIngredient(int iNum) {
 		
 		return ingDao.deleteIngredient(iNum);
+	}
+
+	@Override
+	public int updateIngInfo(int iNum, String img, int exdate, String iName) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("iNum", iNum);
+		map.put("iImage", img);
+		map.put("exDate", exdate);
+		map.put("iName", iName);	
+		
+		return ingDao.updateIngInfo(map);
 	}
 
 }
