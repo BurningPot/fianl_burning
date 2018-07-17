@@ -39,7 +39,7 @@ public class AdminController {
 	
 	
 	// 관리자 홈
-	@RequestMapping("/admin/goAdmin.do")
+	@RequestMapping("/admin/goAdmin.do")  
 	public String goAdminMenu(Model model){
 		model.addAttribute("commonTitle","관리자 페이지");
 		//임시로 header에 관리자의 정보를 넣어야 겠다.	
