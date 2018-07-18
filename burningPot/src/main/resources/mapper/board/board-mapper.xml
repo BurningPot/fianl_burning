@@ -28,7 +28,7 @@
 	
 	<!-- 예찬 mapper 부분 -->
 	<select id="selectBoardList" resultMap="boardMem">
-		SELECT * FROM BOARD B JOIN MEMBER M ON(B.MNUM=M.MNUM) ORDER BY CATEGORY DESC, BNUM DESC
+		SELECT b.*, m.* , (CASE WHEN CATEGORY='공지사항' THEN '1' ELSE '0' END) CATE FROM BOARD B JOIN MEMBER M ON(B.MNUM=M.MNUM) ORDER BY CATE DESC, BDATE DESC
 	</select>
 	
 	<select id="selectBoardTotalContents" resultType="_int">
