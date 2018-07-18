@@ -359,7 +359,7 @@ function hoveringDiv(){
         	
         	</script>
         	
-        	<script>
+        	<script>        	
         	function clickIngName(){
         	$('.search-detail').children().on('click', function(){	
         		console.log('아이넘은 들어가니..'+$(this).text());
@@ -384,8 +384,8 @@ function hoveringDiv(){
         			
 					html += '<div class="row">';   
 					html += '<div class="col-lg-4">';
-					html += '<img src="${pageContext.request.contextPath}/resources/img/ingredient/'+data[0].iImage+'" class="col-lg-12"/>';
-        			html += '<br /><br /><button class="btn btn-default">수정하기</button><br /><br>';        			
+					html += '<img src="${pageContext.request.contextPath}/resources/img/ingredient/'+data[0].iImage+'" class="col-lg-12" id="titleImg"/>';
+        			html += '<br /><br /><div class="custom-file"><label class="custom-file-label text-justify" for="uploading" id="uploadingName">파일선택</label><input type="file" class="custom-file-input" id="uploading" onchange="LoadImg(this)"/></div>';        			
  					html += '</div>';       
  					html += '<div class="col-lg-8 no-padding" style="font-size: 130%;">';
  					html += '<div class="row col-lg-12 no-padding ing-info-firstLine">';
@@ -398,16 +398,41 @@ function hoveringDiv(){
  					html += '<div class="col-lg-12"><input type="text" class="form-control col-lg-12" value="'+keywordList+'"/><div class="col-lg-12">*키워드 입력시 띄어쓰기없이 #(재료명)으로 입력해주세요*</div></div>';
  					html += '</div></div></div>';
  					
+ 					
+ 					
  					$('.ingredient-information').empty();
         			$('.ingredient-information').append(html);  
         			
         			
+        			test();
         		}, error: function(data){
         			console.log('조회실패.. ㅠㅠ');
         		}
         	});
         	});
         	}   
+        	
+        	function test(){
+        		//파일의 이름불러오는 방법은..?
+        		$('#uploading').change(function(){
+					var fileName = $(this).prop('files')[0].name;
+					
+					$('#uploadingName').text(fileName);
+					
+        			console.log(fileName);
+				})
+				
+        	}
+        	function LoadImg(value) {
+				if (value.files && value.files[0]) {
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						$("#titleImg").attr("src", e.target.result);						
+					}
+					reader.readAsDataURL(value.files[0]);					
+				}
+			}
+        	
         	
         	function updateIngInfo(){
         		var imgSrc = $('.ingredient-information').children().children().children().attr('src');
