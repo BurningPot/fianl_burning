@@ -61,8 +61,12 @@
 		margin-top: 3%;
 		padding-bottom: 1.5%;
 		font-size: 130%;
-		
-	
+	}
+	.addCategory{
+		padding: 0.5%;
+	}
+	.addCategory div:first-child{
+		padding: 0.5%;
 	}
 	
    /*
@@ -224,12 +228,77 @@ function hoveringDiv(){
 				삭제하기는 바로 alert창에서 컨펌을 받은 후 삭제를 진행하고 다시 해당 페이지로 돌아오기한다        	
         	 -->
         	<div class="col-lg-12">
+        		<button class="btn btn-success" id="ing-insert">새로운 재료 추가하기</button>
         		<button class="btn btn-primary" id="ing-update" onclick="updateIngInfo();">수정하기</button>
         		<button class="btn btn-danger" id="ing-delete" onclick="deleteIngredient();">삭제하기</button>
-        	</div>
-        	
+        	</div>   
         	
         	<br /><br /><br />
+        	
+        	<div class="col-lg-12 test">
+        		<div class="col-lg-12" style="margin-top:1%;">카테고리 추가하기</div>
+        		<br />
+        		<div class="row text-center addCategory">
+        			<div class="col-lg-2">세부분류</div>
+        			<div class="col-lg-2">
+        				<select class="custom-select">
+        					<c:forEach items="${distinctList}" var ="ing">
+        						<option value="${ing.cName}">${ing.cName}</option>	
+       						</c:forEach>        					
+        				</select>
+        			</div>
+        			
+        			<div class="col-lg-7"><input type="text" class="form-control"/></div>
+        			<div class="col-lg-1"><button class="btn btn-primary">추가</button></div> 
+        		</div>
+        		
+        		<div class="col-lg-12" style="margin-top:3%;">재료 추가하기</div>
+        		<br />
+        		<div class="col-lg-12 test">
+        			<div class="row">
+        				<div class="col-lg-4 test no-padding uploadImgBox">
+        					<div class="col-lg-12 test" style="background: lightgray; height:100%; font-size:300%; padding:18%;">+</div>
+        					<!-- 이미지가 들어오면 회색화면은 remove하고 사진을 append할거다 -->
+        				</div>
+        				
+        				<div class="col-lg-8 test" style="padding: 2%;">
+        					<div class="row">
+        						<div class="col-lg-2">큰분류</div>
+        						<div class="col-lg-4">
+        						<select class="custom-select">        						
+        							<c:forEach items="${distinctList}" var ="ing">
+        								<option value="${ing.cName}">${ing.cName}</option>	
+       								</c:forEach> 
+        						</select>
+        						</div>
+        						<div class="col-lg-2">세부분류</div>
+        						<div class="col-lg-4">
+        						<select class="custom-select">        						
+        							<option class="selected">큰분류를 선택해주세요</option>       								
+        						</select>
+        						</div>
+        					</div>
+        					<br />
+        					<div class="row">
+        						<div class="col-lg-2">재료이름</div>
+        						<div class="col-lg-10"><input type="text" class="form-control" /></div>
+        					</div>
+        					<br />
+        					<div class="col-lg-12">
+        						<button class="btn btn-primary">재료추가하기</button>
+        					</div>
+        				</div>
+        				
+        			</div>
+        		</div>
+        	</div>
+        	<br></br>
+        	
+        	
+        	
+        	
+        	
+        	
         	<script>
         		function deleteIngredient(){
         			var iNumber = $('#iNumber').text();
