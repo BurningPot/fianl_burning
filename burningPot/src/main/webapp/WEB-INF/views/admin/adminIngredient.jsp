@@ -61,8 +61,17 @@
 		margin-top: 3%;
 		padding-bottom: 1.5%;
 		font-size: 130%;
-		
-	
+	}
+	.addCategory{
+		padding: 0.5%;
+	}
+	.addCategory div:first-child{
+		padding: 0.5%;
+	}
+	.adding-menu{
+		border: 1px dashed black;
+		padding: 1%;
+		display: none;
 	}
 	
    /*
@@ -224,12 +233,107 @@ function hoveringDiv(){
 				삭제하기는 바로 alert창에서 컨펌을 받은 후 삭제를 진행하고 다시 해당 페이지로 돌아오기한다        	
         	 -->
         	<div class="col-lg-12">
+        		<button class="btn btn-success" id="ing-insert">새로운 재료 추가하기</button>
         		<button class="btn btn-primary" id="ing-update" onclick="updateIngInfo();">수정하기</button>
         		<button class="btn btn-danger" id="ing-delete" onclick="deleteIngredient();">삭제하기</button>
-        	</div>
+        	</div>   
         	
+        	<script>   
+        		$('#ing-insert').click(function(){
+        			$('.adding-menu').slideToggle("fast", function(){
+        				$('html').animate({scrollTop: $('.adding-menu').offset().top}, 400);
+        			});
+        		})
+        	</script>
         	
         	<br /><br /><br />
+        	<div class="col-lg-12" style="margin-bottom: 3%; font-size: 150%;">재료 검색</div>    
+        	<div class="col-lg-12 adding-menu">
+        		<div class="col-lg-12" style="margin-top:1%;">카테고리 추가하기</div>
+        		<br />
+        		<div class="row text-center addCategory">
+        			<div class="col-lg-2">세부분류</div>
+        			<div class="col-lg-2">
+        				<select class="custom-select">
+        					<c:forEach items="${distinctList}" var ="ing">
+        						<option value="${ing.cName}">${ing.cName}</option>	
+       						</c:forEach>        					
+        				</select>
+        			</div>
+        			
+        			<div class="col-lg-7"><input type="text" class="form-control"/></div>
+        			<div class="col-lg-1"><button class="btn btn-primary">추가</button></div> 
+        		</div>
+        		
+        		<div class="col-lg-12" style="margin-top:3%;">재료 추가하기</div>
+        		<br />
+        		<div class="col-lg-12 test">
+        			<div class="row">
+        				<div class="col-lg-4 test no-padding uploadImgBox">
+        					<div class="col-lg-12 test" style="background: lightgray; height:100%; font-size:300%; padding:18%;">+</div>
+        					<!-- 이미지가 들어오면 회색화면은 remove하고 사진을 append할거다 -->
+        				</div>
+        				
+        				<div class="col-lg-8 test" style="padding: 2%;">
+        					<div class="row">
+        						<div class="col-lg-2">큰분류</div>
+        						<div class="col-lg-4">
+        						<select class="custom-select" id="add-ing-bigCategory">        						
+        							<option class="selected">분류를 선택해주세요</option> 
+        							<c:forEach items="${distinctList}" var ="ing">
+        								<option value="${ing.cName}">${ing.cName}</option>	
+       								</c:forEach> 
+        						</select>
+        						</div>
+        						<div class="col-lg-2">세부분류</div>
+        						<div class="col-lg-4">
+        						<select class="custom-select" id="add-ing-subCategory">        						
+        							<option class="selected">큰분류를 선택해주세요</option>       								
+        						</select>
+        						</div>
+        				<script>
+        				$('#add-ing-bigCategory').change(function(){
+        					var cName = $(this).val();
+        					if(cName == "" || cName == null){
+        						console.log("선택안됨");
+        					}else{
+        						$.ajax({
+        							url:"${pageContext.request.contextPath}/admin/selectBigCategory.do",
+        							data:{
+        								bCategory: cName
+        							}, success: function(data){
+        								var html = "";
+        								for(var i = 0 ; i< data.length; i++){
+        									html += '<option value="'+data[i].subCName+'">'+data[i].subCName+'</option>';
+        								}        										
+        								$('#add-ing-subCategory').empty();
+        								$('#add-ing-subCategory').append(html);
+        							}, error: function(){
+        								alert("재료카테고리 불러오기에 실패했습니다");
+        							}
+        						});
+        					}
+        				})	
+        				</script>
+        						
+        					</div>
+        					<br />
+        					<div class="row">
+        						<div class="col-lg-2">재료이름</div>
+        						<div class="col-lg-10"><input type="text" class="form-control" /></div>
+        					</div>
+        					<br />
+        					<div class="col-lg-12">
+        						<button class="btn btn-primary">재료추가하기</button>
+        					</div>
+        				</div>
+        				
+        			</div>
+        		</div>
+        	</div>
+        	<br></br>
+        	
+        	
         	<script>
         		function deleteIngredient(){
         			var iNumber = $('#iNumber').text();
@@ -255,7 +359,7 @@ function hoveringDiv(){
         	
         	</script>
         	
-        	<script>
+        	<script>        	
         	function clickIngName(){
         	$('.search-detail').children().on('click', function(){	
         		console.log('아이넘은 들어가니..'+$(this).text());
@@ -280,8 +384,8 @@ function hoveringDiv(){
         			
 					html += '<div class="row">';   
 					html += '<div class="col-lg-4">';
-					html += '<img src="${pageContext.request.contextPath}/resources/img/ingredient/'+data[0].iImage+'" class="col-lg-12"/>';
-        			html += '<br /><br /><button class="btn btn-default">수정하기</button><br /><br>';        			
+					html += '<img src="${pageContext.request.contextPath}/resources/img/ingredient/'+data[0].iImage+'" class="col-lg-12" id="titleImg"/>';
+        			html += '<br /><br /><div class="custom-file"><label class="custom-file-label text-justify" for="uploading" id="uploadingName">파일선택</label><input type="file" class="custom-file-input" id="uploading" onchange="LoadImg(this)"/></div>';        			
  					html += '</div>';       
  					html += '<div class="col-lg-8 no-padding" style="font-size: 130%;">';
  					html += '<div class="row col-lg-12 no-padding ing-info-firstLine">';
@@ -294,16 +398,41 @@ function hoveringDiv(){
  					html += '<div class="col-lg-12"><input type="text" class="form-control col-lg-12" value="'+keywordList+'"/><div class="col-lg-12">*키워드 입력시 띄어쓰기없이 #(재료명)으로 입력해주세요*</div></div>';
  					html += '</div></div></div>';
  					
+ 					
+ 					
  					$('.ingredient-information').empty();
         			$('.ingredient-information').append(html);  
         			
         			
+        			test();
         		}, error: function(data){
         			console.log('조회실패.. ㅠㅠ');
         		}
         	});
         	});
         	}   
+        	
+        	function test(){
+        		//파일의 이름불러오는 방법은..?
+        		$('#uploading').change(function(){
+					var fileName = $(this).prop('files')[0].name;
+					
+					$('#uploadingName').text(fileName);
+					
+        			console.log(fileName);
+				})
+				
+        	}
+        	function LoadImg(value) {
+				if (value.files && value.files[0]) {
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						$("#titleImg").attr("src", e.target.result);						
+					}
+					reader.readAsDataURL(value.files[0]);					
+				}
+			}
+        	
         	
         	function updateIngInfo(){
         		var imgSrc = $('.ingredient-information').children().children().children().attr('src');
