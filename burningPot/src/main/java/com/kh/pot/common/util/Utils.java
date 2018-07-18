@@ -12,14 +12,21 @@ public class Utils {
 		
 		//1.pageBar작성
 		//pageBar순회용변수 
-		int pageNo = ((cPage - 1)/pageBarSize) * pageBarSize +1;
+	
+		int pageNo = (int)( (double)((cPage - 1)/pageBarSize) * pageBarSize) +1;
 		//종료페이지 번호 세팅
 		int pageEnd = pageNo+pageBarSize-1;
 		System.out.println("pageStart["+pageNo+"] ~ pageEnd["+pageEnd+"]");
+		System.out.println("----------시작부분----------");
+		System.out.println("cPage: "+cPage);
+		System.out.println("pageNo: "+pageNo);
+		System.out.println("totalPage: "+totalPage);
+		System.out.println("--------------------");
 		
+	
 		pageBar += "<ul class='pagination justify-content-center pagination-sm'>";
 		//[이전]section
-		if(pageNo == 1 ){
+		if(cPage == 1 ){
 			pageBar += "<li class='page-item disabled'>";
 			pageBar += "<a class='page-link' href='#' tabindex='-1'>이전</a>";
 			pageBar += "</li>";
@@ -44,16 +51,22 @@ public class Utils {
 			}
 			pageNo++;
 		}
-		
+		//내가 새로추가한 부분
+		pageNo = (int)( (double)((cPage - 1)/pageBarSize) * pageBarSize) +1;
+		System.out.println("----------다음부분----------");
+		System.out.println("cPage: "+cPage);
+		System.out.println("pageNo: "+pageNo);
+		System.out.println("totalPage: "+totalPage);
+		System.out.println("--------------------");
 		//[다음] section
-		if(pageNo > totalPage){
+		if(cPage >= totalPage){
 			pageBar += "<li class='page-item disabled'>";
-			pageBar += "<a class='page-link' href='#'>다음</a>";
+			pageBar += "<a class='page-link' href='#'>다음1</a>";
 			pageBar += "</li>";
 			
 		} else {
 			pageBar += "<li class='page-item'>";
-			pageBar += "<a class='page-link' href='javascript:fn_paging("+pageNo+")'>다음</a>";
+			pageBar += "<a class='page-link' href='javascript:fn_paging("+(pageNo+1)+")'>다음</a>";
 			pageBar += "</li>";
 		}
 		
@@ -66,6 +79,7 @@ public class Utils {
 		pageBar += "location.href='"+url+"?cPage='+cPage;";
 		pageBar += "}";
 		pageBar += "</script>";
+		
 		
 		return pageBar; 
 	}
