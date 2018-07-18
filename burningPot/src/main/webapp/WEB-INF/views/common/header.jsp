@@ -1373,7 +1373,7 @@
 				          </button>
 				        </div>
 				        <div class="board_btn" data-tooltip-text="Board!!">
-				          <button class="menuBtn">
+				          <button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
@@ -1406,7 +1406,7 @@
 				          </button>
 				        </div>
 				        <div class="board_btn_after" data-tooltip-text="Board!!">
-				          <button class="menuBtn_after">
+				          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
@@ -1433,7 +1433,7 @@
 				          </button>
 				        </div>
 				        <div class="board_btn_after" data-tooltip-text="Board!!">
-				          <button class="menuBtn_after">
+				          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
@@ -1483,7 +1483,7 @@
 			          	</button>
 			        </div>
 			        <div class="board_btn_before" data-tooltip-text="Board!!">
-			          	<button class="menuBtn">
+			          	<button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 			              <i class="far fa-list-alt fa-3x"></i>
 			          	</button>
 			        </div>
@@ -1513,7 +1513,7 @@
 			          </button>
 			        </div>
 			        <div class="board_btn_after" data-tooltip-text="Board!!">
-			          <button class="menuBtn">
+			          <button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 			              <i class="far fa-list-alt fa-3x"></i>
 			          </button>
 			        </div>
@@ -1771,7 +1771,6 @@
          spinner:"spinner1" // 로딩중으로 원하는 로딩이미지타입
        });
      });
-   
    // 레시피 목록 보여지는 부분
    $(document).ready(function(){
        setTimeout(function(){

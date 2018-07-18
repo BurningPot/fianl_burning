@@ -51,7 +51,7 @@
 						<th>작성자</th>
 						<td>
 							<div class="form-group">
-								<input type="text" name="user_id" value="${m.getmName()}" class="form-control" readonly/>
+								<input type="text" name="user_id" value="${m.mName}" class="form-control" readonly/>
 							</div>
 						</td>
 					</tr>
