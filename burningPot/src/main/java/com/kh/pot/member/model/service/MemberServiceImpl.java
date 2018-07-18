@@ -100,15 +100,12 @@ public class MemberServiceImpl implements MemberService {
         String key = new TempKey().getKey(50,false);  // 인증키 생성
         
         HashMap<String, String> map = new HashMap<String, String>();
-        System.out.println("key 생성 : "+key);
         
         map.put("email", email);
         map.put("key", key);
         
         int insertResult = memberDao.createAuthKey(map); //인증키 db 저장
-        
-        System.out.println("insertResult"+insertResult);
-        
+
 	    if(insertResult > 0){
 	    	//메일 전송
 	        MailHandler sendMail = new MailHandler(mailSender);
@@ -139,10 +136,9 @@ public class MemberServiceImpl implements MemberService {
         map.put("key", key);
     	
         int result = memberDao.chkAuth(map);
-        System.out.println("userAuthresult:"+result);
+
         if(result > 0){
             try{
-                System.out.println("서비스 userAuth:"+email);
                 memberDao.userAuth(email);
         }catch (Exception e) {
             e.printStackTrace();

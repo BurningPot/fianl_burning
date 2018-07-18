@@ -103,7 +103,6 @@ public class MemberController {
 	@RequestMapping("/member/chkEmail.do")
 	public String chkEmail(@RequestParam String chkEmail,
 							Model model){
-		System.out.println("chkEmail.do 실행");
 		
 		// ***** 이메일 인증키 생성, 이메일 발송 *****  
 		try {
@@ -121,7 +120,6 @@ public class MemberController {
 	@RequestMapping("/member/chkReEmail.do")
 	public String chkReEmail(@RequestParam(value="confirmEmail", required=false) String confirmEmail,
 							Model model){
-		System.out.println("confirmEmail.do 실행");
 		System.out.println("confirmEmail : "+confirmEmail);
 		// ***** 이메일 인증키 생성, 이메일 발송 *****  
 		try {
@@ -141,15 +139,12 @@ public class MemberController {
     public String emailConfirm(@RequestParam String userEmail,
 								@RequestParam String memberAuthKey,
 								Model model) throws Exception { 
-        
-        System.out.println("cont get user"+userEmail);
-        System.out.println("cont get memberAuthKey"+memberAuthKey);
-        
+
         String msg="";
         String loc="/";
         
         int result = memberService.userAuth(userEmail, memberAuthKey);
-        System.out.println("컨트롤러userAuthresult:"+result);
+
         if(result > 0 ) {
         	msg = "메일 인증이 완료 되었습니다!! 나머지 회원가입을 진행해 주세요 ^^";
         }else{
@@ -168,7 +163,7 @@ public class MemberController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		String isOk = memberService.checkEmailConfirm(emailAddr);
-		System.out.println("is:"+isOk);
+
 		map.put("isOk", isOk);
 		
 		return map;
@@ -187,8 +182,6 @@ public class MemberController {
 		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 		
 		member.setBirthDate(sqlDate);
-		
-		System.out.println(member);
 
 		// 회원 저장
 		int result = memberService.insertMember(member);
@@ -211,11 +204,7 @@ public class MemberController {
 						@RequestParam String password,
 						Model model){
 		Member m = memberService.selectMemberId(userId);
-		
-		System.out.println(userId);
-		System.out.println(password);
-		System.out.println(m);
-		
+
 		String msg="";
 		String loc="/";
 		

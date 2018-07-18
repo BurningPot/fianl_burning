@@ -108,7 +108,6 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public String checkEmailConfirm(String emailAddr) {
-		System.out.println("emailAddr : "+emailAddr);
 		return sqlSession.selectOne("member.checkEmailConfirm", emailAddr);
 	}
 

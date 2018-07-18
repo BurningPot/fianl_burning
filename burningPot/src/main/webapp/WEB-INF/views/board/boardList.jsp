@@ -94,7 +94,9 @@
 				      String cPageTemp = request.getParameter("cPage");
 				      int cPage = 1;
 				      try{
+				    	  
 				         cPage = Integer.parseInt(cPageTemp);
+				         
 				      } catch(NumberFormatException e){
 				    	  
 				      }

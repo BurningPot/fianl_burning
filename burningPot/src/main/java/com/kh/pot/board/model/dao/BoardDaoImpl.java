@@ -84,7 +84,6 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public List<Map<String, String>> selectBoardList(int cPage, int numPerPage) {
 		RowBounds rows = new RowBounds((cPage-1)* numPerPage, numPerPage);
-		System.out.println("row:"+rows);
 		return sqlSession.selectList("board.selectBoardList", null, rows);
 	}
 
@@ -95,7 +94,6 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Override
 	public int updateBcount(int boardNo) {
-		System.out.println("boardNo:"+boardNo);
 		return sqlSession.update("board.updateBcount",boardNo);
 	}
 
