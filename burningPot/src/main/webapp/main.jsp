@@ -17,6 +17,7 @@
 	</div>
 
 	<script>
+	
 
 		$(document).mouseup(function(e){
 		    var container = $('.menuContainer');
@@ -29,37 +30,55 @@
 
             var str1 = "★채우는 공간";   
             var str2 = "Recipe !";
-
-            //$(window).scroll(function() { });
-            //문서가 로드되면 20 row 생성 그리고 생성이 완료되면 scroll 이벤트 바인딩
-            for (var i = 1; i <= 8; i++) {
-                count = i;
-				$("<li>" +
-					"<div class='like_and_aver_area'>" +
-						"<div class='like_btn_area'>" +
-							"<button onfocus=this.blur() type='button' class='like_btn' onclick='heartClicked(this);'>" +
-								"<i class='far fa-thumbs-up'></i>" +
-							"</button>" +
-						"</div>" + 
-						"<div class='aver_btn_area'>" + 
-							"<h5>" + str1 + "</h5>"+
-						"</div> " +
-					"</div>" + 
-					"<div class='recipe_img_area'>" +
-						"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath }/resources/img/"+ i +".jpg'>" +
-						"<div class='img_hover_area'>"+ str2 +"</div>" +
-					"</div>" +
-					"<div class='recipe_levle_and_time_and_writer_area'>" +
-						"<div class='recipe_level'>" + "</div>" +
-						"<div class='recipe_time'>" + "</div>" +
-						"<div class='recipe_writer'>" + "</div>" +
-					"</div>" + 
-				"</li>").appendTo("ul");
-                if (count == 8) {
-                    $(window).bind("scroll", infinityScrollFunction);
-                    
-                }
-            }
+           
+             $.ajax({
+            	url : "recipeObject.do",
+            	type : "GET",
+            	dataType : "json",
+            	success : function(data){
+           		 	var level = "";
+            		for (var i = 0; i < data.length; i++) {
+                        /* count = i+1;
+        				console.log("count : " + count); */
+            			if(data[i].rLevel == 0){
+            				level="하";
+                		} else if(data[i].rLevel == 1){
+                			level="중";
+                		} else if(data[i].rLevel == 2) {
+                			level="상";
+                		} else {
+                			level="최상";
+                		}
+        				$("<li>" + 
+            					"<div class='like_and_aver_area'>" +
+            						"<div class='like_btn_area'>" +
+            							"<button onfocus=this.blur() type='button' class='like_btn' onclick='heartClicked(this);'>" +
+            								"<i class='far fa-thumbs-up'></i>" +
+            							"</button>" +
+            						"</div>" + 
+            						"<div class='aver_btn_area'>" + 
+            							"<h5>" + str1 + "</h5>"+
+            						"</div> " +
+            					"</div>" + 
+            					"<div class='recipe_img_area'>" +
+            					"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+            						"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+            					"</div>" +
+            					"<div class='recipe_levle_and_time_and_writer_area'>" +
+            						"<div class='recipe_level'>" + level + "</div>" +
+            						"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+            						"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+            					"</div>" +
+            				"</li>").appendTo("ul");
+    						if (count == 8) {
+                                $(window).bind("scroll", infinityScrollFunction);
+                                
+                            }
+                    }
+            	},error : function(){
+            		alert('에러');
+            	}
+            }); 
             
             function infinityScrollFunction() {
 				
@@ -80,9 +99,20 @@
 
                 if (scrollHeight == documentHeight) { //문서의 맨끝에 도달했을때 내용 추가 
                 	
-                	for (var i = 1; i < 9; i++) {
-                    	count++;
-                    	$("<li>" +
+                	var level = "";
+            		for (var i = 0; i < data.length; i++) {
+                        /* count = i+1;
+        				console.log("count : " + count); */
+            			if(data[i].rLevel == 0){
+            				level="하";
+                		} else if(data[i].rLevel == 1){
+                			level="중";
+                		} else if(data[i].rLevel == 2) {
+                			level="상";
+                		} else {
+                			level="최상";
+                		}
+        				$("<li>" + 
             					"<div class='like_and_aver_area'>" +
             						"<div class='like_btn_area'>" +
             							"<button onfocus=this.blur() type='button' class='like_btn' onclick='heartClicked(this);'>" +
@@ -94,14 +124,14 @@
             						"</div> " +
             					"</div>" + 
             					"<div class='recipe_img_area'>" +
-            						"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath }/resources/img/"+ i +".jpg'>" +
-            						"<div class='img_hover_area'>"+ str2 +"</div>" +
+            					"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 2 +".jpg'>" +
+            						"<div class='img_hover_area'>" + data[i].rName + "</div>" +
             					"</div>" +
             					"<div class='recipe_levle_and_time_and_writer_area'>" +
-            						"<div class='recipe_level'>" + "</div>" +
-            						"<div class='recipe_time'>" + "</div>" +
-            						"<div class='recipe_writer'>" + "</div>" +
-            					"</div>" + 
+            						"<div class='recipe_level'>" + level + "</div>" +
+            						"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+            						"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+            					"</div>" +
             				"</li>").appendTo("ul");
                     }
                 }

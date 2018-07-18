@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="home">
+	
+	<!-- 등록된 Recipe가 그냥 뽑힘 -->
+	<select id="selectRecipe" resultType="recipe">
+		SELECT rLevel, rTime, quantity, rImg, rName FROM RECIPE
+	</select>
+	
+	
+</mapper>

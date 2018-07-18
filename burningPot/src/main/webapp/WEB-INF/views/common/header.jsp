@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -603,7 +602,7 @@
 			text-align : center;
 			color: red;
 			padding-top : 25%;		
-		    font-size: 500%;	
+		    font-size: 200%;	
 		}
 		
 		.food_img {
@@ -1373,7 +1372,7 @@
 				          </button>
 				        </div>
 				        <div class="board_btn" data-tooltip-text="Board!!">
-				          <button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
+				          <button class="menuBtn">
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
@@ -1406,7 +1405,7 @@
 				          </button>
 				        </div>
 				        <div class="board_btn_after" data-tooltip-text="Board!!">
-				          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
+				          <button class="menuBtn_after">
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
@@ -1433,7 +1432,7 @@
 				          </button>
 				        </div>
 				        <div class="board_btn_after" data-tooltip-text="Board!!">
-				          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
+				          <button class="menuBtn_after">
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
@@ -1483,7 +1482,7 @@
 			          	</button>
 			        </div>
 			        <div class="board_btn_before" data-tooltip-text="Board!!">
-			          	<button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
+			          	<button class="menuBtn">
 			              <i class="far fa-list-alt fa-3x"></i>
 			          	</button>
 			        </div>
@@ -1513,7 +1512,7 @@
 			          </button>
 			        </div>
 			        <div class="board_btn_after" data-tooltip-text="Board!!">
-			          <button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
+			          <button class="menuBtn">
 			              <i class="far fa-list-alt fa-3x"></i>
 			          </button>
 			        </div>
@@ -1771,6 +1770,7 @@
          spinner:"spinner1" // 로딩중으로 원하는 로딩이미지타입
        });
      });
+   
    // 레시피 목록 보여지는 부분
    $(document).ready(function(){
        setTimeout(function(){
