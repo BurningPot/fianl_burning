@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kh.pot.ingredient.model.vo.Ingredient;
+import com.kh.pot.ingredient.model.vo.IngredientKeyword;
 
 public interface IngredientService {
 	//-----------------------HYD--------------------------------
@@ -21,7 +22,11 @@ public interface IngredientService {
 
 	int updateIngInfo(int iNum, String img, int exdate, String iName);
 
-	int updateIngKeyword(int iNum, String keyword);
+	int deleteIngKeyword(int iNum);
+
+	int insertNewKeyword(int iNum, String[] keywordArr);
+
+	
 
 	
 	

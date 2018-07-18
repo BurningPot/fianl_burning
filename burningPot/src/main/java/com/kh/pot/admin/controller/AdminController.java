@@ -3,7 +3,6 @@ package com.kh.pot.admin.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +18,7 @@ import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.board.model.vo.BoardComment;
 import com.kh.pot.ingredient.model.service.IngredientService;
 import com.kh.pot.ingredient.model.vo.Ingredient;
+import com.kh.pot.ingredient.model.vo.IngredientKeyword;
 import com.kh.pot.member.model.service.MemberService;
 import com.kh.pot.member.model.vo.Member;
 
@@ -355,14 +355,11 @@ public class AdminController {
 		System.out.println("재료정보 업데이트 : "+result1);
 		
 		//기존에 있는 키워드는 제외하고 insert 시켜야 하므로 기존의 keyword들도 불러와야한다
-		//1. 해당 iNum에  해당하는 keyword들을 모두 가져와서 검사할 필요가 있다
-		
-		
-		
-		//재료의 관련 키워드를 수정한다
-		int result2 = ingService.updateIngKeyword(iNum, keyword);
-		
-		
+		//1. 해당 iNum에  해당하는 keyword들을 모두 제거한다
+		int resultDel = ingService.deleteIngKeyword(iNum);
+		//2. 넘겨받은 keyword들로 새로  insert를 시켜버린다		
+		String[] keywordArr = keyword.split("#");
+		int resultInsert = ingService.insertNewKeyword(iNum, keywordArr);
 		
 		return iNum;
 	}

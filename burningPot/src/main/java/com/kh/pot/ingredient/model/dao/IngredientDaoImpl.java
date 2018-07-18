@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.pot.ingredient.model.vo.Ingredient;
+import com.kh.pot.ingredient.model.vo.IngredientKeyword;
 
 @Repository
 public class IngredientDaoImpl implements IngredientDao {
@@ -59,18 +60,35 @@ public class IngredientDaoImpl implements IngredientDao {
 	}
 
 	@Override
-	public int updateIngKeyword(int iNum, String[] keywordArr) {
+	public int deleteIngKeyword(int iNum) {
 		
+		return sqlSession.delete("ingredientKeyword.deleteIngKeyword", iNum);
+	}
+
+	@Override
+	public int insertNewKeyword(int iNum, ArrayList<String> keywordList) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("iNum", iNum);
 		int result = 0;
-		/*sqlSession.insert("ingredient.updateIngKeyword");*/
 		
+		for(int i = 0 ; i< keywordList.size();i++){
+			if(i == 0){
+				map.put("keyword", keywordList.get(i));
+				result += sqlSession.insert("ingredientKeyword.insertNewKeyword", map);
+			}else{
+				map.remove("keyword");
+				map.put("keyword", keywordList.get(i));
+				result += sqlSession.insert("ingredientKeyword.insertNewKeyword", map);
+			}
+			
+		}
 		
 		
 		
 		return 0;
 	}
 
-	
 	
 	
 }

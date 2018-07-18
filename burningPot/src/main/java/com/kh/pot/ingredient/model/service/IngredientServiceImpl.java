@@ -1,5 +1,6 @@
 package com.kh.pot.ingredient.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.pot.ingredient.model.dao.IngredientDao;
 import com.kh.pot.ingredient.model.vo.Ingredient;
+import com.kh.pot.ingredient.model.vo.IngredientKeyword;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {	
@@ -62,16 +64,27 @@ public class IngredientServiceImpl implements IngredientService {
 		
 		return ingDao.updateIngInfo(map);
 	}
+	
 
 	@Override
-	public int updateIngKeyword(int iNum, String keyword) {
-		String[] keywordArr = keyword.split("#");
-		int b = iNum;
-		for(int i = 1; i < keywordArr.length; i++){
-			System.out.println("키워드들 :"+keywordArr[i]);
+	public int deleteIngKeyword(int iNum) {
+		
+		return ingDao.deleteIngKeyword(iNum);
+	}
+
+	@Override
+	public int insertNewKeyword(int iNum, String[] keywordArr) {
+		
+		ArrayList<String> keywordList = new ArrayList<String>();
+		
+		for(int i = 0 ;i < keywordArr.length; i++){
+			keywordList.add(keywordArr[i]);
 		}
 		
-		return ingDao.updateIngKeyword(iNum, keywordArr);
+		return ingDao.insertNewKeyword(iNum, keywordList);
 	}
+
+	
+	
 
 }
