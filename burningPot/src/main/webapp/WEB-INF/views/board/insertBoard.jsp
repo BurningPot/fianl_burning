@@ -11,6 +11,21 @@
 <link
 	href="${pageContext.request.contextPath }/resources/css/board/board.css"
 	rel="stylesheet">
+	
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+	integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+	crossorigin="anonymous"></script>
+	
+<!-- summernote  -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<link href="${pageContext.request.contextPath }/resources/css/board/summernote/summernote-bs4.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath }/resources/css/board/summernote/summernote-bs4.js"></script>
+<!-- include summernote-ko-KR -->
+<script src="../resources/summernote/lang/summernote-ko-KR.js"></script>
+
+
 
 </head>
 <body>
