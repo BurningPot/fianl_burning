@@ -7,6 +7,7 @@
 		<typeAlias type="com.kh.pot.board.model.vo.Board" alias="board"/>
 		<typeAlias type="com.kh.pot.fridge.model.vo.Fridge" alias="fridge"/>
 		<typeAlias type="com.kh.pot.ingredient.model.vo.Ingredient" alias="ingredient"/>
+		<typeAlias type="com.kh.pot.ingredient.model.vo.IngredientKeyword" alias="ingredientKeyword"/>
 		<typeAlias type="com.kh.pot.recipe.model.vo.Recipe" alias="recipe"/>
 		<typeAlias type="com.kh.pot.board.model.vo.BoardComment" alias="boardComment"></typeAlias>
 	</typeAliases>

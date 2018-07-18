@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.kh.pot.ingredient.model.vo.Ingredient;
+import com.kh.pot.ingredient.model.vo.IngredientKeyword;
 
 public interface IngredientDao {
 
@@ -22,7 +23,11 @@ public interface IngredientDao {
 
 	int updateIngInfo(HashMap<String, Object> map);
 
-	int updateIngKeyword(int iNum, String[] keywordArr);
+	int deleteIngKeyword(int iNum);
+
+	int insertNewKeyword(int iNum, ArrayList<String> keywordList);
+
+	
 
 	
 
