@@ -22,6 +22,8 @@ public interface IngredientDao {
 
 	int updateIngInfo(HashMap<String, Object> map);
 
+	int updateIngKeyword(int iNum, String[] keywordArr);
+
 	
 
 }

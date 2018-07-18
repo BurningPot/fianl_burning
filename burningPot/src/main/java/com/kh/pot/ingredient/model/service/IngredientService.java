@@ -21,6 +21,8 @@ public interface IngredientService {
 
 	int updateIngInfo(int iNum, String img, int exdate, String iName);
 
+	int updateIngKeyword(int iNum, String keyword);
+
 	
 	
 	

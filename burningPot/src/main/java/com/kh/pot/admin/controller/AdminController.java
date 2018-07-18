@@ -350,12 +350,19 @@ public class AdminController {
 	@RequestMapping("admin/updateIngInfo.do")
 	public int updateIngInfo(@RequestParam int iNum, @RequestParam String img, @RequestParam(value="exdate", required=false, defaultValue="0") int exdate, 
 			@RequestParam String iName, @RequestParam String keyword){
-		//1. 재료의 정보를 수정한다
+		//재료의 정보를 수정한다
 		int result1 = ingService.updateIngInfo(iNum, img, exdate, iName);
 		System.out.println("재료정보 업데이트 : "+result1);
 		
-		//2. 재료의 관련 키워드를 수정한다
-		/*int result2 = ingService.updateIngKeyword(iNum, keyword);*/
+		//기존에 있는 키워드는 제외하고 insert 시켜야 하므로 기존의 keyword들도 불러와야한다
+		//1. 해당 iNum에  해당하는 keyword들을 모두 가져와서 검사할 필요가 있다
+		
+		
+		
+		//재료의 관련 키워드를 수정한다
+		int result2 = ingService.updateIngKeyword(iNum, keyword);
+		
+		
 		
 		return iNum;
 	}

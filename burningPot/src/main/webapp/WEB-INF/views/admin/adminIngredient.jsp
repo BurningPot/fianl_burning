@@ -291,7 +291,7 @@ function hoveringDiv(){
  					html += '<div class="col-lg-12 ing-info-secondLine">[<span id="iNumber">'+data[0].iNum+'</span>]&nbsp;<input type="text" class="col-lg-6" value="'+data[0].iName+'"/></div>';
  					html += '<div class="col-lg-12 no-padding ing-info-thirdLine">';
  					html += '<div class="col-lg-12">관련키워드</div>';
- 					html += '<div class="col-lg-12"><input type="text" class="form-control col-lg-12" value="'+keywordList+'"/></div>';
+ 					html += '<div class="col-lg-12"><input type="text" class="form-control col-lg-12" value="'+keywordList+'"/><div class="col-lg-12">*키워드 입력시 띄어쓰기없이 #(재료명)으로 입력해주세요*</div></div>';
  					html += '</div></div></div>';
  					
  					$('.ingredient-information').empty();

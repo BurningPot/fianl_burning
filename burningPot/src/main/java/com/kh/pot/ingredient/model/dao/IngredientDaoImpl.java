@@ -58,6 +58,18 @@ public class IngredientDaoImpl implements IngredientDao {
 		return sqlSession.update("ingredient.updateIngInfo", map);
 	}
 
+	@Override
+	public int updateIngKeyword(int iNum, String[] keywordArr) {
+		
+		int result = 0;
+		/*sqlSession.insert("ingredient.updateIngKeyword");*/
+		
+		
+		
+		
+		return 0;
+	}
+
 	
 	
 	

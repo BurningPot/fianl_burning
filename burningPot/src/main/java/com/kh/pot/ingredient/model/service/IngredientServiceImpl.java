@@ -63,4 +63,15 @@ public class IngredientServiceImpl implements IngredientService {
 		return ingDao.updateIngInfo(map);
 	}
 
+	@Override
+	public int updateIngKeyword(int iNum, String keyword) {
+		String[] keywordArr = keyword.split("#");
+		int b = iNum;
+		for(int i = 1; i < keywordArr.length; i++){
+			System.out.println("키워드들 :"+keywordArr[i]);
+		}
+		
+		return ingDao.updateIngKeyword(iNum, keywordArr);
+	}
+
 }
