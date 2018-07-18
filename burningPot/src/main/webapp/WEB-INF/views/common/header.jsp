@@ -1771,7 +1771,6 @@
          spinner:"spinner1" // 로딩중으로 원하는 로딩이미지타입
        });
      });
-   
    // 레시피 목록 보여지는 부분
    $(document).ready(function(){
        setTimeout(function(){
