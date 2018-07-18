@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -110,7 +111,16 @@
 				/* padding: 1%; */
 			}
 			.board_btn_after{
-				width: 25%; 
+				width: 20%; 
+				height:100%; 
+				float: left; 
+				/* margin-left: -4%;
+				padding-left: 3%;
+    			padding-right: 3%; */
+				padding: 1%;
+			}
+			.fredge_btn_after{
+				width: 20%; 
 				height:100%; 
 				float: left; 
 				/* margin-left: -4%;
@@ -120,7 +130,7 @@
 			}
 			/* recipe 등록 버튼 */
 			.regist_recipe_btn_after{
-				width: 25%; 
+				width: 20%; 
 				height:100%; 
 				float: left; 
 				/* margin-left: -4%;
@@ -128,9 +138,14 @@
     			padding-right: 3%; */
 				padding: 1%;
 			}
+			.fredge_img{
+				width:100%;
+				height:90%;
+				border-radius: 50%;
+			}
 			/* login 버튼 */
 			.login_btn_after{
-				width: 25%; 
+				width: 20%; 
 				height:100%; 
 				float: left; 
 				/* margin-left: -4%;
@@ -139,7 +154,7 @@
 				padding: 1%;
 			}
 			.logOut_btn_after{
-				width: 25%; 
+				width: 20%; 
 				height:100%; 
 				float: left; 
 				/* margin-left: -4%;
@@ -718,6 +733,11 @@
 		
 		@media all and (max-width: 1200px) {
 			
+			.fredge_img{
+				width:100%;
+				height:90%;
+				border-radius: 50%;
+			}
 			.menuContainer {
 			    width: 100%;
 			    height: 100%;
@@ -879,7 +899,7 @@
 			
 			/* 로그인 이후 축소될 경우의 버튼 모양 */
 			.logOut_btn_after{
-	    	    width: 20%;
+	    	    width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -889,7 +909,7 @@
 			    /* padding: 1%; */
 		    }
 			.menu_home_btn_after{
-				width: 20%;
+				width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -901,7 +921,17 @@
 			
 			 /* myPage 버튼 */
 			.board_btn_after{
-			    width: 20%;
+			    width: 16%;
+			    height: 100%;
+			    float: left;
+			    margin-left: 0;
+			    /* padding-left: 3%; */
+			    padding: 0.5%;
+			    /* padding-right: 3%; */
+			    /* padding: 1%; */
+			}
+			.fredge_btn_after{
+			    width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -912,7 +942,7 @@
 			}
 			/* recipe 등록 버튼 */
 			.regist_recipe_btn_after{
-				width: 20%;
+				width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -923,7 +953,7 @@
 			}
 			/* login 버튼 */
 			.login_btn_after{
-				width: 20%;
+				width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -992,6 +1022,11 @@
 		
 		@media all and (max-width: 768px) {
 			
+			.fredge_img{
+				width:100%;
+				height:90%;
+				border-radius: 50%;
+			}
 			.menu_after {
 			    background: white;
 			    padding-right: 12%;
@@ -1132,9 +1167,9 @@
 		         border-radius: 5%
 	        }
 	        
-	        /* 로그인 이후 축소될 경우의 버튼 모양 */
+	       /* 로그인 이후 축소될 경우의 버튼 모양 */
 			.logOut_btn_after{
-	    	    width: 20%;
+	    	    width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1144,7 +1179,7 @@
 			    /* padding: 1%; */
 		    }
 			.menu_home_btn_after{
-				width: 20%;
+				width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1156,7 +1191,17 @@
 			
 			 /* myPage 버튼 */
 			.board_btn_after{
-			    width: 20%;
+			    width: 16%;
+			    height: 100%;
+			    float: left;
+			    margin-left: 0;
+			    /* padding-left: 3%; */
+			    padding: 0.5%;
+			    /* padding-right: 3%; */
+			    /* padding: 1%; */
+			}
+			.fredge_btn_after{
+			    width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1167,7 +1212,7 @@
 			}
 			/* recipe 등록 버튼 */
 			.regist_recipe_btn_after{
-				width: 20%;
+				width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1178,7 +1223,7 @@
 			}
 			/* login 버튼 */
 			.login_btn_after{
-				width: 20%;
+				width: 16%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1311,7 +1356,6 @@
 				<!-- 로그인 안했을 때 -->
 	      		<c:if test="${empty m}">
 	      		<div class="b-seg-right_before nav navbar-nav navbar-right">
-	      		
 					<div class="menu_full">
 				      	<div class="menu_home_btn">
 							<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath}/main.jsp'">
@@ -1339,7 +1383,7 @@
 						<button class="menu_btn" onclick="menuBar();"><i class="fas fa-bars fa-5x"></i></button>
 					</div>
 				</div>
-			      </div>
+		      </div>
 		      </c:if>
 		      <!-- 로그인했을 때 -->
       		  <c:if test="${!empty m}">
@@ -1364,6 +1408,11 @@
 				        <div class="board_btn_after" data-tooltip-text="Board!!">
 				          <button class="menuBtn_after">
 				              <i class="far fa-list-alt fa-3x"></i>
+				          </button>
+				        </div>
+				        <div class="fredge_btn_after" data-tooltip-text="Fredge!!">
+				          <button class="menuBtn_after">
+				              <img class="fredge_img" src="${pageContext.request.contextPath }/resources/img/fredge_btn_img.jpg"/>
 				          </button>
 				        </div>
 				        <div class="logOut_btn_after" data-tooltip-text="Logout!!">
@@ -1466,6 +1515,11 @@
 			        <div class="board_btn_after" data-tooltip-text="Board!!">
 			          <button class="menuBtn">
 			              <i class="far fa-list-alt fa-3x"></i>
+			          </button>
+			        </div>
+			        <div class="fredge_btn_after" data-tooltip-text="Fredge!!">
+			          <button class="menuBtn_after">
+			              <img class="fredge_img" src="${pageContext.request.contextPath }/resources/img/fredge_btn_img.jpg"/>
 			          </button>
 			        </div>
 			        <div class="logOut_btn_after" data-tooltip-text="Logout!!">
@@ -1646,9 +1700,9 @@
 	 		</div>
 	    </div>
     </div>
-    	<!-- 비밀번호 찾기 모달 끝 -->
-    	
-    	<!-- 희준 script -->
+   	<!-- 비밀번호 찾기 모달 끝 -->
+   	
+   	<!-- 희준 script -->
 	<script>
 	
 	 /* $(window).resize(function () {
@@ -1717,7 +1771,7 @@
          spinner:"spinner1" // 로딩중으로 원하는 로딩이미지타입
        });
      });
-   
+   F
    // 레시피 목록 보여지는 부분
    $(document).ready(function(){
        setTimeout(function(){
