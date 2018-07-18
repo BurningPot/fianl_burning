@@ -77,7 +77,7 @@ public class IngredientServiceImpl implements IngredientService {
 		
 		ArrayList<String> keywordList = new ArrayList<String>();
 		
-		for(int i = 0 ;i < keywordArr.length; i++){
+		for(int i = 1 ;i < keywordArr.length; i++){
 			keywordList.add(keywordArr[i]);
 		}
 		

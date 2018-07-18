@@ -341,11 +341,7 @@ public class AdminController {
 	public int deleteIngredient(@RequestParam int iNumber){
 		return ingService.deleteIngredient(iNumber);
 	}
-	/*iNum: iNumber,
-	img:imgName,
-	exdate: exdate,
-	iName: ingName,
-	keyword: keyword*/
+	
 	@ResponseBody
 	@RequestMapping("admin/updateIngInfo.do")
 	public int updateIngInfo(@RequestParam int iNum, @RequestParam String img, @RequestParam(value="exdate", required=false, defaultValue="0") int exdate, 
@@ -356,10 +352,11 @@ public class AdminController {
 		
 		//기존에 있는 키워드는 제외하고 insert 시켜야 하므로 기존의 keyword들도 불러와야한다
 		//1. 해당 iNum에  해당하는 keyword들을 모두 제거한다
-		int resultDel = ingService.deleteIngKeyword(iNum);
+		ingService.deleteIngKeyword(iNum);
+		
 		//2. 넘겨받은 keyword들로 새로  insert를 시켜버린다		
 		String[] keywordArr = keyword.split("#");
-		int resultInsert = ingService.insertNewKeyword(iNum, keywordArr);
+		ingService.insertNewKeyword(iNum, keywordArr);
 		
 		return iNum;
 	}

@@ -69,9 +69,9 @@ public class IngredientDaoImpl implements IngredientDao {
 	public int insertNewKeyword(int iNum, ArrayList<String> keywordList) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("iNum", iNum);
 		int result = 0;
 		
+		map.put("iNum", iNum);	
 		for(int i = 0 ; i< keywordList.size();i++){
 			if(i == 0){
 				map.put("keyword", keywordList.get(i));
@@ -80,13 +80,9 @@ public class IngredientDaoImpl implements IngredientDao {
 				map.remove("keyword");
 				map.put("keyword", keywordList.get(i));
 				result += sqlSession.insert("ingredientKeyword.insertNewKeyword", map);
-			}
-			
+			}			
 		}
-		
-		
-		
-		return 0;
+		return result;
 	}
 
 	
