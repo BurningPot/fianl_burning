@@ -68,6 +68,11 @@
 	.addCategory div:first-child{
 		padding: 0.5%;
 	}
+	.adding-menu{
+		border: 1px dashed black;
+		padding: 1%;
+		display: none;
+	}
 	
    /*
     #FBFFB9
@@ -233,9 +238,17 @@ function hoveringDiv(){
         		<button class="btn btn-danger" id="ing-delete" onclick="deleteIngredient();">삭제하기</button>
         	</div>   
         	
-        	<br /><br /><br />
+        	<script>   
+        		$('#ing-insert').click(function(){
+        			$('.adding-menu').slideToggle("fast", function(){
+        				$('html').animate({scrollTop: $('.adding-menu').offset().top}, 400);
+        			});
+        		})
+        	</script>
         	
-        	<div class="col-lg-12 test">
+        	<br /><br /><br />
+        	<div class="col-lg-12" style="margin-bottom: 3%; font-size: 150%;">재료 검색</div>    
+        	<div class="col-lg-12 adding-menu">
         		<div class="col-lg-12" style="margin-top:1%;">카테고리 추가하기</div>
         		<br />
         		<div class="row text-center addCategory">
@@ -265,7 +278,8 @@ function hoveringDiv(){
         					<div class="row">
         						<div class="col-lg-2">큰분류</div>
         						<div class="col-lg-4">
-        						<select class="custom-select">        						
+        						<select class="custom-select" id="add-ing-bigCategory">        						
+        							<option class="selected">분류를 선택해주세요</option> 
         							<c:forEach items="${distinctList}" var ="ing">
         								<option value="${ing.cName}">${ing.cName}</option>	
        								</c:forEach> 
@@ -273,10 +287,35 @@ function hoveringDiv(){
         						</div>
         						<div class="col-lg-2">세부분류</div>
         						<div class="col-lg-4">
-        						<select class="custom-select">        						
+        						<select class="custom-select" id="add-ing-subCategory">        						
         							<option class="selected">큰분류를 선택해주세요</option>       								
         						</select>
         						</div>
+        				<script>
+        				$('#add-ing-bigCategory').change(function(){
+        					var cName = $(this).val();
+        					if(cName == "" || cName == null){
+        						console.log("선택안됨");
+        					}else{
+        						$.ajax({
+        							url:"${pageContext.request.contextPath}/admin/selectBigCategory.do",
+        							data:{
+        								bCategory: cName
+        							}, success: function(data){
+        								var html = "";
+        								for(var i = 0 ; i< data.length; i++){
+        									html += '<option value="'+data[i].subCName+'">'+data[i].subCName+'</option>';
+        								}        										
+        								$('#add-ing-subCategory').empty();
+        								$('#add-ing-subCategory').append(html);
+        							}, error: function(){
+        								alert("재료카테고리 불러오기에 실패했습니다");
+        							}
+        						});
+        					}
+        				})	
+        				</script>
+        						
         					</div>
         					<br />
         					<div class="row">
@@ -293,10 +332,6 @@ function hoveringDiv(){
         		</div>
         	</div>
         	<br></br>
-        	
-        	
-        	
-        	
         	
         	
         	<script>
