@@ -15,7 +15,7 @@
 	<div style="height: 20%;"></div>
 	<div class="container containerTop col-sm-6 col-sm-offset-3">
 		<h1 align="left">게시판 상세보기</h1>
-		<p>
+		<p><!-- sd -->
 			<i class="fas fa-exclamation-circle"> 개인정보가 포함된 글이나 게시판 성격에 맞지 않은
 				글은 관리자에 의해 통보없이 삭제 될 수 있습니다.</i>
 		</p>
