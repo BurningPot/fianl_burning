@@ -107,6 +107,11 @@ public class BoardServiceImpl implements BoardService {
 		if(result > 0 ) return boardDao.selectBoardOne(boardNo);
 		else return null;
 	}
+
+	@Override
+	public int insertBoard(Board board) {
+		return boardDao.insertBoard(board);
+	}
 	
 	/* 예찬 부분 */
 }

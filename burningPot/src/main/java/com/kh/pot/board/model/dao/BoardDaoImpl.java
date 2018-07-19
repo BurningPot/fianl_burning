@@ -102,6 +102,11 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSession.selectOne("board.selectBaordOne",boardNo);
 	}
 
+	@Override
+	public int insertBoard(Board board) {
+		return sqlSession.insert("board.insertBoard",board);
+	}
+
 	/*예찬 부분 끝*/
 	
 	

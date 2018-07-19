@@ -127,6 +127,14 @@ public class Board implements Serializable{
 		this.bCount = bCount;
 	}
 
+	@Override
+	public String toString() {
+		return "Board [bNum=" + bNum + ", category=" + category + ", bTitle=" + bTitle + ", mNum=" + mNum + ", mId="
+				+ mId + ", mName=" + mName + ", bDate=" + bDate + ", bContent=" + bContent + ", bImg=" + bImg
+				+ ", reply=" + reply + ", bCount=" + bCount + "]";
+	}
+	
+	
 	
 	
 	
