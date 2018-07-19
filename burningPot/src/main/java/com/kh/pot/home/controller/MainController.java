@@ -56,7 +56,7 @@ public class MainController {
 	// 6. Recipe 객체를 불러와서 Main.jsp에 레시피 명, 난이도, 소요시간, 작성자 불러오는 메소드
 	
 	@RequestMapping("showHome.do")
-	public String recipeObject(Model model){
+	public String showHome(Model model){
 		System.out.println("showHome");
 		
 		List<Recipe> list = mainService.selectShowHome();
@@ -72,11 +72,25 @@ public class MainController {
 	public List recipeObject(Model model, @RequestParam int number){
 		System.out.println("recipeObject");
 		
-		List<Recipe> list = mainService.selectRecipe(number);
+		int recipeCount = mainService.selectCountAllRecipe();
 		
-		/*model.addAttribute("list", list);
-		*/
-		System.out.println("recipeObject list : "+list);
+		int startNumber = number;
+		int endNumber = number+8;
+		
+		if(endNumber >= recipeCount){
+			endNumber =recipeCount;
+		}
+		System.out.println("startNumber: "+startNumber);
+		System.out.println("endNumber: "+endNumber);
+		
+		List<Recipe> list = mainService.selectRecipe(startNumber, endNumber);
+		
+		//model.addAttribute("list", list);
+		for(int i = 0; i< list.size();i++){
+			System.out.println(list.get(i).getrName());
+		}
+		
+		
 		return list;
 	}
 	

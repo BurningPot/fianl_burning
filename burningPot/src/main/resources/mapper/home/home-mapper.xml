@@ -3,10 +3,10 @@
 <mapper namespace="home">
 	
 	<!-- 등록된 Recipe가 그냥 뽑힘 -->
-	<select id="selectRecipe" resultType="recipe" parameterType="_int">
+	<select id="selectRecipe" resultType="recipe" parameterType="hashmap">
 		<![CDATA[
-		SELECT ROWNUM, C.* FROM (SELECT rLevel, rTime, quantity, rImg, rName FROM RECIPE ORDER BY RCOUNT DESC) C 
-		WHERE ROWNUM >= #{number} AND ROWNUM <= #{number}+7
+		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName FROM RECIPE ORDER BY QUANTITY) C 
+		WHERE C.R >= #{startNumber} AND C.R <= #{endNumber}
 		ORDER BY ROWNUM 
 		]]>
 
@@ -14,10 +14,13 @@
 	
 	<select id="selectShowHome" resultType="recipe">
 		<![CDATA[
-		SELECT ROWNUM, C.* FROM (SELECT rLevel, rTime, quantity, rImg, rName FROM RECIPE ORDER BY RCOUNT DESC) C 
-		WHERE ROWNUM >= 1 AND ROWNUM <= 8
+		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName FROM RECIPE ORDER BY QUANTITY) C 
+		WHERE C.R >= 1 AND C.R <= 8
 		ORDER BY ROWNUM 
 		]]>
+	</select>
+	<select id="selectCountAllRecipe" resultType="_int">
+		SELECT COUNT(*) FROM RECIPE
 	</select>
 	
 	
