@@ -38,14 +38,94 @@
 		
 	</div>
 
-	<script>
-		var count = 1;
-
+	<script>		
+		var count = 9;
 		$(document).mouseup(function(e){
 		    var container = $('.menuContainer');
 		    if(!container.is(e.target) && container.has(e.target).length === 0)
 		    container.hide();
 		});
+		$(window).bind("scroll", infinityScrollFunction);
+		
+		function infinityScrollFunction(){
+			
+			
+			//현재문서의 높이를 구함.
+            var documentHeight = $(document).height();
+            //console.log("documentHeight : " + documentHeight);
+
+            //scrollTop() 메서드는 선택된 요소의 세로 스크롤 위치를 설정하거나 반환    
+            //스크롤바가 맨 위쪽에 있을때 , 위치는 0
+            //console.log("window의 scrollTop() : " + $(window).scrollTop());
+            //height() 메서드는 브라우저 창의 높이를 설정하거나 반환
+            //console.log("window의 height() : " + $(window).height());
+
+            //세로 스크롤위치 max값과 창의 높이를 더하면 현재문서의 높이를 구할수있음.
+            //세로 스크롤위치 값이 max이면 문서의 끝에 도달했다는 의미
+            var scrollHeight = $(window).scrollTop() + $(window).height();
+            //console.log("scrollHeight : " + scrollHeight);
+            
+            
+            
+            if (scrollHeight == documentHeight) { //문서의 맨끝에 도달했을때 내용 추가 
+            	console.log("끝");
+            	
+            var str1 = "★채우는 공간";   
+            var str2 = "Recipe !";
+            
+            $.ajax({
+               	url : "recipeObject.do",
+               	type : "GET",
+               	dataType : "json",
+               	data:{
+               		number: count
+               	},success: function(data){
+               		console.log("count는?: "+count);
+               		count += 9;
+               		console.log("성공?");
+               		var level = "";
+               		for (var i = 0; i < data.length; i++) {
+               
+            			console.log("count : " + count);
+                		if(data[i].rLevel == 0){
+                			level="하";
+                		} else if(data[i].rLevel == 1){
+                			level="중";
+                		} else if(data[i].rLevel == 2) {
+                			level="상";
+                		} else {
+                			level="최상";
+                		}
+                		$("<li>" + 
+                				"<div class='like_and_aver_area'>" +
+                					"<div class='like_btn_area'>" +
+                						"<button onfocus=this.blur() type='button' class='like_btn' onclick='heartClicked(this);'>" +
+                							"<i class='far fa-thumbs-up'></i>" +
+                						"</button>" +
+                					"</div>" + 
+                					"<div class='aver_btn_area'>" + 
+                						"<h5>" + str1 + "</h5>"+
+                					"</div> " +
+                				"</div>" + 
+                				"<div class='recipe_img_area'>" +
+                				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+                					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+                				"</div>" +
+                				"<div class='recipe_levle_and_time_and_writer_area'>" +
+                					"<div class='recipe_level'>" + level + "</div>" +
+                					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+                					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+                				"</div>" +
+                			"</li>").appendTo(".recipeList");
+                		
+                 }
+               	},
+                 error: function(data){
+                 	console.log("아직실패");
+                 }           	 
+		})
+		}
+        }
 		
         /* $(function loadRecipe() {
         	
