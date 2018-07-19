@@ -1,8 +1,14 @@
 package com.kh.pot.admin.controller;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pot.admin.model.vo.PageInfo;
 import com.kh.pot.board.model.service.BoardService;
@@ -18,7 +25,6 @@ import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.board.model.vo.BoardComment;
 import com.kh.pot.ingredient.model.service.IngredientService;
 import com.kh.pot.ingredient.model.vo.Ingredient;
-import com.kh.pot.ingredient.model.vo.IngredientKeyword;
 import com.kh.pot.member.model.service.MemberService;
 import com.kh.pot.member.model.vo.Member;
 
@@ -342,13 +348,66 @@ public class AdminController {
 		return ingService.deleteIngredient(iNumber);
 	}
 	
-	@ResponseBody
+	
 	@RequestMapping("admin/updateIngInfo.do")
-	public int updateIngInfo(@RequestParam int iNum, @RequestParam String img, @RequestParam(value="exdate", required=false, defaultValue="0") int exdate, 
-			@RequestParam String iName, @RequestParam String keyword){
-		//재료의 정보를 수정한다
-		int result1 = ingService.updateIngInfo(iNum, img, exdate, iName);
-		System.out.println("재료정보 업데이트 : "+result1);
+	public String updateIngInfo(HttpServletRequest request, 
+			@RequestParam(value="upFile", required=false) MultipartFile[] upfiles, 
+			@RequestParam(value="iNum") int iNum, @RequestParam String img, 
+			@RequestParam(value="exdate", required=false, defaultValue="0") int exdate, 
+			@RequestParam String iName, @RequestParam String keyword, Model model){
+				
+		System.out.println("들어오나요?");
+		System.out.println("img원래것 이름은? :"+img);
+		//이미지가 변경될 경우에는 이부분도 추가		
+		//1. 파일 저장 경로 생성하기
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/img/ingredient");
+				
+		File dir = new File(saveDir);
+				
+		// 만약 현재 저장하려는 경로에 폴더가 없다면 만들겠습니다!
+		if(!dir.exists()){
+			System.out.println("dir.mkdirs() = "+dir.mkdirs());
+		}
+		
+		String renameFileName = "";
+		
+		// file input에 무언가가 들어왔다면(수정하기를 눌러 사진을 넣어서 보냈다면) 실행시킬 부분이다
+		if(upfiles.length >0){
+			if(!upfiles[0].isEmpty()){
+			String originFileName = upfiles[0].getOriginalFilename(); // 원본파일 이름
+			String ext = originFileName.substring(originFileName.lastIndexOf(".")+1); //확장자
+			
+			//이름을 새로 만들어서 변경해준다
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");			
+			int randomNum = (int)(Math.random() * 1000);			
+			renameFileName = sdf.format(new Date(System.currentTimeMillis()))+"_"+randomNum+"."+ext;
+			
+			//새로만든 이름으로 저장경로에 저장시킨다
+			try {
+				upfiles[0].transferTo(new File(saveDir+"/"+renameFileName));
+			} catch (IllegalStateException | IOException e) {					
+				e.printStackTrace();
+			}	
+			//사진 수정을 한 채로 재료의 정보를 수정한다
+			int result1 = ingService.updateIngInfo(iNum, renameFileName, exdate, iName);
+			System.out.println("재료정보 업데이트 : "+result1);	
+			
+			//사진을 수정한 후에는 기존의 이미지는 삭제한다
+			File file = new File(saveDir+"/"+img);		
+			System.out.println("기존의 이미지 이름 : "+img);
+			// 파일이 실제로 존재하는지 검사
+			
+			if( file.exists() ){
+				System.out.println("파일 실존함");
+				file.delete();
+				System.out.println("기존의 "+img+"를 삭제하였다!");				 
+			}			
+		}else{
+			// 사진 수정이 없는 채로 재료의 정보를 수정한다			
+			int result1 = ingService.updateIngInfo(iNum, img, exdate, iName);			
+			System.out.println("재료정보 업데이트 : "+result1);			
+		}	
+	}
 		
 		//기존에 있는 키워드는 제외하고 insert 시켜야 하므로 기존의 keyword들도 불러와야한다
 		//1. 해당 iNum에  해당하는 keyword들을 모두 제거한다
@@ -358,7 +417,12 @@ public class AdminController {
 		String[] keywordArr = keyword.split("#");
 		ingService.insertNewKeyword(iNum, keywordArr);
 		
-		return iNum;
+		model.addAttribute("commonTitle","재료관리 페이지");
+		
+		ArrayList<Ingredient> distinctList = (ArrayList<Ingredient>)ingService.selectDistinctName();
+		model.addAttribute("distinctList",distinctList);
+		
+		return "admin/adminIngredient";
 	}
 	
 }
