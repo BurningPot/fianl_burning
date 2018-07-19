@@ -230,7 +230,7 @@ function hoveringDiv(){
         	<hr class="col-lg-12"/>
         	        	
         	<div class="col-lg-12">
-        		<button class="btn btn-success" id="ing-insert">새로운 재료 추가하기</button>
+        		<button class="btn btn-success" id="ing-insert">재료/분류 추가하기</button>
         		<button class="btn btn-primary" id="ing-update">수정하기</button>
         		<button class="btn btn-danger" id="ing-delete" onclick="deleteIngredient();">삭제하기</button>
         	</div>   
@@ -265,8 +265,7 @@ function hoveringDiv(){
         		</div>
         		
         		<script>
-        			
-        			
+        			        			
         			$('.addCategory').children().find('button').on('click', function(){
         				var bigCategory = $('.addCategory').children().find('select').val();
             			var text = $('#add-subCategory').val();
