@@ -314,8 +314,7 @@ function hoveringDiv(){
         						});
         					}
         				})	
-        				</script>
-        						
+        				</script>        						
         					</div>
         					<br />
         					<div class="row">
@@ -417,16 +416,13 @@ function hoveringDiv(){
         		}
         	});
         	});
-        	}   
-        	
+        	}           	
         	
         	function showImgName(){
         		//파일의 이름불러오는 방법은..?
         		$('#uploading').change(function(){
-					var fileName = $(this).prop('files')[0].name;
-					
-					$('#uploadingName').text(fileName);
-					
+					var fileName = $(this).prop('files')[0].name;					
+					$('#uploadingName').text(fileName);					
         			console.log(fileName);
 				})	
         	}        	
@@ -442,15 +438,14 @@ function hoveringDiv(){
 				} 
 			}
         	//ajax안에 있는 값들을 다 밖으로 빼내어 보자
-        	        	
+        	 
         	function updateIngInfo(){
         		$('#ing-update').on('click', function(){
         			$('#fileForm').attr('action', '${pageContext.request.contextPath}/admin/updateIngInfo.do').submit();
         		});        		
         	}
-        	
-        	
-        	
+        	    	
+        	//ajax로 이미지 수정을 꾀했던 시도의 흔적들...
         	/*/* function updateIngInfo(){
         		var imgSrc = $('.ingredient-information').children().children().children().attr('src');
         		
@@ -500,22 +495,7 @@ function hoveringDiv(){
         	
         	</script>
         	
-        	<!-- <div style="display:none">
-        		<input type="hidden" name="iNum"/>
-        		<input type="hidden" name="img"/>
-        		<input type="hidden" name="exdate"/>
-        		<input type="hidden" name="iName"/>
-        		<input type="hidden" name="keyword"/>
-        	</div> -->
         	
-        	
-        	<!-- 
-        		'<input type="hidden" value="'+data[0].iNum+'" name="iNum" id="h_iNum"/>';
- 				'<input type="hidden" value="'+data[0].iImage+'" name="img" id="h_img"/>';
- 				'<input type="hidden" value="'+exdate+'" name="exdate" id="h_exdate"/>';
- 				'<input type="hidden" value="'+data[0].iName+'" name="iName" id="h_iName"/>';
- 				'<input type="hidden" value="'+keywordList+'" name="keyword" id="h_keyword"/>';
-        	       	 -->
         </div>
     </div>
 	
