@@ -6,7 +6,7 @@
 			SELECT * FROM INGREDIENT WHERE INAME LIKE '%'||#{keyword1}||'%'		
 	</select>
 	<select id="selectDistinctName" resultType="Ingredient">
-		SELECT CNAME FROM (SELECT DISTINCT SUBSTR(CATEGORY,0,1), CNAME FROM INGREDIENT_CATEGORY ORDER BY 1)
+		SELECT CNAME, C FROM (SELECT DISTINCT SUBSTR(CATEGORY,0,1) AS "C", CNAME FROM INGREDIENT_CATEGORY ORDER BY 1)
 	</select>
 	<select id="selectBigCategory" parameterType="string" resultType="Ingredient">
 		SELECT SUBCNAME, CATEGORY FROM INGREDIENT_CATEGORY WHERE CNAME = #{bCategory}
@@ -30,5 +30,12 @@
 		</if>		
 		WHERE INUM = #{iNum}
 	</update>
+	<select id="selectCategoryFirstChar" resultType="Ingredient">
+		SELECT DISTINCT CNAME, CATEGORY, SUBCNAME FROM INGREDIENT_CATEGORY
+	</select>
+	
+	<insert id="insertNewCategory" parameterType="hashmap">
+		INSERT INTO INGREDIENT_CATEGORY VALUES(#{newCategory}, #{bigCategory}, #{newSubCName})
+	</insert>
 	
 </mapper>

@@ -26,6 +26,12 @@ public interface IngredientService {
 
 	int insertNewKeyword(int iNum, String[] keywordArr);
 
+	List<Ingredient> selectCategoryFirstChar();
+
+	int insertNewCategory(String newCategory, String newSubCName, String bigCategory);
+
+	
+
 	
 
 	
