@@ -16,13 +16,13 @@ public class MainDaoImpl implements MainDao{
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public List<Recipe> selectRecipe() {
-		
-		List<Recipe> listDao = sqlSession.selectList("home.selectRecipe");
-		
-		System.out.println("listDao : " + listDao);
-		// return sqlSession.selectList("main.selectRecipe"); : mainMapper로 가는 것
-		
-		return listDao;
+	public List<Recipe> selectRecipe(int number) {
+		return sqlSession.selectList("home.selectRecipe", number);
+	}
+
+	@Override
+	public List<Recipe> selectShowHome() {
+
+		return sqlSession.selectList("home.selectShowHome");
 	}
 }

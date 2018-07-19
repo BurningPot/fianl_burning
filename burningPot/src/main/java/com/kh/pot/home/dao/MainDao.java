@@ -6,6 +6,8 @@ import com.kh.pot.recipe.model.vo.Recipe;
 
 public interface MainDao {
 
-	List<Recipe> selectRecipe();
+	List<Recipe> selectRecipe(int number);
+
+	List<Recipe> selectShowHome();
 
 }

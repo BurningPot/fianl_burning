@@ -11,23 +11,44 @@
 	<div id="fakeLoader"></div>
 	<div class="b-seg" id="b-seg">
 		<ul class="recipeList">
-
+			<c:forEach items="${list}" var="recipe">
+				<li>
+   					<div class='like_and_aver_area'>
+   						<div class='like_btn_area'>
+   							<button onfocus=this.blur() type='button' class='like_btn' onclick='heartClicked(this);'>
+   								<i class='far fa-thumbs-up'></i>
+   							</button>
+   						</div>
+   						<div class='aver_btn_area'>
+   							<h5>  </h5>
+   						</div>
+   					</div>
+   					<div class='recipe_img_area'>
+   					<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/1.jpg'>
+   						<div class='img_hover_area'>${recipe.rName}</div> 
+   					</div>
+   					<div class='recipe_levle_and_time_and_writer_area'>
+   						<div class='recipe_level'>${recipe.rLevel}</div>
+   						<div class='recipe_time'>${recipe.rTime}</div>
+   						<div class='recipe_writer'>${recipe.quantity}</div>
+   					</div>
+   				</li>
+			</c:forEach>
 		</ul>
 		
 	</div>
 
 	<script>
-	
+		var count = 1;
 
 		$(document).mouseup(function(e){
 		    var container = $('.menuContainer');
 		    if(!container.is(e.target) && container.has(e.target).length === 0)
 		    container.hide();
 		});
-        $(function () {
+		
+        /* $(function loadRecipe() {
         	
-            var count = 1;
-
             var str1 = "★채우는 공간";   
             var str2 = "Recipe !";
            
@@ -35,11 +56,14 @@
             	url : "recipeObject.do",
             	type : "GET",
             	dataType : "json",
+            	data:{
+            		number: count
+            	},
             	success : function(data){
            		 	var level = "";
             		for (var i = 0; i < data.length; i++) {
-                        /* count = i+1;
-        				console.log("count : " + count); */
+                       
+        				console.log("count : " + count);
             			if(data[i].rLevel == 0){
             				level="하";
                 		} else if(data[i].rLevel == 1){
@@ -70,11 +94,11 @@
             						"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
             					"</div>" +
             				"</li>").appendTo("ul");
-    						if (count == 8) {
+        					        				   	
                                 $(window).bind("scroll", infinityScrollFunction);
-                                
-                            }
+                             
                     }
+            		count = count+8;
             	},error : function(){
             		alert('에러');
             	}
@@ -98,11 +122,11 @@
                 console.log("scrollHeight : " + scrollHeight);
 
                 if (scrollHeight == documentHeight) { //문서의 맨끝에 도달했을때 내용 추가 
-                	
+                	/* 
                 	var level = "";
             		for (var i = 0; i < data.length; i++) {
-                        /* count = i+1;
-        				console.log("count : " + count); */
+                        // count = i+1;
+        				// console.log("count : " + count);
             			if(data[i].rLevel == 0){
             				level="하";
                 		} else if(data[i].rLevel == 1){
@@ -133,12 +157,13 @@
             						"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
             					"</div>" +
             				"</li>").appendTo("ul");
-                    }
+                    } //
+            		loadRecipe();
                 }
             }//function infinityScrollFunction()
             
 
-        });
+        }); */
 
         function heartClicked(obj) {
             	 <%-- <%if(m != null){ %> --%>
