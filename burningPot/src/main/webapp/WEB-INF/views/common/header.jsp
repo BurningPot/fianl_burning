@@ -17,6 +17,7 @@
 			href="${pageContext.request.contextPath}/resources/css/bootstrap-4.1.1/bootstrap.css">
 		<script
 			src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 		<script
 			src="${pageContext.request.contextPath}/resources/js/bootstrap-4.1.1/bootstrap.js"></script>
 		
@@ -28,6 +29,11 @@
 			href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
 			integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
 			crossorigin="anonymous">
+		
+		<!--summernote  -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
 		
 		<style>
 			/* 말풍선 */
@@ -1372,7 +1378,7 @@
 				          </button>
 				        </div>
 				        <div class="board_btn" data-tooltip-text="Board!!">
-				          <button class="menuBtn">
+				          <button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
@@ -1405,7 +1411,7 @@
 				          </button>
 				        </div>
 				        <div class="board_btn_after" data-tooltip-text="Board!!">
-				          <button class="menuBtn_after">
+				          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
@@ -1432,7 +1438,7 @@
 				          </button>
 				        </div>
 				        <div class="board_btn_after" data-tooltip-text="Board!!">
-				          <button class="menuBtn_after">
+				          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
@@ -1482,7 +1488,7 @@
 			          	</button>
 			        </div>
 			        <div class="board_btn_before" data-tooltip-text="Board!!">
-			          	<button class="menuBtn">
+			          	<button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 			              <i class="far fa-list-alt fa-3x"></i>
 			          	</button>
 			        </div>
@@ -1512,7 +1518,7 @@
 			          </button>
 			        </div>
 			        <div class="board_btn_after" data-tooltip-text="Board!!">
-			          <button class="menuBtn">
+			          <button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 			              <i class="far fa-list-alt fa-3x"></i>
 			          </button>
 			        </div>
@@ -1770,7 +1776,6 @@
          spinner:"spinner1" // 로딩중으로 원하는 로딩이미지타입
        });
      });
-   
    // 레시피 목록 보여지는 부분
    $(document).ready(function(){
        setTimeout(function(){

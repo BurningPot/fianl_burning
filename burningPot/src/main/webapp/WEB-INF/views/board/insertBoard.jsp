@@ -5,32 +5,38 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>게시판 상세보기</title>
 
 <!-- custom css -->
-<link
-	href="${pageContext.request.contextPath }/resources/css/board/board.css"
-	rel="stylesheet">
-	
+<link href="${pageContext.request.contextPath }/resources/css/board/board.css" rel="stylesheet">
+<!-- 	
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
 	integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
 	crossorigin="anonymous"></script>
+	 -->
+<!-- summernote Import -->
 	
-<!-- summernote  -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<!-- summernote CDN 적용 -->	
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script> 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+ -->
+<%-- local 경로 import
 <link href="${pageContext.request.contextPath }/resources/css/board/summernote/summernote-bs4.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath }/resources/css/board/summernote/summernote-bs4.js"></script>
-<!-- include summernote-ko-KR -->
-<script src="../resources/summernote/lang/summernote-ko-KR.js"></script>
+<script src="${pageContext.request.contextPath }/resources/css/board/summernote/summernote-bs4.js"></script> --%>
 
+
+<!-- include summernote-ko-KR -->
+<!-- <script src="../resources/summernote/lang/summernote-ko-KR.js"></script>
+ -->
 
 
 </head>
 <body>
 	<div style="height: 20%;"></div>
-	<form id="insertForm" action="#" method="post">
+	<form id="insertFrm" action="${pageContext.request.contextPath}/board/insertBoardEnd.do" method="post">
 		<div class="container containerTop col-sm-8 " align="center"
 			style="margin-top: 5%;">
 			<h1 align="left">게시판</h1>
@@ -53,12 +59,14 @@
 						<th>구분</th>
 						<td>
 							<div class="form-group">
-								<select id="searchCondition" class="form-control">
+								<select id="category" class="form-control" name="category">
 									<option selected>선택 하세요</option>
-									<option value="noti">[공지사항]</option>
-									<option value="qa">Q&A</option>
-									<option value="qa">재료신청</option>
-									<option value="ex">기타</option>
+									<c:if test="${m.mCategory eq '관리자'}">
+										<option value="공지사항">공지사항</option>
+									</c:if>
+									<option value="QNA">Q&A</option>
+									<option value="재료요청">재료요청</option>
+									<option value="기타">기타</option>
 								</select>
 							</div>
 						</td>
@@ -66,24 +74,26 @@
 						<th>작성자</th>
 						<td>
 							<div class="form-group">
-								<input type="text" name="user_id" value="${m.mName}" class="form-control" readonly/>
+								<input type="text" name="mName" value="${m.mName}" class="form-control" readonly/>
+								<input type="hidden" name="mNum" value="${m.mNum}" />
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<th style="vertical-align: middle;">제목</th>
-						<td colspan="4"><input type="text" name="b_title" id="b_title"
+						<td colspan="4"><input type="text" name="bTitle" id="bTitle"
 							class="form-control"></td>
 					</tr>
 					<tr>
 						<td colspan="5">
 							<div id="summernote"></div>
+							<input type="hidden" id="bContent" name="bContent"/>
 						</td>
 					</tr>
 					<tr style="border-bottom: none;">
 						<td colspan="5" align="right">
 							<input type="reset" class="btn btn-success " onclick="getList();"value="목록">
-							<input type="button" class="btn btn-success " onclick="valueChk();" value="저장">
+							<input type="button" class="btn btn-success " onclick="insertText();" value="저장">
 						</td>	
 					</tr>
 				</tbody>
@@ -95,14 +105,33 @@
 
 	<script>
 		/*summernote 설정 */
-		$(document).ready(function() {
-			$('#summernote').summernote({
-				lang : 'ko-KR', // default: 'en-US'
+ 		 $('#summernote').summernote({
+			        //placeholder: 'ㅋㅋ',
+			        
+			        lang : 'ko-KR', // default: 'en-US'
+			        tabsize: 2,
+			        height: 300,
+			        focus : true,
+			        toolbar: [
+				        // [groupName, [list of button]]
+				        ['style', ['bold', 'italic', 'underline', 'clear']],
+				        ['font', ['strikethrough', 'superscript', 'subscript']],
+				        ['fontsize', ['fontsize']],
+				        ['color', ['color']],
+				        ['para', ['ul', 'ol', 'paragraph']],
+				        ['height', ['height']]
+			    	] 
+		 
+			  });
+
+		 /* $(document).ready(function() {
+			 $('#summernote').summernote({
+				// lang : 'ko-KR', // default: 'en-US' 
 				placeholder : 'Hello bootstrap 4',
 				height : 300,
 				focus : true
-			});
-		});
+			}); 
+		});  */
 		
 		function getList(){
 			if (confirm("목록으로 돌아가면 작성하던 것이 삭제됩니다. 목록으로 가시겠습니까?") == true){//확인
@@ -110,8 +139,19 @@
         	}else{//취소
         	    return;
         	}
-			
 		}
+		
+		function insertText(){
+			if( $('#bTitle').val()==null || $('#bTitle').val()==""){
+				alert('제목을 입력해 주세요!');
+			}else if($('#summernote').val()==null || $('summernote').val()==""){
+				alert('본문을 입력해주세요!');
+			}else{
+				$('#bContent').val($('#summernote').summernote('code'));
+				$('#insertFrm').submit(); 
+			}
+		}
+		
 	</script>
 	
 </body>

@@ -79,8 +79,14 @@
 							<td>${b.reply}</td>
 							<td>${b.bCount}</td>
 							<td class="text-center">
-							<a class='btn btn-warning btn-xs'href="#"><i class="far fa-edit"></i> Edit</a>
-							<a href="#" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i> Del</a></td>
+							<c:if test="${(b.mId eq m.mId) && (m.mCategory ne '관리자')}">
+								<a class='btn btn-warning btn-xs'href="#"><i class="far fa-edit"></i> Edit</a>
+								<a href="#" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i> Del</a></td>
+							</c:if>
+							<c:if test="${m.mCategory eq '관리자'}">
+								<a class='btn btn-warning btn-xs'href="#"><i class="far fa-edit"></i> Edit</a>
+								<a href="#" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i> Del</a></td>
+							</c:if>
 						</tr>
 					</c:forEach>
 				</table>

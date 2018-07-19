@@ -44,6 +44,8 @@ public interface BoardService {
 	int selectBoardTotalContents();
 
 	Board selectBoardOne(int boardNo);
+
+	int insertBoard(Board board);
 	
 	/* 예찬 부분 */
 	

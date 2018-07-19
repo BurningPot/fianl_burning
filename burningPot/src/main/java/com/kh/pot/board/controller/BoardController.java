@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.pot.board.model.service.BoardService;
+import com.kh.pot.board.model.vo.Board;
 
 @Controller
 public class BoardController {
@@ -46,6 +47,26 @@ public class BoardController {
 	@RequestMapping("/board/insertBoard.do")
 	public String insertBoard(Model model){
 		return "board/insertBoard";
+	}
+	
+	// 게시글 저장
+	@RequestMapping("/board/insertBoardEnd.do")
+	public String insertBoardEnd(Board board, Model model){
+		
+		String msg = "";
+		String loc ="/board/boardList.do?";
+		
+		int result = boardService.insertBoard(board);
+		
+		if(result > 0) {
+			msg="글쓰기가 완료되었습니다.";
+			loc="/board/boardDetail.do?no="+board.getbNum();
+		} else msg="글쓰기가 저장되지 않았습니다.";
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("loc", loc);
+		
+		return "common/msg";
 	}
 	
 }
