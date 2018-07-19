@@ -6,7 +6,7 @@
 	<!-- #2. welcome-file 추가 -->
 	<!-- 메인페이지가 완성되면 여기에다가 등록하자 -->
 	<welcome-file-list>
-		<welcome-file>main.jsp</welcome-file>
+		<welcome-file>showHome.do</welcome-file>
 	</welcome-file-list>
 	
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->

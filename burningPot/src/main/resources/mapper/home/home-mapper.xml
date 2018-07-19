@@ -3,8 +3,21 @@
 <mapper namespace="home">
 	
 	<!-- 등록된 Recipe가 그냥 뽑힘 -->
-	<select id="selectRecipe" resultType="recipe">
-		SELECT rLevel, rTime, quantity, rImg, rName FROM RECIPE
+	<select id="selectRecipe" resultType="recipe" parameterType="_int">
+		<![CDATA[
+		SELECT ROWNUM, C.* FROM (SELECT rLevel, rTime, quantity, rImg, rName FROM RECIPE ORDER BY RCOUNT DESC) C 
+		WHERE ROWNUM >= #{number} AND ROWNUM <= #{number}+7
+		ORDER BY ROWNUM 
+		]]>
+
+	</select>
+	
+	<select id="selectShowHome" resultType="recipe">
+		<![CDATA[
+		SELECT ROWNUM, C.* FROM (SELECT rLevel, rTime, quantity, rImg, rName FROM RECIPE ORDER BY RCOUNT DESC) C 
+		WHERE ROWNUM >= 1 AND ROWNUM <= 8
+		ORDER BY ROWNUM 
+		]]>
 	</select>
 	
 	

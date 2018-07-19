@@ -15,9 +15,14 @@ public class MainServiceImpl implements MainService{
 	MainDao mainDao;
 	
 	@Override
-	public List<Recipe> selectRecipe() {
-		
-		return mainDao.selectRecipe();
+	public List<Recipe> selectRecipe(int number) {
+		return mainDao.selectRecipe(number);
+	}
+
+	@Override
+	public List<Recipe> selectShowHome() {
+		// TODO Auto-generated method stub
+		return mainDao.selectShowHome();
 	}
 
 }

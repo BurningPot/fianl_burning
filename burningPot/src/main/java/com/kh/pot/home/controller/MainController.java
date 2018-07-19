@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.pot.board.model.service.BoardService;
@@ -53,15 +54,29 @@ public class MainController {
 	// 5. 따봉 했을 때와 취소할 때 메소드
 	
 	// 6. Recipe 객체를 불러와서 Main.jsp에 레시피 명, 난이도, 소요시간, 작성자 불러오는 메소드
+	
+	@RequestMapping("showHome.do")
+	public String recipeObject(Model model){
+		System.out.println("showHome");
+		
+		List<Recipe> list = mainService.selectShowHome();
+		
+		model.addAttribute("list", list);
+		
+		System.out.println("showHome list : "+list);
+		return "main";
+	}
+	
 	@ResponseBody
 	@RequestMapping("recipeObject.do")
-	public List recipeObject(Model model){
-		System.out.println("sd");
-		List<Recipe> list = mainService.selectRecipe();
+	public List recipeObject(Model model, @RequestParam int number){
+		System.out.println("recipeObject");
+		
+		List<Recipe> list = mainService.selectRecipe(number);
 		
 		/*model.addAttribute("list", list);
 		*/
-		System.out.println("list : "+list);
+		System.out.println("recipeObject list : "+list);
 		return list;
 	}
 	
