@@ -234,7 +234,7 @@ function hoveringDiv(){
         	 -->
         	<div class="col-lg-12">
         		<button class="btn btn-success" id="ing-insert">새로운 재료 추가하기</button>
-        		<button class="btn btn-primary" id="ing-update" onclick="updateIngInfo();">수정하기</button>
+        		<button class="btn btn-primary" id="ing-update">수정하기</button>
         		<button class="btn btn-danger" id="ing-delete" onclick="deleteIngredient();">삭제하기</button>
         	</div>   
         	
@@ -368,7 +368,7 @@ function hoveringDiv(){
         	$.ajax({
         		url: "${pageContext.request.contextPath}/admin/showIngSearchResult.do",
         		data:{
-        			iName : iName
+        			"iName" : iName
         		}, success: function(data){
         			console.log(data[0]);
         			        			
@@ -381,11 +381,12 @@ function hoveringDiv(){
         			for(var i =0; i< data.length; i++){        				
         				keywordList += "#"+data[i].keyword;
         			}
+        			var formData = $('<form id="fileForm" enctype="multipart/form-data" method="post">');
         			
 					html += '<div class="row">';   
 					html += '<div class="col-lg-4">';
 					html += '<img src="${pageContext.request.contextPath}/resources/img/ingredient/'+data[0].iImage+'" class="col-lg-12" id="titleImg"/>';
-        			html += '<br /><br /><div class="custom-file"><label class="custom-file-label text-justify" for="uploading" id="uploadingName">파일선택</label><input type="file" class="custom-file-input" id="uploading" onchange="LoadImg(this)"/></div>';        			
+        			html += '<br /><br /><div class="custom-file"><label class="custom-file-label text-justify" for="uploading" id="uploadingName">파일선택</label><input type="file" class="custom-file-input" id="uploading" name="upFile" onchange="LoadImg(this)"/></div>';        			
  					html += '</div>';       
  					html += '<div class="col-lg-8 no-padding" style="font-size: 130%;">';
  					html += '<div class="row col-lg-12 no-padding ing-info-firstLine">';
@@ -397,14 +398,20 @@ function hoveringDiv(){
  					html += '<div class="col-lg-12">관련키워드</div>';
  					html += '<div class="col-lg-12"><input type="text" class="form-control col-lg-12" value="'+keywordList+'"/><div class="col-lg-12">*키워드 입력시 띄어쓰기없이 #(재료명)으로 입력해주세요*</div></div>';
  					html += '</div></div></div>';
+ 					html += '<input type="hidden" value="'+data[0].iNum+'" name="iNum" id="h_iNum"/>';
+ 					html += '<input type="hidden" value="'+data[0].iImage+'" name="img" id="h_img"/>';
+ 					html += '<input type="hidden" value="'+exdate+'" name="exdate" id="h_exdate"/>';
+ 					html += '<input type="hidden" value="'+data[0].iName+'" name="iName" id="h_iName"/>';
+ 					html += '<input type="hidden" value="'+keywordList+'" name="keyword" id="h_keyword"/>';
  					
- 					
- 					
+ 					$(formData).append(html);
  					$('.ingredient-information').empty();
-        			$('.ingredient-information').append(html);  
+        			//$('.ingredient-information').append(html);          			        			
+        			$('.ingredient-information').append(formData);
+        			showImgName();
         			
+        			updateIngInfo();
         			
-        			test();
         		}, error: function(data){
         			console.log('조회실패.. ㅠㅠ');
         		}
@@ -412,7 +419,8 @@ function hoveringDiv(){
         	});
         	}   
         	
-        	function test(){
+        	
+        	function showImgName(){
         		//파일의 이름불러오는 방법은..?
         		$('#uploading').change(function(){
 					var fileName = $(this).prop('files')[0].name;
@@ -420,29 +428,43 @@ function hoveringDiv(){
 					$('#uploadingName').text(fileName);
 					
         			console.log(fileName);
-				})
-				
-        	}
+				})	
+        	}        	
         	function LoadImg(value) {
+        		
+        		//이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분
 				if (value.files && value.files[0]) {
 					var reader = new FileReader();
 					reader.onload = function(e) {
 						$("#titleImg").attr("src", e.target.result);						
 					}
 					reader.readAsDataURL(value.files[0]);					
-				}
+				} 
 			}
-        	
-        	
+        	//ajax안에 있는 값들을 다 밖으로 빼내어 보자
+        	        	
         	function updateIngInfo(){
+        		$('#ing-update').on('click', function(){
+        			$('#fileForm').attr('action', '${pageContext.request.contextPath}/admin/updateIngInfo.do').submit();
+        		});        		
+        	}
+        	
+        	
+        	
+        	/*/* function updateIngInfo(){
         		var imgSrc = $('.ingredient-information').children().children().children().attr('src');
         		
         		var iNumber = $('.ingredient-information').find('span').text();
         		var imgName = imgSrc.substring(imgSrc.length ,imgSrc.lastIndexOf('/')+1)
         		var exdate ="";
-        		var ingName = $('.ingredient-information').children().find('input').eq(1).val(); 
-        		var keyword = $('.ingredient-information').children().find('input').eq(2).val();
-        			
+        		var form = $('#fileForm')[0];        		
+        		var formData = new FormData(form);        		
+        		
+        		var upfile = $('#uploading')[0].files[0];
+        		
+        		var ingName = $('.ingredient-information').children().find('input').eq(2).val(); 
+        		var keyword = $('.ingredient-information').children().find('input').eq(3).val();
+        		
         		if($('.ing-exdate').val()==""){
         			exdate = 0;
         		}else{
@@ -455,13 +477,18 @@ function hoveringDiv(){
         		console.log('keyword : '+keyword);
         		
         		$.ajax({
-        			url:"${pageContext.request.contextPath}/admin/updateIngInfo.do",
+        			url:"",      			
+        			enctype: 'multipart/form-data',
+        			processData: false,  // Important!
+        	        contentType: false,
+        	        cache: false,
         			data:{
         				iNum: iNumber,
         				img:imgName,
         				exdate: exdate,
         				iName: ingName,
-        				keyword: keyword
+        				keyword: keyword,
+        				upFile: formData
         			}, success: function(data){
         				alert("재료번호 ["+data+"] 의 정보를 수정하였습니다");
         				location.href="${pageContext.request.contextPath}/admin/goIng.do";
@@ -469,13 +496,26 @@ function hoveringDiv(){
         				alert("재료정보 수정에 실패하였습니다");
         			}
         		})
-        	}      	
+        	}      	 */
         	
         	</script>
         	
+        	<!-- <div style="display:none">
+        		<input type="hidden" name="iNum"/>
+        		<input type="hidden" name="img"/>
+        		<input type="hidden" name="exdate"/>
+        		<input type="hidden" name="iName"/>
+        		<input type="hidden" name="keyword"/>
+        	</div> -->
         	
         	
-        	       	
+        	<!-- 
+        		'<input type="hidden" value="'+data[0].iNum+'" name="iNum" id="h_iNum"/>';
+ 				'<input type="hidden" value="'+data[0].iImage+'" name="img" id="h_img"/>';
+ 				'<input type="hidden" value="'+exdate+'" name="exdate" id="h_exdate"/>';
+ 				'<input type="hidden" value="'+data[0].iName+'" name="iName" id="h_iName"/>';
+ 				'<input type="hidden" value="'+keywordList+'" name="keyword" id="h_keyword"/>';
+        	       	 -->
         </div>
     </div>
 	
