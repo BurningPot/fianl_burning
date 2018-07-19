@@ -425,4 +425,55 @@ public class AdminController {
 		return "admin/adminIngredient";
 	}
 	
+	@ResponseBody
+	@RequestMapping("admin/insertNewCategory.do")
+	public int insertNewCategory(@RequestParam String bigCategory, @RequestParam String text){
+		ArrayList<Ingredient> list = (ArrayList<Ingredient>)ingService.selectCategoryFirstChar();
+		//곡류 = A, 채소 = B (카테고리 앞 알파벳)
+		HashMap<String, String> map1 = new HashMap<String, String>();
+		
+		//곡류 = 4, 채소 = 3 (카테고리별 최고 숫자)
+		HashMap<String, Integer> map2 = new HashMap<String, Integer>();
+		
+		for(int i = 0; i< list.size();i++){
+			if(i != 0 && i != list.size()-1){ // i가 맨끝과 맨처음 사이일때
+				if(!list.get(i).getcName().equals(list.get(i-1).getcName())){
+					String cName = list.get(i).getcName();
+					String categoryIndex = list.get(i).getCategory().substring(0,1);				
+					
+					String preCName = list.get(i-1).getcName();
+					int categoryMaxNumber = Integer.parseInt(list.get(i-1).getCategory().substring(1));
+					
+					map1.put(cName, categoryIndex);
+					map2.put(preCName, categoryMaxNumber);
+				}
+			}else if(i == list.size()-1){ //i가 마지막 순번일때				
+				map2.put(list.get(i).getcName(), Integer.parseInt(list.get(i).getCategory().substring(1)));
+			}else{	// i ==0 일때
+				map1.put(list.get(i).getcName(), list.get(i).getCategory().substring(0,1));
+			}
+			
+			System.out.println("sub카테고리들은 들어오나? : "+list.get(i).getSubCName());
+		}
+		/*System.out.println("map1의 크기는? : "+map1.size());
+		System.out.println("map2의 크기는? : "+map2.size());
+		System.out.println("map1은 ? : "+map1.toString());
+		System.out.println("map2는 ? : "+map2.toString());*/
+		
+		//준비는 끝났다! 이제 들어온 text가 기존의 세부 카테고리와 겹치지는 않는지 검사해보자
+		for(int i=0; i<list.size();i++){
+			if(list.get(i).getSubCName().equals(text)){
+				return -1;
+			}
+		}
+		
+		// 검사 통과! 이제 insert를 진행해보자
+		String newSubCName = text;
+		String newCategory = map1.get(bigCategory)+(map2.get(bigCategory)+1);		
+		
+		int result = ingService.insertNewCategory(newCategory, newSubCName, bigCategory);
+		
+		return result;
+	}
+	
 }

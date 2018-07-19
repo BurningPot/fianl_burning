@@ -84,6 +84,23 @@ public class IngredientServiceImpl implements IngredientService {
 		return ingDao.insertNewKeyword(iNum, keywordList);
 	}
 
+	@Override
+	public List<Ingredient> selectCategoryFirstChar() {
+		
+		return ingDao.selectCategoryFirstChar();
+	}
+
+	@Override
+	public int insertNewCategory(String newCategory, String newSubCName, String bigCategory) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("newCategory", newCategory);
+		map.put("newSubCName", newSubCName);
+		map.put("bigCategory", bigCategory);
+		
+		return ingDao.insertNewCategory(map);
+	}
+
 	
 	
 

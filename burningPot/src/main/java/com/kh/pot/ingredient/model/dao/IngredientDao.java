@@ -27,6 +27,10 @@ public interface IngredientDao {
 
 	int insertNewKeyword(int iNum, ArrayList<String> keywordList);
 
+	List<Ingredient> selectCategoryFirstChar();
+
+	int insertNewCategory(HashMap<String, String> map);
+
 	
 
 	

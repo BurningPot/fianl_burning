@@ -85,6 +85,18 @@ public class IngredientDaoImpl implements IngredientDao {
 		return result;
 	}
 
+	@Override
+	public List<Ingredient> selectCategoryFirstChar() {
+		
+		return sqlSession.selectList("ingredient.selectCategoryFirstChar");
+	}
+
+	@Override
+	public int insertNewCategory(HashMap<String, String> map) {
+		
+		return sqlSession.insert("ingredient.insertNewCategory", map);
+	}
+
 	
 	
 }

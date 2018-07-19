@@ -228,10 +228,7 @@ function hoveringDiv(){
         	</div> 
         	
         	<hr class="col-lg-12"/>
-        	
-        	<!-- 수정하기는 모달을 띄워 재료 정보를 수정하는 창을 띄워주고
-				삭제하기는 바로 alert창에서 컨펌을 받은 후 삭제를 진행하고 다시 해당 페이지로 돌아오기한다        	
-        	 -->
+        	        	
         	<div class="col-lg-12">
         		<button class="btn btn-success" id="ing-insert">새로운 재료 추가하기</button>
         		<button class="btn btn-primary" id="ing-update">수정하기</button>
@@ -249,24 +246,70 @@ function hoveringDiv(){
         	<br /><br /><br />
         	<div class="col-lg-12" style="margin-bottom: 3%; font-size: 150%;">재료 검색</div>    
         	<div class="col-lg-12 adding-menu">
+        		<!-- 카테고리 추가 메뉴 -->
         		<div class="col-lg-12" style="margin-top:1%;">카테고리 추가하기</div>
         		<br />
         		<div class="row text-center addCategory">
         			<div class="col-lg-2">세부분류</div>
         			<div class="col-lg-2">
         				<select class="custom-select">
+        					<option selected>--큰분류--</option>
         					<c:forEach items="${distinctList}" var ="ing">
         						<option value="${ing.cName}">${ing.cName}</option>	
        						</c:forEach>        					
         				</select>
         			</div>
         			
-        			<div class="col-lg-7"><input type="text" class="form-control"/></div>
+        			<div class="col-lg-7"><input type="text" class="form-control" id="add-subCategory"/></div>
         			<div class="col-lg-1"><button class="btn btn-primary">추가</button></div> 
         		</div>
         		
+        		<script>
+        			
+        			
+        			$('.addCategory').children().find('button').on('click', function(){
+        				var bigCategory = $('.addCategory').children().find('select').val();
+            			var text = $('#add-subCategory').val();
+            			console.log(bigCategory);
+            			console.log(text);
+        				
+        				if(bigCategory == "" || bigCategory == null){
+        					alert("카테고리를 선택후 추가해주세요");
+        				}else if(text == "" || text == null){
+        					alert('세부카테고리를 입력해주세요');
+        				}else{
+        					// 카테고리에 추가하기
+        					$.ajax({
+        						url: "${pageContext.request.contextPath}/admin/insertNewCategory.do",
+        						data:{
+        							bigCategory: bigCategory,
+        							text: text
+        						}, success: function(data){
+        							if(data == -1){
+        								alert("이미 존재하는 세부카테고리 이름입니다");
+        								$('#add-subCategory').val("");
+        							}else if(data == 0){
+        								alert("카테고리 생성에 실패하였습니다");
+        								$('#add-subCategory').val("");
+        							}else{
+        								alert(data+"개의 카테고리를 생성하였습니다!");
+        								$('#add-subCategory').val("");
+        							}
+        						}, error: function(data){
+        							alert("카테고리 생성에 실패하였습니다");
+        							$('#add-subCategory').val("");
+        						}
+        					})
+        				}
+        			});
+        		
+        		</script>
+        		
+        		
+        		
         		<div class="col-lg-12" style="margin-top:3%;">재료 추가하기</div>
         		<br />
+        		<!-- 재료를 추가하는 메뉴 -->
         		<div class="col-lg-12 test">
         			<div class="row">
         				<div class="col-lg-4 test no-padding uploadImgBox">
