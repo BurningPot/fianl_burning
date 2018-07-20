@@ -351,7 +351,7 @@ function hoveringDiv(){
         								$('#add-ing-subCategory').empty();
         								$('#add-ing-subCategory').append(html);
         							}, error: function(){
-        								alert("재료카테고리 불러오기에 실패했습니다");
+        								alert("재료카테고리 불러오기에 실패했습니다"); 
         							}
         						});
         					}
