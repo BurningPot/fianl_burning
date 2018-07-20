@@ -31,6 +31,8 @@ public interface IngredientDao {
 
 	int insertNewCategory(HashMap<String, String> map);
 
+	int deleteCategory(HashMap<String, String> map);
+
 	
 
 	

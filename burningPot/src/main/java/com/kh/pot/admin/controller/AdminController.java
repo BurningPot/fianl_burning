@@ -476,4 +476,12 @@ public class AdminController {
 		return result;
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping("admin/deleteCategory.do")
+	public int deleteCategory(@RequestParam String cName, @RequestParam String subCName){
+		
+		return ingService.deleteCategory(cName, subCName);
+	}
+	
 }

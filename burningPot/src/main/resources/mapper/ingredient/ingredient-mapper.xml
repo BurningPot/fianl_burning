@@ -37,5 +37,9 @@
 	<insert id="insertNewCategory" parameterType="hashmap">
 		INSERT INTO INGREDIENT_CATEGORY VALUES(#{newCategory}, #{bigCategory}, #{newSubCName})
 	</insert>
+	<delete id="deleteCategory" parameterType="hashmap">
+		DELETE INGREDIENT_CATEGORY WHERE CNAME =#{cName} AND SUBCNAME = #{subCName} 
+	</delete>
+	
 	
 </mapper>
