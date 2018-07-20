@@ -17,7 +17,7 @@
 	</select>
 	<select id="showIngSearchResult" parameterType="string" resultType="Ingredient">
 		SELECT INUM, INAME, IIMAGE, CNAME, SUBCNAME, EXDATE, KEYWORD FROM INGREDIENT
-		JOIN INGREDIENT_CATEGORY USING(CATEGORY) JOIN INGREDIENT_KEYWORD USING(INUM)
+		JOIN INGREDIENT_CATEGORY USING(CATEGORY) LEFT JOIN INGREDIENT_KEYWORD USING(INUM)
 		WHERE INAME = #{iName}
 	</select>
 	<delete id="deleteIngredient" parameterType="_int">
@@ -40,6 +40,11 @@
 	<delete id="deleteCategory" parameterType="hashmap">
 		DELETE INGREDIENT_CATEGORY WHERE CNAME =#{cName} AND SUBCNAME = #{subCName} 
 	</delete>
-	
+	<select id="selectCategoryCode" parameterType="string" resultType="string">
+		SELECT CATEGORY FROM INGREDIENT_CATEGORY WHERE SUBCNAME = #{subCategory}
+	</select>
+	<insert id="insertNewIngredient" parameterType="hashmap">
+		INSERT INTO INGREDIENT VALUES(SEQ_INGREDIENT.NEXTVAL, #{iName}, #{category}, #{img}, #{exdate})
+	</insert>
 	
 </mapper>

@@ -381,84 +381,110 @@ function hoveringDiv(){
         				}
         				
         			});
-        		}
-        			
+        		}     			
         			
         			
         		
         		</script>
-        		
-        		
-        		
-        		
         		<div class="col-lg-12" style="margin-top:3%;">재료 추가하기</div>
         		<br />
         		<!-- 재료를 추가하는 메뉴 -->
         		<div class="col-lg-12 test">
+        			<form method="post" encType="multipart/form-data" id="addIngForm">
         			<div class="row">
         				<div class="col-lg-4 test no-padding uploadImgBox">
-        					<div class="col-lg-12 test" style="background: lightgray; height:100%; font-size:300%; padding:18%;">+</div>
+        					<div class="col-lg-12 test" style="background: lightgray; height:100%; font-size:120%; padding:20%;">사진업로드</div>
         					<!-- 이미지가 들어오면 회색화면은 remove하고 사진을 append할거다 -->
+        					<img src="" alt="" id="add-img" class="col-lg-12" style="height: 214.8px; position:relative"/>        					
         				</div>
-        				
+        				<input type="file" id="addForUpload" multiple="multiple" name="addForUpload" onchange="loadImg(this)"/>
+        				       				
         				<div class="col-lg-8 test" style="padding: 2%;">
         					<div class="row">
-        						<div class="col-lg-2">큰분류</div>
+        						<div class="col-lg-2" style="padding:1%;">큰분류</div>
         						<div class="col-lg-4">
-        						<select class="custom-select" id="add-ing-bigCategory">        						
-        							<option class="selected">분류를 선택해주세요</option> 
+        						<select class="custom-select" id="add-ing-bigCategory" name="bigCategory">        						
+        							<option class="selected" value="">분류를 선택해주세요</option> 
         							<c:forEach items="${distinctList}" var ="ing">
         								<option value="${ing.cName}">${ing.cName}</option>	
        								</c:forEach> 
         						</select>
         						</div>
-        						<div class="col-lg-2">세부분류</div>
+        						<div class="col-lg-2" style="padding:1%;">세부분류</div>
         						<div class="col-lg-4">
-        						<select class="custom-select" id="add-ing-subCategory">        						
+        						<select class="custom-select" id="add-ing-subCategory" name="subCategory">        						
         							<option class="selected">큰분류를 선택해주세요</option>       								
         						</select>
-        						</div>
-        				<script>
-        				$('#add-ing-bigCategory').change(function(){
-        					var cName = $(this).val();
-        					if(cName == "" || cName == null){
-        						console.log("선택안됨");
-        					}else{
-        						$.ajax({
-        							url:"${pageContext.request.contextPath}/admin/selectBigCategory.do",
-        							data:{
-        								bCategory: cName
-        							}, success: function(data){
-        								var html = "";
-        								for(var i = 0 ; i< data.length; i++){
-        									html += '<option value="'+data[i].subCName+'">'+data[i].subCName+'</option>';
-        								}        										
-        								$('#add-ing-subCategory').empty();
-        								$('#add-ing-subCategory').append(html);
-        							}, error: function(){
-        								alert("재료카테고리 불러오기에 실패했습니다"); 
-        							}
-        						});
-        					}
-        				})	
-        				</script>        						
+        						</div>        						
         					</div>
         					<br />
         					<div class="row">
-        						<div class="col-lg-2">재료이름</div>
-        						<div class="col-lg-10"><input type="text" class="form-control" /></div>
+        						<div class="col-lg-2" style="padding:1%;">재료이름</div>
+        						<div class="col-lg-6"><input type="text" class="form-control" name="ingName"/></div>
+        						<div class="col-lg-2" style="padding:1%;">유통기한</div>
+        						<div class="col-lg-2"><input type="text" class="form-control" placeholder="일단위" name="exdate"/></div>
         					</div>
         					<br />
         					<div class="col-lg-12">
-        						<button class="btn btn-primary">재료추가하기</button>
+        						<button class="btn btn-primary" onclick="addIngredient()">재료추가하기</button>
         					</div>
-        				</div>
-        				
+        				</div>        				
         			</div>
+        			</form>
         		</div>
         	</div>
         	<br></br>
+        	<script>
+        	function addIngredient(){
+        		$('#addIngForm').attr("action", "${pageContext.request.contextPath}/admin/insertNewIngredient.do").submit();
+        		
+        	}
         	
+			$(function(){
+				$('#addForUpload').hide();
+				$('#add-img').hide();
+				$('.uploadImgBox').click(function(){
+					$('#addForUpload').click();
+				});
+			})
+			function loadImg(value) {        		
+			//이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분
+				if (value.files && value.files[0]) {
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						$('.uploadImgBox').children('div').remove();										
+						$("#add-img").attr("src", e.target.result);	
+						$('#add-img').show();
+					}
+					reader.readAsDataURL(value.files[0]);					
+				} 
+			}
+
+			$('#add-ing-bigCategory').change(function(){
+				var cName = $(this).val();
+				if(cName == "" || cName == null){
+					$('#add-ing-subCategory').empty();
+					$('#add-ing-subCategory').append('<option class="selected">큰분류를 선택해주세요</option>');
+				}else{
+					$.ajax({
+						url:"${pageContext.request.contextPath}/admin/selectBigCategory.do",
+						data:{
+							bCategory: cName
+						}, success: function(data){
+							var html = "";
+							for(var i = 0 ; i< data.length; i++){
+								html += '<option value="'+data[i].subCName+'">'+data[i].subCName+'</option>';
+							}        										
+							$('#add-ing-subCategory').empty();
+							$('#add-ing-subCategory').append(html);
+						}, error: function(){
+							alert("재료카테고리 불러오기에 실패했습니다"); 
+						}
+					});
+				}
+			})	
+        	
+        	</script>
         	
         	<script>
         		function deleteIngredient(){
@@ -500,13 +526,13 @@ function hoveringDiv(){
         			        			
         			var html ='';
         			var keywordList ='';
-        			var exdate = data[0].exDate;
-        			if(exdate == 0){
-        				exdate ="";
+        			if(data[0].keyword != ""){
+        				for(var i =0; i< data.length; i++){        				
+            				keywordList += "#"+data[i].keyword;
+            			}
         			}
-        			for(var i =0; i< data.length; i++){        				
-        				keywordList += "#"+data[i].keyword;
-        			}
+        			
+        			
         			var formData = $('<form id="fileForm" enctype="multipart/form-data" method="post">');
         			
 					html += '<div class="row">';   
@@ -517,7 +543,7 @@ function hoveringDiv(){
  					html += '<div class="col-lg-8 no-padding" style="font-size: 130%;">';
  					html += '<div class="row col-lg-12 no-padding ing-info-firstLine">';
  					html += '<div class="col-lg-6">'+data[0].cName+'&nbsp;&gt&nbsp;'+data[0].subCName+'</div>';
- 					html += '<div class="col-lg-6"><div class="row">유통기한 :&nbsp;<input type="text" class="form-control col-lg-3 ing-exdate" value="'+exdate+'"/>일</div></div>';
+ 					html += '<div class="col-lg-6"><div class="row">유통기한 :&nbsp;<input type="text" class="form-control col-lg-3 ing-exdate" value="'+data[0].exDate+'"/>일</div></div>';
  					html += '</div>';
  					html += '<div class="col-lg-12 ing-info-secondLine">[<span id="iNumber">'+data[0].iNum+'</span>]&nbsp;<input type="text" class="col-lg-6" value="'+data[0].iName+'"/></div>';
  					html += '<div class="col-lg-12 no-padding ing-info-thirdLine">';
@@ -526,7 +552,7 @@ function hoveringDiv(){
  					html += '</div></div></div>';
  					html += '<input type="hidden" value="'+data[0].iNum+'" name="iNum" id="h_iNum"/>';
  					html += '<input type="hidden" value="'+data[0].iImage+'" name="img" id="h_img"/>';
- 					html += '<input type="hidden" value="'+exdate+'" name="exdate" id="h_exdate"/>';
+ 					html += '<input type="hidden" value="'+data[0].exDate+'" name="exdate" id="h_exdate"/>';
  					html += '<input type="hidden" value="'+data[0].iName+'" name="iName" id="h_iName"/>';
  					html += '<input type="hidden" value="'+keywordList+'" name="keyword" id="h_keyword"/>';
  					
@@ -553,8 +579,7 @@ function hoveringDiv(){
         			console.log(fileName);
 				})	
         	}        	
-        	function LoadImg(value) {
-        		
+        	function LoadImg(value) {        		
         		//이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분
 				if (value.files && value.files[0]) {
 					var reader = new FileReader();

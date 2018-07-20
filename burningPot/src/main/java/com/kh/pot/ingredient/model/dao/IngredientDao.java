@@ -33,6 +33,10 @@ public interface IngredientDao {
 
 	int deleteCategory(HashMap<String, String> map);
 
+	String selectCategoryCode(String subCategory);
+
+	int insertNewIngredient(HashMap<String, Object> map);
+
 	
 
 	

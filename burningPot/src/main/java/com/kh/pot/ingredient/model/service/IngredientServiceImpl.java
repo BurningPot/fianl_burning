@@ -111,6 +111,23 @@ public class IngredientServiceImpl implements IngredientService {
 		return ingDao.deleteCategory(map);
 	}
 
+	@Override
+	public String selectCategoryCode(String subCategory) {
+		
+		return ingDao.selectCategoryCode(subCategory);
+	}
+
+	@Override
+	public int insertNewIngredient(String iName, String img, String category, String exdate) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("iName", iName);
+		map.put("img", img);
+		map.put("category", category);
+		map.put("exdate", Integer.parseInt(exdate));
+		
+		return ingDao.insertNewIngredient(map);
+	}
+
 	
 	
 
