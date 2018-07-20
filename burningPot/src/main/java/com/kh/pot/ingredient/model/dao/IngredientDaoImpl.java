@@ -97,6 +97,12 @@ public class IngredientDaoImpl implements IngredientDao {
 		return sqlSession.insert("ingredient.insertNewCategory", map);
 	}
 
+	@Override
+	public int deleteCategory(HashMap<String, String> map) {
+		
+		return sqlSession.delete("ingredient.deleteCategory", map);
+	}
+
 	
 	
 }

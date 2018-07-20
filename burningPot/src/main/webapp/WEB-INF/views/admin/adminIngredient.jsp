@@ -62,10 +62,10 @@
 		padding-bottom: 1.5%;
 		font-size: 130%;
 	}
-	.addCategory{
+	.add-remove-Category{
 		padding: 0.5%;
 	}
-	.addCategory div:first-child{
+	.add-remove-Category div:first-child{
 		padding: 0.5%;
 	}
 	.adding-menu{
@@ -230,7 +230,7 @@ function hoveringDiv(){
         	<hr class="col-lg-12"/>
         	        	
         	<div class="col-lg-12">
-        		<button class="btn btn-success" id="ing-insert">새로운 재료 추가하기</button>
+        		<button class="btn btn-success" id="ing-insert">재료/분류 추가하기</button>
         		<button class="btn btn-primary" id="ing-update">수정하기</button>
         		<button class="btn btn-danger" id="ing-delete" onclick="deleteIngredient();">삭제하기</button>
         	</div>   
@@ -247,10 +247,10 @@ function hoveringDiv(){
         	<div class="col-lg-12" style="margin-bottom: 3%; font-size: 150%;">재료 검색</div>    
         	<div class="col-lg-12 adding-menu">
         		<!-- 카테고리 추가 메뉴 -->
-        		<div class="col-lg-12" style="margin-top:1%;">카테고리 추가하기</div>
+        		<div class="col-lg-12" style="margin-top:1%;">카테고리 추가/삭제</div>
         		<br />
-        		<div class="row text-center addCategory">
-        			<div class="col-lg-2">세부분류</div>
+        		<div class="row text-center add-remove-Category addCategory">
+        			<div class="col-lg-2">추가하기</div>
         			<div class="col-lg-2">
         				<select class="custom-select">
         					<option selected>--큰분류--</option>
@@ -265,8 +265,7 @@ function hoveringDiv(){
         		</div>
         		
         		<script>
-        			
-        			
+        			        			
         			$('.addCategory').children().find('button').on('click', function(){
         				var bigCategory = $('.addCategory').children().find('select').val();
             			var text = $('#add-subCategory').val();
@@ -294,6 +293,7 @@ function hoveringDiv(){
         							}else{
         								alert(data+"개의 카테고리를 생성하였습니다!");
         								$('#add-subCategory').val("");
+        								location.href="${pageContext.request.contextPath}/admin/goIng.do";
         							}
         						}, error: function(data){
         							alert("카테고리 생성에 실패하였습니다");
@@ -303,7 +303,91 @@ function hoveringDiv(){
         				}
         			});
         		
+        		</script>       		
+        		<br />
+        		<div class="row text-center add-remove-Category removeCategory">
+        			<div class="col-lg-2">삭제하기</div>
+        			<div class="col-lg-2">
+        				<select class="custom-select">
+        					<option selected value="null">--큰분류--</option>
+        					<c:forEach items="${distinctList}" var ="ing">
+        						<option value="${ing.cName}">${ing.cName}</option>	
+       						</c:forEach>        					
+        				</select>
+        			</div>
+        			<div class="col-lg-7">
+        				<select class="custom-select">
+        					<option selected value="null">--큰분류를 먼저 선택해주세요--</option>        				
+        				</select>
+        			</div>
+        			<div class="col-lg-1"><button class="btn btn-primary">삭제</button></div> 
+        		</div>
+        		<script>
+        			$('.removeCategory').children().find('select').eq(0).change(function(){
+        				//큰분류를 선택했을 경우! 이제 세부분류가 뜨게 해야한다
+        				var cName = $(this).val();
+        				var $select = $('.removeCategory').children().find('select').eq(1); //여기에 새로운 내용 append
+        				console.log(cName);        				 
+        				$.ajax({
+        					url:"${pageContext.request.contextPath}/admin/selectBigCategory.do",
+							data:{
+								bCategory: cName
+							}, success: function(data){
+								var html = "";
+								for(var i = 0 ; i< data.length; i++){
+									html += '<option value="'+data[i].subCName+'">'+data[i].subCName+'</option>';
+								}				
+								
+								if(cName == "null"){
+									$select.empty();
+									$select.append('<option selected value="null">--큰분류를 먼저 선택해주세요--</option>');
+								}else{
+									$select.empty();
+									$select.append(html);									
+								}
+								//삭제버튼을 누르면 카테고리를 삭제하는 기능을 버튼에 준다
+								deleteBtnForCategory();
+								
+								
+							}, error: function(){
+								alert("재료카테고리 불러오기에 실패했습니다"); 
+							}
+        				})						
+        			});
+					     	
+        		function deleteBtnForCategory(){
+        			$('.removeCategory').children().find('button').on('click', function(){
+        				//삭제버튼을 누르면 카테고리 정보를 삭제해야지!
+        				var inputCName = $('.removeCategory').children().find('select').eq(0).val();
+        				var inputSubCName = $('.removeCategory').children().find('select').eq(1).val();
+        				if(inputCName == "null"){
+        					alert("큰분류를 먼저 선택해주세요");
+        				}else if(inputSubCName == "null"){
+        					alert("세부분류를 선택해주세요");
+        				}else{
+        					//삭제를 진행한다
+        					$.ajax({
+        						url: "${pageContext.request.contextPath}/admin/deleteCategory.do",
+        						data:{
+        							cName: inputCName,
+        							subCName: inputSubCName
+        						}, success: function(data){
+        							alert(data+"개의 카테고리가 삭제되었습니다");
+        							location.href="${pageContext.request.contextPath}/admin/goIng.do";
+        						}, error: function(data){
+        							alert("카테고리를 삭제하는데 실패하였습니다");
+        						}
+        					});
+        				}
+        				
+        			});
+        		}
+        			
+        			
+        			
+        		
         		</script>
+        		
         		
         		
         		
@@ -352,7 +436,7 @@ function hoveringDiv(){
         								$('#add-ing-subCategory').empty();
         								$('#add-ing-subCategory').append(html);
         							}, error: function(){
-        								alert("재료카테고리 불러오기에 실패했습니다");
+        								alert("재료카테고리 불러오기에 실패했습니다"); 
         							}
         						});
         					}

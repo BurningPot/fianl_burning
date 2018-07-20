@@ -101,6 +101,16 @@ public class IngredientServiceImpl implements IngredientService {
 		return ingDao.insertNewCategory(map);
 	}
 
+	@Override
+	public int deleteCategory(String cName, String subCName) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();		
+		map.put("cName", cName);
+		map.put("subCName", subCName);
+				
+		return ingDao.deleteCategory(map);
+	}
+
 	
 	
 
