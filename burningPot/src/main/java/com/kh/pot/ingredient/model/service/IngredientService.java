@@ -32,6 +32,10 @@ public interface IngredientService {
 
 	int deleteCategory(String cName, String subCName);
 
+	String selectCategoryCode(String subCategory);
+
+	int insertNewIngredient(String iName, String img, String category, String exdate);
+
 	
 
 	

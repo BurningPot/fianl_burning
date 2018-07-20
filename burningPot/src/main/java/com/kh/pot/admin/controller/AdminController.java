@@ -484,4 +484,68 @@ public class AdminController {
 		return ingService.deleteCategory(cName, subCName);
 	}
 	
+	@RequestMapping("admin/insertNewIngredient.do")
+	public String insertNewIngredient(Model model, @RequestParam MultipartFile[] addForUpload,
+			@RequestParam String subCategory, 
+			@RequestParam String ingName, @RequestParam String exdate,
+			HttpServletRequest request){
+		
+		int result = 0;
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/img/ingredient");		
+		File dir = new File(saveDir);
+				
+		// 만약 현재 저장하려는 경로에 폴더가 없다면 만들겠습니다!
+		if(!dir.exists()){
+			System.out.println("dir.mkdirs() = "+dir.mkdirs());
+		}
+		
+		String renameFileName = "";
+		if(addForUpload.length >0){
+			if(!addForUpload[0].isEmpty()){
+			String originFileName = addForUpload[0].getOriginalFilename(); // 원본파일 이름
+			String ext = originFileName.substring(originFileName.lastIndexOf(".")+1); //확장자
+			
+			//이름을 새로 만들어서 변경해준다
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");			
+			int randomNum = (int)(Math.random() * 1000);			
+			renameFileName = sdf.format(new Date(System.currentTimeMillis()))+"_"+randomNum+"."+ext;
+			
+			//새로만든 이름으로 저장경로에 저장시킨다
+			try {
+				addForUpload[0].transferTo(new File(saveDir+"/"+renameFileName));
+			} catch (IllegalStateException | IOException e) {					
+				e.printStackTrace();
+			}	
+			
+			// 정보들을 테이블에 insert 시킨다
+			//INAME, CATEGORY, IIMAGE, EXDATE 가 필요하다
+			String iName = ingName;
+			String img = renameFileName;
+			String category = ingService.selectCategoryCode(subCategory);
+			//카테고리는 하위카테고리 명을 가지고 select해서 가져와야한다..		
+			
+			//insert하러 간다!
+			result = ingService.insertNewIngredient(iName, img, category, exdate);	
+			
+			
+			//키워드에 자기 자신의 이름을 자동으로 입력해줘야한다
+			
+			//1. 재료의 iNum을 가져와야해..
+			ArrayList<Ingredient> list= (ArrayList<Ingredient>)ingService.showIngSearchResult(iName);
+			int iNum = list.get(0).getiNum();
+			//2. 재료의 iNum으로 키워드를 넣는다
+			//INSERT INTO INGREDIENT_KEYWORD VALUES(#{iNum}, #{keyword})
+			String [] keywordArr = {"dummy", iName};	// 서비스단에서 index =1 부터 불러온다..		
+			ingService.insertNewKeyword(iNum, keywordArr);
+		}
+	}	
+		
+		model.addAttribute("commonTitle","관리자 페이지");
+		//임시로 header에 관리자의 정보를 넣어야 겠다.	
+		
+		return "admin/adminHome"; 
+	}
+	
+	
+	
 }
