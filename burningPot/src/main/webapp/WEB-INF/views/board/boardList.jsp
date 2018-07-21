@@ -44,7 +44,8 @@
 					<p>총 ${totalContents}건의 게시물이 있습니다.</p>
 				</div>
 				<div class="col-sm-8 text-right">
-					<button class="btn btn-info" onclick="location.href='${pageContext.request.contextPath}/board/insertBoard.do'">글쓰기</button>
+					<button class="btn btn-info" onclick="insertBoard();">글쓰기</button>
+					<input type="hidden" id="mNum" value="${m.mNum}"/>
 				</div>
 			</div>
 				
@@ -61,7 +62,6 @@
 							<th>작성일</th>
 							<th>답변여부</th>
 							<th>조회수</th>
-							<th></th>
 						</tr>
 					</thead>
 					<c:forEach items="${list}" var="b">
@@ -78,15 +78,6 @@
 							<td>${b.bDate}</td>
 							<td>${b.reply}</td>
 							<td>${b.bCount}</td>
-							<td class="text-center">
-							<c:if test="${(b.mId eq m.mId) && (m.mCategory ne '관리자')}">
-								<a class='btn btn-warning btn-xs'href="#"><i class="far fa-edit"></i> Edit</a>
-								<a href="#" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i> Del</a></td>
-							</c:if>
-							<c:if test="${m.mCategory eq '관리자'}">
-								<a class='btn btn-warning btn-xs'href="#"><i class="far fa-edit"></i> Edit</a>
-								<a href="#" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i> Del</a></td>
-							</c:if>
 						</tr>
 					</c:forEach>
 				</table>
@@ -112,15 +103,19 @@
 		</div>
 	</div>
 <script>
-	$(function(){
+	
 	   $("tr[id]").on("click",function(){
 	      var boardNo = $(this).attr("id");
-	      console.log("bordNo="+boardNo);
 	      location.href = "${pageContext.request.contextPath}/board/boardDetail.do?no="+boardNo;
 	   }).hover(function(){
 		   $(this).css('cursor','pointer');
 	   });
-	});
+	function insertBoard(){
+		if( $('#mNum').val() == null ||$('#mNum').val() ==""){
+			alert('로그인 후 이용하실 수 있습니다.');
+			$("#loginModal").modal();
+		}else location.href='${pageContext.request.contextPath}/board/insertBoard.do';
+	}
 </script>
 </body>
 </html>

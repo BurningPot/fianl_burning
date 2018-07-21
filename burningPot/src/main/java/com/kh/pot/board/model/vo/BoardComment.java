@@ -87,6 +87,12 @@ public class BoardComment implements Serializable{
 		this.bcContent = bcContent;
 	}
 
+	@Override
+	public String toString() {
+		return "BoardComment [bcNum=" + bcNum + ", bNum=" + bNum + ", mNum=" + mNum + ", mName=" + mName + ", mId="
+				+ mId + ", bcDate=" + bcDate + ", bcContent=" + bcContent + "]";
+	}
+
 	
 	
 }

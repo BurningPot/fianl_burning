@@ -35,7 +35,12 @@ public interface BoardDao {
 
 	int updateBcount(int boardNo);
 	int insertBoard(Board board);
+	int updateBoard(Board board);
+	int insertBoardCo(BoardComment bc);
 	/*yechan*/
+
+
+
 
 	
 }

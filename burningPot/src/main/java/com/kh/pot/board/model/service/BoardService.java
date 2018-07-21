@@ -46,7 +46,11 @@ public interface BoardService {
 	Board selectBoardOne(int boardNo);
 
 	int insertBoard(Board board);
-	
+
+	int updateBoard(Board board);
+
+	int insertBoardCo(BoardComment bc);
+
 	/* 예찬 부분 */
 	
 	
