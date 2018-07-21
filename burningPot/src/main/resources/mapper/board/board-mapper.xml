@@ -63,6 +63,11 @@
 		</selectKey>
 		INSERT INTO BOARD VALUES(SEQ_BOARD.NEXTVAL, #{category}, #{bTitle}, #{mNum}, DEFAULT, #{bContent}, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
+	
+	<update id="updateBoard">
+		UPDATE BOARD SET BTITLE = #{bTitle}, BCONTENT= #{bContent} WHERE BNUM = #{bNum}
+	</update>
+	
 	<!-- 
 	BNUM
 	CATEGORY

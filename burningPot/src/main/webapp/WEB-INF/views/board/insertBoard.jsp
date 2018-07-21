@@ -10,28 +10,6 @@
 
 <!-- custom css -->
 <link href="${pageContext.request.contextPath }/resources/css/board/board.css" rel="stylesheet">
-<!-- 	
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-	integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-	crossorigin="anonymous"></script>
-	 -->
-<!-- summernote Import -->
-	
-<!-- summernote CDN 적용 -->	
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script> 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
- -->
-<%-- local 경로 import
-<link href="${pageContext.request.contextPath }/resources/css/board/summernote/summernote-bs4.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath }/resources/css/board/summernote/summernote-bs4.js"></script> --%>
-
-
-<!-- include summernote-ko-KR -->
-<!-- <script src="../resources/summernote/lang/summernote-ko-KR.js"></script>
- -->
-
 
 </head>
 <body>
@@ -60,7 +38,7 @@
 						<td>
 							<div class="form-group">
 								<select id="category" class="form-control" name="category">
-									<option selected>선택 하세요</option>
+									<option selected>선택하세요</option>
 									<c:if test="${m.mCategory eq '관리자'}">
 										<option value="공지사항">공지사항</option>
 									</c:if>
@@ -144,11 +122,16 @@
 		function insertText(){
 			if( $('#bTitle').val()==null || $('#bTitle').val()==""){
 				alert('제목을 입력해 주세요!');
-			}else if($('#summernote').val()==null || $('summernote').val()==""){
+				 $('#bTitle').focus();
+				 
+			}else if($('#category').val()=='선택하세요' || $('#category').val()==null || $('#category').val()==""){
+				alert('카테고리를 선택해주세요!');
+				$('#category').focus(); 
+			}else if( $('#summernote').summernote('code')=='<p><br></p>' || $('#summernote').summernote('code').trim()==null){
 				alert('본문을 입력해주세요!');
 			}else{
 				$('#bContent').val($('#summernote').summernote('code'));
-				$('#insertFrm').submit(); 
+				$('#insertFrm').submit();
 			}
 		}
 		

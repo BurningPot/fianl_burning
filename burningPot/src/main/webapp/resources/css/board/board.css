@@ -30,14 +30,14 @@ ul {
 	margin-top: 2%;
 }
 
-.tableDetil th {
-	background-color: #eeeeee;
+.tableDetil tbody tr th {
+	background-color: #FBFFB9;
 	width: 15%;
 	text-align: center;
 }
 
 .tableDetil th, .tableDetil td {
-	border: 1px solid #a1a1a1;
+	border: 1px solid #754F44;
 	border-left: none;
 	border-right: none;
 }

@@ -8,11 +8,13 @@
 <title>게시판 상세보기</title>
 <!-- custom css -->
 <link
-	href="${pageContext.request.contextPath }/resources/css/board/board.css"
+	href="${pageContext.request.contextPath}/resources/css/board/board.css"
 	rel="stylesheet">
 </head>
 <body>
 	<div style="height: 20%;"></div>
+	
+	<!-- 게시판 본문 -->
 	<div class="container containerTop col-sm-6 col-sm-offset-3">
 		<h1 align="left">게시판 상세보기</h1>
 		<p><!-- sd -->
@@ -25,33 +27,35 @@
 				style="text-align: left;">
 				<colgroup>
 					<col width="10%">
-					<!-- 글 번호 -->
-					<col width="50%">
+					<col width="15%">
+					<col width="10%">
 					<!--  제목   -->
-					<col width="10%">
+					<col width="20%">
 					<!-- 작성자 -->
-					<col width="30%">
-					<!-- <!-- 작성일
 					<col width="10%">
-					<col width="20%"> -->
+					<col width="30%"/>
 				</colgroup>
 				<tbody>
 					<tr>
-						<th>제목</th>
-						<td>${board.bTitle}<input type="hidden" name="b_no" value="${board.bNum}"></td>
+						<th>카테고리</th>
+						<td>${board.category}</td>
+						<th>작성자</th>
+						<td>${board.mName}</td>
+						<input type="hidden" name="mNum" value="${board.mNum}" />
 						<th>작성시간</th>
 						<td>${board.bDate}</td>
 					</tr>
 					<tr>
-						<th>작성자</th>
-						<td>${board.mName}</td>
+						<th>제목</th>
+						<td colspan="3">${board.bTitle}</td>
+						<input type="hidden" name="bNum" id="bNum" value="${board.bNum}">
 						<th>조회수</th>
 						<td>${board.bCount}</td>
 					</tr>
 
 					<tr>
 						<td colspan="6"
-							style="min-height: 200px; text-align: left; border-bottom: 2px solid #a1a1a1;">
+							style="min-height: 200px; text-align: left; border-bottom: 2px solid #754F44;">
 							<%-- <p style="word-wrap: break-word; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-break: break-all; background-color: white; border: none;">
 								${board.bContent}
 							</p> --%>
@@ -64,81 +68,97 @@
 			</table>
 		</div>
 		<div class="text-right">
-			<input type="button" class="btn btn-warning "onclick="goUpdateView();" value="수정">
-			<input type="button" class="btn btn-warning " onclick="goBoardDelete(); " value="삭제">
-			<input type="button" class="btn btn-warning " onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'" value="목록">
+			<c:if test="${m.mNum eq board.mNum}">
+				<input type="button" class="btn btn-warning "onclick="updateBoard();" value="수정">
+				<input type="button" class="btn btn-danger " onclick="deleteBoard(); " value="삭제">
+			</c:if>
+			<input type="button" class="btn btn-success " onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'" value="목록">
 		</div>
 	</div>
+	<!-- 게시판 본문 끝 -->
 	<br /><br />
+	
+	<!-- 댓글 -->
 	<div class="container col-sm-6 col-sm-offset-3 ">
-		<h3>
-			<i class="far fa-edit"></i> 답변
-		</h3>
+		
 		<div class="row">
 			<table class="table">
 				<tbody>
-					<tr>
-						<th>작성자</th>
-						<td width="35%" align="center">사용자</td>
-						<th>답변시간</th>
-						<td width="35%" align="center">2018.06.05</td>
-					</tr>
-					<tr>
-						<td colspan="4">감사합니다</td>
-					</tr>
-					<!-- 관리자일때만-->
-					<tr>
-						<td colspan="4" align="right" style="border-bottom: none;">
-							<input type="hidden" id="c_no" name="c_no" value=5> <br /> 
-							<input type="button" class="btn btn-warning btn-sm" value="수정" onclick="bCommentUpdate(this);"> 
-							<input type="button" class="btn btn-warning btn-sm" value="삭제" onclick="bCommentDelete(this);">
-						</td>
-					</tr>
-	
+					<c:if test="${!empty boardComList}">
+						<c:forEach items="${boardComList}" var="bc">
+							<div style="border-radius: 25px;">
+								<tr>
+									<input type="hidden" name="bcmNum" value="${bc.mNum}"/>
+									<th width="10%" rowspan="2"><img src="${pageContext.request.contextPath}/resources/img/1.jpg" class="rounded-circle" alt="Cinque Terre" width="75px" height="75px"></th>
+									<th width="35%" style="color:#754F44; font-weight: bold;">${bc.mName}</th>
+									<th width="22%" align="right">
+										<c:if test="${bc.mNum eq m.mNum}">
+											<input type="hidden" id="bcNum" name="bcNum" value="${bc.bcNum}">
+											<input type="button" class="btn btn-outline-warning btn-sm" value="수정" onclick="updateBoardComment(this);"> 
+											<input type="button" class="btn btn-outline-danger btn-sm" value="삭제" onclick="deleteBoardComment(this);">
+										</c:if>
+									</th>
+									<td width="33%" align="right">2018.12.30 15:31</td>
+									<%-- <td width="30%" align="center">${bc.bcDate}</td> --%>
+								</tr>
+								<tr>
+									<td colspan="3" id="befContent">${bc.bcContent}</td>
+								</tr>
+							</div>
+						</c:forEach>
+					</c:if>
+					<c:if test="${empty boardComList}">
+						<td align="center">작성된 댓글이 없습니다.</td>
+					</c:if>
 				</tbody>
 			</table>
 		</div>
 	</div>
-	<br />
-	<br />
-	<form action="#"
-		method="post" id="addComment">
-		<div class="container col-sm-6 col-sm-offset-3">
-			<label id="subject"><h3><i class="far fa-edit"></i> 답변하기</h3></label>
+	<form action="${pageContext.request.contextPath}/board/InsertBoardComment.do" method="post" id="insertComentFrm">
+		<div class="container col-sm-6 col-sm-offset-3" >
+		<label><h4><i class="far fa-edit"></i> 댓글달기</h4></label>
 			<div class="form-group">
-				<input type="hidden" name="c_writer" value="사용자" /> <input type="hidden" name="b_no" value="5" />
-				<textarea style="height: 150px;" name="c_content" id="c_content1" class="form-control"></textarea>
+				<input type="hidden" name="mNum" value="${m.mNum}" /> <input type="hidden" name="bNum" value="${board.bNum}"/><input type="hidden" name="mId" value="${m.mId}" id="mmId" />
+				<textarea style="height: 80px;" name="bcContent" id="bcContent" class="form-control"></textarea>
 			</div>
-			<div class="text-right">
-				<button class="btn btn-warning btn-sm" type="submit">등록</button>
+			<div class="row">
+				<div class="text-left col-sm-6">
+				</div>
+				<div class="text-right col-sm-6">
+					<button class="btn btn-outline-warning btn-sm" type="button" onclick="insertComment();">등록</button>
+				</div>
 			</div>
 		</div>
 	</form>
 
-	<form method="post">
-		<div class="container col-sm-6 col-sm-offset-3" style="display: none;"
-			id="modifyCommentContent">
+	<form action="#" method="post" id="updateDelFrm">
+		<div class="container col-sm-6 col-sm-offset-3"
+			id="modifyCommentContent" style="display: none;" >
 			<div class="row">
-				<label id="subject"><h3>
-						<i class="far fa-edit"></i> 답변 수정하기
-					</h3></label>
-				<div class="form-group">
-					<input type="hidden" name="b_no" value="5" />
-					<textarea style="height: 150px;" name="c_content" id="c_content2"
-						class="form-control"></textarea>
+				<div class="form-group col-sm-5">
+					<label id="subject"><h3><i class="far fa-edit"></i> 댓글 수정하기</h3></label>
 				</div>
 			</div>
-			<div class="row pull-right">
-				<button class="btn btn-success " type="button" id="modifyComment">수정</button>
-				&nbsp;
-				<button class="btn btn-success " type="button" onclick="refresh();">취소</button>
+			<div class="row">
+				<div class="form-group col-sm-12">
+						<input type="hidden" name="b_no" value="5" />
+						<textarea style="height: 80px;" name="c_content" id="c_content2"
+							class="form-control"></textarea>
+				</div>
+			</div>
+			<div class="row">
+				<div class="text-left col-sm-6"></div>
+				<div class="text-right col-sm-6">
+					<button class="btn btn-success " type="button" id="modifyComment">수정</button>
+					<button class="btn btn-success " type="button" onclick="refresh();">취소</button>
+				</div>
 			</div>
 		</div>
 	</form>
 	<br />
 	<div class="container col-sm-6 col-sm-offset-3">
 		<br /> <br /> <br /> <br />
-		<hr style="border: 1px solid #a1a1a1;" />
+		<hr style="border: 1px solid #754F44;" />
 		<div class="row ">
 
 			<table class="table" id="nextTable">
@@ -161,20 +181,58 @@
 	</div>
 
 <script>
+	
+	// 게시글 수정
+	function updateBoard(){
+		location.href="${pageContext.request.contextPath}/board/updateBoard.do?no="+$('#bNum').val();
+	}
+	
+	// 게시글 삭제
+	function deleteBoard(){
+		if(confirm('글을 삭제 하시겠습니까?')==true){
+			location.href="${pageContext.request.contextPath}/board/deleteBoard.do?no="+$('#bNum').val();
+		}else{
+			return;
+		}
+	}
+	
+	// 게시글 수정
+	function updateBoardComment(obj){
+		console.log($(obj).parent().children().eq(0).val());
+		$('#insertComentFrm').css("display","none");
+		$('#modifyCommentContent').css("display","block");
+	}
+	
+	
+	//댓글 삭제
+	function deleteBoardComment(obj){
+		console.log($(obj).parent().children().eq(0).val());
+		 if(confirm('댓글을 삭제 하시겠습니까?')==true){
+			location.href="${pageContext.request.contextPath}/board/deleteBoardComment.do?bNum="+$('#bNum').val()+"&bcNum="+$(obj).parent().children().eq(0).val();
+		}else{
+			return;
+		}
+	}
+
 	// 새로고침
 	function refresh() {
 
 		location.reload();
 	}
-
-	// 댓글 내용 확인
-	$('#addComment').submit(function() {
-		if ($('#c_content1').val() == "") {
-			alert('관리자! 답변 내용 입력하시오');
-			$('#c_content1').focus();
-			return false;
+	
+	// 댓글 등록
+	function insertComment(){
+		if($('#mmId').val()==null || $('#mmId').val()==""){
+			alert('로그인 후 이용하실 수 있습니다.');
+			$("#loginModal").modal();
+		}else{
+			if($('#bcContent').val() == "" || $('#bcContent').val() ==null){
+				alert('댓글을 입력 후 등록 해주세요!');
+			}else{
+				 $('#insertComentFrm').submit();
+			}
 		}
-	});
+	}
 
 	$(function() {
 		$('#nextTable tr td').mouseenter(function() {

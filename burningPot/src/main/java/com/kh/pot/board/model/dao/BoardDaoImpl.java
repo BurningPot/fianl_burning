@@ -107,6 +107,17 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSession.insert("board.insertBoard",board);
 	}
 
+	@Override
+	public int updateBoard(Board board) {
+		return sqlSession.update("board.updateBoard",board);
+	}
+
+	@Override
+	public int insertBoardCo(BoardComment bc) {
+		return sqlSession.insert("boardComment.insertBoardCo",bc);
+	}
+
+
 	/*예찬 부분 끝*/
 	
 	
