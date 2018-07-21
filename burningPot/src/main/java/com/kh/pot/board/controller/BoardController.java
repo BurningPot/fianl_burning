@@ -42,6 +42,7 @@ public class BoardController {
 	@RequestMapping("/board/boardDetail.do")
 	public String boardDetail(@RequestParam("no") int boardNo, Model model){
 		model.addAttribute("board", boardService.selectBoardOne(boardNo));
+		model.addAttribute("boardComList",boardService.selectBoardComment(boardNo));
 		return "board/boardDetail";
 	}
 	
@@ -56,7 +57,7 @@ public class BoardController {
 	public String insertBoardEnd(Board board, Model model){
 		
 		String msg = "";
-		String loc ="/board/boardList.do?";
+		String loc ="/board/boardList.do";
 		
 		int result = boardService.insertBoard(board);
 		
@@ -70,5 +71,100 @@ public class BoardController {
 		
 		return "common/msg";
 	}
+	
+	// 게시글 수정페이지 이동
+	@RequestMapping("/board/updateBoard.do")
+	public String updateBoard(@RequestParam("no") int boardNo, Model model){
+		model.addAttribute("board",boardService.selectBoardOne(boardNo));
+		return "board/updateBoard";
+	}
+	
+	// 게시글 수정 
+	@RequestMapping(value="/board/updateBoardEnd.do", method = RequestMethod.POST)
+	public String updateBoardEnd(Board board, Model model){
+		
+		String msg="";
+		String loc ="/board/boardList.do";
+		System.out.println("boardUpdate: "+board);
+		
+		int result = boardService.updateBoard(board);
+				
+		if(result > 0) {
+			msg="수정이 완료되었습니다.";
+			loc="/board/boardDetail.do?no="+board.getbNum();
+		} else msg="수정이 실패했습니다.";
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("loc", loc);	
+		
+		return "common/msg";
+	}
+	
+	// 게시글 삭제
+	@RequestMapping(value="/board/deleteBoard.do")
+	public String deleteBoard(@RequestParam("no") int boardNo, Model model){
+		
+		String msg="";
+		String loc ="/";
+		
+		int result = boardService.deleteBoard(boardNo);
+				
+		if(result > 0) {
+			msg="삭제가 완료되었습니다.";
+			loc="/board/boardList.do";
+		} else msg="삭제를 실패했습니다.";
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("loc", loc);	
+		
+		return "common/msg";
+	}
+	
+	// 댓글 등록
+	@RequestMapping(value="/board/InsertBoardComment.do", method = RequestMethod.POST)
+	public String InsertBoardComment(BoardComment bc, Model model){
+		String msg="";
+		String loc ="/board/boardList.do";
+		
+		int result = 0;
+		
+		if(bc.getmId().equals("admin")){
+			result += boardService.updateBoardReply(bc.getbNum(), true);
+		}
+		
+		result += boardService.insertBoardCo(bc);
+
+		if(result > 0) {
+			msg="댓글등록이 완료되었습니다.";
+			return "redirect:/board/boardDetail.do?no="+bc.getbNum();
+		} else msg="댓글등록이 실패했습니다.";
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("loc", loc);	
+		
+		return "common/msg";
+	}
+	
+	// 댓글 삭제
+	@RequestMapping(value="/board/deleteBoardComment.do")
+	public String deleteBoardComment(@RequestParam("bcNum") int bcNum,
+									 @RequestParam("bNum") int bNum,
+									 Model model){
+		String msg="";
+		String loc ="/board/boardList.do";
+		
+		int result = boardService.deleteBoardComment(bcNum);
+		
+		if(result > 0 ) {
+			msg="댓글이 삭제되었습니다.";
+			return "redirect:/board/boardDetail.do?no="+bNum;
+		} else msg="댓글삭제가 실패했습니다.";
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("loc", loc);	
+		
+		return "common/msg";
+	}
+
 	
 }
