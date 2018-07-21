@@ -21,44 +21,49 @@
 			<i class="fas fa-exclamation-circle"> 개인정보가 포함된 글이나 게시판 성격에 맞지 않은
 				글은 관리자에 의해 통보없이 삭제 될 수 있습니다.</i>
 		</p>
-		<br />
-		<div class="row ">
+		<div class="row">
 			<table class="table tableDetil"
 				style="text-align: left;">
 				<colgroup>
 					<col width="10%">
-					<col width="15%">
-					<col width="10%">
-					<!--  제목   -->
 					<col width="20%">
-					<!-- 작성자 -->
 					<col width="10%">
-					<col width="30%"/>
+					<col width="25%">
+					<col width="10%">
+					<col width="20%"/>
 				</colgroup>
 				<tbody>
 					<tr>
-						<th>카테고리</th>
-						<td>${board.category}</td>
-						<th>작성자</th>
-						<td>${board.mName}</td>
+						<td colspan="6" style="font-weight: bold; border-top-style:none;"><img src="${pageContext.request.contextPath}/resources/img/1.jpg" class="rounded-circle" alt="Cinque Terre" width="70px" height="70px">&nbsp;&nbsp;&nbsp;${board.mName}</td>
+					</tr>
+					<tr align="center">
 						<input type="hidden" name="mNum" value="${board.mNum}" />
+						<th>카테고리</th>
+						<c:if test="${board.category eq '공지사항'}">
+							<td>[${board.category}]</td>
+						</c:if>
+						<c:if test="${board.category ne '공지사항'}">
+							<c:if test="${board.category eq 'QNA'}">
+								<td>Q&A</td>
+							</c:if>
+							<c:if test="${board.category ne 'QNA'}">
+								<td>${board.category}</td>
+							</c:if>	
+						</c:if>
 						<th>작성시간</th>
-						<td>${board.bDate}</td>
+						<td>${board.bDate} 15:30</td>
+						<th>조회수</th>
+						<td>${board.bCount}</td>
 					</tr>
 					<tr>
 						<th>제목</th>
-						<td colspan="3">${board.bTitle}</td>
+						<td colspan="5">${board.bTitle}</td>
 						<input type="hidden" name="bNum" id="bNum" value="${board.bNum}">
-						<th>조회수</th>
-						<td>${board.bCount}</td>
 					</tr>
 
 					<tr>
 						<td colspan="6"
 							style="min-height: 200px; text-align: left; border-bottom: 2px solid #754F44;">
-							<%-- <p style="word-wrap: break-word; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-break: break-all; background-color: white; border: none;">
-								${board.bContent}
-							</p> --%>
 							<p>
 								${board.bContent}
 							</p>
@@ -89,7 +94,7 @@
 							<div style="border-radius: 25px;">
 								<tr>
 									<input type="hidden" name="bcmNum" value="${bc.mNum}"/>
-									<th width="10%" rowspan="2"><img src="${pageContext.request.contextPath}/resources/img/1.jpg" class="rounded-circle" alt="Cinque Terre" width="75px" height="75px"></th>
+									<th width="10%" rowspan="2"><img src="${pageContext.request.contextPath}/resources/img/1.jpg" class="rounded-circle" alt="Cinque Terre" width="50px" height="50px"></th>
 									<th width="35%" style="color:#754F44; font-weight: bold;">${bc.mName}</th>
 									<th width="22%" align="right">
 										<c:if test="${bc.mNum eq m.mNum}">
@@ -131,7 +136,7 @@
 		</div>
 	</form>
 
-	<form action="#" method="post" id="updateDelFrm">
+	<form action="${pageContext.request.contextPath}/board/updateBoardComment.do" method="post" id="updateComFrm">
 		<div class="container col-sm-6 col-sm-offset-3"
 			id="modifyCommentContent" style="display: none;" >
 			<div class="row">
@@ -141,16 +146,16 @@
 			</div>
 			<div class="row">
 				<div class="form-group col-sm-12">
-						<input type="hidden" name="b_no" value="5" />
-						<textarea style="height: 80px;" name="c_content" id="c_content2"
+						<input type="hidden" name="bcNum" id="updateBcNum" /><input type="hidden" name="bNum" value="${board.bNum}"/>
+						<textarea style="height: 80px;" name="bcContent" id="updateContent"
 							class="form-control"></textarea>
 				</div>
 			</div>
 			<div class="row">
 				<div class="text-left col-sm-6"></div>
 				<div class="text-right col-sm-6">
-					<button class="btn btn-success " type="button" id="modifyComment">수정</button>
 					<button class="btn btn-success " type="button" onclick="refresh();">취소</button>
+					<button class="btn btn-success " type="button" onclick="updateComment();">수정</button>
 				</div>
 			</div>
 		</div>
@@ -166,9 +171,9 @@
 					<tr>
 						<th>이전글</th>
 						<td align="center" onclick="prevBoard();" id="prevTd"><span>
-								이전글이 없습니다.</span></td>
+								이전글이 없습니다.</span>
+						</td>
 					</tr>
-
 					<tr>
 						<th>다음글</th>
 						<td align="center" onclick="nextBoard();"><span> 다음글이없습니다.</span></td>
@@ -196,29 +201,7 @@
 		}
 	}
 	
-	// 게시글 수정
-	function updateBoardComment(obj){
-		console.log($(obj).parent().children().eq(0).val());
-		$('#insertComentFrm').css("display","none");
-		$('#modifyCommentContent').css("display","block");
-	}
 	
-	
-	//댓글 삭제
-	function deleteBoardComment(obj){
-		console.log($(obj).parent().children().eq(0).val());
-		 if(confirm('댓글을 삭제 하시겠습니까?')==true){
-			location.href="${pageContext.request.contextPath}/board/deleteBoardComment.do?bNum="+$('#bNum').val()+"&bcNum="+$(obj).parent().children().eq(0).val();
-		}else{
-			return;
-		}
-	}
-
-	// 새로고침
-	function refresh() {
-
-		location.reload();
-	}
 	
 	// 댓글 등록
 	function insertComment(){
@@ -234,6 +217,45 @@
 		}
 	}
 
+	//댓글 삭제
+	function deleteBoardComment(obj){
+		console.log($(obj).parent().children().eq(0).val());
+		 if(confirm('댓글을 삭제 하시겠습니까?')==true){
+			location.href="${pageContext.request.contextPath}/board/deleteBoardComment.do?bNum="+$('#bNum').val()+"&bcNum="+$(obj).parent().children().eq(0).val();
+		}else{
+			return;
+		}
+	}
+	
+	// 댓글 수정 전 확인용 함수
+	function updateBoardComment(obj){
+		console.log('댓글 번호 : '+$(obj).parent().children().eq(0).val());
+		$('#insertComentFrm').css("display","none");
+		$('#modifyCommentContent').css("display","block");
+		
+		$('#updateContent').focus();
+		$('#updateBcNum').val($(obj).parent().children().eq(0).val());
+		$('#updateContent').val($(obj).parent().parent().next().children().text());
+		
+		$('*').removeClass('g');
+		$(obj).parent().parent().next().children().addClass('g');
+	}
+	
+	// 댓글 수정 완료 후 저장 버튼
+	function updateComment(){
+		
+		$('#updateComFrm').submit();
+		
+	}
+
+	// 새로고침
+	function refresh() {
+		if(confirm('댓글 수정을 취소하기겠습니까?')) location.reload();
+		else return;
+	}
+	
+	
+	//이전 글, 다음 글 확인용  
 	$(function() {
 		$('#nextTable tr td').mouseenter(function() {
 			$(this).css({

@@ -31,7 +31,7 @@ ul {
 }
 
 .tableDetil tbody tr th {
-	background-color: #FBFFB9;
+	background-color: #FDD692;
 	width: 15%;
 	text-align: center;
 }
@@ -40,4 +40,15 @@ ul {
 	border: 1px solid #754F44;
 	border-left: none;
 	border-right: none;
+}
+
+.g {
+	 box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem #32ccef;
+}
+
+	
+	/*
+	 */
+/*  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem #32ccef; */
 }

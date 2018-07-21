@@ -51,6 +51,8 @@ public interface BoardService {
 
 	int insertBoardCo(BoardComment bc);
 
+	int updateBoardComment(BoardComment bc);
+
 	/* 예찬 부분 */
 	
 	

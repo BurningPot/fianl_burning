@@ -117,6 +117,11 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSession.insert("boardComment.insertBoardCo",bc);
 	}
 
+	@Override
+	public int updateBoardComment(BoardComment bc) {
+		return sqlSession.update("boardComment.updateBoardComment",bc);
+	}
+
 
 	/*예찬 부분 끝*/
 	

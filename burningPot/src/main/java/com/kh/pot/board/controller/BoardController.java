@@ -43,6 +43,7 @@ public class BoardController {
 	public String boardDetail(@RequestParam("no") int boardNo, Model model){
 		model.addAttribute("board", boardService.selectBoardOne(boardNo));
 		model.addAttribute("boardComList",boardService.selectBoardComment(boardNo));
+		model.addAttribute("preNexList");
 		return "board/boardDetail";
 	}
 	
@@ -165,6 +166,22 @@ public class BoardController {
 		
 		return "common/msg";
 	}
-
+	
+	@RequestMapping(value="/board/updateBoardComment.do", method=RequestMethod.POST)
+	public String updateBoardComment(BoardComment bc, Model model){
+		String msg="";
+		String loc="/board/boardList.do";
+		System.out.println("bc:"+bc);
+		
+		int result = boardService.updateBoardComment(bc);
+		
+		if(result > 0) return "redirect:/board/boardDetail.do?no="+bc.getbNum();
+		else msg="댓글 수정에 실패하였습니다.";
+		
+		model.addAttribute("msg",msg);
+		model.addAttribute("loc",loc);
+		
+		return "common/msg";
+	}
 	
 }
