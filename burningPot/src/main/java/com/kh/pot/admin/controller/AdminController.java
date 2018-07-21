@@ -354,7 +354,9 @@ public class AdminController {
 			@RequestParam(value="upFile", required=false) MultipartFile[] upfiles, 
 			@RequestParam(value="iNum") int iNum, @RequestParam String img, 
 			@RequestParam(value="exdate", required=false, defaultValue="0") int exdate, 
-			@RequestParam String iName, @RequestParam String keyword, Model model){
+			@RequestParam String iName, @RequestParam String keyword,
+			@RequestParam String cName, @RequestParam String subCName,
+			Model model){
 				
 		System.out.println("들어오나요?");
 		System.out.println("img원래것 이름은? :"+img);
@@ -401,11 +403,14 @@ public class AdminController {
 				System.out.println("파일 실존함");
 				file.delete();
 				System.out.println("기존의 "+img+"를 삭제하였다!");				 
-			}			
+			}	
+			
+			model.addAttribute("img", renameFileName);
 		}else{
 			// 사진 수정이 없는 채로 재료의 정보를 수정한다			
 			int result1 = ingService.updateIngInfo(iNum, img, exdate, iName);			
-			System.out.println("재료정보 업데이트 : "+result1);			
+			System.out.println("재료정보 업데이트 : "+result1);
+			model.addAttribute("img", img);
 		}	
 	}
 		
@@ -417,12 +422,16 @@ public class AdminController {
 		String[] keywordArr = keyword.split("#");
 		ingService.insertNewKeyword(iNum, keywordArr);
 		
-		model.addAttribute("commonTitle","재료관리 페이지");
+		model.addAttribute("msg", "재료정보를 수정하였습니다!")
+		.addAttribute("iNum", iNum)
+		.addAttribute("iName", iName)
+		.addAttribute("cName", cName)
+		.addAttribute("subCName", subCName)
+		.addAttribute("exdate", exdate)
+		.addAttribute("keyword", keywordArr);
 		
-		ArrayList<Ingredient> distinctList = (ArrayList<Ingredient>)ingService.selectDistinctName();
-		model.addAttribute("distinctList",distinctList);
 		
-		return "admin/adminIngredient";
+		return "admin/adminResultPage";
 	}
 	
 	@ResponseBody
@@ -486,6 +495,7 @@ public class AdminController {
 	
 	@RequestMapping("admin/insertNewIngredient.do")
 	public String insertNewIngredient(Model model, @RequestParam MultipartFile[] addForUpload,
+			@RequestParam String bigCategory,
 			@RequestParam String subCategory, 
 			@RequestParam String ingName, @RequestParam String exdate,
 			HttpServletRequest request){
@@ -535,15 +545,22 @@ public class AdminController {
 			int iNum = list.get(0).getiNum();
 			//2. 재료의 iNum으로 키워드를 넣는다
 			//INSERT INTO INGREDIENT_KEYWORD VALUES(#{iNum}, #{keyword})
-			String [] keywordArr = {"dummy", iName};	// 서비스단에서 index =1 부터 불러온다..		
+			String [] keywordArr = {"", iName};	// 서비스단에서 index =1 부터 불러온다..		
 			ingService.insertNewKeyword(iNum, keywordArr);
+			model.addAttribute("iNum", iNum)
+			.addAttribute("iName", ingName)
+			.addAttribute("keyword", keywordArr)
+			.addAttribute("cName", bigCategory)
+			.addAttribute("subCName", subCategory)
+			.addAttribute("exdate", exdate)
+			.addAttribute("img", img);
 		}
 	}	
 		
-		model.addAttribute("commonTitle","관리자 페이지");
-		//임시로 header에 관리자의 정보를 넣어야 겠다.	
+		model.addAttribute("msg","새로운 재료를 추가하였습니다!");
 		
-		return "admin/adminHome"; 
+		
+		return "admin/adminResultPage"; 
 	}
 	
 	
