@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<c:set var="now" value="<%=new java.util.Date()%>" />
+<c:set var="sysDate"><fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></c:set> 
+
 <c:import url="/WEB-INF/views/common/header.jsp" />
 <!DOCTYPE html>
 <html>
@@ -71,10 +77,33 @@
 								<td>[${b.category}]</td>
 							</c:if>
 							<c:if test="${b.category ne '공지사항'}">
-								<td>${b.category}</td>
+								<c:if test="${b.category eq 'QNA'}">
+									<td>Q&A</td>
+								</c:if>
+								<c:if test="${b.category ne 'QNA'}">
+									<td>${b.category}</td>
+								</c:if>	
 							</c:if>
-							<td>${b.bTitle}</td>
-							<td>${b.mId}</td>
+							
+							<td>
+								<c:if test="${fn:length(b.bTitle)>30}">
+									${fn:substring(b.bTitle,0,30)} . . .
+								</c:if>
+								<c:if test="${fn:length(b.bTitle)<=30}">
+									${b.bTitle}
+								</c:if>
+								<c:if test="${sysDate eq b.bDate}">
+									<sup><span style="font-size:18px; color:red; text-shadow:2px 2px white;">new</span></sup>
+								</c:if>
+							</td>
+							<td>
+								<c:if test="${fn:length(b.mId)>6}">
+									${fn:substring(b.mId,0,5)} . . .
+								</c:if>
+								<c:if test="${fn:length(b.mId)<=5}">
+									${b.mId}
+								</c:if>
+							</td>
 							<td>${b.bDate}</td>
 							<td>${b.reply}</td>
 							<td>${b.bCount}</td>

@@ -51,6 +51,7 @@ public class MemberController {
 		return map;
 	}
 	
+	// 회원 가입창으로 이동
 	@RequestMapping("/member/memberEnroll.do")
 	public String memberEnroll(){
 		return "member/memberEnroll";
@@ -82,12 +83,13 @@ public class MemberController {
 		return map;
 	}
 	
+	// 메일 전송 창으로 이동
 	@RequestMapping("/member/sendMailView.do")
 	public String sendMailView(){
 		return "member/sendMail";
 	}
 	
-	//	이메일 중복 검사
+	// 이메일 중복 검사
 	@ResponseBody
 	@RequestMapping("/member/checkNameDup.do")
 	public Map<String, Object> checkNameDuplate(@RequestParam String mName){
@@ -152,9 +154,8 @@ public class MemberController {
         	msg = "비정상적인 접근 입니다. 다시 인증해 주세요";
         }
         model.addAttribute("msg",msg);
-        model.addAttribute("loc",loc);
-        
-        return "common/msg";
+       
+        return "common/closeAlert";
     }
 	
     // 메일 인증여부 확인
@@ -178,7 +179,7 @@ public class MemberController {
 		member.setmCategory("회원");
 		
 		/*날짜 변환*/
-		SimpleDateFormat sdf = new SimpleDateFormat("yy/mm/dd"); 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd"); 
 		Date date = sdf.parse(birth);
 		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 		

@@ -48,7 +48,7 @@
 		  <div class="form-group row">
 		    <label for="userName" class="col-sm-2 control-label">닉네임</label>
 		    <div class="col-sm-5">
-		      <input type="text" class="form-control lastChk" name="mName" id="userName" required>
+		      <input type="text" class="form-control lastChk" name="mName" id="userName" placeholder="공백 X, 2-10글자" required>
 		      <div class="invalid-feedback text-left"><p id="wrnMsg3"></p></div>
 		    </div>
 		  </div>
@@ -81,7 +81,7 @@
 		  <div class="form-group row">
 		  	<label for="birth" class="col-sm-2 control-label">생년월일</label>
 		    	<div class="col-sm-5">
-		      		<input type="text" class="form-control lastChk" name="birth" id="birth" placeholder="ex)년도/월/일  -> 00/00/00" required onkeyup="isAbled(this);">
+		      		<input type="text" class="form-control lastChk" name="birth" id="birth" placeholder="생년월일을 입력해주세요! ex) YYMMDD" required onkeyup="isAbled(this);">
 		      		<div class="invalid-feedback text-left"><p id="wrnMsg5"></p></div>
 		    	</div>
 		  </div>
@@ -220,7 +220,7 @@
 	
 	// 생년월일 유효성 검사
 	$('#birth').on('keyup', function(){
-		var regexp =/^[0-9][0-9]\/(([0][0-9])|([1][0-2]))\/([0][0-9]|([1-2][0-9])|[3][0-1])$/;
+		var regexp =/^[0-9][0-9](([0][0-9])|([1][0-2]))([0][0-9]|([1-2][0-9])|[3][0-1])$/;
 		birth = $('#birth').val();
 		
 		if (regexp.test(birth)) {

@@ -23,6 +23,10 @@
 	<insert id="insertBoardCo" parameterType="BoardComment">
 		INSERT INTO BOARD_COMMENT VALUES(SEQ_BOARD_COMMENT.NEXTVAL, #{bNum}, #{mNum}, #{bcContent}, DEFAULT)
 	</insert>
+	
+	<update id="updateBoardComment" parameterType="BoardComment">
+		UPDATE BOARD_COMMENT SET BCCONTENT = #{bcContent} WHERE BCNUM =#{bcNum}
+	</update>
 	<!-- 예찬 -->
 	
 </mapper>

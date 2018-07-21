@@ -123,5 +123,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.insertBoardCo(bc);
 	}
 
+	@Override
+	public int updateBoardComment(BoardComment bc) {
+		return boardDao.updateBoardComment(bc);
+	}
+
 	/* 예찬 부분 */
 }
