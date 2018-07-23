@@ -4,14 +4,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<!-- chart.js -->
+<script src="${pageContext.request.contextPath}/resources/js/admin/Chart.js"></script>
 
-	<%-- <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/bootstrap-4.1.1/bootstrap.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap-4.1.1/bootstrap.css">
- --%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
-           
+	.graph-title{
+		font-size: 200%;
+		text-align: center;
+		padding: 1%;
+	}
+	
+		
+	
+	
    /*
     #FBFFB9
     #FDD692
@@ -39,12 +45,104 @@
             <c:import url="/WEB-INF/views/admin/sideMenu.jsp"/>            
         </div>
     
-        <div class="col-lg-8 offset-lg-2 content" align="center"> 
-        	여기에 관리자 메뉴가 들어가면 좋겠다! 아직은 무엇을 넣을지 생각해보자
+        <div class="col-lg-8 offset-lg-2 content" align="justify">         	
+        	<div class="row">
+        		<!-- 성별분포 그래프 -->
+        		<div class="col-lg-4 offset-lg-2">        	
+        			<canvas id="genderDistribution" width="400" height="400"></canvas>
+        		</div>
+        		
+        		<!-- 연령별 분포 그래프 -->
+        		<div class="col-lg-4 offset-lg-1">
+        			<canvas id="ageDistribution" width="400" height="400"></canvas>
+        		</div>
+        	</div>
+        	<div class="row">
+        		<!-- 가장 레시피 많이 쓴 사람 -->
+        		<div class="col-lg-4 offset-lg-2">        	
+        			
+        		</div>        		
+        		<!-- 가장 인기 많은 레시피 -->
+        		<div class="col-lg-4 offset-lg-1">
+        			
+        		</div>        	
+        	</div>
+        	<div class="row">
+        		<div class="col-lg-4 offset-lg-2 graph-title">회원 성별 분포</div>
+        		<div class="col-lg-4 offset-lg-1 graph-title">회원 연령 분포</div>
+        	</div>
+        	        	
         	<br><br>
         </div>
     </div>
-	
+	<script>
+       	var ctx1 = $("#genderDistribution");
+       	var genderChart = new Chart(ctx1, {
+       	    type: 'pie',
+       	    data: {
+       	        labels: ["남자", "여자"],
+       	        datasets: [{
+       	            
+       	            data: [12, 19],
+       	            backgroundColor: [
+       	                'rgba(255, 99, 132, 0.2)',
+       	                'rgba(54, 162, 235, 0.2)',
+       	                
+       	            ],
+       	            borderColor: [
+       	                'rgba(255,99,132,1)',
+       	                'rgba(54, 162, 235, 1)',       	                
+       	            ],
+       	            borderWidth: 1
+       	        }]
+       	    },
+       	    options: {
+       	    	
+       	        
+       	    }
+       	});
+       	
+       	var ctx2 = $("#ageDistribution");
+       	var ageChart = new Chart(ctx2, {
+       	    type: 'bar',
+       	    data: {
+       	        labels: ["10대이하", "20대", "30대", "40대", "50대이상"],
+       	        datasets: [{
+       	            
+       	            data: [12, 30, 20, 14, 5],
+       	            backgroundColor: [
+       	                'rgba(255, 99, 132, 0.2)',
+       	                'rgba(54, 162, 235, 0.2)',
+       	             	'rgba(255, 206, 86, 0.2)',
+                     	'rgba(75, 192, 192, 0.2)',
+                     	'rgba(153, 102, 255, 0.2)'       	                
+       	            ],
+       	            borderColor: [
+       	                'rgba(255,99,132,1)',
+       	                'rgba(54, 162, 235, 1)',  
+       	             	'rgba(255, 206, 86, 0.2)',
+                  		'rgba(75, 192, 192, 0.2)',
+                  		'rgba(153, 102, 255, 0.2)'
+       	            ],
+       	            borderWidth: 1
+       	        }]
+       	    },
+       	    options: {
+       	    	legend: {
+					display: false
+       	        },
+       	    	
+       	    	scales: {
+       	            yAxes: [{
+       	                ticks: {
+       	                    beginAtZero:true
+       	                }
+       	            }]
+       	        }
+       	    }
+       	});
+       	
+    </script>
 	
 	
 </body>

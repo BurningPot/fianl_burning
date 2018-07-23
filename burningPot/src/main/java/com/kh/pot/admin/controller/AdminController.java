@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -489,7 +491,7 @@ public class AdminController {
 	@ResponseBody
 	@RequestMapping("admin/deleteCategory.do")
 	public int deleteCategory(@RequestParam String cName, @RequestParam String subCName){
-		
+				
 		return ingService.deleteCategory(cName, subCName);
 	}
 	
