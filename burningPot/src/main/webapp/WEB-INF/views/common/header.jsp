@@ -1401,7 +1401,7 @@
 					</div>
 					<c:if test="${m.mId != 'admin'}" >
 				        <div class="login_btn_after">
-			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button">
+			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button"  onclick="location.href='${pageContext.request.contextPath}/mypage/myPage.do'">
 			          			<i class="far fa-user fa-3x"></i>
 				            </button>
 				        </div>
