@@ -35,6 +35,13 @@ function dragDrop(){
 	    cursor: "pointer"
 	});
 	
+	$( "div", $refrigerator ).draggable({
+	    cancel: "a.ui-icon",
+	    revert: "invalid",
+	    helper: "clone",
+	    cursor: "pointer"
+	});
+	
 	$refrigerator.droppable({
 	    accept: "#real-ingre div",
 	    classes: {
@@ -88,7 +95,14 @@ function dragDrop(){
 	    else if($target.is('.inRef')) goToIngre($item);
 	    return false;
 	});
-	
+
+	$ref.on( "click", function( event ) {
+	    var $item = $( this );
+	    $target = $( event.target );
+	    if($target.is('.inIngre')) goToRef($item);
+	    else if($target.is('.inRef')) goToIngre($item);
+	    return false;
+	});
 }
 
 

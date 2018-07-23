@@ -14,5 +14,25 @@
         </if>
 	</select>
 	
+	<select id="checkFridge" parameterType="hashmap" resultType="Fridge">
+		SELECT MNUM, MNAME, MID, INUM, INAME, IIMAGE, FDATE, REMAINDATE FROM FRIDGE
+		JOIN MEMBER USING(MNUM)
+		JOIN INGREDIENT USING(INUM)
+		WHERE MNUM = #{mNum}
+	</select>
+
+	<insert id="insertFridge" parameterType="hashmap">
+        <foreach collection="ref" item="ingredient" open="INSERT ALL " separator=" " close="SELECT * FROM DUAL">
+        	INTO FRIDGE VALUES(#{mNum}, #{ingredient}, DEFAULT, null)
+        </foreach>
+	</insert>
+	
+	<delete id="deleteFridge" parameterType="hashmap">
+		DELETE FROM FRIDGE WHERE MNUM = #{mNum}
+		AND INUM IN
+		<foreach collection="delIngre" item="type" open="(" close=")" separator=",">
+            #{type.iNum}
+        </foreach>
+	</delete>
 	
 </mapper>
