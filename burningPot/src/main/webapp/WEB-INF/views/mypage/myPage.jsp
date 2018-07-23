@@ -156,7 +156,7 @@
                      			data : {
                      				nic: $('#nicName').val(),
                      				email : $('#email').val(),
-                     				password : $('#password').val(),
+                     				password : $('#password').val(),   
                      				mId : $('#mId').val()  
                      			},
                      			success: function(data){
