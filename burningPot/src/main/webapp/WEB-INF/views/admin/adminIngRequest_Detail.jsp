@@ -114,7 +114,7 @@
 				
       </div>
       <div class="modal-footer justify-content-center">        
-        <button type="button" class="btn btn-primary">재료추가하러가기</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/admin/goIng.do'">재료추가하러가기</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div>
     </div>
