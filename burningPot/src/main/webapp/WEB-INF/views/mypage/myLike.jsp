@@ -6,11 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
-	.main{
-		background-image: url("${pageContext.request.contextPath}/resources/img/tlrekd2.jpg");
-		-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;
 
-	}
 
 	.container > ul > li > a{
         text-decoration:none;
@@ -28,46 +24,37 @@
       #refrigerator{             
         text-align: center; 
       }
-      #rec{
-      text-align: center;
-      }
       
       #
 </style>
 <title>마이페이지</title>
 </head>
 <c:import url="/WEB-INF/views/common/header.jsp"/>
-<body>
+<body><div style="height:20%;"></div>
 
-<div style="height:15%;"></div>
-
-<div class="main col-lg-12">
-<br />
-<br />
-	<div class="container col-lg-8 offset-lg-2" style=" width : 100%; height:300px; padding: 1%; background:white; background: 1px solid lightgray;">
+	<div class="container" style=" width : 100%; height:300px; padding: 1%;">
             <div id="myinfo" style="width:49%; height: 100%; float: left; border: 1px solid lightgray">
-                <img src="${pageContext.request.contextPath }/resources/img/dlalwl.jpg" class="rounded float-left" style="width:30%; height: 80%; padding: 1%;">              
-                <input type="hidden" value="${m.mId}" id="mId"/>
-                <!-- 내정보 div -->
+                <img src="${pageContext.request.contextPath }/resources/img/dlalwl.jpg" class="rounded float-left" style="width:30%; height: 80%; padding: 1%;">
+                
                 <div class="row text-center">
+                    
                     <div class="col-sm-12">
                       <br>
-                      	<div class="alert alert-secondary" role="alert">
-                          <td>${m.mId }</td>
-                      	</div>
-                      	<div class="alert alert-success" role="alert">
-                          <td>${ m.mName }</td>
-                      	</div>                                           
-                      	<div class="alert alert-info" role="alert">
+                      <div class="alert alert-secondary" role="alert">
+                          <td>${ m.getmId() }</td>
+                      </div>
+                      <div class="alert alert-success" role="alert">
+                          <td>${ m.getmName() }</td>
+                      </div>                                           
+                      <div class="alert alert-info" role="alert">
                             <td>${ m.getEmail() }</td>
-                      	</div>
-                   </div>
-                 </div>
+                      </div>
+                    </div>
+                    </div>
                                  
-                <div class="col-sm-12">
-                    <button type="button" class="btn btn-default btn-sm" >이미지변경</button>
+                  <div class="col-sm-12">
+                      <button type="button" class="btn btn-default btn-sm" >이미지변경</button>
                     <button type="button" class="btn btn-default btn-sm btn-toggle" data-toggle="modal" data-target="#myModal">정보수정</button>
-                    
                     <!-- 정보수정 모달창 -->
                     <div class="modal fade" id="myModal">
                         <div class="modal-dialog modal-lg">
@@ -100,32 +87,24 @@
                                       <input type="password" class="form-control" id="passwordCheck" data-rule-required="true" placeholder="비밀번호 확인" maxlength="20">
                                   </div>
                               </div>
-                              <!-- <div class="form-group row" id="divNickname">
+                              <div class="form-group row" id="divNickname">
                                   <div class="col-sm-2">
                                     <label for="nickName" class="control-label">닉네임</label>
                                   </div>
                                   <div class="col-sm-7">
                                       <input type="text" class="form-control nickChk" id="nickname" data-rule-required="true" placeholder="닉네임" maxlength="15">
                                       <div class="invalid-feedback text-left"><p id="wrnMsg4"></p></div>
-                                  </div> -->
-										<div class="form-group row">
-											<label for="nicName" class="col-sm-2 control-label">닉네임</label>
-											<div class="col-sm-7">
-												<input type="text" class="form-control lastChk" name="mName"
-													id="nicName"  value="${m.getmName() }" required>
-												<div class="invalid-feedback text-left">
-													<p id="wrnMsg4"></p>
-												</div>
-											</div>
-										</div>
-									
-                              
+                                  </div>
+                                  <div id="ChackNic">
+                                    <button type="button" class="btn btn-default btn-sm" id="Dup">중복확인</button>
+                                  </div>
+                              </div>
                               <div class="form-group row" id="divEmail">
                                     <div class="col-sm-2">
                                       <label for="inputEmail" class="control-label">이메일</label>
                                     </div>
                                     <div class="col-sm-7">
-                                      <input type="text" class="form-control" id="email" data-rule-required="true" placeholder="이메일" maxlength="20" value="${m.getEmail() }">
+                                      <input type="text" class="form-control" id="email" data-rule-required="true" placeholder="이메일" maxlength="20">
                                     </div>
                              </div>
                              <div class="form-group row" id="gender">
@@ -144,31 +123,6 @@
                           </div>
                         </div>
                      </div>
-                     <script>
-                     $(function(){
-                    	 console.log('아이디'+$('#mId').val());
-                     });
-                     	$('#sjBtn').on('click', function(){
-                     		console.log("ㅔ들어오냐");
-                     		               		
-                     		$.ajax({
-                     			url : "${pageContext.request.contextPath}/mypage/mypageEnrollEnd.do",
-                     			data : {
-                     				nic: $('#nicName').val(),
-                     				email : $('#email').val(),
-                     				password : $('#password').val(),
-                     				mId : $('#mId').val()
-                     			},
-                     			success: function(data){
-                     				alert(data+"수정완료. 재로그인하세요");
-                     				location.href="${pageContext.request.contextPath}/member/memberLogout.do";
-                     			},
-                     			error : function(){
-                     				alert("실패");
-                     			}
-                     		})
-                     	});
-                     </script>
                     <button type="button" class="btn btn-default btn-sm">회원탈퇴</button>
                   </div>
                 </div>
@@ -179,7 +133,7 @@
                       뭐가들어가야 할까나
                       
                   </div>    
-                  <button type="button" class="btn btn-default btn-sm">내 냉장고 가기</button>
+                  <button type="button" class="btn btn-default btn-sm">내 냉장고 가기</button>            
             </div>
           </div> 
 
@@ -187,32 +141,34 @@
             <br>                        
               <ul class="nav nav-tabs nav-justified " style="background-color :#FDD692">
                   <li class="nav-item">
-                    <a class="na na1 nav-link active" href="#">내가 올린 레시피</a>
+                    <a class="na na1 nav-link " href="${pageContext.request.contextPath}/mypage/myPage.do">내가 올린 레시피</a>
                   </li>
                   <li class="nav-item">
                     <a class="na na2 nav-link" href="${pageContext.request.contextPath}/mypage/myPosts.do">내가 쓴 글</a>
                   </li>
                   <li class="nav-item">
-                    <a class="na na3 nav-link" href="${pageContext.request.contextPath}/mypage/myLike.do">좋아요</a>
+                    <a class="na na3 nav-link active" href="#">좋아요</a>
                   </li>
                 </ul><br>              
                 
-
-	
-			<div id="mp1" class="col-lg-12" style="padding : 0;">
-          <table id="mypage1" class="table table-hover" style="border: 1px solid lightgray;">
-            <tbody style="background : white; border:1px solid ligntgray;">
-              <tr id="rec" style="border: 2px solid saddlebrown">
-                  <th width="10%">번호</th>
-                  <th width="30%">제목</th>
-                  <th width="15%">작성자</th>
-                  <th width="20%">작성일</th>
-                  <th width="10%">조회</th>
-                  <th width="15%">
-                    수정|삭제
-                  </th>
-              </tr>
-              <c:forEach items="${ list }" var="b">
+                <br>
+                <br>
+            
+            
+            <div id="mp3"  class="col-lg-12" style="padding : 0">
+            <table id="mypage3" class="table table-hover" style="border: 1px solid lightgray;">
+                <tbody>
+                  <tr  id="he" style="border: 2px solid saddlebrown">               
+                      <th width="10%">번호</th>
+                      <th width="30%">제목</th>
+                      <th width="15%">작성자</th>
+                      <th width="20%">작성일</th>
+                      <th width="10%">조회</th>
+                      <th width="15%">
+                        수정|삭제
+                      </th>
+                  </tr>
+                  <c:forEach items="${ list }" var="b">
               <tr id="${b.bNum }">
                 <td>${b.bNum }</td>
                   <td>${b.bTitle }</td>
@@ -220,17 +176,14 @@
                   <td>${b.bDate }</td>
                   <td>${b.bCount }</td>
                   <td>
-                      <button type="button" class="btn btn-default btn-sm" onclick="updateDev();">수정</button>
-                      <button type="button" class="btn btn-default btn-sm deleteMyBoard">삭제</button>
-                  </td>                    
-              </tr>
-              </c:forEach>
-              
-            </tbody>
-          </table>
-
-
-                             <%-- 페이지바를 위한 Utils의 정적메소드 사용 --%> 
+                          <button type="button" class="btn btn-default btn-sm" onclick="updateDev();">수정</button>
+                          <button type="button" class="btn btn-default btn-sm" onclick="updateDev();"  id="deleteMyBoard">삭제</button>
+                        </td>
+                    </tr>
+                    </c:forEach>                   
+                </tbody>    
+              </table>
+              	                            <%-- 페이지바를 위한 Utils의 정적메소드 사용 --%> 
    <% 
       int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
       int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
@@ -244,34 +197,31 @@
          
       }
      %>
-   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "myPage.do") %>
-   </div>
-<br />
-<br />
+   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "myLike.do") %>              
           </div>
-          
+          </div>
           <script>
           
        // 이름 유효성 검사
-      	$('#nicName').on('keyup', function(){
-      		if(/^([가-힣a-zA-Z]{2,10})$/.test($('#nicName').val())){
+      	$('#nickName').on('keyup', function(){
+      		if(/^([가-힣a-zA-Z]{2,10})$/.test($('#nickName').val())){
       			$.ajax({
-      				url:"${pageContext.request.contextPath}/mypage/checkNicDup.do",
-      				data:{mName:$('#nicName').val()},
+      				url:"${pageContext.request.contextPath}/member/checkNameDup.do",
+      				data:{mName:$('#nickName').val()},
       				dataType:"json",
       				success: function(data){
       					if(data.isUsable == true){ 
-      						$('#nicName').removeClass("is-invalid");
-      						$('#nicName').addClass('is-valid');
-      						$('#nicName').removeClass('lastChk');
+      						$('#nickName').removeClass("is-invalid");
+      						$('#nickName').addClass('is-valid');
+      						$('#nickName').removeClass('nickChk');
       						
-      						if(!$('input').hasClass('is-invalid') && !$('input').hasClass('lastChk')){
+      						if(!$('input').hasClass('is-invalid') && !$('input').hasClass('nickChk')){
       					 		$('#sjBtn').attr('disabled',false);
       					 	}
       					}else{
-      						$('#nicName').removeClass("is-valid");
-      						$('#nicName').addClass('is-invalid');
-      						$('#wrnMsg4').text('이미 존재하는 닉네임입니다.');
+      						$('#nickName').removeClass("is-valid");
+      						$('#nickName').addClass('is-invalid');
+      						$('#Dup').text('이미 존재하는 닉네임입니다.');
       					}
       					
       				}, error:function(error, msg){
@@ -279,9 +229,9 @@
       				}
       			});
       		}else{
-      			$('#nicName').removeClass("is-valid");
-      			$('#nicName').addClass('is-invalid');
-      			$('#wrnMsg4').text('닉네임을 2-10 글자 사이로 정해주세요, 특수 X');
+      			$('#nickName').removeClass("is-valid");
+      			$('#nickName').addClass('is-invalid');
+      			$('#wrnMsg3').text('닉네임을 2-10 글자 사이로 정해주세요, 특수 X');
       		}
       		
       	});
@@ -314,17 +264,17 @@
                   // $('.nav-link').css('border','1px solid red');
                });
                
-               $('.deleteMyBoard').on('click',function(){
+               $('#deleteMyBoard').on('click',function(){
            		//게시글 지워지게 한다
-           		var bNum = $(this).parent().parent().children().eq(0).text();
-           		console.log(bNum);
-           		 $.ajax({
+           		var bNum = $('.first-row').eq(2).children().eq(1).text();            		
+           		
+           		$.ajax({
            			url : "${pageContext.request.contextPath}/mypage/myPage.do",
            			data:{
            				bNum : bNum
            			}, success: function(data){
            				alert("게시글을 삭제했습니다");
-           				location.href="${pageContext.request.contextPath}/mypage/myPage.do";
+           				location.href="${pageContext.request.contextPath}/mypage/${servletMapping}";
            			}, error: function(){
            				alert("게시글을 삭제하는데 실패하였습니다");
            			}
@@ -332,6 +282,5 @@
            		
            	});
              </script>
-           </div>  
 </body>
 </html>

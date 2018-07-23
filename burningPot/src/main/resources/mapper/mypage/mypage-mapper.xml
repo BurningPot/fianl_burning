@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mypage">
+	
+	
+	<select id="selectMyBoardList" resultMap="myBoard">
+		SELECT * FROM BOARD B JOIN MEMBER M ON(B.MNUM=M.MNUM) ORDER BY CATEGORY DESC, BNUM DESC
+	</select>
+	
+	<select id="selectMyBoardTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
+	
+	<select id="checkNicDuplicate" resultType="_int">
+		SELECT COUNT(*) AS CNT FROM MEMBER WHERE MNAME = #{mName}
+	</select>
+	
+	<update id="updatemypageEnrollEnd" parameterType="hashmap">
+		UPDATE MEMBER SET MNAME = #{nic}, PASSWORD = #{password}, EMAIL = #{email} WHERE MID = #{mId}
+	</update>
+	
+	
+	<resultMap type="board" id="myBoard">
+		<result column="BNUM" property="bNum"/>
+		<result column="CATEGORY" property="category"/>
+		<result column="BTITLE" property="bTitle"/>
+		<result column="MNUM" property="mNum"/>
+		<result column="BDATE" property="bDate"/>
+		<result column="BCONTENT" property="bContent"/>
+		<result column="REPLY" property="reply"/>
+		<result column="BCOUNT" property="bCount"/>
+		<result column="MID" property="mId"/>
+		<result column="MNAME" property="mName"/>
+	</resultMap>
+	
+	
+	
+
+</mapper>
