@@ -30,7 +30,7 @@
             <div class="row" style="height:1vh;"></div>
                 <div id="ingredient" class="rounded p-4">
                     <div id="real-ingre" class="row">  
-                    	<!-- 재료 부분 -->     
+                   	<!-- 재료 부분 -->     
                     </div>
                 </div>
             </div>
@@ -41,16 +41,25 @@
                 <div id="ref-box" class="ref">
                     <div class="blank"></div>
                     <div id="refrigerator" class="rounded m-r" style="background: rgb(218, 241, 238); height:40vh; padding-top:1vh; padding-left:0.5vh;">
-                        <div id="real-ref" class="row" style="margin-left:0.2vh; margin-right:0.5vh;"></div>
+                        <div id="real-ref" class="row" style="margin-left:0.2vh; margin-right:0.5vh;">
+							<c:forEach var="fri" items="${list}">
+								<div class="ingre m-1" id="${fri.iNum}">
+									<img src="${pageContext.request.contextPath}/resources/img/ingredient/${fri.iImage}" alt="ingredient image" class="rounded-circle inRef" title="${fri.iName}">
+								</div>								
+							</c:forEach>
+                        </div>
                     </div>
                 </div>
                 <div style="height:5vh;">
-                    <button class="btn btn-block com" onclick="refMain();">수정 완료</button>
+                    <button class="btn btn-block com" onclick="updateComplete();">수정 완료</button>
                 </div>
             </div>
         </div>
         <div class="row" style="height:10vh;"></div>
     </div>
+    <form id="refUpdate">
+    	<input type="hidden" id="inRef" name="inRef"/>
+    </form>
 
 <script>
 	$(document).ready(checkCategory('Abg-1'));
@@ -63,7 +72,7 @@
 		$('#real-ref').children().each(function(){
 			inRef.push($(this).attr('id'));  
 		}); 
-
+		
 	    jQuery.ajaxSettings.traditional = true;
 	    $.ajax({
 	    	url : "${pageContext.request.contextPath}/fridge/checkCategory.do",
@@ -83,15 +92,18 @@
     	});
 	}
 	 
-    function refMain(){
-    	var inRef = [];
-		$('#real-ref').children().each(function(){
-			inRef.push($(this).attr('id'));  
+    function updateComplete(){
+		var arr = new Array;
+    	$('#real-ref').children().each(function(){
+			arr.push($(this).attr('id'));
 		}); 
-		
-		location.href="${pageContext.request.contextPath}/fridge/refMain.do?inRef="+inRef;
+   		$('#inRef').val(arr);
+		console.log(typeof($('#inRef').val()));
+		console.log($('#inRef').val());
+
+ 		$("#refUpdate").attr("action","${pageContext.request.contextPath}/fridge/updateComplete.do");
+		$("#refUpdate").submit();
     }
-	    
 </script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/fridge/jquery-ui/jquery-ui.min.js"></script>

@@ -22,15 +22,11 @@
 	                <div class="blank"></div>
 	                <div class="rounded p-r m-r">
 	                    <div class="recipe row">
-							<div class="ingre m-1">
-								<img src="${pageContext.request.contextPath}/resources/img/ingredient/ing_104.jpg" alt="ingredient image" class="rounded-circle inIngre" title="오징어">
-							</div>
-							<div class="ingre m-1">
-								<img src="${pageContext.request.contextPath}/resources/img/ingredient/ing_24.jpg" alt="ingredient image" class="rounded-circle inIngre" title="고사리">
-							</div>    
-							<div class="ingre m-1">
-								<img src="${pageContext.request.contextPath}/resources/img/ingredient/ing_4.jpg" alt="ingredient image" class="rounded-circle inIngre" title="LSD">
-							</div>    							    
+							<c:forEach var="fri" items="${list}">
+								<div class="ingre m-1">
+									<img src="${pageContext.request.contextPath}/resources/img/ingredient/${fri.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${fri.iName}">
+								</div>								
+							</c:forEach>
 	                    </div>                        
 	                </div>
 	            </div>
@@ -125,6 +121,10 @@
 	    </div>
 	    <div class="row" style="height:10vh;"></div>
 	</div>
+	<script>
+		/* $(document).ready(function(){}); */
+	</script>
+
 	
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/fridge/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/fridge/js/hkLocal.js"></script>	
