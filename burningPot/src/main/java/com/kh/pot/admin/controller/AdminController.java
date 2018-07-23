@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pot.admin.model.service.AdminService;
 import com.kh.pot.admin.model.vo.PageInfo;
 import com.kh.pot.board.model.service.BoardService;
 import com.kh.pot.board.model.vo.Board;
@@ -29,9 +27,6 @@ import com.kh.pot.ingredient.model.service.IngredientService;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.service.MemberService;
 import com.kh.pot.member.model.vo.Member;
-
-
-@SessionAttributes(value={"mId"})
 
 @Controller
 public class AdminController {
@@ -45,13 +40,23 @@ public class AdminController {
 	@Autowired
 	IngredientService ingService;
 	
+	@Autowired
+	AdminService adminService;
 	
 	// 관리자 홈
 	@RequestMapping("/admin/goAdmin.do")
 	public String goAdminMenu(Model model){
 		model.addAttribute("commonTitle","관리자 페이지");
-		//임시로 header에 관리자의 정보를 넣어야 겠다.	
-		     
+		//1. 연령별 회원분포 정보
+		ArrayList<Integer> ageList = (ArrayList<Integer>) adminService.selectAgeCount();
+			
+		//2. 성별 회원분포 정보
+		ArrayList<Integer> genderList = (ArrayList<Integer>)adminService.selectGenderCount();
+		
+		
+		model.addAttribute("age",ageList)
+		.addAttribute("gender", genderList);
+		
 		return "admin/adminHome";
 	}
 	

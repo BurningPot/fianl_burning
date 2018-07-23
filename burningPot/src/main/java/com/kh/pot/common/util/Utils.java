@@ -61,7 +61,7 @@ public class Utils {
 		//[다음] section
 		if(cPage >= totalPage){
 			pageBar += "<li class='page-item disabled'>";
-			pageBar += "<a class='page-link' href='#'>다음1</a>";
+			pageBar += "<a class='page-link' href='#'>다음</a>";
 			pageBar += "</li>";
 			
 		} else {

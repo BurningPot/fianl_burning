@@ -26,9 +26,6 @@
     */
 </style>
 
-
-
-
 <title>관리자페이지</title>
 </head>
 <body>
@@ -68,14 +65,22 @@
         		</div>        	
         	</div>
         	<div class="row">
-        		<div class="col-lg-4 offset-lg-2 graph-title">회원 성별 분포</div>
-        		<div class="col-lg-4 offset-lg-1 graph-title">회원 연령 분포</div>
+        		<div class="col-lg-4 offset-lg-2 graph-title">회원 성별 분포(명)</div>
+        		<div class="col-lg-4 offset-lg-1 graph-title">회원 연령 분포(명)</div>
         	</div>
         	        	
         	<br><br>
         </div>
     </div>
+    
 	<script>
+		$(function(){
+			
+			
+		})
+	
+	
+	
        	var ctx1 = $("#genderDistribution");
        	var genderChart = new Chart(ctx1, {
        	    type: 'pie',
@@ -83,15 +88,15 @@
        	        labels: ["남자", "여자"],
        	        datasets: [{
        	            
-       	            data: [12, 19],
-       	            backgroundColor: [
-       	                'rgba(255, 99, 132, 0.2)',
-       	                'rgba(54, 162, 235, 0.2)',
-       	                
+       	            data: [${gender[0]}, ${gender[1]}],
+       	            backgroundColor: [       	                
+       	                'rgba(54, 162, 235, 0.5)',  
+       	            	'rgba(255, 99, 132, 0.5)'
        	            ],
        	            borderColor: [
-       	                'rgba(255,99,132,1)',
-       	                'rgba(54, 162, 235, 1)',       	                
+       	            	'rgba(54, 162, 235, 1)', 
+       	                'rgba(255,99,132,1)'
+       	                      	                
        	            ],
        	            borderWidth: 1
        	        }]
@@ -102,27 +107,28 @@
        	    }
        	});
        	
-       	var ctx2 = $("#ageDistribution");
+       	var ctx2 = $("#ageDistribution");       	
+       	      		
        	var ageChart = new Chart(ctx2, {
        	    type: 'bar',
        	    data: {
        	        labels: ["10대이하", "20대", "30대", "40대", "50대이상"],
        	        datasets: [{
        	            
-       	            data: [12, 30, 20, 14, 5],
+       	            data: [${age[0]}, ${age[1]}, ${age[2]}, ${age[3]}, ${age[4]}], 
        	            backgroundColor: [
-       	                'rgba(255, 99, 132, 0.2)',
-       	                'rgba(54, 162, 235, 0.2)',
-       	             	'rgba(255, 206, 86, 0.2)',
-                     	'rgba(75, 192, 192, 0.2)',
-                     	'rgba(153, 102, 255, 0.2)'       	                
+       	                'rgba(255, 99, 132, 0.5)',
+       	                'rgba(54, 162, 235, 0.5)',
+       	             	'rgba(255, 206, 86, 0.5)',
+                     	'rgba(75, 192, 192, 0.5)',
+                     	'rgba(153, 102, 255, 0.5)'       	                
        	            ],
        	            borderColor: [
        	                'rgba(255,99,132,1)',
        	                'rgba(54, 162, 235, 1)',  
-       	             	'rgba(255, 206, 86, 0.2)',
-                  		'rgba(75, 192, 192, 0.2)',
-                  		'rgba(153, 102, 255, 0.2)'
+       	             	'rgba(255, 206, 86, 1)',
+                  		'rgba(75, 192, 192, 1)',
+                  		'rgba(153, 102, 255, 1)'
        	            ],
        	            borderWidth: 1
        	        }]
@@ -131,7 +137,7 @@
        	    	legend: {
 					display: false
        	        },
-       	    	
+       	        
        	    	scales: {
        	            yAxes: [{
        	                ticks: {

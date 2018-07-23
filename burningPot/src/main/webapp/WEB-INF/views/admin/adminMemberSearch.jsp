@@ -329,6 +329,7 @@
             		$('#name').text(name);
             		$('#id').text(id);
             		$('#email').text(email);
+            		$('#photo').children('img').attr('src', '${pageContext.request.contextPath}/resources/img/'+picture);
             		if(gender == 'M'){
             			$('#gender').children('.fa-venus').css('display','none');
             			$('#gender').children('.fa-mars').css('display','inline');
