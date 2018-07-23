@@ -61,11 +61,12 @@
 </head>
 <form>
 <div class="col-lg-12 navi">
+	<div>관리자 홈</div>
 	<div>신고</div>
     <div>문의</div>
     <div>재료요청</div>
     <div>회원조회</div>
-    <div>재료추가</div>  
+    <div>재료관리</div>  
 </div>
 </form>
 <script>
@@ -82,24 +83,27 @@
 		});
 	})
 
-
 	$('.navi').children().eq(0).on('click',function(){
+		//신고 메뉴로가기
+		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goAdmin.do").submit();			
+	})
+	$('.navi').children().eq(1).on('click',function(){
 		//신고 메뉴로가기
 		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goReport.do").submit();			
 	})
-	$('.navi').children().eq(1).on('click',function(){
+	$('.navi').children().eq(2).on('click',function(){
 		//문의 메뉴로가기
 		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goQNA.do").submit();				
 	})
-	$('.navi').children().eq(2).on('click',function(){
+	$('.navi').children().eq(3).on('click',function(){
 		//재료요청 메뉴로가기
 		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goRequestIngredient.do").submit();		
 	})
-	$('.navi').children().eq(3).on('click',function(){
+	$('.navi').children().eq(4).on('click',function(){
 		//회원조회 메뉴로가기		
 		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goSearchMember.do").submit();			
 	})
-	$('.navi').children().eq(4).on('click',function(){
+	$('.navi').children().eq(5).on('click',function(){
 		//재료추가 메뉴로가기
 		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goIng.do").submit();
 	})
