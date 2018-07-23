@@ -157,7 +157,7 @@
                      				nic: $('#nicName').val(),
                      				email : $('#email').val(),
                      				password : $('#password').val(),
-                     				mId : $('#mId').val()
+                     				mId : $('#mId').val()  
                      			},
                      			success: function(data){
                      				alert(data+"수정완료. 재로그인하세요");
