@@ -1,10 +1,3 @@
-/*--------------------------------------------------------------------
- *JAVASCRIPT "FakeLoader.js"
- *Version:    1.1.0 - 2014
- *author:     João Pereira
- *website:    http://www.joaopereira.pt
- *Licensed MIT 
------------------------------------------------------------------------*/
 (function ($) {
  
     $.fn.fakeLoader = function(options) {
@@ -17,11 +10,11 @@
             zIndex: '999',  // Default zIndex 
             bgColor: '#2ecc71', // Default background color
             spinner:'spinner1', // Default Spinner
-            imagePath:'resources/img/Loading5.gif' // Default Path custom image
+            imagePath:'/pot/resources/img/Loading5.gif' // Default Path custom image
         }, options);
 
         //Customized Spinners
-        var spinner01 = "<div class='fl spinner1'><img class='loading_img' src='resources/img/Loading5.gif'></div>"; 
+        var spinner01 = "<div class='fl spinner1'><img class='loading_img' src='/pot/resources/img/Loading5.gif'></div>"; 
         
         //The target
         var el = $(this);
@@ -52,7 +45,7 @@
 
                 //Add customized loader image
 
-                if (settings.imagePath != 'resources/img/Loading5.gif') {
+                if (settings.imagePath != '/pot/resources/img/Loading5.gif') {
                     el.html('<div class="fl"><img src="'+settings.imagePath+'"></div>');
                 }
                 centerLoader();

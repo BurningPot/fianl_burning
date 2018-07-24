@@ -13,4 +13,14 @@ public interface MainDao {
 	
 	int selectCountAllRecipe();
 
+	List<Recipe> searchRecipe(String search);
+
+	int searchTotalCount(String keyWord);
+
+	List<Recipe> searchRecipeList(HashMap<String, Object> map);
+
+	int searchTotalCountHome(String search);
+
+
+	
 }
