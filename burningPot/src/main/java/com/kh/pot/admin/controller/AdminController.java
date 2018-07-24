@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pot.admin.model.service.AdminService;
 import com.kh.pot.admin.model.vo.PageInfo;
+import com.kh.pot.admin.model.vo.Statistics;
 import com.kh.pot.board.model.service.BoardService;
 import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.board.model.vo.BoardComment;
@@ -41,7 +42,7 @@ public class AdminController {
 	IngredientService ingService;
 	
 	@Autowired
-	AdminService adminService;
+	AdminService adminService;	
 	
 	// 관리자 홈
 	@RequestMapping("/admin/goAdmin.do")
@@ -53,8 +54,15 @@ public class AdminController {
 		//2. 성별 회원분포 정보
 		ArrayList<Integer> genderList = (ArrayList<Integer>)adminService.selectGenderCount();
 		
+		//3. 가장 인기 있는 레시피
+		ArrayList<Statistics> popularRecipe = (ArrayList<Statistics>)adminService.selectPopularRecipeRanking();
 		
+		//4. 레시피 가장 많이 쓴 사람
+		ArrayList<Statistics> topWriter =(ArrayList<Statistics>)adminService.selectTopWriter();
+				
 		model.addAttribute("age",ageList)
+		.addAttribute("popularRecipe", popularRecipe)
+		.addAttribute("topWriter", topWriter)
 		.addAttribute("gender", genderList);
 		
 		return "admin/adminHome";

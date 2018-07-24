@@ -2,7 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="member">
 	<!-- HYD -->
+	<select id="selectPopularRecipeRanking" resultType="Statistics">
+		<![CDATA[
+		SELECT * FROM (SELECT RANK() OVER(ORDER BY COUNT(RE.MNUM) DESC) RANKING, RNUM, RNAME, M.MNAME, COUNT(RE.MNUM) COUNTING FROM RECOMMEND RE 
+		JOIN RECIPE RP USING(RNUM)
+		JOIN MEMBER M ON(M.MNUM = RP.MNUM)
+		GROUP BY RNUM, RNAME, M.MNAME) WHERE RANKING <=5	
+		]]>
+	</select>
+	<select id="selectTopWriter" resultType="Statistics">
+		<![CDATA[
+		SELECT * FROM (SELECT RANK() OVER(ORDER BY COUNT(RNUM) DESC) RANKING, MNAME, COUNT(RNUM) COUNTING FROM RECIPE 
+		JOIN MEMBER USING(MNUM)
+		GROUP BY MNAME ORDER BY COUNT(RNUM) DESC) WHERE RANKING <=5
+		]]>
+	</select>
 	
+		
 	<select id="selectAgeCount" resultType="_int">
 		<![CDATA[
 		SELECT COUNT(AGE) AGECOUNT FROM(SELECT MNAME, FLOOR((MONTHS_BETWEEN(SYSDATE, BIRTHDATE))/12) AGE FROM MEMBER) WHERE AGE <20

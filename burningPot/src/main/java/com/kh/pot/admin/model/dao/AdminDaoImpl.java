@@ -6,6 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.pot.admin.model.vo.Statistics;
+
 @Repository
 public class AdminDaoImpl implements AdminDao {
 
@@ -22,6 +24,18 @@ public class AdminDaoImpl implements AdminDao {
 	public List<Integer> selectGenderCount() {
 		
 		return sqlSession.selectList("member.selectGenderCount");
+	}
+
+	@Override
+	public List<Statistics> selectPopularRecipeRanking() {
+		
+		return sqlSession.selectList("member.selectPopularRecipeRanking");
+	}
+
+	@Override
+	public List<Statistics> selectTopWriter() {
+		
+		return sqlSession.selectList("member.selectTopWriter");
 	}
 
 }
