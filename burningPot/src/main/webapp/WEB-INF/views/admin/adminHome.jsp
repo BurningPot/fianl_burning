@@ -79,7 +79,7 @@
         			<div class="row" style="padding:0.5%;">
         				<div class="col-lg-2">${top.ranking}</div>
         				<div class="col-lg-7">${top.mName }</div>        				
-        				<div class="col-lg-2">${top.counting }</div>
+        				<div class="col-lg-2">${top.counting }개</div>
         			</div>
         			</c:forEach>
         		</div>  
