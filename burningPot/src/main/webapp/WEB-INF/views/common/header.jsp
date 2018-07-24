@@ -1406,7 +1406,7 @@
 				            </button>
 				        </div>
 				        <div class="regist_recipe_btn_after">
-				          <button class="menuBtn_after" data-tooltip-text="Recipe Regist!!">
+				          <button class="menuBtn_after" data-tooltip-text="Recipe Regist!!" onclick="location.href='${pageContext.request.contextPath}/recipe/recipeForm.do'">
 				              <i class="fas fa-utensils fa-3x"></i>
 				          </button>
 				        </div>

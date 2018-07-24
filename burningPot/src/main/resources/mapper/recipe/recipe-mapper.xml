@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="recipe">
 
-	<select id="selectCategoryList" resultType="String">
-		SELECT CNAME
-		FROM INGREDIENT_CATEGORY
-		GROUP BY CNAME
-		ORDER BY 1 ASC
+	<select id="selectCategoryList" resultType="ingredient">
+		SELECT *
+		FROM (SELECT CNAME, SUBSTR(CATEGORY,0,1) AS CATEGORY FROM INGREDIENT_CATEGORY)
+	    GROUP BY CNAME, CATEGORY
+	    ORDER BY 2
 	</select>
 	
 	<select id="selectIngredientList" parameterType="String" resultType="ingredient">
@@ -21,16 +21,41 @@
 	</select>
 	
 	<insert id="insertRecipe">
-		<selectKey keyProperty="recipeNo" resultType="_int" order="AFTER">
+		<selectKey keyProperty="rNum" resultType="_int" order="AFTER">
 			SELECT SEQ_RECIPE.CURRVAL FROM DUAL
 		</selectKey>
 		INSERT INTO RECIPE VALUES
-		(SEQ_RECIPE.NEXTVAL, 2, '칠리 새우 덮밥', 'TEST.PNG', 2, 2, 0, '1,3,10', 
-		'100g,2T,1/2개', '참기름,2스푼|양파,1/2개|파슬리가루,한꼬집', DEFAULT, '나가서 사먹지 마세요~!', 0, 0, 0)
+		(SEQ_RECIPE.NEXTVAL, #{mNum}, #{rName}, #{rImg}, #{quantity}, #{rTime}, #{rLevel}, #{iNum}, 
+		#{iQuan}, #{subIngredient}, DEFAULT, #{rIntro}, 0, 0, 0)
 	</insert>
 	
+	
 	<insert id="insertRecipeContent">
-		INSERT INTO RECIPE_CONTENT VALUES(1, #{recipeNo}, 'TEST.PNG', '새우는 물에 넣고 해동시켜주세요.');
+		INSERT INTO RECIPE_CONTENT VALUES(#{rStep}, #{rNum}, #{rContent}, #{rContentimg})
 	</insert>
+	
+	<select id="selectRecipeDetail" parameterType="_int" resultType="recipe">
+		SELECT RNUM, R.MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT, M.MNAME
+		FROM RECIPE R 
+		JOIN (SELECT MNAME, MNUM FROM MEMBER) M
+		ON (R.MNUM = M.MNUM)
+		WHERE RNUM = #{rNum}
+	</select>
+	
+	<select id="selectMainIngredientList" parameterType="hashmap" resultType="ingredient">
+		SELECT INAME, SUBSTR(CATEGORY,0,1) AS CATEGORY, INUM
+		FROM INGREDIENT
+		WHERE INUM IN 
+			<foreach item="name" collection="mainName" open="(" close=")" separator=",">
+				#{name}
+			</foreach>
+	</select>
+	
+	<select id="selectContentList" parameterType="_int" resultType="recipeContent">
+		SELECT *
+		FROM RECIPE_CONTENT
+		WHERE RNUM = #{rNum}
+		ORDER BY RSTEP ASC
+	</select>
 	
 </mapper>
