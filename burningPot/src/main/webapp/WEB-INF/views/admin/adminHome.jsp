@@ -14,8 +14,10 @@
 		text-align: center;
 		padding: 1%;
 	}
+	.popular-recipe, .top-writer{
+		text-align: center;
+	}
 	
-		
 	
 	
    /*
@@ -53,21 +55,56 @@
         		<div class="col-lg-4 offset-lg-1">
         			<canvas id="ageDistribution" width="400" height="400"></canvas>
         		</div>
-        	</div>
-        	<div class="row">
-        		<!-- 가장 레시피 많이 쓴 사람 -->
-        		<div class="col-lg-4 offset-lg-2">        	
-        			
-        		</div>        		
-        		<!-- 가장 인기 많은 레시피 -->
-        		<div class="col-lg-4 offset-lg-1">
-        			
-        		</div>        	
-        	</div>
+        	</div>       	
         	<div class="row">
         		<div class="col-lg-4 offset-lg-2 graph-title">회원 성별 분포(명)</div>
         		<div class="col-lg-4 offset-lg-1 graph-title">회원 연령 분포(명)</div>
         	</div>
+        	<br /><br /><br /><br />
+        	        
+        	<div class="row" style="text-align: center; font-size:200%;">
+        		<div class="col-lg-4 offset-lg-2">작성한 레시피 갯수</div>
+        		<div class="col-lg-4 offset-lg-1">가장 인기있는 레시피</div>
+        	</div>
+        	<br />  
+        	<div class="row">
+        		<!-- 가장 레시피 많이 쓴 사람 -->  
+        		<div class="col-lg-4 offset-lg-2 test top-writer">
+        			<div class="row" style="padding:1%; background: #754F44; color:#FDD692">
+        				<div class="col-lg-2" style="color: gold"><i class="fas fa-trophy"></i></div>
+        				<div class="col-lg-7">작성자</div>        				
+        				<div class="col-lg-2" style="color:gold"><i class="fas fa-file-alt"></i></i></div>
+        			</div>
+        			<c:forEach items="${topWriter}" var="top">
+        			<div class="row" style="padding:0.5%;">
+        				<div class="col-lg-2">${top.ranking}</div>
+        				<div class="col-lg-7">${top.mName }</div>        				
+        				<div class="col-lg-2">${top.counting }</div>
+        			</div>
+        			</c:forEach>
+        		</div>  
+        	
+        	
+        		<!-- 가장 인기 많은 레시피 -->
+        		<div class="col-lg-4 offset-lg-1 test popular-recipe">        	
+        			<div class="row" style="padding:1%; background: #754F44; color:#FDD692">
+        				<div class="col-lg-1" style="color: gold"><i class="fas fa-trophy"></i></div>
+        				<div class="col-lg-3">작성자</div>
+        				<div class="col-lg-6">레시피이름</div>
+        				<div class="col-lg-2" style="color:gold"><i class="far fa-thumbs-up"></i></div>
+        			</div>
+        			<c:forEach items="${popularRecipe}" var="pop">
+        			<div class="row" style="padding:0.5%;">
+        				<div class="col-lg-1">${pop.ranking}</div>
+        				<div class="col-lg-3">${pop.mName }</div>
+        				<div class="col-lg-6">${pop.rName }</div>
+        				<div class="col-lg-2">${pop.counting }</div>
+        			</div>
+        			</c:forEach>
+        		</div>        		
+        		      	
+        	</div>        
+        	        
         	        	
         	<br><br>
         </div>
