@@ -28,9 +28,22 @@
    						<div class='img_hover_area'>${recipe.rName}</div> 
    					</div>
    					<div class='recipe_levle_and_time_and_writer_area'>
-   						<div class='recipe_level'>${recipe.rLevel}</div>
-   						<div class='recipe_time'>${recipe.rTime}</div>
-   						<div class='recipe_writer'>${recipe.quantity}</div>
+   						<div class='recipe_level'>
+   							<c:if test="${4 eq recipe.rLevel}">
+   								최상
+   							</c:if>
+   							<c:if test="${3 eq recipe.rLevel}">
+   								상
+   							</c:if>
+   							<c:if test="${2 eq recipe.rLevel}">
+   								중
+   							</c:if>
+   							<c:if test="${1 eq recipe.rLevel}">
+   								하
+   							</c:if>
+   						</div>
+   						<div class='recipe_time'>${recipe.rTime} 분</div>
+   						<div class='recipe_writer'>${recipe.quantity} 인분</div>
    					</div>
    				</li>
 			</c:forEach>
@@ -87,11 +100,11 @@
                		for (var i = 0; i < data.length; i++) {
                
             			console.log("count : " + count);
-                		if(data[i].rLevel == 0){
+                		if(data[i].rLevel == 1){
                 			level="하";
-                		} else if(data[i].rLevel == 1){
+                		} else if(data[i].rLevel == 2){
                 			level="중";
-                		} else if(data[i].rLevel == 2) {
+                		} else if(data[i].rLevel == 3) {
                 			level="상";
                 		} else {
                 			level="최상";

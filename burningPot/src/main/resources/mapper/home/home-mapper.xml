@@ -23,5 +23,31 @@
 		SELECT COUNT(*) FROM RECIPE
 	</select>
 	
+	<!-- parameterType="Dao에서 넘기는 값의 형태", resultType="어떤 정보들을 받아 오는지의 타입" -->
+	<select id="searchRecipe" parameterType="string" resultType="recipe">
+		<![CDATA[
+		SELECT ROWNUM, RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+       	FROM RECIPE R 
+       	WHERE R.SUBINGREDIENT LIKE '%'||#{search}||'%' OR R.RNAME LIKE '%'||#{search}||'%' AND ROWNUM >=1 AND ROWNUM <=8
+       	]]>
+	</select>
+	
+	<select id="searchTotalCountHome" resultType="_int">
+		SELECT COUNT(*) 
+       	FROM RECIPE R 
+       	WHERE R.SUBINGREDIENT LIKE '%'||#{search}||'%' OR R.RNAME LIKE '%'||#{search}||'%'
+	</select>
+	
+	<select id="searchRecipeList" resultType="recipe" parameterType="hashmap">
+		<![CDATA[
+		SELECT C.* FROM (SELECT ROWNUM AS "R", rName FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY QUANTITY) C 
+		WHERE C.R >= #{searchStartCount} AND C.R <= #{searchEndCount} 
+		ORDER BY ROWNUM
+		]]>
+	</select>
+		
+	<select id="searchTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM RECIPE R WHERE R.SUBINGREDIENT LIKE '%'||#{search}||'%' OR R.RNAME LIKE '%'||#{search}||'%'
+	</select>
 	
 </mapper>

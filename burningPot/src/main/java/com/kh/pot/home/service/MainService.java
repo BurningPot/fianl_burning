@@ -11,4 +11,14 @@ public interface MainService {
 	List<Recipe> selectShowHome();
 
 	int selectCountAllRecipe();
+
+	List<Recipe> searchRecipe(String search);
+
+	int searchTotalCount(String keyWord);
+
+	List<Recipe> searchRecipeList(int searchStartCount, int searchEndCount, String keyWord);
+
+	int searchTotalCountHome(String search);
+
+	
 }

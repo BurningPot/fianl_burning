@@ -37,4 +37,48 @@ public class MainServiceImpl implements MainService{
 		return mainDao.selectCountAllRecipe();
 	}
 
+	@Override
+	public List<Recipe> searchRecipe(String search) {
+
+		return mainDao.searchRecipe(search);
+	}
+
+	@Override
+	public int searchTotalCount(String keyWord) {
+		// TODO Auto-generated method stub
+		return mainDao.searchTotalCount(keyWord);
+	}
+
+	@Override
+	public List<Recipe> searchRecipeList(int searchStartCount, int searchEndCount, String keyWord) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("searchStartCount", searchStartCount);
+		map.put("searchEndCount", searchEndCount);
+		map.put("keyWord", keyWord);
+		
+		
+		return mainDao.searchRecipeList(map);
+	}
+
+	@Override
+	public int searchTotalCountHome(String search) {
+		// TODO Auto-generated method stub
+		return mainDao.searchTotalCountHome(search);
+	}
+
+
+//	@Override
+//	public List<Recipe> searchListScroll(int searchStartRecipe, int searchEndRecipe) {
+//		// List는 2개의 값을 동시에 보낼 수 없으므로, Map을 사용하여 DB에 보낸다.
+//		HashMap<String, Integer> searchMap = new HashMap<String, Integer>();
+//		searchMap.put("searchStartRecipe", searchStartRecipe);
+//		searchMap.put("searchEndRecipe", searchEndRecipe);
+//			
+//		return mainDao.searchListScroll(searchMap);
+//	}
+
+
+
 }

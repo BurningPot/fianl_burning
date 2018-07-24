@@ -17,7 +17,7 @@
 			href="${pageContext.request.contextPath}/resources/css/bootstrap-4.1.1/bootstrap.css">
 		<script
 			src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 		<script
 			src="${pageContext.request.contextPath}/resources/js/bootstrap-4.1.1/bootstrap.js"></script>
 		
@@ -36,6 +36,18 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
 		
 		<style>
+			/* 검색된 레시피 갯수 css */
+			.searchRecipeCountArea{
+				/* text-align: center; */
+			    font-size: 18px;
+			    color: #333;
+			    padding: 10px 0 20px 8px;
+			}
+			.searchRecipeCountArea > b{
+				color: #74b243; /* 폰트 색상 */
+			    font-size: 30px;
+		    }
+		
 			/* 말풍선 */
 			[data-tooltip-text]:hover {
 	          position: relative;
@@ -1326,21 +1338,21 @@
 </head>
 
 <body>
-		
 		<nav class="n-header navbar navbar-inverse">
 			<div class="header_content container-fluid">
 				<div class="b-seg-logo navbar-header">
 					<div class="logo_wrap navbar-brand">
 						<%-- <a class="home_btn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath}/main.jsp'"> --%>
-						<a class="home_btn" onclick="location.href='${pageContext.request.contextPath}/main.jsp'">
+						<a class="home_btn" onclick="location.href='showHome.do'">
 							<img class="img-logo" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</a>
 					</div>
 				</div>
 				<div class="b-seg-search nav navbar-nav">
 					<div class="search_bar_area active">
-						<input class="search_bar" type="text" placeholder="">
-						<button class="btn_search" type="submit">
+						<!-- 검색창 -->
+						<input class="search_bar" id="searchRecipe" type="text" placeholder="">
+						<button class="btn_search" type="button" onclick="searchRecipe();">
 							<img class="btn_img"
 								src="${pageContext.request.contextPath }/resources/img/돋보기.PNG">
 						</button>
@@ -1363,7 +1375,7 @@
 	      		<div class="b-seg-right_before nav navbar-nav navbar-right">
 					<div class="menu_full">
 				      	<div class="menu_home_btn">
-							<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath}/main.jsp'">
+							<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
 								<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 							</button>
 						</div>
@@ -1395,18 +1407,18 @@
       		  <div class="b-seg-right_after nav navbar-nav navbar-right">
 			      <div class="menu_full">
 		      	  	<div class="menu_home_btn_after">
-						<button class="menuBtn_after" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath}/main.jsp'">
+						<button class="menuBtn_after" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
 					<c:if test="${m.mId != 'admin'}" >
 				        <div class="login_btn_after">
-			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button"  onclick="location.href='${pageContext.request.contextPath}/mypage/myPage.do'">
+			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button">
 			          			<i class="far fa-user fa-3x"></i>
 				            </button>
 				        </div>
 				        <div class="regist_recipe_btn_after">
-				          <button class="menuBtn_after" data-tooltip-text="Recipe Regist!!" onclick="location.href='${pageContext.request.contextPath}/recipe/recipeForm.do'">
+				          <button class="menuBtn_after" data-tooltip-text="Recipe Regist!!">
 				              <i class="fas fa-utensils fa-3x"></i>
 				          </button>
 				        </div>
@@ -1472,7 +1484,7 @@
 			      </div>
 			      <div class="menu_before">
 			      	<div class="menu_home_btn_before">
-						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath}/main.jsp'">
+						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
@@ -1503,7 +1515,7 @@
 			      </div>
 			      <div class="menu_after">
 			      	<div class="menu_home_btn_after">
-						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath}/main.jsp'">
+						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
@@ -1609,7 +1621,7 @@
 	            $('#loginFrm').submit();
 	        }
 	    });
-	    
+	    	    
 	    function logoutFn(){
 	    	if (confirm("로그아웃 하시겠습니까??") == true){//확인
 		    	location.href='${pageContext.request.contextPath}/member/memberLogout.do'
@@ -1710,6 +1722,18 @@
    	<!-- 희준 script -->
 	<script>
 	
+	function searchRecipe(){
+		$('#searchRecipe').on('')
+		console.log("검색 값 : " + $('#searchRecipe').val());
+				
+		location.href="${pageContext.request.contextPath}/home/searchRecipe.do?searchR="+$('#searchRecipe').val();
+	}
+	
+	$('#searchRecipe').keypress(function(event){
+    	if(event.key == 'Enter'){
+    		searchRecipe();
+    	}
+    });
 	 /* $(window).resize(function () {
 	        // width값을 가져오기
 	        var chk = true;
