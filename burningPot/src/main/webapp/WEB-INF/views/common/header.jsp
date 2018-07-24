@@ -17,7 +17,7 @@
 			href="${pageContext.request.contextPath}/resources/css/bootstrap-4.1.1/bootstrap.css">
 		<script
 			src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 		<script
 			src="${pageContext.request.contextPath}/resources/js/bootstrap-4.1.1/bootstrap.js"></script>
 		
@@ -1605,10 +1605,19 @@
 					</div>
 				</form>
 				<!-- SNS 로그인 -->
-				<div class="text-center" style="margin-top: 1%">
-					<a href="#"><img height="42"
-						src="${pageContext.request.contextPath }/resources/img/facebook_login.png" /></a>
-				</div>
+	              <div class="text-center">   
+		          	<a href="${url}"><img height="40" src="resources/img/login/naver_Green.PNG"/></a>                
+		       	  </div>
+		       	  <div class="text-center" style="margin-top:1%">   
+		          	<a href="#"><img height="42"
+						src="${pageContext.request.contextPath }/resources/img/login/facebook_login.png" /></a>     
+		       	  </div>
+		       	 <div class="text-center" style="margin-top:1%">
+		       	  <a id="custom-login-btn" href="javascript:loginWithKakao()">
+					<img src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" height="40" width="185"/>
+				  </a>
+				 </div>
+				 
 				<br />
 				<!-- SNS 로그인 끝 -->
 			</div>

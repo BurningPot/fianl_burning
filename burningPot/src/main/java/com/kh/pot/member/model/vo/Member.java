@@ -128,6 +128,13 @@ public class Member implements Serializable{
 		this.enrollDate = enrollDate;
 	}
 
+	@Override
+	public String toString() {
+		return "Member [mNum=" + mNum + ", mCategory=" + mCategory + ", mId=" + mId + ", password=" + password
+				+ ", email=" + email + ", mName=" + mName + ", gender=" + gender + ", birthDate=" + birthDate
+				+ ", mPicture=" + mPicture + ", expel=" + expel + ", enrollDate=" + enrollDate + "]";
+	}
+
 	
 	
 	

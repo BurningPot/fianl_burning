@@ -1,28 +1,30 @@
 package com.kh.pot.member.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.kh.pot.common.emailHandler.MailHandler;
-import com.kh.pot.common.emailHandler.TempKey;
+import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.kh.pot.common.login.StringtoVo;
 import com.kh.pot.member.model.service.MemberService;
 import com.kh.pot.member.model.vo.Member;
+import com.kh.pot.member.model.vo.NaverLoginVO;
 
 @SessionAttributes(value={"m"})
 @Controller
@@ -30,6 +32,50 @@ public class MemberController {
 
 	@Autowired
 	MemberService memberService;
+	
+	/* naverLoginVO */
+	private NaverLoginVO naverLoginVO;
+	private String apiResult = null;
+	
+	@Autowired
+	private void setnaverLoginVO(NaverLoginVO naverLoginVO) {
+		this.naverLoginVO = naverLoginVO;
+	}
+
+	
+	//네이버 로그인 성공시 callback호출 메소드
+	@RequestMapping(value = "/callback.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
+			throws IOException {
+		System.out.println("여기는 callback");
+		OAuth2AccessToken oauthToken;
+        oauthToken = naverLoginVO.getAccessToken(session, code, state);
+        //로그인 사용자 정보를 읽어온다.
+	    apiResult = naverLoginVO.getUserProfile(oauthToken);
+		model.addAttribute("result", apiResult);
+		System.out.println("apiResult:"+apiResult);
+		
+		StringtoVo stv = new StringtoVo();
+		
+		// 결과 정보를 멤버 Vo로 변환
+		Member m = stv.naverToVo(apiResult);
+		
+		// 아이디 중복 검사
+		if(memberService.checkIdDuplicate(m.getmId()) == 0){
+			memberService.insertMember(m);
+		}
+		
+		String msg="";
+		String loc="/";
+		
+		msg="환영합니다.!!"+m.getmName()+" 님";
+		model.addAttribute("m",m);
+		
+		model.addAttribute("msg",msg);
+		model.addAttribute("loc",loc);
+		
+		return "/common/msg";
+	}
 	
 /*	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -144,7 +190,6 @@ public class MemberController {
 								Model model) throws Exception { 
 
         String msg="";
-        String loc="/";
         
         int result = memberService.userAuth(userEmail, memberAuthKey);
 
