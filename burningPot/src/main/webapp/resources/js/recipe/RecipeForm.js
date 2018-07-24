@@ -112,6 +112,11 @@ $(function () {
     $('#submitBtn').on('click', function(e) {
         if(confirm('작성을 완료하시겠습니까?')){
         	if(validate()){
+        		
+        		$('.recipeContentForm').each(function(index, value) {
+        			$(this).children().siblings().find('.recipeContent').val($(this).children().siblings().find('.recipeContent').val().replace(/(\n|\r\n)/g, '<br>'));
+        		});
+        		
         		console.log("작성완료");
         	} else {
         		console.log("빈칸있음");

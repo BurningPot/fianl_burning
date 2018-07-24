@@ -10,6 +10,7 @@
 		<typeAlias type="com.kh.pot.ingredient.model.vo.IngredientKeyword" alias="ingredientKeyword"/>
 		<typeAlias type="com.kh.pot.recipe.model.vo.Recipe" alias="recipe"/>
 		<typeAlias type="com.kh.pot.board.model.vo.BoardComment" alias="boardComment"></typeAlias>
+		<typeAlias type="com.kh.pot.recipe.model.vo.RecipeContent" alias="recipeContent"></typeAlias>
 	</typeAliases>
 	
 	<!-- <typeHandlers>

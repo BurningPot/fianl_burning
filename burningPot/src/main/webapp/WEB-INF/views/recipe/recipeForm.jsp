@@ -18,16 +18,16 @@
     <body>
         <c:import url="/WEB-INF/views/common/header.jsp" />
         
-        <!-- 야매로 공간할당을 주어 처리한 부분 -->
 		<div style="height: 20%;"></div>
         
         <div class="container">
 
-            <form action="insertRecipe.do" method="POST">
+            <form action="insertRecipe.do" method="POST" enctype="multipart/form-data">
                 <!-- 레시피 정보 입력 영역 -->
                 <div class="row recipeBox mt-5">
                     <div class="col-sm-9 pl-3 mt-3 mb-3 testCss">
                         <div class="input-group mt-3 align-self-center">
+            				<input type="hidden" name="mNum" value="${m.mNum}" />
                             <label class="mb-0 align-self-center dataTitle" style="width:130px;" for="recipeTitle" id="recipeTitle-add"><b>레시피 제목</b></label>
                             &nbsp;&nbsp;&nbsp;
                             <input type="text" class="form-control textStyle focusChk" name="rName" id="recipeTitle" placeholder="레시피 제목을 입력해주세요." aria-label="recipeTitle" aria-describedby="recipeTitle-add">
@@ -76,7 +76,7 @@
                     </div>
                     <div class="col-sm-3 card align-self-center titleImgAreaDiv mt-3 mb-3" style="border:none;">
                         <img class="card-img titleImage" id="titleImgArea" src="${pageContext.request.contextPath}/resources/img/recipe/titleImg.PNG" alt="대표사진">
-                        <input type="file" id="titleImg" class="fileArea" multiple="multiple" name="rImg" onchange="LoadImg(this,1)">
+                        <input type="file" id="titleImg" class="fileArea" name="rImgFile" onchange="LoadImg(this,1)">
                     </div>
                 </div>  
                 
@@ -97,7 +97,7 @@
                                     <select class="custom-select selectStyle category" name="category">
                                         <option value="0" selected>카테고리</option>
                                         <c:forEach items="${categoryList}" var="c">
-                                        	<option value="${c}">${c}</option>
+                                        	<option value="${c.category}">${c.cName}</option>
                                         </c:forEach>
                                     </select>
                                     &nbsp;&nbsp;&nbsp;

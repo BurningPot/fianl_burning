@@ -18,10 +18,10 @@ public class Recipe implements Serializable{
 	private int quantity;			// 인분 (2인분)
 	private int rTime;				// 조리시간
 	private int rLevel;				// 조리난이도
-//	private int iNum;			// 재료번호(주재료)
-//	private String iQuan;			// 재료 수량(주재료)
-	private List<Integer> iNum;
-	private List<String> iQuan;
+	private String iNum;			// 재료번호(주재료)
+	private String iQuan;			// 재료 수량(주재료)
+//	private List<String> iNum;
+//	private List<String> iQuan;
 	private String subIngredient;	// 첨가물(부재료)
 	private Date rDate;				// 등록일
 	private String rIntro;			// 요리소개
@@ -34,7 +34,7 @@ public class Recipe implements Serializable{
 	}
 
 	public Recipe(int rNum, int mNum, String mName, String mId, String rName, String rImg, int quantity, int rTime,
-			int rLevel, List<Integer> iNum, List<String> iQuan, String subIngredient, Date rDate, String rIntro, int rReport,
+			int rLevel, String iNum, String iQuan, String subIngredient, Date rDate, String rIntro, int rReport,
 			int rRecommend, int rCount) {
 		super();
 		this.rNum = rNum;
@@ -128,19 +128,19 @@ public class Recipe implements Serializable{
 		this.rLevel = rLevel;
 	}
 
-	public List<Integer> getiNum() {
+	public String getiNum() {
 		return iNum;
 	}
 
-	public void setiNum(List<Integer> iNum) {
+	public void setiNum(String iNum) {
 		this.iNum = iNum;
 	}
 
-	public List<String> getiQuan() {
+	public String getiQuan() {
 		return iQuan;
 	}
 
-	public void setiQuan(List<String> iQuan) {
+	public void setiQuan(String iQuan) {
 		this.iQuan = iQuan;
 	}
 
