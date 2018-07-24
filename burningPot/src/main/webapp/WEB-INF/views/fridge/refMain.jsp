@@ -20,7 +20,7 @@
 	        <div class="col-sm-4 ref-side">
 	            <div class="ref">
 	                <div class="blank"></div>
-	                <div class="rounded p-r m-r">
+	                <div id="refrigerator" class="rounded p-r m-r">
 	                    <div class="recipe row">
 							<c:forEach var="fri" items="${list}">
 								<div class="ingre m-1">

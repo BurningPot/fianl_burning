@@ -38,9 +38,6 @@ public class FridgeServiceImpl implements FridgeService {
 		String[] ref = inRef.split(",");
 		List<String> inputIngre = new ArrayList<String>();
 		Collections.addAll(inputIngre, ref);
-		/*inputIngre = Arrays.asList(ref);*/
-		
-		
 		Map<String, Object> data = new HashMap<String, Object>();
 		
 		data.put("mNum", mNum);
@@ -54,22 +51,24 @@ public class FridgeServiceImpl implements FridgeService {
 		
 		if(checkFridge.isEmpty() || checkFridge == null) {
 			data.put("ref", inputIngre);
-			result = friDao.insertFridge(data);
+			friDao.insertFridge(data);
+		} else if(inputIngre.isEmpty() || inputIngre.get(0).equals("")){
+			data.put("delIngre", checkFridge);
+			friDao.deleteFridge(data);
 		} else {
-			for(Fridge origin : checkFridge){ 
-				for(int i=0 ; i<ref.length ; i++){
-					if(origin.getiNum() == Integer.parseInt(ref[i])){
-						System.out.println("그대로 유지된 물품 : "+origin.getiName()+"("+origin.getiNum()+")");
+			for(Fridge origin : checkFridge){
+				for(int i=0 ; i<inputIngre.size() ; i++){
+					if(origin.getiNum() == Integer.parseInt(inputIngre.get(i))) {
 						inIngre.add(origin);
 					}
 				}
 			}
+			
 			System.out.println("유지된 물품 수 : "+inIngre.size());
 			delIngre.addAll(checkFridge);
 			System.out.println("지우기 전 물품 수 : "+delIngre.size());
 			delIngre.removeAll(inIngre);
 			
-			Collections.copy(inputIngre, newIngre);
 			newIngre.addAll(inputIngre);
 			for(int i = 0 ; i < newIngre.size() ; i++){
 				for(Fridge fri : inIngre){
