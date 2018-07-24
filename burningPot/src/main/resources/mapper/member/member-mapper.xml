@@ -91,7 +91,7 @@
 	 -->
 	<insert id="insertMember" parameterType="Member">
 		INSERT INTO MEMBER VALUES(SEQ_MEMBER.NEXTVAL, #{mCategory}, 
-						#{mId}, #{password}, #{email}, #{mName}, #{gender}, #{birthDate}, DEFAULT ,
+						#{mId}, #{password}, #{email}, #{mName}, #{gender}, #{birthDate}, #{mPicture},
 						DEFAULT, SYSDATE)
 	</insert>
 	

@@ -2,24 +2,40 @@ package com.kh.pot.home.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.kh.pot.board.model.service.BoardService;
 import com.kh.pot.fridge.model.service.FridgeService;
 import com.kh.pot.home.service.MainService;
 import com.kh.pot.ingredient.model.service.IngredientService;
 import com.kh.pot.member.model.service.MemberService;
+import com.kh.pot.member.model.vo.NaverLoginVO;
 import com.kh.pot.mypage.model.service.MypageService;
 import com.kh.pot.recipe.model.service.RecipeService;
 import com.kh.pot.recipe.model.vo.Recipe;
 
 @Controller
 public class MainController {
+	
+	/* NaverLoginBO */
+	private NaverLoginVO naverLoginBO;
+	private String apiResult = null;
+	
+	@Autowired
+	private void setNaverLoginBO(NaverLoginVO naverLoginBO) {
+		this.naverLoginBO = naverLoginBO;
+	}
+
+
 
 	
 	@Autowired
@@ -112,7 +128,7 @@ public class MainController {
 	// 6. Recipe 객체를 불러와서 Main.jsp에 레시피 명, 난이도, 소요시간, 작성자 불러오는 메소드
 
 	@RequestMapping(value = {"showHome.do", "home/showHome.do"})
-	public String showHome(Model model){
+	public String showHome(Model model, HttpSession session){
 		System.out.println("showHome");
 		
 		List<Recipe> list = mainService.selectShowHome();
@@ -120,6 +136,17 @@ public class MainController {
 		model.addAttribute("list", list);
 		
 		System.out.println("showHome list : "+list);
+		
+		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
+		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+		
+		//https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=sE***************&
+		//redirect_uri=http%3A%2F%2F211.63.89.90%3A8090%2Flogin_project%2Fcallback&state=e68c269c-5ba9-4c31-85da-54c16c658125
+		System.out.println("네이버:" + naverAuthUrl);
+		
+		//네이버 
+		model.addAttribute("url", naverAuthUrl);
+
 		return "main";
 	}
 	

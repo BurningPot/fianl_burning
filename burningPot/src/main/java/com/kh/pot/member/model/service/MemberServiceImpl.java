@@ -67,6 +67,10 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public int insertMember(Member member) {
+		if(member.getmPicture()==null){
+			member.setmPicture("defaultPerson.png");
+		}
+		
 		return memberDao.insertMember(member);
 	}
 
