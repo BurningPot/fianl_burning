@@ -1427,8 +1427,8 @@
 				              <i class="far fa-list-alt fa-3x"></i>
 				          </button>
 				        </div>
-				        <div class="fredge_btn_after" data-tooltip-text="Fredge!!">
-				          <button class="menuBtn_after">
+				        <div class="fredge_btn_after" data-tooltip-text="냉장고!!">
+				          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/fridge/refMain.do'">
 				              <img class="fredge_img" src="${pageContext.request.contextPath }/resources/img/fredge_btn_img.jpg"/>
 				          </button>
 				        </div>
