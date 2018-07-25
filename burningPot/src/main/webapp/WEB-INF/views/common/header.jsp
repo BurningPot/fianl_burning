@@ -1606,7 +1606,7 @@
 				</form>
 				<!-- SNS 로그인 -->
 	              <div class="text-center">   
-		          	<a href="${url}"><img height="40" src="${pageContext.request.contextPath}/resources/img/login/naver_Green.PNG"/></a>                
+		          	<a href="${pageContext.request.contextPath}/login/naverLog.do"><img height="40" src="${pageContext.request.contextPath}/resources/img/login/naver_Green.PNG"/></a>                
 		       	  </div>
 		       	  <div class="text-center" style="margin-top:1%">   
 		          	<a href="#"><img height="42"
