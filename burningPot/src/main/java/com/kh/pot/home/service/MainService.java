@@ -20,5 +20,13 @@ public interface MainService {
 
 	int searchTotalCountHome(String search);
 
+	int inquiryTotalCount(String keyWord);
+
+	List<Recipe> inquiryRecipeListBefore(String keyWord);
+
+	List<Recipe> inquiryRecipeListAfter(String keyWord, int inquiryStartCount, int inquiryEndCount);
+	
+	
+
 	
 }

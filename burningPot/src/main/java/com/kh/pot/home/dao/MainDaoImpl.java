@@ -61,12 +61,33 @@ public class MainDaoImpl implements MainDao{
 		return sqlSession.selectOne("home.searchTotalCountHome", search);
 	}
 
+	@Override
+	public int inquiryTotalCount(String keyWord) {
 
-//	@Override
-//	public List<Recipe> searchListScroll(HashMap<String, Integer> searchMap) {
-//
-//		return sqlSession.selectList("home.searchListScroll", searchMap);
-//	}
+		return sqlSession.selectOne("home.inquiryTotalCount", keyWord);
+	}
+
+	@Override
+	public List<Recipe> inquiryRecipeListBefore(String keyWord) {
+
+		List<Recipe> rlist = sqlSession.selectList("home.inquiryRecipeListBefore", keyWord);
+		
+		System.out.println("inquiryRecipeList DaoImpl : " + rlist);
+		
+		return rlist;
+	}
+
+	@Override
+	public List<Recipe> inquiryRecipeListAfter(HashMap<String, Object> map) {
+
+		List<Recipe> rlist = sqlSession.selectList("home.inquiryRecipeListAfter", map);
+		
+		for(int i = 0 ; i<rlist.size(); i++){
+			System.out.println("조회수 순서로 정렬 후 무한 스크롤 : " + rlist.get(i).getrName());
+		}
+		
+		return rlist;
+	}
 
 	
 }

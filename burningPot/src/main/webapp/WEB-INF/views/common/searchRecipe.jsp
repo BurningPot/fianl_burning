@@ -3,14 +3,108 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
+	<head>
+		<style>
+			.searchBtnUl{
+				width: 100%;
+				height:100%;
+				list-style: none;
+				float: left;
+			    padding-top: 15%;
+    			padding-left: 12%;
+			}
+			.searchBtnUl li {
+				width: 15%; 
+				height:100%; 
+				float: left; 
+				margin: 0;
+			    margin-left: 1%;
+				text-align: center;
+				
+			}
+			/* 
+				a:link = 방문 전 링크 상태 
+				a:visited = 방문 후 링크 상태
+				a:hover = 마우스 오버했을 때 링크 상태
+				a:active = 클릭했을 때 링크 상태
+			*/
+			
+			.searchBtnA1{
+				display: block; 
+				font-size: 25px;
+				width:100%; 
+				height: 100%;
+				background: #c3e6cb;
+				border: none;
+				
+			}
+			.searchBtnA2{
+				display: block; 
+				font-size: 25px;
+				width:100%; 
+				height: 100%;
+				background: #bee5eb;
+				border: none;
+			}
+			.searchBtnA3{
+				display: block; 
+				font-size: 25px;
+				width:100%; 
+				height: 100%;
+				background: #ffeeba;
+				border: none;
+			}
+			.searchBtnA4{
+				display: block; 
+				font-size: 25px;
+				width:100%; 
+				height: 100%;
+				background: #f2dede;
+				border: none;
+			}
+			
+			 /* 이렇게 줄 경우 전체에 영향을 줌 */
+			/*
+			a:link {text-decoration: none; color: #333333;}
+			a:visited {text-decoration: none; color: #333333;}
+			a:active {text-decoration: none; color: #333333;}
+			a:hover {text-decoration: none; color: #333333;} */
+			
+			/* .searchBtnA searchBtnA:link {
+				text-decoration: none; color: #333333;
+			}
+			.searchBtnA searchBtnA:visited {
+				text-decoration: none; color: #333333;
+			}
+			.searchBtnA searchBtnA:hover {
+				text-decoration: none; color: #333333;
+			}
+			.searchBtnA searchBtnA:active {
+				text-decoration: none; color: #333333;
+			} */
+			
+			 
+			
+		</style>
+	</head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 	<div style="height: 15%;"></div>
 	<div id="fakeLoader"></div>
 	<div class="b-seg" id="b-seg">
-		<div class="searchRecipeCountArea">
-			<b>"${searchRecipeWord}"</b>으로 검색한 결과 입니다.<br>
-			총 <b>${searchTotalCount}</b>개의 맛있는 레시피가 있습니다.
+		<div class="searchResultAndsearchBtn">
+			<div class="searchRecipeCountArea">
+				<b>"${searchRecipeWord}"</b>으로 검색한 결과 입니다.<br>
+				총 <b>${searchTotalCount}</b>개의 맛있는 레시피가 있습니다.
+			</div>
+			<div class="searchBtn">
+				<ul class="searchBtnUl">
+		          <li><button type="button" class="searchBtnA1" onclick="inquiry();">조회</button></li>
+		          <li><button type="button" class="searchBtnA2" onclick="recommand();">추천</button></li>
+		          <li><button type="button" class="searchBtnA3" onclick="cookTime();">시간</button></li>
+		          <li><button type="button" class="searchBtnA4" onclick="cookLevel();">난이도</button></li>
+		        </ul>
+			</div>
 		</div>
 		<ul class="recipeList">
 			<c:forEach items="${searchRecipeList}" var="searchRecipe">
@@ -55,18 +149,18 @@
 	</div>
 
 	<script>
-	
 		var count = 9;
 		var keyWord = '${searchRecipeWord}';
+		var num = '${searchTotalCount}';
 		console.log("keyWord : " + keyWord);
-		
+		console.log("totalCount : " + num);
 		$(document).mouseup(function(e){
 		    var container = $('.menuContainer');
 		    if(!container.is(e.target) && container.has(e.target).length === 0){
 		    	container.hide();
 		    }
 		});
-		$(window).bind("scroll", infinityScrollFunction);
+		$(window).bind("scroll", infinityScrollFunction); // 하나만 있어도 스크롤 관련된 부분이 다 처리됨
 		
 		function infinityScrollFunction(){
 			
@@ -114,6 +208,153 @@
 	                		} else {
 	                			level="최상";
 	                		}
+	            			$("<li>" + 
+	               				"<div class='like_and_aver_area'>" +
+	               					"<div class='like_btn_area'>" +
+	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='heartClicked(this);'>" +
+	               							"<i class='far fa-thumbs-up'></i>" +
+	               						"</button>" +
+	               					"</div>" + 
+	               					"<div class='aver_btn_area'>" + 
+	               						"<h5>" + str1 + "</h5>"+
+	               					"</div> " +
+	               				"</div>" + 
+	               				"<div class='recipe_img_area'>" +
+	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+	               				"</div>" +
+	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+	               					"<div class='recipe_level'>" + level + "</div>" +
+	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+	               				"</div>" +
+	               			"</li>").appendTo(".recipeList");
+		            		}
+	            		
+	            	}, error : function(data){
+	            		console.log("검색 후 레시피 불러오기를 실패하였습니다.");
+	            	}
+	            })       
+			}
+        }
+		
+		function inquiry(){
+			count = 9;
+			var keyWord = '${searchRecipeWord}';
+			var str1 = "★채우는 공간";   
+            var str2 = "Recipe !";
+			console.log("keyWord : " + keyWord);
+			$.ajax({
+				url : "${pageContext.request.contextPath}/home/inquiryBefore.do",
+				dataType : "json",
+				type : "GET",
+				data : {
+					keyWord : keyWord
+				}, success : function(data){
+					console.log("조회순서로 정렬 성공!");
+					var level = "";
+					// 기존 scroll이벤트 제거
+					$(window).unbind("scroll");
+					$(".recipeList").empty();
+					
+            		for(var i = 0; i < data.length; i++){
+            			console.log("count : " + count);
+            			if(data[i].rLevel == 1){
+                			level="하";
+                		} else if(data[i].rLevel == 2){
+                			level="중";
+                		} else if(data[i].rLevel == 3) {
+                			level="상";
+                		} else {
+                			level="최상";
+                		}
+					$("<li>" + 
+          				"<div class='like_and_aver_area'>" +
+          					"<div class='like_btn_area'>" +
+          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='heartClicked(this);'>" +
+          							"<i class='far fa-thumbs-up'></i>" +
+          						"</button>" +
+          					"</div>" + 
+          					"<div class='aver_btn_area'>" + 
+          						"<h5>" + str1 + "</h5>"+
+          					"</div> " +
+          				"</div>" + 
+          				"<div class='recipe_img_area'>" +
+          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+          				"</div>" +
+          				"<div class='recipe_levle_and_time_and_writer_area'>" +
+          					"<div class='recipe_level'>" + level + "</div>" +
+          					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+          					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+          				"</div>" +
+          			"</li>").appendTo(".recipeList");
+            		}
+            		/* $(document).mouseup(function(e){
+            		    var container = $('.menuContainer');
+            		    if(!container.is(e.target) && container.has(e.target).length === 0){
+            		    	container.hide();
+            		    }
+            		}); */
+
+            		$(window).bind("scroll", inquiryInfinityScrollFunction);
+            		
+				}, error : function(data){
+					console.log("조회 순서로 정렬 실패!");
+				}
+			});
+		}
+		
+		function inquiryInfinityScrollFunction(){
+			//var endCount = ${inquiryEndCount};
+			//console.log("endCount : " + endCount);
+			//if(endCount <= num){
+			//현재문서의 높이를 구함.
+            var documentHeight = $(document).height();
+            //console.log("documentHeight : " + documentHeight);
+
+            //scrollTop() 메서드는 선택된 요소의 세로 스크롤 위치를 설정하거나 반환    
+            //스크롤바가 맨 위쪽에 있을때 , 위치는 0
+            //console.log("window의 scrollTop() : " + $(window).scrollTop());
+            //height() 메서드는 브라우저 창의 높이를 설정하거나 반환
+            //console.log("window의 height() : " + $(window).height());
+
+            //세로 스크롤위치 max값과 창의 높이를 더하면 현재문서의 높이를 구할수있음.
+            //세로 스크롤위치 값이 max이면 문서의 끝에 도달했다는 의미
+            var scrollHeight = $(window).scrollTop() + $(window).height();
+            //console.log("scrollHeight : " + scrollHeight);
+            
+            
+          
+            if (scrollHeight == documentHeight) { //문서의 맨끝에 도달했을때 내용 추가 
+            	 var str1 = "★채우는 공간";   
+                 var str2 = "Recipe !";
+                 
+                $.ajax({
+	            	url : "${pageContext.request.contextPath}/home/inquiryAfter.do",
+	            	dataType : "json",
+	            	type : "GET",
+	            	data : {
+	            		number : count,
+	            		keyWord : keyWord
+	            	},success: function(data){
+	               		count += 9;
+	               		
+	               		console.log("레시피 정렬 마우스 밑으로 내려가면 성공");
+	               		console.log("정렬 후 count : " + count)
+	               		var level = "";
+	               		$(".recipeList").remove("li");
+	            		for(var i = 0; i < data.length; i++){
+	            			
+	            			if(data[i].rLevel == 1){
+	                			level="하";
+	                		} else if(data[i].rLevel == 2){
+	                			level="중";
+	                		} else if(data[i].rLevel == 3) {
+	                			level="상";
+	                		} else {
+	                			level="최상";
+	                		}
 	            			
 	            			$("<li>" + 
 	               				"<div class='like_and_aver_area'>" +
@@ -138,10 +379,11 @@
 	               			"</li>").appendTo(".recipeList");
 	            		}
 	            	}, error : function(data){
-	            		console.log("검색 후 레시피 불러오기를 실패하였습니다.");
+	            		console.log("정렬 후 레시피 불러오기를 실패하였습니다.");
 	            	}
-	            })       
+	            });       
 			}
+			
         }
 		
         function heartClicked(obj) {

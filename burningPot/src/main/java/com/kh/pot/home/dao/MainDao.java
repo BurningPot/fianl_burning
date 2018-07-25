@@ -21,6 +21,14 @@ public interface MainDao {
 
 	int searchTotalCountHome(String search);
 
+	int inquiryTotalCount(String keyWord);
+
+	List<Recipe> inquiryRecipeListBefore(String keyWord);
+
+	List<Recipe> inquiryRecipeListAfter(HashMap<String, Object> map);
+
+	
+
 
 	
 }
