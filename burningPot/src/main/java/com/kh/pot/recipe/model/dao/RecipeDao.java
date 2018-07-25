@@ -27,4 +27,8 @@ public interface RecipeDao {
 
 	List<RecipeContent> selectContentList(int rNum);
 
+	int deleteRecipeContent(int rNum);
+
+	int deleteRecipe(int rNum);
+
 }

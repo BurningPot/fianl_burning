@@ -34,5 +34,11 @@ public interface RecipeService {
 
 	// 해당 레시피 요리 순서 조회 서비스
 	List<RecipeContent> selectContentList(int rNum);
+
+	// 해당 레시피 요리 순서 삭제 서비스
+	int deleteRecipeContent(int rNum);
+
+	// 레시피 삭제 서비스
+	int deleteRecipe(int rNum);
 	
 }
