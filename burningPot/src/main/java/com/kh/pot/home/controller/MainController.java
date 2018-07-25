@@ -91,12 +91,12 @@ public class MainController {
 	
 		// 시작값과 최종값을 list에 담아 쿼리문으로 보낸다.
 			List<Recipe> searchList = mainService.searchRecipeList(searchStartCount, searchEndCount, keyWord);
-			System.out.println("asdf");
 			for(int i = 0; i< searchList.size();i++){
 				System.out.println(searchList.get(i).getrName());
 			}
 		
 		return searchList;
+		
 		
 	}
 	
@@ -105,7 +105,70 @@ public class MainController {
 	// 2. 추천 검색어(평점이 높은 순서 or 따봉이 많은 순서)의 레시피명을 불러오는 메소드
 	
 	// 3. 레시피(조회수가 많은 순서) 불러오는 메소드
+	@ResponseBody
+	@RequestMapping("/home/inquiryBefore.do")
+	public List<Recipe> inquiryBefore(Model model, @RequestParam("keyWord") String keyWord){
+		
+		System.out.println("------------- 조회가 많은 순서대로 정렬하는 메소드 시작! ----------------");
+		System.out.println("keyWord : " + keyWord);
+	/*	System.out.println("number : " + number);
+		
+		int inquiryTotalCount = mainService.inquiryTotalCount(keyWord);		
+		
+		System.out.println("inquiryTotalCount : " + inquiryTotalCount);
+		
+		int inquiryStartCount = number;
+		int inquiryEndCount = number + 8;
+		
+		System.out.println("inquiryStartCount : " + inquiryStartCount);
+		System.out.println("inquiryEndCount : " + inquiryEndCount);
+		
+		if(inquiryEndCount >= inquiryTotalCount){
+			inquiryEndCount = inquiryTotalCount;
+		}
+		*/
+		List<Recipe> inquiryRecipeListBefore = mainService.inquiryRecipeListBefore(keyWord);
+		
+		for(int i = 0 ; i<inquiryRecipeListBefore.size(); i++){
+			System.out.println("조회수 정렬 한 레시피 제목 : " + inquiryRecipeListBefore.get(i).getrName());
+		}
+		
+		return inquiryRecipeListBefore;
+	}
 	
+	@ResponseBody
+	@RequestMapping("/home/inquiryAfter.do")
+	public List<Recipe> inquiryAfter(Model model, @RequestParam("keyWord") String keyWord, @RequestParam("number") int number){
+		
+		System.out.println("------------- 조회가 많은 순서대로 정렬 후 무한스크롤 메소드 시작! ----------------");
+		System.out.println("keyWord : " + keyWord);
+		System.out.println("number : " + number);
+		
+		int inquiryTotalCount = mainService.inquiryTotalCount(keyWord);		
+		
+		System.out.println("inquiryTotalCount : " + inquiryTotalCount);
+		
+		int inquiryStartCount = number;
+		int inquiryEndCount = number + 8;
+		
+		System.out.println("inquiryStartCount : " + inquiryStartCount);
+		System.out.println("inquiryEndCount : " + inquiryEndCount);
+		
+		if(inquiryEndCount >= inquiryTotalCount){
+			inquiryEndCount = inquiryTotalCount;
+		}
+		System.out.println("if문 이후의 inquiryEndCount : " + inquiryEndCount);
+		
+		model.addAttribute("inquiryEndCount", inquiryEndCount);
+		
+		List<Recipe> inquiryRecipeListAfter = mainService.inquiryRecipeListAfter(keyWord, inquiryStartCount, inquiryEndCount);
+		
+		for(int i = 0 ; i<inquiryRecipeListAfter.size(); i++){
+			System.out.println("조회수 정렬 후 무한 스크롤 레시피 제목 : " + inquiryRecipeListAfter.get(i).getrName());
+		}
+		System.out.println(inquiryRecipeListAfter.size());
+		return inquiryRecipeListAfter;
+	}
 	// 4. 평점(세부 레시피 정보에서) 불러오는 메소드
 	
 	// 5. 따봉 했을 때와 취소할 때 메소드
@@ -113,12 +176,14 @@ public class MainController {
 	// 6. Recipe 객체를 불러와서 Main.jsp에 레시피 명, 난이도, 소요시간, 작성자 불러오는 메소드
 
 	@RequestMapping(value = {"showHome.do", "home/showHome.do"})
-	public String showHome(Model model, HttpSession session){
-
+	public String showHome(Model model){
+		System.out.println("showHome");
+		
 		List<Recipe> list = mainService.selectShowHome();
 		
 		model.addAttribute("list", list);
-
+		
+		System.out.println("showHome list : "+list);
 		return "main";
 	}
 	

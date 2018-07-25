@@ -36,12 +36,49 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
 		
 		<style>
+			/* 검색 후 정렬 버튼 css */
+			.searchResultAndsearchBtn{
+				width:100%; 
+				height:20%; 
+				/* border:1px solid black; */
+			}			
+			.searchBtn{
+				width:50%;
+				height:100%; 
+				float:left; 
+				/* border:1px solid red;  */
+				
+			}
+			.list-group {
+				padding:0; 
+				margin:0;
+			    display: flex;
+			    flex-direction: row; 
+			    padding-left: 0;
+			    margin-bottom: 0;
+			}
+			.list-group-item {
+				margin: 0; 
+				list-style: none; 
+				float:left; 
+				display:block; 
+				margin-right:5%;
+			}
+			.list-group-item > a {
+				display:block; important;
+			}
+			
 			/* 검색된 레시피 갯수 css */
 			.searchRecipeCountArea{
 				/* text-align: center; */
 			    font-size: 18px;
 			    color: #333;
 			    padding: 10px 0 20px 8px;
+			    width:50%; 
+			    float:left; 
+			    padding-left : 20%;
+			    padding-top : 3%;
+			    /* border:1px solid green; */
 			}
 			.searchRecipeCountArea > b{
 				color: #74b243; /* 폰트 색상 */
@@ -1384,11 +1421,11 @@
 				              <i class="far fa-user fa-3x"></i>
 				          	</button>
 				        </div>
-				        <div class="regist_recipe_btn">
+<!-- 				        <div class="regist_recipe_btn">
 				          <button class="menuBtn" data-tooltip-text="Recipe Regist!!">
 				              <i class="fas fa-utensils fa-3x"></i>
 				          </button>
-				        </div>
+				        </div> -->
 				        <div class="board_btn" data-tooltip-text="Board!!">
 				          <button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 				              <i class="far fa-list-alt fa-3x"></i>
@@ -1494,11 +1531,11 @@
 			              <i class="far fa-user fa-3x"></i>
 			          	</button>
 			        </div>
-			        <div class="regist_recipe_btn_before">
+			        <!-- <div class="regist_recipe_btn_before">
 			        	<button class="menuBtn" data-tooltip-text="Recipe Regist!!">
 			              <i class="fas fa-utensils fa-3x"></i>
 			          	</button>
-			        </div>
+			        </div> -->
 			        <div class="board_btn_before" data-tooltip-text="Board!!">
 			          	<button class="menuBtn" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">
 			              <i class="far fa-list-alt fa-3x"></i>

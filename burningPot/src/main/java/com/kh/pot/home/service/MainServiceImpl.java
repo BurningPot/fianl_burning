@@ -68,6 +68,43 @@ public class MainServiceImpl implements MainService{
 		return mainDao.searchTotalCountHome(search);
 	}
 
+	@Override
+	public int inquiryTotalCount(String keyWord) {
+
+		return mainDao.inquiryTotalCount(keyWord);
+	}
+
+	@Override
+	public List<Recipe> inquiryRecipeListBefore(String keyWord) {
+
+		return mainDao.inquiryRecipeListBefore(keyWord);
+	}
+
+	@Override
+	public List<Recipe> inquiryRecipeListAfter(String keyWord, int inquiryStartCount, int inquiryEndCount) {
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("keyWord", keyWord);
+		map.put("inquiryStartCount", inquiryStartCount);
+		map.put("inquiryEndCount", inquiryEndCount);
+		
+		return mainDao.inquiryRecipeListAfter(map);
+	}
+	
+	/*@Override
+	public List<Recipe> inquiryRecipeList(String keyWord, int number) {
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("keyWord", keyWord);
+		map.put("number, value)
+		
+		return mainDao.inquiryRecipeList(keyWord, number);
+	}*/
+
+	
+
 
 //	@Override
 //	public List<Recipe> searchListScroll(int searchStartRecipe, int searchEndRecipe) {

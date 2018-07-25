@@ -40,14 +40,33 @@
 	
 	<select id="searchRecipeList" resultType="recipe" parameterType="hashmap">
 		<![CDATA[
-		SELECT C.* FROM (SELECT ROWNUM AS "R", rName FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY QUANTITY) C 
+		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY QUANTITY) C 
 		WHERE C.R >= #{searchStartCount} AND C.R <= #{searchEndCount} 
 		ORDER BY ROWNUM
 		]]>
 	</select>
 		
 	<select id="searchTotalCount" resultType="_int">
-		SELECT COUNT(*) FROM RECIPE R WHERE R.SUBINGREDIENT LIKE '%'||#{search}||'%' OR R.RNAME LIKE '%'||#{search}||'%'
+		SELECT COUNT(*) FROM RECIPE R WHERE R.SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR R.RNAME LIKE '%'||#{keyWord}||'%'
+	</select>
+	
+	<!-- 조회가 많은 순서대로 정렬 -->
+	<select id="inquiryTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM RECIPE R WHERE R.SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR R.RNAME LIKE '%'||#{keyWord}||'%'
+	</select>
+	
+	<select id="inquiryRecipeListBefore" resultType="recipe">
+		<![CDATA[
+		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName, rCount FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RCOUNT DESC) C 
+		WHERE C.R >= 1 AND C.R <= 8
+		]]>
+	</select>
+	
+	<select id="inquiryRecipeListAfter" resultType="recipe" parameterType="hashmap">
+		<![CDATA[
+		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName, rCount FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RCOUNT DESC) C 
+		WHERE C.R >= #{inquiryStartCount} AND C.R <= #{inquiryEndCount}
+		]]>
 	</select>
 	
 </mapper>
