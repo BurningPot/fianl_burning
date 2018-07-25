@@ -540,7 +540,7 @@ function hoveringDiv(){
 				if (value.files && value.files[0]) {
 					var reader = new FileReader();
 					reader.onload = function(e) {
-						$('.uploadImgBox').children('div').remove();										
+						$('.uploadImgBox').children('div').remove();							
 						$("#add-img").attr("src", e.target.result);	
 						$('#add-img').show();
 					}
@@ -590,7 +590,7 @@ function hoveringDiv(){
 					reader.onload = function(e) {
 						$("#titleImg").attr("src", e.target.result);						
 					}
-					reader.readAsDataURL(value.files[0]);					
+					reader.readAsDataURL(value.files[0]);
 				} 
 			}
         	</script>

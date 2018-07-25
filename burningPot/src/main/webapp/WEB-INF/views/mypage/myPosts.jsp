@@ -150,7 +150,7 @@
                     <a class="na na3 nav-link" href="${pageContext.request.contextPath}/mypage/myLike.do">좋아요</a>
                   </li>
                 </ul><br>              
-                <button type="button" class="btn btn-default btn-sm">리뷰</button>
+                <button type="button" class="btn btn-default btn-sm">재료요청</button>
                 <button type="button" class="btn btn-default btn-sm">Q&A</button>
                 <button type="button" class="btn btn-default btn-sm">신고</button>
                 <br>

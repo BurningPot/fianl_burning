@@ -65,6 +65,12 @@ public class MypageServiceImpl implements MypageService{
 		map.put("mId", mId);
 		return mypageDao.mypageEnrollEnd(map);
 	}
+
+	@Override
+	public int updateImg(String renameFileName, int numHidden) {
+		
+		return mypageDao.updateImg(renameFileName, numHidden);
+	}
 	
 
 }

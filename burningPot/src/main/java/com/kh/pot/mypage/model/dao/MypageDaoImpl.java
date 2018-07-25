@@ -58,6 +58,14 @@ public class MypageDaoImpl implements MypageDao{
 		
 		return sqlSession.update("mypage.updatemypageEnrollEnd", map);
 	}
+
+	@Override
+	public int updateImg(String renameFileName, int numHidden) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("renameFileName", renameFileName);
+		map.put("numHidden", numHidden);
+		return sqlSession.update("mypage.updateImg", map);
+	}
 	
 	
 
