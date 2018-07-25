@@ -21,6 +21,8 @@ public interface MypageService {
 
 	int mypageEnrollEnd(String nic, String email, String password, String mId);
 
+	int updateImg(String renameFileName, int numHidden);
+
 	
 	
 	

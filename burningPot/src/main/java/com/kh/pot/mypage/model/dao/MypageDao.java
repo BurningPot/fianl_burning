@@ -19,6 +19,8 @@ public interface MypageDao {
 	Board selectMyBoardOne(int bNum);
 
 	int mypageEnrollEnd(HashMap<String, String> map);
+
+	int updateImg(String renameFileName, int numHidden);
 	
 
 

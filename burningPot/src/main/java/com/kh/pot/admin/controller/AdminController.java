@@ -501,7 +501,7 @@ public class AdminController {
 			HttpServletRequest request){
 		
 		int result = 0;
-		String saveDir = request.getSession().getServletContext().getRealPath("/resources/img/ingredient");		
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/img/ingredient");
 		File dir = new File(saveDir);
 				
 		// 만약 현재 저장하려는 경로에 폴더가 없다면 만들겠습니다!

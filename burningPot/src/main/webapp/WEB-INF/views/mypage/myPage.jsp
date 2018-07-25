@@ -45,8 +45,23 @@
 <br />
 <br />
 	<div class="container col-lg-8 offset-lg-2" style=" width : 100%; height:300px; padding: 1%; background:white; background: 1px solid lightgray;">
-            <div id="myinfo" style="width:49%; height: 100%; float: left; border: 1px solid lightgray">
-                <img src="${pageContext.request.contextPath }/resources/img/dlalwl.jpg" class="rounded float-left" style="width:30%; height: 80%; padding: 1%;">              
+            <div id="myinfo" style="width:49%; height: 100%; float: left; border: 1px solid lightgray">     	
+            	
+<%--             	<c:if test="${ m.mPicture == 'defaultPerson.png' }">
+            		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture}" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+            	</c:if>
+                      
+               <c:if test="${ m.mPicture != 'defaultPerson.png' }"> --%>
+               		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture }" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+<%--                </c:if> --%>
+                <div id="profileWrap">
+                	<form  id="fileForm" enctype="multipart/form-data"><input type="file" id="profileBtn" name="profileBtn" onchange="LoadImg(this)"/>
+                		<input type="hidden" name="oriHidden" value="${ m.mPicture }"/>
+                		<input type="hidden"  name="numHidden" value="${m.mNum }"/>
+                	</form>
+                </div>
+                
+                   
                 <input type="hidden" value="${m.mId}" id="mId"/>
                 <!-- 내정보 div -->
                 <div class="row text-center">
@@ -61,11 +76,13 @@
                       	<div class="alert alert-info" role="alert">
                             <td>${ m.getEmail() }</td>
                       	</div>
+                      	<input type="hidden" id="mGen" value="${m.gender }" />
                    </div>
                  </div>
                                  
-                <div class="col-sm-12">
-                    <button type="button" class="btn btn-default btn-sm" >이미지변경</button>
+                <!-- 이미지 변경 버튼 -->
+                <div class="col-sm-12">           
+                    <!-- <button type="button" class="btn btn-default btn-sm"  id="UpImg">이미지변경</button> -->				
                     <button type="button" class="btn btn-default btn-sm btn-toggle" data-toggle="modal" data-target="#myModal">정보수정</button>
                     
                     <!-- 정보수정 모달창 -->
@@ -89,7 +106,7 @@
                                     <label for="inputPassword" class="control-label">비밀번호</label>
                                   </div>
                                   <div class="col-sm-7">
-                                      <input type="password" class="form-control" id="password" name="excludeHangul" data-rule-required="true" placeholder="비밀번호" maxlength="20">
+                                      <input type="password" class="form-control" id="password" name="excludeHangul" data-rule-required="true" placeholder="비밀번호 변경" maxlength="20">
                                   </div>
                               </div>
                               <div class="form-group row" id="divPasswordCheck">
@@ -97,7 +114,7 @@
                                     <label for="inputPasswordCheck" class="control-label">비밀번호 확인</label>
                                   </div>
                                   <div class="col-sm-7">
-                                      <input type="password" class="form-control" id="passwordCheck" data-rule-required="true" placeholder="비밀번호 확인" maxlength="20">
+                                      <input type="password" class="form-control" id="passwordCheck" data-rule-required="true" placeholder="비밀번호 변경 확인" maxlength="20">
                                   </div>
                               </div>
                               <!-- <div class="form-group row" id="divNickname">
@@ -133,7 +150,7 @@
                                       <label for="inputGender" class="control-label">성별</label>
                                     </div>
                                     <div class="col-sm-7">
-                                      <th>${gender}</th>
+                                      <th><p id="gen"></p></th>
                                     </div>
                                   </div>
                          </div>                       
@@ -145,29 +162,36 @@
                         </div>
                      </div>
                      <script>
+                     
+                     // 정보수정
                      $(function(){
                     	 console.log('아이디'+$('#mId').val());
+                    	 console.log($('#mGen').val());
+                    	 $('#gen').text($('#mGen').val());
+                    	 
                      });
                      	$('#sjBtn').on('click', function(){
-                     		console.log("ㅔ들어오냐");
+                     		console.log("들어오냐");
                      		               		
                      		$.ajax({
                      			url : "${pageContext.request.contextPath}/mypage/mypageEnrollEnd.do",
                      			data : {
                      				nic: $('#nicName').val(),
                      				email : $('#email').val(),
-                     				password : $('#password').val(),   
+                     				password : $('#password').val(),
                      				mId : $('#mId').val()  
                      			},
                      			success: function(data){
-                     				alert(data+"수정완료. 재로그인하세요");
+                     				alert("수정완료. 재로그인하세요");
                      				location.href="${pageContext.request.contextPath}/member/memberLogout.do";
                      			},
                      			error : function(){
-                     				alert("실패");
+                     				alert("변경할 내용을 입력해주세요");
                      			}
                      		})
                      	});
+                     	
+
                      </script>
                     <button type="button" class="btn btn-default btn-sm">회원탈퇴</button>
                   </div>
@@ -251,7 +275,92 @@
           </div>
           
           <script>
+       
+          // 이미지 변경 클릭시
+       $(function(){
+    	   $('#profileWrap').hide();
+    	   
+    	   $('#profileImg').click(function(){
+    		   $('#profileBtn').click();
+    	   });
+       });
           
+       function LoadImg(value) {
+    	   var reader="";
+    	   if (!value.files && value.files[0])
+    	   reader = new FileReader();
+    	   
+			 if (value.files && value.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+				
+						$("#profileImg").attr("src", e.target.result);
+						$('#profileImg').show();
+				}
+				reader.readAsDataURL(value.files[0]);
+		
+			} 
+
+			console.log("사진들어오냐");
+		
+			 var form = $('#fileForm')[0];
+			 
+			 var data = new FormData(form);
+			 
+			 $.ajax({
+				 	
+				 	url : '${pageContext.request.contextPath}/mypage/updateImg.do',
+			        type: "POST",
+			        enctype: 'multipart/form-data',
+			        processData: false,  // Important!
+			        contentType: false,
+			        cache: false,
+			        data : data,
+			        success : function (data){
+			        	alert("성공");
+			        	},
+			        	error : function(data){
+			        		alert("실패");
+			        	}
+			        });
+		
+		}
+          
+    
+          
+/*     // 파일 업로드 커스텀 관련 메소드
+		$("#file-select").on('change', function(){
+			var reader = new FileReader();
+			
+			// 파일을 업로드 하고 나서 다시 파일 선택 누른 뒤 취소버튼 눌렀을 때 발생하는 오류캐치
+			if($(this)[0].files[0] == undefined){
+				$("#file-text").val(filename);
+				reader.readAsDataURL(file);
+			} 
+			else {
+				if(reader)
+					filename = $(this)[0].files[0].name; 
+				else
+					filename = $(this).val().split('/').pop().split('\\').pop(); // 예전 IE 경우 대비  
+				
+				var imgChk = filename.slice(filename.lastIndexOf(".")+1).toLowerCase();
+				
+				// 이미지 파일만 업로드하는 조건 부여
+				if(imgChk != "gif" && imgChk != "jpg" && imgChk != "png"){
+					alert("이미지파일(.jpg, .png, .gif)만 업로드 가능합니다.");
+					$("#file-text").val("");
+					$("#my-profile").css("content", "url('/gt/resources/images/profiles/"+ myProfile +"')");
+				}
+				else{
+					$("#file-text").val(filename);
+					file = $(this)[0].files[0];
+					reader.readAsDataURL(file);
+					reader.onload = function(){
+						$("#my-profile").css("content", "url(" + reader.result + ")");
+					};	
+				}	
+			}
+		}); */
        // 이름 유효성 검사
       	$('#nicName').on('keyup', function(){
       		if(/^([가-힣a-zA-Z]{2,10})$/.test($('#nicName').val())){

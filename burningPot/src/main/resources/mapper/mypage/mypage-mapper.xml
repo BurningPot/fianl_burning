@@ -19,8 +19,16 @@
 		UPDATE MEMBER SET MNAME = #{nic}, PASSWORD = #{password}, EMAIL = #{email} WHERE MID = #{mId}
 	</update>
 	
+	<delete id="deleteMyBoard" parameterType="_int">
+		DELETE BOARD WHERE BNUM = #{bNum}
+	</delete>
 	
-	<resultMap type="board" id="myBoard">
+	<update id="updateImg" parameterType="hashmap">
+		UPDATE MEMBER SET MPICTURE = #{renameFileName} WHERE MNUM = #{numHidden}
+	</update>
+	
+	
+ 	<resultMap type="board" id="myBoard">
 		<result column="BNUM" property="bNum"/>
 		<result column="CATEGORY" property="category"/>
 		<result column="BTITLE" property="bTitle"/>

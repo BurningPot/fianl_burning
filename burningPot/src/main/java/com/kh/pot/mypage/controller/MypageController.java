@@ -1,11 +1,16 @@
 package com.kh.pot.mypage.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.mypage.model.service.MypageService;
 
@@ -122,6 +129,59 @@ public class MypageController {
 				model.addAttribute("list", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
 			return "mypage/myLike";
 		}
+		
+		@ResponseBody
+		@RequestMapping("/mypage/updateImg.do")
+		public int updateImg(@RequestParam  MultipartFile[] profileBtn, HttpServletRequest request, @RequestParam String oriHidden, @RequestParam int numHidden){
+			String saveDir = request.getSession().getServletContext().getRealPath("/resources/img/profile");
+			File dir = new File(saveDir);
+			
+			int result = 0;
+					
+			// 만약 현재 저장하려는 경로에 폴더가 없다면 만들겠습니다!
+			if(!dir.exists()){
+				System.out.println("dir.mkdirs() = "+dir.mkdirs());
+			}
+			
+			String renameFileName = "";
+			if(profileBtn.length >0){
+				if(!profileBtn[0].isEmpty()){
+				String originFileName = profileBtn[0].getOriginalFilename(); // 원본파일 이름
+				String ext = originFileName.substring(originFileName.lastIndexOf(".")+1); //확장자
+				
+				//이름을 새로 만들어서 변경해준다
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+				int randomNum = (int)(Math.random() * 1000);			
+				renameFileName = sdf.format(new Date(System.currentTimeMillis()))+"_"+randomNum+"."+ext;
+				
+				//새로만든 이름으로 저장경로에 저장시킨다
+				try {
+					profileBtn[0].transferTo(new File(saveDir+"/"+renameFileName));
+				} catch (IllegalStateException | IOException e) {					
+					e.printStackTrace();
+				}	
+				 result = mypageService.updateImg(renameFileName,numHidden);
+				
+				//사진을 수정한 후에는 기존의 이미지는 삭제한다
+				/*File file = new File(saveDir+"/"+oriHidden);		
+				System.out.println("기존의 이미지 이름 : "+oriHidden);
+				// 파일이 실제로 존재하는지 검사
+				
+				if( file.exists() ){
+					System.out.println("파일 실존함");
+					file.delete();
+					System.out.println("기존의 "+oriHidden+"를 삭제하였다!");
+				}*/	
+			
+			}
+		}	
+			
+			return result;
+		}
+		
+		// 이미지변경
+/*		@RequestMapping("/mypage/UploadImg.do")
+		public String UploadImg(@RequestParam  )*/
 		
 		
 	
