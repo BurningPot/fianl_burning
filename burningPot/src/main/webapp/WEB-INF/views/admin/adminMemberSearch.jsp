@@ -142,6 +142,10 @@
 			}
 		});		
 		
+		$(function(){
+			console.log("list.length: "+${list}.length);
+		});
+		
 		</script>
 						
         <br><br>
@@ -164,10 +168,12 @@
                     <td>${m.mName}</td>
                     <td>${m.mId}</td>
                 </tr> 
-            </c:forEach>  
+            </c:forEach> 
+            
             </tbody>
         </table>
-         <br /><br />
+        
+        <br /><br />
                
         <!-- pagenation -->
         <c:if test="${customSelect != 'null' and keyword != 'null' }">        
