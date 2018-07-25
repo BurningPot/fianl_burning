@@ -1343,7 +1343,7 @@
 				<div class="b-seg-logo navbar-header">
 					<div class="logo_wrap navbar-brand">
 						<%-- <a class="home_btn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath}/main.jsp'"> --%>
-						<a class="home_btn" onclick="location.href='${pageContext.request.contextPath}/home/showHome.do'">
+						<a class="home_btn" onclick="location.href='showHome.do'">
 							<img class="img-logo" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</a>
 					</div>
@@ -1606,11 +1606,11 @@
 				</form>
 				<!-- SNS 로그인 -->
 	              <div class="text-center">   
-		          	<a href="${url}"><img height="40" src="resources/img/login/naver_Green.PNG"/></a>                
+		          	<a href="${url}"><img height="40" src="${pageContext.request.contextPath}/resources/img/login/naver_Green.PNG"/></a>                
 		       	  </div>
 		       	  <div class="text-center" style="margin-top:1%">   
 		          	<a href="#"><img height="42"
-						src="${pageContext.request.contextPath }/resources/img/login/facebook_login.png" /></a>     
+						src="${pageContext.request.contextPath}/resources/img/login/facebook_login.png" /></a>     
 		       	  </div>
 		       	 <div class="text-center" style="margin-top:1%">
 		       	  <a id="custom-login-btn" href="javascript:loginWithKakao()">
