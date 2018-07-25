@@ -3,7 +3,6 @@ package com.kh.pot.member.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.kh.pot.common.login.StringtoVo;
 import com.kh.pot.member.model.service.MemberService;
@@ -52,6 +52,7 @@ public class MemberController {
         oauthToken = naverLoginVO.getAccessToken(session, code, state);
         //로그인 사용자 정보를 읽어온다.
 	    apiResult = naverLoginVO.getUserProfile(oauthToken);
+	    
 		model.addAttribute("result", apiResult);
 		System.out.println("apiResult:"+apiResult);
 		
