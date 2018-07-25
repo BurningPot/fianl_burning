@@ -7,6 +7,9 @@
 <!-- chart.js -->
 <script src="${pageContext.request.contextPath}/resources/js/admin/Chart.js"></script>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/clock.css" />
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
 	.graph-title{
@@ -34,7 +37,8 @@
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 <!-- 야매로 공간할당을 주어 처리한 부분 -->
 	<div style="height:20%;"></div>
-   
+   <script src="${pageContext.request.contextPath}/resources/js/admin/clock.js"></script>
+	
 	
 	<c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
 	<br /><br /><br />
@@ -45,6 +49,21 @@
         </div>
     
         <div class="col-lg-8 offset-lg-2 content" align="justify">         	
+        	
+        <!-- 시계들어가는 부분 -->
+        <div class="col-lg-5 offset-lg-7">   
+		<div class="clock">
+			<div class="dial-container dial-container--hh js-clock" data-cur="9" data-start="0" data-end="12" data-dur="hh"></div> &nbsp;
+			<div class="dial-container dial-container--mm js-clock" data-cur="2" data-start="0" data-end="5" data-dur="mm"></div><div class="dial-container dial-container--m js-clock" data-cur="3" data-start="0" data-end="9" data-dur="m"></div>  
+   			&nbsp;
+			<div class="dial-container dial-container--ss js-clock" data-cur="4" data-start="0" data-end="5" data-dur="ss"></div><div class="dial-container dial-container--s js-clock" data-cur="8" data-start="0" data-end="9" data-dur="s"></div>
+  		</div>
+
+ 		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    	<script src="js/index.js"></script>			
+        </div>
+        <!-- 시계끝 -->	
+        	<br /><br /><br />
         	<div class="row">
         		<!-- 성별분포 그래프 -->
         		<div class="col-lg-4 offset-lg-2">        	
