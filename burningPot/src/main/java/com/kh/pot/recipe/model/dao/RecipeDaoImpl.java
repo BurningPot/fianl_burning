@@ -81,4 +81,18 @@ public class RecipeDaoImpl implements RecipeDao {
 		
 	}
 
+	@Override
+	public int deleteRecipeContent(int rNum) {
+
+		return sqlSession.delete("recipe.deleteRecipeContent", rNum);
+		
+	}
+
+	@Override
+	public int deleteRecipe(int rNum) {
+
+		return sqlSession.delete("recipe.deleteRecipe", rNum);
+		
+	}
+
 }

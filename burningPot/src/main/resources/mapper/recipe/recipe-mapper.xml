@@ -58,4 +58,14 @@
 		ORDER BY RSTEP ASC
 	</select>
 	
+	<delete id="deleteRecipeContent" parameterType="_int">
+		DELETE FROM RECIPE_CONTENT 
+		WHERE RNUM = #{rNum}
+	</delete>
+	
+	<delete id="deleteRecipe" parameterType="_int">
+		DELETE FROM RECIPE
+		WHERE RNUM = #{rNum}
+	</delete>
+	
 </mapper>

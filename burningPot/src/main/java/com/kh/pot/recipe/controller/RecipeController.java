@@ -72,7 +72,6 @@ public class RecipeController {
 		String loc = "/";
 		String msg = "";
 		int result = 0;
-		System.out.println(recipe);
 		
 		// 파일 저장 경로 생성
 		String saveDir = request.getSession().getServletContext().getRealPath("/resources/img/recipeContent");
@@ -171,8 +170,7 @@ public class RecipeController {
 														Model model) throws Exception {
 		String page = "";
 		Recipe recipe = recipeService.selectRecipeDetail(rNum);
-		
-		System.out.println("데이터 확인 : " + rNum);
+
 		if (recipe != null) {			
 			String[] subList = recipe.getSubIngredient().split(",");
 			String[] mainNum = recipe.getiNum().split(",");
@@ -193,13 +191,89 @@ public class RecipeController {
 				model.addAttribute("mainNum", mainNum);
 				model.addAttribute("contentList", contentList);
 				model.addAttribute("categoryList", list);
-				System.out.println("레시피 : " + recipe.getiNum());
-				System.out.println(mainNum[0] + "/" + mainNum[1] + "/" + mainNum[2]);
 			} else {
 				throw new Exception("레시피 조회 도중 문제가 발생하였습니다.");
 			}
 		} else {
 			throw new Exception("해당 레시피 정보를 찾을 수 없습니다.");
+		}
+		
+		return page;
+	}
+	
+	// 레시피 수정 - DB 수정
+	@RequestMapping("/recipe/updateRecipe.do")
+	public String updateRecipe(Recipe recipe,
+													@RequestParam("rContent") String[] rContent,
+													@RequestParam(value="rImgFile", required=false) MultipartFile file,
+													@RequestParam(value="rContentimg", required=false) MultipartFile[] files,
+													HttpServletRequest request,
+													Model model) {
+		String page = "";
+		String deleteDir = request.getSession().getServletContext().getRealPath("/resources/img/recipeContent");
+		
+		System.out.println("확인");
+		
+		File deleteFile = new File(deleteDir + "/20180722_133519_100.PNG");
+		
+		if (deleteFile.exists()) {
+			if (deleteFile.delete()) {
+				System.out.println("파일 삭제 성공");
+			} else {
+				System.out.println("파일 삭제 실패");
+			}
+		}
+			
+		
+		return page;
+	}
+	
+	// 레시피 수정 - DB 삭제
+	@RequestMapping("/recipe/deleteRecipe.do")
+	public String deleteRecipe(@RequestParam("rNum") int rNum,
+														HttpServletRequest request,
+														Model model) throws Exception {
+		String page = "";
+		String deleteDir = request.getSession().getServletContext().getRealPath("/resources/img/recipeContent");
+		String loc = "/";
+		String msg = "";
+		
+		// 레시피 파일 이미지명 받아오기
+		List<RecipeContent> imgList = recipeService.selectContentList(rNum);
+		
+		if (!imgList.isEmpty()) {		// 받아온 데이터 값 확인
+			if (recipeService.deleteRecipeContent(rNum) > 0) {		// DB가 지워질 경우 파일 삭제
+				for (RecipeContent rc : imgList) {
+					File deleteFile = new File(deleteDir + "/" + rc.getrContentimg());
+					
+					if (deleteFile.exists()) {
+						if (deleteFile.delete()) {
+						} else {
+							throw new Exception("레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  rNum + ")");
+						}
+					}
+				}
+				
+				String titleImg = recipeService.selectRecipeDetail(rNum).getrImg();
+				
+				if (recipeService.deleteRecipe(rNum) > 0) {
+					File deleteFile = new File(deleteDir + "/" + titleImg);
+					
+					if (deleteFile.exists()) {
+						if (deleteFile.delete()) {
+							page = "common/msg"; 
+							msg = "레시피를 성공적으로 삭제하였습니다.";
+							
+							model.addAttribute("loc", loc);
+							model.addAttribute("msg", msg);
+						} else {
+							throw new Exception("레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  rNum + ")");
+						}
+					}
+				}
+			} else {
+				throw new Exception("레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  rNum + ")");
+			}
 		}
 		
 		return page;

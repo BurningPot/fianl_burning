@@ -65,7 +65,7 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<Ingredient> selectMainIngredientList(String[] mainName) {
 
 		List<String> list = Arrays.asList(mainName);
-		Map mainNameMap = new HashMap();
+		Map<String, List<String>> mainNameMap = new HashMap<String, List<String>>();
 		
 		mainNameMap.put("mainName", list);
 		return recipeDao.selectMainIngredientList(mainNameMap);
@@ -76,6 +76,20 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<RecipeContent> selectContentList(int rNum) {
 
 		return recipeDao.selectContentList(rNum);
+		
+	}
+
+	@Override
+	public int deleteRecipeContent(int rNum) {
+
+		return recipeDao.deleteRecipeContent(rNum);
+		
+	}
+
+	@Override
+	public int deleteRecipe(int rNum) {
+
+		return recipeDao.deleteRecipe(rNum);
 		
 	}
 

@@ -34,7 +34,7 @@ $(function () {
     	
 		$(this).siblings('.ingrdient').val(selectedNum(index));
 	});
-
+	
     // ------------------------------------- 주재료 기능 영역 -------------------------------------
     // 주재료 추가 버튼
     $('#mainAddBtn').click(function() {
@@ -182,14 +182,26 @@ $(function () {
     $('.deleteBtn').click(function(e) {
         if(confirm('레시피를 삭제하시겠습니까?')){
 			console.log("삭제완료");
+			goDelete();
 		} else {
             e.preventDefault();
             console.log("삭제취소");
         }
     });
+    
+    // ------------------------------------- 이미지 등록 기능 영역 -------------------------------------
+    // 대표 사진
+    $("#titleImgArea").click(function(){
+        $("#titleImg").click();
+    });
+
+    // 레시피 사진
+    $(".subImgArea").click(function(){
+        $(this).siblings(".subImg").click();
+    });
 
 });
-
+    
 // selected될 식재료 번호 넘기기
 function selectedNum(mainIndex) {
 	var selectIndex;
@@ -202,4 +214,28 @@ function selectedNum(mainIndex) {
 	});
 	
 	return mainNum[selectIndex];
+}
+
+
+// ------------------------------------- 이미지 등록 기능 영역 -------------------------------------
+function LoadImg(value, num) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            switch(num){
+            case 1:
+                $(".titleImage").attr("src", e.target.result);
+                break;
+            case 2:
+                $(value).siblings('.subImage').attr("src", e.target.result);
+                console.log($(value).val());
+                break;
+            }
+        }
+        reader.readAsDataURL(value.files[0]);
+}
+
+//------------------------------------- form action 변경 영역 -------------------------------------
+function goDelete() {
+	$('#formId').attr("action", "deleteRecipe.do");
+	$('#formId').submit();
 }
