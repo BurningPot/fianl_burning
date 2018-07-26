@@ -36,6 +36,85 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
 		
 		<style>
+		
+			/* 목록 정렬 버튼 css */
+			.searchBtnUl{
+				width: 100%;
+				height:100%;
+				list-style: none;
+				float: left;
+			    padding-top: 15%;
+    			padding-left: 12%;
+			}
+			.searchBtnUl li {
+				width: 15%; 
+				height:100%; 
+				float: left; 
+				margin: 0;
+			    margin-left: 1%;
+				text-align: center;
+				
+			}
+			/* 
+				a:link = 방문 전 링크 상태 
+				a:visited = 방문 후 링크 상태
+				a:hover = 마우스 오버했을 때 링크 상태
+				a:active = 클릭했을 때 링크 상태
+			*/
+			
+			/* 1번 조회수가 많은 순서대로의 버튼 및 버튼 호버 */
+			.searchBtnA1{
+				display: block; 
+				font-size: 25px;
+				width:100%; 
+				height: 100%;
+				background: #c3e6cb;
+				border: none;
+				
+			}
+			
+			.searchBtnUl > li:hover .searchBtnA1 {
+				background : #FFB2F5;
+			}
+			.searchBtnA2{
+				display: block; 
+				font-size: 25px;
+				width:100%; 
+				height: 100%;
+				background: #bee5eb;
+				border: none;
+			}
+			.searchBtnA3{
+				display: block; 
+				font-size: 25px;
+				width:100%; 
+				height: 100%;
+				background: #ffeeba;
+				border: none;
+			}
+			
+			
+			 /* 이렇게 줄 경우 전체에 영향을 줌 */
+			/*
+			a:link {text-decoration: none; color: #333333;}
+			a:visited {text-decoration: none; color: #333333;}
+			a:active {text-decoration: none; color: #333333;}
+			a:hover {text-decoration: none; color: #333333;} */
+			
+			/* .searchBtnA searchBtnA:link {
+				text-decoration: none; color: #333333;
+			}
+			.searchBtnA searchBtnA:visited {
+				text-decoration: none; color: #333333;
+			}
+			.searchBtnA searchBtnA:hover {
+				text-decoration: none; color: #333333;
+			}
+			.searchBtnA searchBtnA:active {
+				text-decoration: none; color: #333333;
+			} */
+			
+			 
 			/* 추천검색어 css */
 			.badge {
 			    font-size: 100%;
