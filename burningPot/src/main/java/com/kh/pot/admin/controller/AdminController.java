@@ -59,11 +59,19 @@ public class AdminController {
 		
 		//4. 레시피 가장 많이 쓴 사람
 		ArrayList<Statistics> topWriter =(ArrayList<Statistics>)adminService.selectTopWriter();
-				
+		
+		//5. 남성 선호 레시피
+		ArrayList<Statistics> maleFavor = (ArrayList<Statistics>)adminService.selectMaleFavor();
+		
+		//6. 여성 선호 레시피
+		ArrayList<Statistics> femaleFavor = (ArrayList<Statistics>)adminService.selectFemaleFavor();
+		
 		model.addAttribute("age",ageList)
 		.addAttribute("popularRecipe", popularRecipe)
 		.addAttribute("topWriter", topWriter)
-		.addAttribute("gender", genderList);
+		.addAttribute("gender", genderList)
+		.addAttribute("maleFavor", maleFavor)
+		.addAttribute("femaleFavor", femaleFavor);
 		
 		return "admin/adminHome";
 	}
@@ -175,7 +183,7 @@ public class AdminController {
 		model.addAttribute("commonTitle","Q&A 게시판");
 		
 		String bCategory = "QNA";
-		int numPerPage = 5; // 한 페이지 당 게시글 수
+		int numPerPage = 10; // 한 페이지 당 게시글 수
 		
 		ArrayList<Board> list = (ArrayList<Board>) boardService.selectBoard(cPage, numPerPage, bCategory);
 		

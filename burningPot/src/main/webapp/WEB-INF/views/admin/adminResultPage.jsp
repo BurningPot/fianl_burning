@@ -67,7 +67,7 @@
    
 	
 	<c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
-	<br /><br /><br />
+	<br /><br />
     <div class="row">
     	<!-- 사이드메뉴 -->
         <div class="col-lg-2 menu-bar">

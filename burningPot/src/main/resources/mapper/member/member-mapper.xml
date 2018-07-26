@@ -2,6 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="member">
 	<!-- HYD -->
+	<select id="selectMaleFavor" resultType="Statistics">
+		<![CDATA[
+		SELECT * FROM (SELECT RANK() OVER(ORDER BY COUNT(RNUM) DESC) RANKING, COUNT(RNUM) COUNTING, RNAME FROM RECOMMEND RE
+		JOIN MEMBER M USING(MNUM) 
+		JOIN RECIPE RP USING(RNUM)
+		WHERE GENDER = 'M' GROUP BY GENDER, RNAME ORDER BY RANKING) WHERE RANKING <= 5
+		]]>
+	</select>
+	
+	<select id="selectFemaleFavor" resultType="Statistics">
+		<![CDATA[
+		SELECT * FROM (SELECT RANK() OVER(ORDER BY COUNT(RNUM) DESC) RANKING, COUNT(RNUM) COUNTING, RNAME FROM RECOMMEND RE
+		JOIN MEMBER M USING(MNUM) 
+		JOIN RECIPE RP USING(RNUM)
+		WHERE GENDER = 'F' GROUP BY GENDER, RNAME ORDER BY RANKING) WHERE RANKING <= 5
+		]]>	
+	</select>
+	
+	
 	<select id="selectPopularRecipeRanking" resultType="Statistics">
 		<![CDATA[
 		SELECT * FROM (SELECT RANK() OVER(ORDER BY COUNT(RE.MNUM) DESC) RANKING, RNUM, RNAME, M.MNAME, COUNT(RE.MNUM) COUNTING FROM RECOMMEND RE 

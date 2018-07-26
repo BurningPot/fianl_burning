@@ -400,7 +400,7 @@ body{
 
 .navi{	
 	height: 30%;
-    margin-top: 10%;
+    margin-top: 0;
 }
 .navi div{
 	color:#754F44;

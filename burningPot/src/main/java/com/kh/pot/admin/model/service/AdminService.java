@@ -16,4 +16,8 @@ public interface AdminService {
 
 	List<Statistics> selectTopWriter();
 
+	List<Statistics> selectMaleFavor();
+
+	List<Statistics> selectFemaleFavor();
+
 }
