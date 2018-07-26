@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.pot.fridge.model.vo.Fridge;
 import com.kh.pot.ingredient.model.vo.Ingredient;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 @Repository
 public class FridgeDaoImpl implements FridgeDao {
@@ -34,6 +35,16 @@ public class FridgeDaoImpl implements FridgeDao {
 	@Override
 	public int deleteFridge(Map<String, Object> data) {
 		return sqlSession.delete("fridge.deleteFridge", data);
+	}
+
+	@Override
+	public List<Recipe> findRecipe(Map<String, Object> data) {
+		return sqlSession.selectList("fridge.findRecipe", data);
+	}
+
+	@Override
+	public List<Ingredient> bringName(Map<String, String[]> data) {
+		return sqlSession.selectList("fridge.bringName", data);
 	}
 
 	

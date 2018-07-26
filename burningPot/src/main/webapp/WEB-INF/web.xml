@@ -58,9 +58,9 @@
 
 	<!-- 에러페이지 등록하기 -->
 	<!-- 에러페이지 만들게 되면 여기다가 등록하자! -->
-	<!-- <error-page>
+	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
 		<location>/WEB-INF/views/common/error.jsp</location>		
-	</error-page> -->
+	</error-page>
 
 </web-app>

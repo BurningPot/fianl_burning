@@ -13,9 +13,9 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/fridge/jquery-ui/jquery-ui.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400">
 </head>
-<body>
+<body class="font">
 	<c:import url="/WEB-INF/views/common/header.jsp"></c:import>
-    <div class="container font">
+    <div class="container">
         <div class="row" style="height:25vh;"></div>
         <div class="row" style="height:80vh;">
             <div class="col-sm-1 text-right" style="margin-right:-2.1%;">
@@ -57,7 +57,7 @@
         </div>
         <div class="row" style="height:10vh;"></div>
     </div>
-    <form id="refUpdate">
+    <form id="refUpdate" method="POST">
     	<input type="hidden" id="inRef" name="inRef"/>
     </form>
 
@@ -68,7 +68,8 @@
 		var category = info.substring(0,1);
 		var bgColor = info.substring(1,5);
 	    $('#ingredient').attr('class', bgColor+' rounded p-4');
-		var inRef = [];
+		
+	    var inRef = [];
 		$('#real-ref').children().each(function(){
 			inRef.push($(this).attr('id'));  
 		}); 
@@ -98,10 +99,8 @@
 			arr.push($(this).attr('id'));
 		}); 
    		$('#inRef').val(arr);
-		console.log(typeof($('#inRef').val()));
-		console.log($('#inRef').val());
-
- 		$("#refUpdate").attr("action","${pageContext.request.contextPath}/fridge/updateComplete.do");
+		
+ 		$("#refUpdate").attr("action","${pageContext.request.contextPath}/fridge/refMain.do");
 		$("#refUpdate").submit();
     }
 </script>
