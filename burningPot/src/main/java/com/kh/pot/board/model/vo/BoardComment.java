@@ -13,6 +13,7 @@ public class BoardComment implements Serializable{
 	private int mNum;		// 회원번호
 	private String mName;	// 멤버의 이름
 	private String mId;		// 멤버의 아이디
+	private String mPicture;	// 회원 사진
 	private Date bcDate;	// 작성일
 	private String bcContent;// 댓글내용
 	
@@ -27,6 +28,19 @@ public class BoardComment implements Serializable{
 		this.mNum = mNum;
 		this.mName = mName;
 		this.mId = mId;
+		this.bcDate = bcDate;
+		this.bcContent = bcContent;
+	}
+	
+	public BoardComment(int bcNum, int bNum, int mNum, String mName, String mId, String mPicture, Date bcDate,
+			String bcContent) {
+		super();
+		this.bcNum = bcNum;
+		this.bNum = bNum;
+		this.mNum = mNum;
+		this.mName = mName;
+		this.mId = mId;
+		this.mPicture = mPicture;
 		this.bcDate = bcDate;
 		this.bcContent = bcContent;
 	}
@@ -86,11 +100,19 @@ public class BoardComment implements Serializable{
 	public void setBcContent(String bcContent) {
 		this.bcContent = bcContent;
 	}
+	
+	public String getmPicture() {
+		return mPicture;
+	}
+
+	public void setmPicture(String mPicture) {
+		this.mPicture = mPicture;
+	}
 
 	@Override
 	public String toString() {
 		return "BoardComment [bcNum=" + bcNum + ", bNum=" + bNum + ", mNum=" + mNum + ", mName=" + mName + ", mId="
-				+ mId + ", bcDate=" + bcDate + ", bcContent=" + bcContent + "]";
+				+ mId + ", mPicture=" + mPicture + ", bcDate=" + bcDate + ", bcContent=" + bcContent + "]";
 	}
 
 	

@@ -97,11 +97,11 @@
 								</c:if>
 							</td>
 							<td>
-								<c:if test="${fn:length(b.mId)>6}">
-									${fn:substring(b.mId,0,5)} . . .
+								<c:if test="${fn:length(b.mName)>6}">
+									${fn:substring(b.mName,0,5)} . . .
 								</c:if>
-								<c:if test="${fn:length(b.mId)<=5}">
-									${b.mId}
+								<c:if test="${fn:length(b.mName)<=5}">
+									${b.mName}
 								</c:if>
 							</td>
 							<td>${b.bDate}</td>

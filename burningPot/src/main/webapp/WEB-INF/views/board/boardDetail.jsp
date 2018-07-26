@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <c:import url="/WEB-INF/views/common/header.jsp" />
 <!DOCTYPE html>
 <html>
@@ -34,7 +37,17 @@
 				</colgroup>
 				<tbody>
 					<tr>
-						<td colspan="6" style="font-weight: bold; border-top-style:none;"><img src="${pageContext.request.contextPath}/resources/img/1.jpg" class="rounded-circle" alt="Cinque Terre" width="70px" height="70px">&nbsp;&nbsp;&nbsp;${board.mName}</td>
+						<c:set var="mPic" value="${board.mPicture}" />
+						<td colspan="6" style="font-weight: bold; border-top-style:none;">
+							
+							<c:if test="${fn:contains(mPic, 'https:')}">
+								<img src="${board.mPicture}" class="rounded-circle" alt="Cinque Terre" width="70px" height="70px">&nbsp;&nbsp;&nbsp;${board.mName}
+							</c:if>
+							<c:if test="${!fn:contains(mPic, 'https:')}">
+								<img src="${pageContext.request.contextPath}/resources/img/profile/${board.mPicture}" class="rounded-circle" alt="Cinque Terre" width="70px" height="70px">&nbsp;&nbsp;&nbsp;${board.mName}
+							</c:if>
+							
+						</td>
 					</tr>
 					<tr align="center">
 						<input type="hidden" name="mNum" value="${board.mNum}" />
@@ -94,7 +107,14 @@
 							<div style="border-radius: 25px;">
 								<tr>
 									<input type="hidden" name="bcmNum" value="${bc.mNum}"/>
-									<th width="10%" rowspan="2"><img src="${pageContext.request.contextPath}/resources/img/1.jpg" class="rounded-circle" alt="Cinque Terre" width="50px" height="50px"></th>
+									<th width="10%" rowspan="2">
+									<c:if test="${!fn:contains(mPic, 'https:')}">
+										<img src="${pageContext.request.contextPath}/resources/img/profile/${bc.mPicture}" class="rounded-circle" alt="Cinque Terre" width="50px" height="50px">
+									</c:if>
+									<c:if test="${fn:contains(mPic, 'https:')}">
+										<img src="${bc.mPicture}" class="rounded-circle" alt="Cinque Terre" width="50px" height="50px">
+									</c:if>
+									</th>
 									<th width="35%" style="color:#754F44; font-weight: bold;">${bc.mName}</th>
 									<th width="22%" align="right">
 										<c:if test="${bc.mNum eq m.mNum}">

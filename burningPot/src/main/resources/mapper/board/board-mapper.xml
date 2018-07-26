@@ -50,6 +50,7 @@
 		<result column="BCOUNT" property="bCount"/>
 		<result column="MID" property="mId"/>
 		<result column="MNAME" property="mName"/>
+		<result column="MPICTURE" property="mPicture"/>
 		<result column="CATEGORY" property="category" />
 	</resultMap>
 	
