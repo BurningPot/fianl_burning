@@ -11,13 +11,13 @@
 
 <title>Insert title here</title>
 <style>
+body{
+	overflow-x: hidden;
+}
 .font-namu{
 	font-family: 'Nanum Gothic', sans-serif;
 }
 <!--스크롤바-->
-
-
-
 .scrollbar {
     margin-left: 30px;
     float: left;   

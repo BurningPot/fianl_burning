@@ -8,7 +8,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/admin/Chart.js"></script>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/clock.css" />
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/cards.css" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
@@ -22,7 +22,19 @@
 	}
 	.bigBox{
 		padding-top: 2%;
+		display:none;
 	}
+	.toggleBar{
+		background:#5994f2;
+		color: white;
+		font-size: 150%;
+		font-weight: bold;	
+		padding:0.3%;	
+	}
+	.toggleBar i:nth-child(2){
+		display:none;
+	}
+	
 	
    /*
     #FBFFB9
@@ -64,42 +76,82 @@
     	<script src="js/index.js"></script>			
         </div>
         <!-- 시계끝 -->	
-        	<br /><br /><br />
-        	
-        	<!-- 여기에 슬라이드 머리를 넣자 -->
+        <br />
+        	<div class="col-lg-12 test toggleBar">
+        		<i class="fas fa-plus-square"></i>
+        		<i class="fas fa-minus-square"></i>
+        		&nbsp;회원관련통계
+        	</div>
         	<div class="bigBox test">
         	<div class="row">
         		<!-- 성별분포 그래프 -->
-        		<div class="col-lg-4 offset-lg-2">        	
-        			<canvas id="genderDistribution" width="400" height="400"></canvas>
+        		<div class="cardContainer col-lg-5 offset-lg-1">
+        			<div class="card">
+    					<div class="front" style="font-size:250%; text-align:center;">
+    					회원 성별 분포(명)<br>	
+    					Click    					
+    					</div>
+    					<div class="back">
+							<div class="col-lg-12">        	
+        						<canvas id="genderDistribution" width="400" height="400"></canvas>
+        					</div>
+						</div>
+  					</div>
         		</div>
         		
         		<!-- 연령별 분포 그래프 -->
-        		<div class="col-lg-4 offset-lg-1">
-        			<canvas id="ageDistribution" width="400" height="400"></canvas>
-        		</div>
-        	</div>       	
-        	<div class="row">
-        		<div class="col-lg-4 offset-lg-2 graph-title">회원 성별 분포(명)</div>
-        		<div class="col-lg-4 offset-lg-1 graph-title">회원 연령 분포(명)</div>
+        		<div class="cardContainer col-lg-5">
+        			<div class="card">
+    					<div class="front" style="font-size:250%; text-align:center;">
+    					회원 연령 분포(명)<br>	
+    					Click
+    					</div>
+    					<div class="back">
+							<div class="col-lg-12">
+        						<canvas id="ageDistribution" width="400" height="400"></canvas>
+        					</div>
+						</div>
+  					</div>
+        		</div>       		
+        		
         	</div>
-        	</div>
+        	</div> 
         	
-        	<br /><br /><br /><br />
+        	<br /> 
         	        
-        	        
+        	<div class="col-lg-12 test toggleBar">
+        		<i class="fas fa-plus-square"></i>
+        		<i class="fas fa-minus-square"></i>
+        		&nbsp;레시피관련 순위
+        	</div> 
         	<!-- 여기에 슬라이드 머리를 넣자 -->        
         	<div class="bigBox test">
-        	
-        	<div class="row">
-        	<div class="col-lg-4 offset-lg-2 top-writer">
+        	<div class="row">        	      	        	
+        	        	
+        	<!-- 1 -->
+        	<div class="col-lg-5 offset-lg-1 top-writer">
+        	<div class="col-lg-12">        		
         		<div class="row" style="padding:1%; background: #754F44; color:#FDD692">
         			<div class="col-lg-2" style="color: gold"><i class="fas fa-trophy"></i></div>
         			<div class="col-lg-7">작성자</div>        				
-        			<div class="col-lg-2" style="color:gold"><i class="fas fa-file-alt"></i></i></div>
-        		</div>
+        			<div class="col-lg-2" style="color:gold"><i class="fas fa-file-alt"></i></i></div>        		
+        		</div>        	
         	</div>	
-        	<div class="col-lg-4 offset-lg-1 popular-recipe">        	
+        	<div class="col-lg-12 test top-writer scrollbar-juicy-peach thin" style="height:190px; overflow-y:auto">        			
+        		<c:forEach items="${topWriter}" var="top">
+        		<div class="row" style="padding:0.5%;">
+        			<div class="col-lg-2">${top.ranking}</div>
+        			<div class="col-lg-7">${top.mName }</div>        				
+        			<div class="col-lg-2">${top.counting }개</div>
+        		</div>
+        		</c:forEach>
+        	</div> 
+        	</div>
+        	<!-- 1 -->
+        	
+        	<!-- 2 -->
+        	<div class="col-lg-5 popular-recipe">
+        	<div class="col-lg-12 popular-recipe">        	
         		<div class="row" style="padding:1%; background: #754F44; color:#FDD692">
         			<div class="col-lg-1" style="color: gold"><i class="fas fa-trophy"></i></div>
         			<div class="col-lg-3">작성자</div>
@@ -107,57 +159,69 @@
         			<div class="col-lg-2" style="color:gold"><i class="far fa-thumbs-up"></i></div>
         		</div>
         	</div>	
-        	</div>
-        	
-        	
-        	
-        	<div class="row">        	
-        		<!-- 가장 레시피 많이 쓴 사람 -->  
-        		<div class="col-lg-4 offset-lg-2 test top-writer scrollbar-juicy-peach thin" style="height:190px; overflow-y:auto">
-        			
-        			<c:forEach items="${topWriter}" var="top">
-        			<div class="row" style="padding:0.5%;">
-        				<div class="col-lg-2">${top.ranking}</div>
-        				<div class="col-lg-7">${top.mName }</div>        				
-        				<div class="col-lg-2">${top.counting }개</div>
-        			</div>
-        			</c:forEach>
-        		</div>  
-        	
-        	
-        		<!-- 가장 인기 많은 레시피 -->
-        		<div class="col-lg-4 offset-lg-1 test popular-recipe scrollbar-juicy-peach thin" style="height:190px; overflow-y:auto">        	
-        			
-        			<c:forEach items="${popularRecipe}" var="pop">
+        	<div class="col-lg-12 test popular-recipe scrollbar-juicy-peach thin" style="height:190px; overflow-y:auto">        	
+        		<c:forEach items="${popularRecipe}" var="pop">
         			<div class="row" style="padding:0.5%;">
         				<div class="col-lg-1">${pop.ranking}</div>
         				<div class="col-lg-3">${pop.mName }</div>
         				<div class="col-lg-6">${pop.rName }</div>
         				<div class="col-lg-2">${pop.counting }</div>
         			</div>
-        			</c:forEach>
-        		</div> 
-        	</div>   
+        		</c:forEach>
+        	</div> 
+        	</div>
+        	<!-- 2 -->
         	
+        	</div>
+        	
+        	<div class="row">
+        	        	
+        	</div>        
         	<br />  
         	<div class="row" style="text-align: center; font-size:200%;">
-        		<div class="col-lg-4 offset-lg-2">작성한 레시피 갯수</div>
-        		<div class="col-lg-4 offset-lg-1">가장 인기있는 레시피</div>
+        		<div class="col-lg-5 offset-lg-1">작성한 레시피 갯수</div>
+        		<div class="col-lg-5">가장 인기있는 레시피</div>
         	</div>
         	<br />  
         	</div>
-        	       
-        	        	
         	<br><br>
+        	
+        	<script>
+        	$(function(){
+        		var isOpen = false;
+        		$(".toggleBar").click(function() {
+        			var $bigBox = $(this).next('.bigBox');
+        			
+        			console.log('display상태가? : '+$bigBox.css('display'));
+        			
+        			$bigBox.slideToggle("slow",function(){
+          				$('html').animate({scrollTop: $(this).offset().top}, 400);
+          				if(isOpen == false) isOpen = true;
+          				else isOpen = false;
+          			}); 
+        			if(isOpen == false){
+        				$(this).children('.fas').eq(0).css('display', 'none');
+            			$(this).children('.fas').eq(1).css('display', 'inline');        				
+        			}else{
+        				$(this).children('.fas').eq(0).css('display', 'inline');
+            			$(this).children('.fas').eq(1).css('display', 'none');
+        			}
+        			
+        			
+          		});
+        	})
+        	
+        	
+        	</script>
+        	
+        	
         </div>
     </div>
     
 	<script>
-		$(function(){
-			
-			
-		})
-	
+		$('.cardContainer').on('click', function () {
+		  	$(this).children('.card').toggleClass('flipped');			
+		});
 	
 	
        	var ctx1 = $("#genderDistribution");
