@@ -3,8 +3,8 @@
 <mapper namespace="fridge">
 	
 	<select id="checkCategory" parameterType="hashmap" resultType="Ingredient">
-		SELECT * FROM ingredient
-		JOIN ingredient_category USING(category)	
+		SELECT * FROM INGREDIENT
+		JOIN INGREDIENT_CATEGORY USING(CATEGORY)	
 		WHERE CATEGORY LIKE #{keyword} || '%' 
 		<if test="inRef.size() != 0">
 			AND INUM NOT IN
@@ -34,5 +34,22 @@
             #{type.iNum}
         </foreach>
 	</delete>
+	
+	<select id="findRecipe" parameterType="hashmap" resultType="recipe">
+		SELECT * FROM RECIPE
+		JOIN MEMBER USING(MNUM)
+		WHERE 
+		<foreach collection="inRef" item="data" separator=" OR ">
+			REGEXP_LIKE (INUM, '^'||#{data}||'$|^'||#{data}||',|,'||#{data}||',|,'||#{data}||'$')
+		</foreach>
+	</select>
+	
+	<select id="bringName" parameterType="string" resultType="ingredient">
+		SELECT * FROM INGREDIENT
+		WHERE INUM IN 
+		<foreach collection="data" item="type" open="(" close=")" separator=",">
+            #{type}
+        </foreach>
+	</select>
 	
 </mapper>

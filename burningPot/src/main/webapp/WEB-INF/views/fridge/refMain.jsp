@@ -21,10 +21,10 @@
 	            <div class="ref">
 	                <div class="blank"></div>
 	                <div id="refrigerator" class="rounded p-r m-r">
-	                    <div class="recipe row">
-							<c:forEach var="fri" items="${list}">
-								<div class="ingre m-1">
-									<img src="${pageContext.request.contextPath}/resources/img/ingredient/${fri.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${fri.iName}">
+	                    <div id="ref" class="recipe row">
+							<c:forEach var="ingre" items="${list}">
+								<div class="ingre m-1" id="${ingre.iNum}">
+									<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${ingre.iName}">
 								</div>								
 							</c:forEach>
 	                    </div>                        
@@ -44,7 +44,8 @@
 	        <div class="col-sm-1" style="margin-right:-5%"></div>
 	
 	        <div class="col-sm-7">
-	            <div class="p-4 rounded rec-side left-arrow ttt">
+	            <div id="recipe" class="p-4 rounded rec-side left-arrow">
+
 	                <div class="recipe row">
 	                    <div class="col-sm-4">
 	                        <div style="height: 12vh">
@@ -59,62 +60,7 @@
 	                    </div>
 	                </div>
 	                <hr>
-	                <div class="recipe row">
-	                    <div class="col-sm-4">
-	                        <div style="height: 12vh">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/food2.png" alt="food image" class="rounded" style="max-height: 100%; min-width:100%;">
-	                        </div>
-	                    </div>
-	                    <div class="col-sm-8">
-	                        <div><h5>건강 간식 고구마 맛탕</h5></div>
-	                        <div>반려견도 만들 수 있을만큼 쉬운 맛탕</div>
-	                        <div>작성자 : 이수원준</div>
-	                        <div>주재료 : 고구마</div>    
-	                    </div>
-	                </div>
-	                <hr>
-	                <div class="recipe row">
-	                    <div class="col-sm-4">
-	                        <div style="height: 12vh">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/food1.png" alt="food image" class="rounded" style="max-height: 100%; min-width:100%;">
-	                        </div>
-	                    </div>
-	                    <div class="col-sm-8">
-	                        <div><h5>한라봉 소스를 곁들인 주꾸미 볶음</h5></div>
-	                        <div>건강에 좋고 맛도 좋은 간편 요리!(한줄소개)</div>
-	                        <div>작성자 : 각설탕</div>
-	                        <div>주재료 : 한라봉, 주꾸미</div>
-	                    </div>
-	                </div>
-	                <hr>
-	                <div class="recipe row">
-	                    <div class="col-sm-4">
-	                        <div style="height: 12vh">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/food2.png" alt="food image" class="rounded" style="max-height: 100%; min-width:100%;">
-	                        </div>
-	                    </div>
-	                    <div class="col-sm-8">
-	                        <div><h5>건강 간식 고구마 맛탕</h5></div>
-	                        <div>반려견도 만들 수 있을만큼 쉬운 맛탕</div>
-	                        <div>작성자 : 이수원준</div>
-	                        <div>주재료 : 고구마</div>    
-	                    </div>
-	                </div>
-	                <hr>
-	                <div class="recipe row">
-	                    <div class="col-sm-4">
-	                        <div style="height: 12vh">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/food2.png" alt="food image" class="rounded" style="max-height: 100%; min-width:100%;">
-	                        </div>
-	                    </div>
-	                    <div class="col-sm-8">
-	                        <div><h5>건강 간식 고구마 맛탕</h5></div>
-	                        <div>반려견도 만들 수 있을만큼 쉬운 맛탕</div>
-	                        <div>작성자 : 이수원준</div>
-	                        <div>주재료 : 고구마</div>    
-	                    </div>
-	                </div>
-	                <hr>
+
 	            </div>
 	            <div style="height:3vh;"></div>
 	        </div>
@@ -122,9 +68,40 @@
 	    <div class="row" style="height:10vh;"></div>
 	</div>
 	<script>
-		/* $(document).ready(function(){}); */
+  		$(document).ready(function(){
+			var inRef = [];
+			$('#ref').children().each(function(){
+				inRef.push($(this).attr('id'));
+			})
+			
+	    	jQuery.ajaxSettings.traditional = true;
+		 	$.ajax({
+				url : "${pageContext.request.contextPath}/fridge/findRecipe.do",
+				data : {inRef : inRef},
+				success : function(data){
+					$.each(data, function(key, value){
+						$('#recipe').append(
+			                `<div class="recipe row">
+			                    <div class="col-sm-4">
+			                        <div style="height: 17vh;">
+			                            <img src="${pageContext.request.contextPath}/resources/img/recipeContent/`+value.rImg+`" alt="food image" class="rounded" style="max-height: 100%; min-width:100%;">
+			                        </div>
+			                    </div>
+			                    <div class="col-sm-8">
+			                        <div><h5>`+value.rName+`</h5></div>
+			                        <div>`+value.rIntro+`</div>
+			                        <div>작성자 : `+value.mName+`</div>
+			                        <div>주재료 : `+value.iName+`</div>
+			                    </div>
+			                </div>
+			                <hr>`)
+					});					
+				}, error : function(error, msg){
+					console.log(error+' : '+msg);
+				}
+			});
+		});
 	</script>
-
 	
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/fridge/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/fridge/js/hkLocal.js"></script>	

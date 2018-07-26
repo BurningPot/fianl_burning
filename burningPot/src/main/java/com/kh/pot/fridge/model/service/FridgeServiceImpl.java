@@ -1,7 +1,6 @@
 package com.kh.pot.fridge.model.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.kh.pot.fridge.model.dao.FridgeDao;
 import com.kh.pot.fridge.model.vo.Fridge;
 import com.kh.pot.ingredient.model.vo.Ingredient;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 @Service
 public class FridgeServiceImpl implements FridgeService {
@@ -33,7 +33,7 @@ public class FridgeServiceImpl implements FridgeService {
 	}
 
 	@Override
-	public int updateComplete(String inRef, int mNum, String mName, String mId) {
+	public int updateComplete(String inRef, int mNum) {
 		int result = 0;
 		String[] ref = inRef.split(",");
 		List<String> inputIngre = new ArrayList<String>();
@@ -41,8 +41,6 @@ public class FridgeServiceImpl implements FridgeService {
 		Map<String, Object> data = new HashMap<String, Object>();
 		
 		data.put("mNum", mNum);
-		data.put("mName", mName);
-		data.put("mId", mId);
 		
 		List<Fridge> checkFridge = friDao.checkFridge(data);
 		List<Fridge> inIngre = new ArrayList<Fridge>();		// 기존에 있던 물품 중 현재도 담겨있는 것
@@ -64,9 +62,7 @@ public class FridgeServiceImpl implements FridgeService {
 				}
 			}
 			
-			System.out.println("유지된 물품 수 : "+inIngre.size());
 			delIngre.addAll(checkFridge);
-			System.out.println("지우기 전 물품 수 : "+delIngre.size());
 			delIngre.removeAll(inIngre);
 			
 			newIngre.addAll(inputIngre);
@@ -77,22 +73,17 @@ public class FridgeServiceImpl implements FridgeService {
 					}
 				}
 			}
-			
-			System.out.println("지워야 할 물품 수 : "+delIngre.size());
-			System.out.println("등록할 물품 수 : "+newIngre.size());
-			
+
 			data.put("delIngre", delIngre);
 			data.put("ref", newIngre);
 			
 			if(delIngre.size() != 0){
 				int del = friDao.deleteFridge(data);
-				System.out.println("삭제 처리 수 : "+del);
 				result += del;
 			}
 			
 			if(newIngre.size() != 0){
 				int ins = friDao.insertFridge(data);
-				System.out.println("등록 처리 수 : "+ins);
 				result += ins;
 			}
 			
@@ -107,6 +98,38 @@ public class FridgeServiceImpl implements FridgeService {
 		data.put("mNum", mNum);
 		
 		return friDao.checkFridge(data);
+	}
+
+	@Override
+	public List<Recipe> findRecipe(ArrayList<String> inRef) {
+		
+		List<Recipe> list = new ArrayList<Recipe>();
+		Map<String, Object> data = new HashMap<String, Object>();
+		
+		data.put("inRef", inRef);
+		
+		if(!inRef.isEmpty() || inRef.size()!=0) {
+			list = friDao.findRecipe(data); 
+		}
+		
+		return list;
+	}
+
+	@Override
+	public List<List<Ingredient>> bringName(List<String> data) {
+		List<List<Ingredient>> recList = new ArrayList<List<Ingredient>>();
+		
+		String[] arr = null;
+		Map<String, String[]> daoData = new HashMap<String, String[]>();
+		
+		for(String str : data){
+			arr = str.split(",");
+			daoData.put("data", arr);
+			List<Ingredient> recOne = friDao.bringName(daoData);
+			recList.add(recOne);
+		}
+		
+		return recList;
 	}
 
 	
