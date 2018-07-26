@@ -38,4 +38,16 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.selectList("member.selectTopWriter");
 	}
 
+	@Override
+	public List<Statistics> selectMaleFavor() {
+		
+		return sqlSession.selectList("member.selectMaleFavor");
+	}
+
+	@Override
+	public List<Statistics> selectFemaleFavor() {
+		
+		return sqlSession.selectList("member.selectFemaleFavor");
+	}
+
 }

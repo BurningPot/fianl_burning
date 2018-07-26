@@ -93,7 +93,7 @@
    
 	
 	<c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
-<br /><br /><br />
+<br /><br />
 <script>
 	
 function hoveringDiv(){	

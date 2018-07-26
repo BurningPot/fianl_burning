@@ -14,6 +14,7 @@ public class Statistics implements Serializable{
 	private int counting;
 	
 	
+	
 	public Statistics(){
 		
 	}

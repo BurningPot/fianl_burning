@@ -38,4 +38,16 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectTopWriter();
 	}
 
+	@Override
+	public List<Statistics> selectMaleFavor() {
+		
+		return adminDao.selectMaleFavor();
+	}
+
+	@Override
+	public List<Statistics> selectFemaleFavor() {
+		
+		return adminDao.selectFemaleFavor();
+	}
+
 }

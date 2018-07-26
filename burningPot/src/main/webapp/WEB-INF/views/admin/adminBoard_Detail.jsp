@@ -59,7 +59,7 @@
     
 
 	<c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
-	<br /><br /><br />
+	<br /><br />
     <div class="row">
     	<!-- 사이드메뉴 -->
         <div class="col-lg-2 menu-bar">
@@ -121,6 +121,7 @@
             </div>
            
         	<br /><br /> 
+        	<div class="col-lg-10 commentTEST"></div>
         	<div class="col-lg-10" id="insertComment">        		
             	<c:forEach items="${bcList}" var="bc">
             	
@@ -179,14 +180,34 @@
       			YorN = true; // 삭제할때 갯수가 1개이면 답변은 처리가 안된것이므로 N으로 바꾸는것
       						 // true일때 Y를 , false일 때 N을 넣자
         		
-        		var comment = $('#comment').val();   
+      						 //댓글이 댓글칸을 넘어가지 않게 하기위한 특단의 조치..
+        		var comment = $('#comment').val(); 
+      			
+      			var commentArr = new Array();
+      			
+      			var realComment = "";
+      			
+      			var line = (comment.length/50)+1; //댓글 줄수
+      			
+      			for(var i = 0; i< line; i++){
+      				commentArr[i] = comment.substring(i*50, (i*50)+50)+"<br>";
+      				realComment += commentArr[i];
+      				if(i == (line-1)){
+      					commentArr[i] = comment.substring(i*50, comment.length)+"<br>";
+      					realComment += commentArr[i];
+      				}
+      			}   			
+      			
+      			
+      			//var comment1 = comment.substring(0,100);
+      			
         		var mNum = ${mNum}; 
         		
         		//ajax로 댓글달기 
         		$.ajax({
         			url: '${pageContext.request.contextPath}/admin/insertBoardComment.do',
         			data: {
-        				comment: comment,
+        				comment: realComment,
         				mNum: mNum,
         				bNum: ${b.bNum}        				
         			},
@@ -259,7 +280,7 @@
  							YorN = false;
  							updateQnA(YorN);
  						}  						
-        				console.log('댓글갯수 : '+ $('.commentWindow').length);
+        				
         				location.href="${pageContext.request.contextPath}/admin/${detailMapping}?bNum="+bNum;
         			}, error: function(){
         				alert('글 삭제에 실패하였습니다!');

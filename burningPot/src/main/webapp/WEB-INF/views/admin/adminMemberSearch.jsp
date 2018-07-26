@@ -114,7 +114,7 @@
     
 
 <c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
-<br /><br /><br />
+<br /><br />
     <div class="row">
         <div class="col-lg-2 menu-bar">
              <c:import url="/WEB-INF/views/admin/sideMenu.jsp"/>         

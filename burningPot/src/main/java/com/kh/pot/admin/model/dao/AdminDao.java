@@ -14,4 +14,8 @@ public interface AdminDao {
 
 	List<Statistics> selectTopWriter();
 
+	List<Statistics> selectMaleFavor();
+
+	List<Statistics> selectFemaleFavor();
+
 }
