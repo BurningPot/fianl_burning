@@ -32,7 +32,7 @@ public class StringtoVo {
 				list[21].equals("30-39") ? nowYear-30 : 
 				list[21].equals("40-49") ? nowYear-40 :
 				list[21].equals("50-59") ? nowYear-50 :
-				list[21].equals("60-69") ? nowYear-60 : nowYear-70;
+				list[21].equals("60-") ? nowYear-60 : nowYear-60;
 			
 		System.out.println("yyyy"+yyyy);
 		String mYear = toString().valueOf(yyyy);

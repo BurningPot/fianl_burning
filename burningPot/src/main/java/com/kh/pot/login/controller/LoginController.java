@@ -1,11 +1,17 @@
 package com.kh.pot.login.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kh.pot.member.model.vo.NaverLoginVO;
 
@@ -21,6 +27,13 @@ public class LoginController {
 		this.naverLoginVO = naverLoginVO;
 	}
 	
+	@Autowired
+	private GoogleConnectionFactory googleConnectionFactory;
+	
+	@Autowired
+	private OAuth2Parameters googleOAuth2Parameters;
+	
+//	네이버 로그인 url 생성
 	@RequestMapping(value = {"naverLog.do", "login/naverLog.do"})
 	public String naverLog(Model model, HttpSession session){
 	
@@ -35,6 +48,18 @@ public class LoginController {
 		model.addAttribute("url", naverAuthUrl);
 		
 		return "login/returnURL";
+	}
+	
+	// 구글로그인 url 생성
+	@RequestMapping(value = {"googleLogin.do", "login/googleLogin.do"})
+	public String doGoogleSignInActionPage(HttpServletResponse response, Model model) throws Exception{
+	  OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+	  String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
+	  System.out.println("url : " + url);
+	  model.addAttribute("url",url);
+	  
+	  return "login/returnURL";
+
 	}
 	
 	
