@@ -190,10 +190,8 @@
                      			}
                      		})
                      	});
-                     	
-
                      </script>
-                    <button type="button" class="btn btn-default btn-sm">회원탈퇴</button>
+                    <button type="button" class="btn btn-default btn-sm" id="infoDel">회원탈퇴</button>
                   </div>
                 </div>
                  
@@ -274,6 +272,10 @@
 <br />
           </div>
           
+           <form id="delForm">
+             	<input type="hidden" value="${m.mNum }" name="formDel"/>
+             </form>
+          
           <script>
        
           // 이미지 변경 클릭시
@@ -317,7 +319,7 @@
 			        cache: false,
 			        data : data,
 			        success : function (data){
-			        	alert("성공");
+			        	/* alert("성공"); */
 			        	},
 			        	error : function(data){
 			        		alert("실패");
@@ -440,7 +442,22 @@
            		})
            		
            	});
+               
+               // 회원탈퇴
+               $('#infoDel').on('click', function(){
+            	   var delConfirm = confirm('탈퇴 하시겠습니까?');
+            	   if (delConfirm) {
+            	      alert('탈퇴 되었습니다.');
+            	      $('#delForm').attr("action", "${pageContext.request.contextPath}/mypage/deleteUserInfo.do").submit();
+            	   }
+            	   else {
+            	      alert('삭제가 취소되었습니다.');
+            	   }
+               })
              </script>
+             
+            
+             
            </div>  
 </body>
 </html>

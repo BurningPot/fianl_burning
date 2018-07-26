@@ -22,15 +22,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pot.home.service.MainService;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.mypage.model.service.MypageService;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 @Controller
 public class MypageController {
 	
 	@Autowired
 	MypageService mypageService;
+	
+	@Autowired
+	MainService mainService;
 	
 /*	@RequestMapping("mypage/myPage.do")
 	public String myPage(){
@@ -179,12 +184,16 @@ public class MypageController {
 			return result;
 		}
 		
-		// 이미지변경
-/*		@RequestMapping("/mypage/UploadImg.do")
-		public String UploadImg(@RequestParam  )*/
-		
-		
-	
+		@RequestMapping("mypage/deleteUserInfo.do")
+		public String deleteUserInfo(@RequestParam int formDel, Model model){			
+			int result = mypageService.deleteUserInfo(formDel);
+			
+			List<Recipe> list = mainService.selectShowHome();
+			
+			model.addAttribute("list", list);
+			
+			return "main";
+		}
 
 	}
 	

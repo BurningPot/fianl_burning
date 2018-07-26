@@ -66,6 +66,11 @@ public class MypageDaoImpl implements MypageDao{
 		map.put("numHidden", numHidden);
 		return sqlSession.update("mypage.updateImg", map);
 	}
+
+	@Override
+	public int deleteUserInfo(int formDel) {		
+		return sqlSession.delete("mypage.deleteUserInfo", formDel);
+	}
 	
 	
 
