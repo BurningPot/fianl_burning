@@ -1450,7 +1450,7 @@
 					</div>
 					<c:if test="${m.mId != 'admin'}" >
 				        <div class="login_btn_after">
-			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button">
+			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button" onclick="goToMyPage();">
 			          			<i class="far fa-user fa-3x"></i>
 				            </button>
 				        </div>
@@ -1475,6 +1475,16 @@
 				          </button>
 				        </div>
 			        </c:if>
+			        <form action="${pageContext.request.contextPath}/mypage/myPage.do" method="POST" id="goToMyPageForm">
+			        	<input type="hidden" value="${m.mNum}" name="mNumForMyPage"/>
+			        </form>
+			        <script>
+			        	function goToMyPage(){
+			        		$('#goToMyPageForm').submit();
+			        	}
+			        </script>
+			        
+			        
 			        <c:if test="${m.mId == 'admin'}" >
 				        <div class="login_btn_after">
 			          		<button class="menuBtn_after" data-tooltip-text="관리자페이지!!" type="button" onclick="location.href='${pageContext.request.contextPath}/admin/goAdmin.do'">
