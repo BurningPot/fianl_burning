@@ -10,57 +10,7 @@
  --%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
-	<!--스크롤바-->
-	.scrollbar {
-    margin-left: 30px;
-    float: left;   
-    width: 65px;
-    background: #fff;
-    overflow-y: scroll;
-    margin-bottom: 25px;
-}
-.force-overflow {
-    min-height: 450px;
-}
-
-.scrollbar-primary::-webkit-scrollbar {
-  width: 12px;
-  background-color: #F5F5F5; }
-
-.scrollbar-primary::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-  background-color: #4285F4; }
-
-
-.scrollbar-default::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-  background-color: #F5F5F5;
-  border-radius: 10px; }
-
-.scrollbar-default::-webkit-scrollbar {
-  width: 12px;
-  background-color: #F5F5F5; }
-
-.scrollbar-default::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-  background-color: #2BBBAD; }
-
-.scrollbar-secondary::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-  background-color: #F5F5F5;
-  border-radius: 10px; }
-
-.scrollbar-secondary::-webkit-scrollbar {
-  width: 12px;
-  background-color: #F5F5F5; }
-
-.scrollbar-secondary::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-  background-color: #aa66cc; }
-	<!--스크롤바-->
+	
 	.ingMenu-search{
 		height: 209px; 		
 	}
@@ -190,7 +140,7 @@ function hoveringDiv(){
         				</div>        				
         			</div>
         		</div>        		
-        		<div class="col-lg-6 ing search-detail test no-padding scrollbar scrollbar-primary">
+        		<div class="col-lg-6 ing search-detail test no-padding scrollbar scrollbar-juicy-peach">
         				
         		</div>
         	
