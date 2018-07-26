@@ -88,6 +88,13 @@ public class MainDaoImpl implements MainDao{
 		
 		return rlist;
 	}
+	
+	@Override
+	public List<Recipe> recipeTop5() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("home.recipeTop5");
+	}
+
 
 	
 }

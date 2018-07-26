@@ -91,6 +91,13 @@ public class MainServiceImpl implements MainService{
 		
 		return mainDao.inquiryRecipeListAfter(map);
 	}
+
+	@Override
+	public List<Recipe> recipeTop5() {
+
+		
+		return mainDao.recipeTop5();
+	}
 	
 	/*@Override
 	public List<Recipe> inquiryRecipeList(String keyWord, int number) {

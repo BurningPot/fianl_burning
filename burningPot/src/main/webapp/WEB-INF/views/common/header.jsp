@@ -36,6 +36,14 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
 		
 		<style>
+			/* 추천검색어 css */
+			.badge {
+			    font-size: 100%;
+			}
+			..rec_recipe >span {
+				font-size: 150%;
+			}
+			
 			/* 검색 후 정렬 버튼 css */
 			.searchResultAndsearchBtn{
 				width:100%; 
@@ -610,7 +618,7 @@
 			height: 48%;
 			display: inline-block;
 			/* padding-top: 3%; */
-			padding-left: 7%;
+			padding-left: 11%;
 			/* text-align: center; */
 			/* margin-left: -5%; */
 			/* border: 1px dashed black; */
@@ -625,16 +633,16 @@
 			/* float: left; */
 			display: inline-block;
 			margin-top: 1%;
-			margin-left: 2%;
+			margin-left: 30%;
 			/* border: 1px solid red; */
 		}
 		
-		.rec_recipe_link {
-			width: 8%;
+		#rec_recipe_link {
+			width: 14%;
 			text-align: center;
 			/* margin-left: 4%; */
 			border: none;
-			background: no-repeat;
+			/* background: no-repeat; */
 		}
 		
 		.img-thumbnail {
@@ -724,18 +732,18 @@
 		.recipe_level{
 			width:33.3%;
 			height:100%;
-			border: 1px solid red;
+			border-right: 2px solid black;
 			
 		}
 		.recipe_time{
 			width:33.3%;
 			height:100%;
-			border: 1px solid green;
+			border-right: 2px solid black;
 		}
-		.recipe_writer{
+		.recipe_quantity{
 			width:33.3%;
 			height:100%;
-			border: 1px solid blue;
+			/* border: 1px solid blue; */
 		}
 		
 		.img_icon {
@@ -879,7 +887,7 @@
 				display: none;
 			}
 			.menu_home_btn_before{
-				width: 25%; 
+				width: 33%; 
 				height:100%; 
 				float: left; 
 				/* margin-left: -4%; */
@@ -919,7 +927,7 @@
 			}
 	        /* myPage 버튼 */
 			.board_btn_before{
-			    width: 25%;
+			    width: 33%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -941,7 +949,7 @@
 			}
 			/* login 버튼 */
 			.login_btn_before{
-				width: 25%;
+				width: 33%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -953,7 +961,7 @@
 			
 			/* 로그인 이후 축소될 경우의 버튼 모양 */
 			.logOut_btn_after{
-	    	    width: 16%;
+	    	    width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -963,7 +971,7 @@
 			    /* padding: 1%; */
 		    }
 			.menu_home_btn_after{
-				width: 16%;
+				width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -975,7 +983,7 @@
 			
 			 /* myPage 버튼 */
 			.board_btn_after{
-			    width: 16%;
+			    width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -985,7 +993,7 @@
 			    /* padding: 1%; */
 			}
 			.fredge_btn_after{
-			    width: 16%;
+			    width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -996,7 +1004,7 @@
 			}
 			/* recipe 등록 버튼 */
 			.regist_recipe_btn_after{
-				width: 16%;
+				width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1007,7 +1015,7 @@
 			}
 			/* login 버튼 */
 			.login_btn_after{
-				width: 16%;
+				width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1223,7 +1231,7 @@
 	        
 	       /* 로그인 이후 축소될 경우의 버튼 모양 */
 			.logOut_btn_after{
-	    	    width: 16%;
+	    	    width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1233,7 +1241,7 @@
 			    /* padding: 1%; */
 		    }
 			.menu_home_btn_after{
-				width: 16%;
+				width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1245,7 +1253,7 @@
 			
 			 /* myPage 버튼 */
 			.board_btn_after{
-			    width: 16%;
+			    width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1255,7 +1263,7 @@
 			    /* padding: 1%; */
 			}
 			.fredge_btn_after{
-			    width: 16%;
+			    width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1266,7 +1274,7 @@
 			}
 			/* recipe 등록 버튼 */
 			.regist_recipe_btn_after{
-				width: 16%;
+				width: 16.5%;
 			    height: 100%;
 			    float: left;
 			    margin-left: 0;
@@ -1397,16 +1405,14 @@
 					
 					<div class="recommend_recipe_area active">
 						<div class="rec_recipe">
-							<span class="rec_recipe_link">&lt;인기 레시피&gt; 
-							<a class="rec_reipe_a" href="#">추천 레시피 1</a> 
-							<a class="rec_reipe_a" href="#">추천 레시피 2</a> 
-							<a class="rec_reipe_a" href="#">추천 레시피 3</a> 
-							<a class="rec_reipe_a" href="#">추천 레시피 4</a> 
-							<a class="rec_reipe_a" href="#">추천 레시피 5</a>
+							<!-- <span class="badge badge-dark" id="rec_recipe_link">&lt;추천 레시피&gt; -->
+							<span class="badge badge-dark" id="rec_recipe_link">추천 레시피 
+							
 							</span>
 						</div>
 					</div>
 				</div>
+				
 				<!-- 로그인 안했을 때 -->
 	      		<c:if test="${empty m}">
 	      		<div class="b-seg-right_before nav navbar-nav navbar-right">
@@ -1767,6 +1773,23 @@
    	
    	<!-- 희준 script -->
 	<script>
+	$(window).ready(function(){
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/home/recipeTop.do",
+			type : "GET",
+			success : function(data){
+				console.log("top5 ajax 실행됨");
+				console.log("data 길이 : " + data.length);
+				for(var i = 0; i < data.length; i++){
+					$("<a class='rec_reipe_a badge badge-success' href='#'>" + data[i].rName + "</a>").appendTo('#rec_recipe_link');
+				}
+			}, error : function(data){
+				console.log("top5 ajax 실행 안됨");
+			}
+		});
+		
+	});
 	
 	function searchRecipe(){
 		$('#searchRecipe').on('')

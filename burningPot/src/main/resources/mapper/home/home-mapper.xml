@@ -19,6 +19,7 @@
 		ORDER BY ROWNUM 
 		]]>
 	</select>
+	
 	<select id="selectCountAllRecipe" resultType="_int">
 		SELECT COUNT(*) FROM RECIPE
 	</select>
@@ -69,4 +70,27 @@
 		]]>
 	</select>
 	
+	
+	<!-- recipeTop5 -->
+	<select id="recipeTop5" resultType="recipe">
+		<![CDATA[
+		SELECT ROWNUM AS "R", 
+		       RNUM, MNUM, 
+		       RNAME, RIMG, 
+		       QUANTITY, RTIME, 
+		       RLEVEL, INUM, 
+		       IQUAN, SUBINGREDIENT, 
+		       RDATE, RINTRO, 
+		       RREPORT, RRECOMMEND, 
+		       RCOUNT 
+		FROM (SELECT RNUM, MNUM, RNAME, 
+		             RIMG, QUANTITY, RTIME, 
+		             RLEVEL, INUM, IQUAN, 
+		             SUBINGREDIENT, RDATE, RINTRO, 
+		             RREPORT, RRECOMMEND, RCOUNT  
+		      FROM RECIPE 
+		      ORDER BY RRECOMMEND DESC)
+		WHERE ROWNUM <= 5
+		]]>
+	</select>
 </mapper>

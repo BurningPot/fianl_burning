@@ -10,6 +10,19 @@
 	<div style="height: 15%;"></div>
 	<div id="fakeLoader"></div>
 	<div class="b-seg" id="b-seg">
+		<div class="searchResultAndsearchBtn">
+			<div class="searchRecipeCountArea">
+				<%-- <b>"${list.size()}"</b>으로 검색한 결과 입니다.<br> --%>
+				총 <b>${list.size()}</b>개의 맛있는 레시피가 있습니다.
+			</div>
+			<div class="searchBtn">
+				<ul class="searchBtnUl">
+		          <li><button type="button" class="searchBtnA1" onclick="inquiry();">조회</button></li>
+		          <li><button type="button" class="searchBtnA2" onclick="recommand();">추천</button></li>
+		          <li><button type="button" class="searchBtnA3" onclick="cookLevel();">난이도</button></li>
+		        </ul>
+			</div>
+		</div>
 		<ul class="recipeList">
 			<c:forEach items="${list}" var="recipe">
 				<li>
@@ -20,7 +33,7 @@
    							</button>
    						</div>
    						<div class='aver_btn_area'>
-   							<h5>  </h5>
+   							<h5></h5>
    						</div>
    					</div>
    					<div class='recipe_img_area'>
@@ -30,20 +43,55 @@
    					<div class='recipe_levle_and_time_and_writer_area'>
    						<div class='recipe_level'>
    							<c:if test="${4 eq recipe.rLevel}">
-   								최상
+   								고급
    							</c:if>
    							<c:if test="${3 eq recipe.rLevel}">
-   								상
+   								중급
    							</c:if>
    							<c:if test="${2 eq recipe.rLevel}">
-   								중
+   								초급
    							</c:if>
    							<c:if test="${1 eq recipe.rLevel}">
-   								하
+   								아무나
    							</c:if>
    						</div>
-   						<div class='recipe_time'>${recipe.rTime} 분</div>
-   						<div class='recipe_writer'>${recipe.quantity} 인분</div>
+   						<div class='recipe_time'>
+   							<c:if test="${1 eq recipe.rTime}">
+   								10분 이내
+   							</c:if>
+   							<c:if test="${2 eq recipe.rTime}">
+   								20분 이내
+   							</c:if>
+   							<c:if test="${3 eq recipe.rTime}">
+   								30분 이내
+   							</c:if>
+   							<c:if test="${4 eq recipe.rTime}">
+   								60분 이내
+   							</c:if>
+   							<c:if test="${5 eq recipe.rTime}">
+   								60분 이상
+   							</c:if>
+   						</div>
+   						<div class='recipe_quantity'>
+   							<c:if test="${1 eq recipe.quantity}">
+   								1인분
+   							</c:if>
+   							<c:if test="${2 eq recipe.quantity}">
+   								2인분
+   							</c:if>
+   							<c:if test="${3 eq recipe.quantity}">
+   								3인분
+   							</c:if>
+   							<c:if test="${4 eq recipe.quantity}">
+   								4인분
+   							</c:if>
+   							<c:if test="${5 eq recipe.quantity}">
+   								5인분
+   							</c:if>
+   							<c:if test="${6 eq recipe.quantity}">
+   								5인분 이상
+   							</c:if>
+   						</div>
    					</div>
    				</li>
 			</c:forEach>
@@ -100,14 +148,38 @@
                		for (var i = 0; i < data.length; i++) {
                
             			console.log("count : " + count);
-                		if(data[i].rLevel == 1){
-                			level="하";
+            			if(data[i].rLevel == 1){
+                			level="아무나";
                 		} else if(data[i].rLevel == 2){
-                			level="중";
+                			level="초급";
                 		} else if(data[i].rLevel == 3) {
-                			level="상";
+                			level="중급";
                 		} else {
-                			level="최상";
+                			level="고급";
+                		}
+            			if(data[i].rTime == 1){
+            				rTime="10분 이내";
+                		} else if(data[i].rTime == 2){
+                			rTime="20분 이내";
+                		} else if(data[i].rTime == 3) {
+                			rTime="30분 이내";
+                		} else if(data[i].rTime == 4) {
+                			rTime="60분 이내";
+                		} else {
+                			rTime="60분 이상";
+                		}
+            			if(data[i].quantity == 1){
+            				quantity = "1인분";
+                		} else if(data[i].quantity == 2){
+                			quantity = "2인분";
+                		} else if(data[i].quantity == 3) {
+                			quantity = "3인분";
+                		} else if(data[i].quantity == 4) {
+                			quantity = "4인분";
+                		} else if(data[i].quantity == 5) {
+                			quantity = "5인분";
+                		} else {
+                			quantity = "5인분 이상";
                 		}
                 		$("<li>" + 
                 				"<div class='like_and_aver_area'>" +
@@ -117,7 +189,7 @@
                 						"</button>" +
                 					"</div>" + 
                 					"<div class='aver_btn_area'>" + 
-                						"<h5>" + str1 + "</h5>"+
+                						"<h5>" + "</h5>"+
                 					"</div> " +
                 				"</div>" + 
                 				"<div class='recipe_img_area'>" +
@@ -126,8 +198,8 @@
                 				"</div>" +
                 				"<div class='recipe_levle_and_time_and_writer_area'>" +
                 					"<div class='recipe_level'>" + level + "</div>" +
-                					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-                					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+                					"<div class='recipe_time'>" + rTime + "</div>" +
+                					"<div class='recipe_quantity'>" + quantity + "</div>" +
                 				"</div>" +
                 			"</li>").appendTo(".recipeList");
                 		
@@ -184,7 +256,7 @@
             					"<div class='recipe_levle_and_time_and_writer_area'>" +
             						"<div class='recipe_level'>" + level + "</div>" +
             						"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-            						"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+            						"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
             					"</div>" +
             				"</li>").appendTo("ul");
         					        				   	
@@ -247,7 +319,7 @@
             					"<div class='recipe_levle_and_time_and_writer_area'>" +
             						"<div class='recipe_level'>" + level + "</div>" +
             						"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-            						"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+            						"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
             					"</div>" +
             				"</li>").appendTo("ul");
                     } //
