@@ -175,7 +175,7 @@ public class AdminController {
 		model.addAttribute("commonTitle","Q&A 게시판");
 		
 		String bCategory = "QNA";
-		int numPerPage = 10; // 한 페이지 당 게시글 수
+		int numPerPage = 5; // 한 페이지 당 게시글 수
 		
 		ArrayList<Board> list = (ArrayList<Board>) boardService.selectBoard(cPage, numPerPage, bCategory);
 		

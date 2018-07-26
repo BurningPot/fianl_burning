@@ -20,6 +20,9 @@
 	.popular-recipe, .top-writer{
 		text-align: center;
 	}
+	.bigBox{
+		padding-top: 2%;
+	}
 	
    /*
     #FBFFB9
@@ -62,7 +65,9 @@
         </div>
         <!-- 시계끝 -->	
         	<br /><br /><br />
-        	<div class="test">
+        	
+        	<!-- 여기에 슬라이드 머리를 넣자 -->
+        	<div class="bigBox test">
         	<div class="row">
         		<!-- 성별분포 그래프 -->
         		<div class="col-lg-4 offset-lg-2">        	
@@ -82,7 +87,9 @@
         	
         	<br /><br /><br /><br />
         	        
-        	 
+        	        
+        	<!-- 여기에 슬라이드 머리를 넣자 -->        
+        	<div class="bigBox test">
         	
         	<div class="row">
         	<div class="col-lg-4 offset-lg-2 top-writer">
@@ -137,7 +144,9 @@
         		<div class="col-lg-4 offset-lg-2">작성한 레시피 갯수</div>
         		<div class="col-lg-4 offset-lg-1">가장 인기있는 레시피</div>
         	</div>
-        	<br />         
+        	<br />  
+        	</div>
+        	       
         	        	
         	<br><br>
         </div>
