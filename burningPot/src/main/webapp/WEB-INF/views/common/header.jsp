@@ -1478,7 +1478,7 @@
 			        <form action="${pageContext.request.contextPath}/mypage/myPage.do" method="POST" id="goToMyPageForm">
 			        	<input type="hidden" value="${m.mNum}" name="mNumForMyPage"/>
 			        </form>
-			        <script>
+			        <script> 
 			        	function goToMyPage(){
 			        		$('#goToMyPageForm').submit();
 			        	}
