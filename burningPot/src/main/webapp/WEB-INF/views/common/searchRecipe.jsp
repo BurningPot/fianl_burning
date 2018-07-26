@@ -597,7 +597,7 @@
 	                //         data : {
 	                //             tId : id,
 	                //             mId : mId
-	                //         },
+	                //         }, 
 	                //         success:function(data){
 	                //             alert(data+'님 트립찜목록에 성공적으로 추가했습니다');		    						
 	                //         }
