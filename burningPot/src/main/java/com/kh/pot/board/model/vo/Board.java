@@ -13,6 +13,7 @@ public class Board implements Serializable{
 	private int mNum;		// 회원번호
 	private String mId;			// 회원아이디
 	private String mName;		// 회원 이름
+	private String mPicture;	// 회원 사진
 	private Date bDate;			// 작성일
 	private String bContent;	// 글내용
 	private String bImg;		// 사진
@@ -32,6 +33,23 @@ public class Board implements Serializable{
 		this.mNum = mNum;
 		this.mId = mId;
 		this.mName = mName;
+		this.bDate = bDate;
+		this.bContent = bContent;
+		this.bImg = bImg;
+		this.reply = reply;
+		this.bCount = bCount;
+	}
+	
+	public Board(int bNum, String category, String bTitle, int mNum, String mId, String mName, String mPicture,
+			Date bDate, String bContent, String bImg, String reply, int bCount) {
+		super();
+		this.bNum = bNum;
+		this.category = category;
+		this.bTitle = bTitle;
+		this.mNum = mNum;
+		this.mId = mId;
+		this.mName = mName;
+		this.mPicture = mPicture;
 		this.bDate = bDate;
 		this.bContent = bContent;
 		this.bImg = bImg;
@@ -126,14 +144,22 @@ public class Board implements Serializable{
 	public void setbCount(int bCount) {
 		this.bCount = bCount;
 	}
+	
+	public String getmPicture() {
+		return mPicture;
+	}
+
+	public void setmPicture(String mPicture) {
+		this.mPicture = mPicture;
+	}
 
 	@Override
 	public String toString() {
 		return "Board [bNum=" + bNum + ", category=" + category + ", bTitle=" + bTitle + ", mNum=" + mNum + ", mId="
-				+ mId + ", mName=" + mName + ", bDate=" + bDate + ", bContent=" + bContent + ", bImg=" + bImg
-				+ ", reply=" + reply + ", bCount=" + bCount + "]";
+				+ mId + ", mName=" + mName + ", mPicture=" + mPicture + ", bDate=" + bDate + ", bContent=" + bContent
+				+ ", bImg=" + bImg + ", reply=" + reply + ", bCount=" + bCount + "]";
 	}
-	
+
 	
 	
 	
