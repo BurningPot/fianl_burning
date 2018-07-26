@@ -71,6 +71,12 @@ public class MypageServiceImpl implements MypageService{
 		
 		return mypageDao.updateImg(renameFileName, numHidden);
 	}
+
+	@Override
+	public int deleteUserInfo(int formDel) {
+		
+		return mypageDao.deleteUserInfo(formDel);
+	}
 	
 
 }

@@ -23,6 +23,8 @@ public interface MypageService {
 
 	int updateImg(String renameFileName, int numHidden);
 
+	int deleteUserInfo(int formDel);
+
 	
 	
 	

@@ -21,6 +21,8 @@ public interface MypageDao {
 	int mypageEnrollEnd(HashMap<String, String> map);
 
 	int updateImg(String renameFileName, int numHidden);
+
+	int deleteUserInfo(int formDel);
 	
 
 
