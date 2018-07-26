@@ -103,6 +103,16 @@ public class MainController {
 	// 검색한 결과의 총 개수를 구하는 메소드
 	
 	// 2. 추천 검색어(평점이 높은 순서 or 따봉이 많은 순서)의 레시피명을 불러오는 메소드
+	@ResponseBody
+	@RequestMapping("/home/recipeTop.do")
+	public List<Recipe> recipeTop5(Model model){
+		
+		List<Recipe> top5List = mainService.recipeTop5();
+		
+		model.addAttribute("top5List", top5List);
+		
+		return top5List;
+	}
 	
 	// 3. 레시피(조회수가 많은 순서) 불러오는 메소드
 	@ResponseBody

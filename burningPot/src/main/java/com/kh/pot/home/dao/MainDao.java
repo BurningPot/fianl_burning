@@ -27,8 +27,6 @@ public interface MainDao {
 
 	List<Recipe> inquiryRecipeListAfter(HashMap<String, Object> map);
 
-	
-
-
+	List<Recipe> recipeTop5();
 	
 }

@@ -25,6 +25,8 @@ public interface MainService {
 	List<Recipe> inquiryRecipeListBefore(String keyWord);
 
 	List<Recipe> inquiryRecipeListAfter(String keyWord, int inquiryStartCount, int inquiryEndCount);
+
+	List<Recipe> recipeTop5();
 	
 	
 
