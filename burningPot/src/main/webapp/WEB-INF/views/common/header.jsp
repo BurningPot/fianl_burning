@@ -1646,15 +1646,15 @@
 		          	<a href="${pageContext.request.contextPath}/login/naverLog.do"><img height="40" src="${pageContext.request.contextPath}/resources/img/login/naver_Green.PNG"/></a>                
 		       	  </div>
 		       	  <div class="text-center" style="margin-top:1%">   
-		          	<a href="#"><img height="42"
-						src="${pageContext.request.contextPath}/resources/img/login/facebook_login.png" /></a>     
+		          	<a href="${pageContext.request.contextPath}/login/googleLogin.do"><img height="43"
+						src="${pageContext.request.contextPath}/resources/img/login/googleLogin.png" /></a>     
 		       	  </div>
-		       	 <div class="text-center" style="margin-top:1%">
+		       	 <!-- <div class="text-center" style="margin-top:1%">
 		       	  <a id="custom-login-btn" href="javascript:loginWithKakao()">
 					<img src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" height="40" width="185"/>
 				  </a>
 				 </div>
-				 
+				  -->
 				<br />
 				<!-- SNS 로그인 끝 -->
 			</div>

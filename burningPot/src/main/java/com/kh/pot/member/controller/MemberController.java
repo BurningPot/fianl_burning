@@ -7,9 +7,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.google.api.Google;
+import org.springframework.social.google.api.impl.GoogleTemplate;
+import org.springframework.social.google.api.plus.Person;
+import org.springframework.social.google.api.plus.PlusOperations;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,11 +46,16 @@ public class MemberController {
 	/* naverLoginVO */
 	private NaverLoginVO naverLoginVO;
 	private String apiResult = null;
-	
 	@Autowired
 	private void setnaverLoginVO(NaverLoginVO naverLoginVO) {
 		this.naverLoginVO = naverLoginVO;
 	}
+	
+
+	@Autowired
+	private GoogleConnectionFactory googleConnectionFactory;
+	@Autowired
+	private OAuth2Parameters googleOAuth2Parameters;
 
 	
 	//네이버 로그인 성공시 callback호출 메소드
@@ -66,6 +81,8 @@ public class MemberController {
 			memberService.insertMember(m);
 		}
 		
+		m = memberService.selectMemberId(m.getmId());
+		
 		String msg="";
 		String loc="/";
 		
@@ -76,6 +93,97 @@ public class MemberController {
 		model.addAttribute("loc",loc);
 		
 		return "/common/msg";
+	}
+	
+//	구글 로그인 성공시 callback.do
+	@RequestMapping(value = "/callbackg.do", method = RequestMethod.GET)
+	public String doSessionAssignActionPage(HttpServletRequest request, Model model)throws Exception{
+	  String code = request.getParameter("code");
+
+	  OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+	  AccessGrant accessGrant = oauthOperations.exchangeForAccess(code , googleOAuth2Parameters.getRedirectUri(),
+	      null);
+
+	  String accessToken = accessGrant.getAccessToken();
+	  Long expireTime = accessGrant.getExpireTime();
+	  if (expireTime != null && expireTime < System.currentTimeMillis()) {
+	    accessToken = accessGrant.getRefreshToken();
+	    System.out.printf("accessToken is expired. refresh token = {}", accessToken);
+	  }
+	  Connection<Google> connection = googleConnectionFactory.createConnection(accessGrant);
+	  Google google = connection == null ? new GoogleTemplate(accessToken) : connection.getApi();
+	  
+	  PlusOperations plusOperations = google.plusOperations();
+	  Person profile = plusOperations.getGoogleProfile();
+	  
+	  String msg ="";
+	  String loc="/";
+	  System.out.println("callback 실행");
+	  Member m = new Member();
+	  
+	  if(memberService.checkIdDuplicate(profile.getId()) == 0){
+		  m.setmId(profile.getId());
+		  m.setmName(profile.getFamilyName()+profile.getGivenName());
+		  m.setmPicture(profile.getImageUrl());
+		  m.setEmail(profile.getAccountEmail());
+		  m.setPassword(accessToken);
+
+		  java.sql.Date birthday = new java.sql.Date(profile.getBirthday().getTime());		  
+		  m.setBirthDate(birthday);
+		 
+		  if(profile.getGender().equals("male")){
+			  m.setGender("M");
+		  }else if(profile.getGender().equals("female")){
+			  m.setGender("F");
+		  }
+
+		  model.addAttribute("member", m);
+		  
+		  return "/member/googleEnroll";
+	  }else{
+		  m = memberService.selectMemberId(m.getmId());
+		  msg="환영합니다.!!"+m.getmName()+" 님";
+		  model.addAttribute("m",m);
+	  }
+	  
+	  model.addAttribute("msg",msg);
+	  model.addAttribute("loc",loc);
+	  
+	  return "/common/msg";
+
+	}
+	
+	// 구글 회원가입 
+	@RequestMapping("member/memberEnrollGoogle.do")
+	public String memberEnrollGoogle( @RequestParam String birth,
+			Member member, Model model) throws ParseException{
+
+		member.setmCategory("회원");
+		
+		/*날짜 변환*/
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd"); 
+		Date date = sdf.parse(birth);
+		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+		
+		member.setBirthDate(sqlDate);
+		member.setPassword("GooleLogin");
+		System.out.println("member="+member);
+		// 구글 회원 저장
+		int result = memberService.insertMember(member);
+		
+		String msg = "";
+		String loc = "/";
+		
+		if(result >0){
+			member = memberService.selectMemberId(member.getmId());
+			msg="환영합니다.!!"+member.getmName()+" 님";
+			model.addAttribute("m",member);
+		} else msg="회원가입에 실패하였습니다.";
+		
+		model.addAttribute("msg",msg);
+		model.addAttribute("loc",loc);
+		
+		return "common/msg";
 	}
 	
 /*	@Autowired
