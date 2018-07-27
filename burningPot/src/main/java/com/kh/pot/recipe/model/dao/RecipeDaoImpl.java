@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pot.board.model.vo.Report;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.recipe.model.vo.Recipe;
 import com.kh.pot.recipe.model.vo.RecipeContent;
@@ -148,6 +149,13 @@ public class RecipeDaoImpl implements RecipeDao {
 	public int insertReview(Review review) {
 
 		return sqlSession.insert("recipe.insertReview", review);
+		
+	}
+
+	@Override
+	public int insertReport(Report report) {
+
+		return sqlSession.insert("recipe.insertReport", report);
 		
 	}
 

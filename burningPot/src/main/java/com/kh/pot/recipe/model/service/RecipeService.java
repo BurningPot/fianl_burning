@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pot.board.model.vo.Report;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.recipe.model.vo.Recipe;
 import com.kh.pot.recipe.model.vo.RecipeContent;
@@ -63,5 +64,7 @@ public interface RecipeService {
 
 	// 댓글 작성 서비스
 	int insertReview(Review review);
+
+	int insertReport(Report report);
 	
 }

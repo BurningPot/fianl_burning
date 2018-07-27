@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap-4.1.1/bootstrap-reboot.min.css">
         <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/recipe/RecipeDetail.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     </head>
 
     <body>
@@ -135,7 +136,7 @@
                             <img class="starCss" id="threeStar" src="${pageContext.request.contextPath}/resources/img/recipe/emptyStar.png" alt="3">
                             <img class="starCss" id="fourStar" src="${pageContext.request.contextPath}/resources/img/recipe/emptyStar.png" alt="4">
                             <img class="starCss" id="fiveStar" src="${pageContext.request.contextPath}/resources/img/recipe/emptyStar.png" alt="5">
-                            <p class="font-weight-normal ml-2 mb-0 detailData">점</p>
+                            <p class="font-weight-normal ml-2 mb-0 detailData">0 점</p>
                             <p class="font-weight-normal ml-3 mb-0 mr-3 detailData">/</p>
                             <p class="font-weight-normal mb-0 detailData" >리뷰 (${fn:length(review)})</p>
                         </div>
@@ -160,11 +161,33 @@
                         			</c:choose>
                         		</c:otherwise>                            	
                             </c:choose>
-                            <button type="button" class="btnFontCss btn btn-light p-0" id="reportBtn"><img class="mr-1 mb-1" src="${pageContext.request.contextPath}/resources/img/recipe/badIcon.png" alt="신고하기">신고하기</button>                           
+                            <button type="button" class="btnFontCss btn btn-light p-0" id="reportBtn" data-toggle="modal" data-target="#reportModal" onclick="refresh();"><img class="mr-1 mb-1" src="${pageContext.request.contextPath}/resources/img/recipe/badIcon.png" alt="신고하기">신고하기</button>                               
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- 신고하기 모달 -->
+	         <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	            <div class="modal-dialog" role="document">
+	              <div class="modal-content">
+	                <div class="modal-header">
+	                  <h5 class="modal-title" id="exampleModalLabel">「${recipe.rName}」 신고</h5>
+	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+	                </div>
+	                <div class="modal-body">
+	                    <div class="form-group">
+	                      <label for="message-text" class="col-form-label">신고 내용 : </label>
+	                      <textarea class="form-control" id="message-text"></textarea>
+	                    </div>
+	                </div>
+	                <div class="modal-footer">
+	                  <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	                  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="reportInsert();">신고하기</button>
+	                </div>
+	              </div>
+	            </div>
+	         </div>
 
             <!-- 재료 정보 영역 -->
             <div class="row recipeBox mt-2 ml-3 mr-3">
@@ -278,51 +301,56 @@
                 <div class="col-12 pl-3 mt-3 mb-3 css3">
                     <div>
                         <label class="mb-0 align-self-center dataTitle css2" style="width:50px;" for="commentData" id="commentData"><b>댓글</b></label>
-                        <label class="mb-0 align-self-center commentTotalCss css2" style="width:50px;" for="commentData" id="commentData"><b>${fn:length(review)}</b></label>
+                        <label class="mb-0 align-self-center commentTotalCss css2" style="width:50px;" for="commentData" id="reviewCount"><b>${fn:length(review)}</b></label>
                     </div>
                 </div>
 
-                <!-- 댓글 확인 -->
-                <c:choose>
-                	<c:when test="${fn:length(review) == 0}">
-                		<div class="row ml-0 mb-3 col-12 justify-content-md-center css3">
-		                    <div>
-		                    	<h3>등록 된 댓글이 없습니다.</h3>
-		                    </div>
-		                </div>
-                	</c:when>
-                	<c:otherwise>
-	                	<c:forEach items="${review}" var="rv">
-	                		<div class="row ml-0 mb-3 col-12 css3">
-			                    <div class="col-1 pl-0 ml-3 mr-2 css4">
-			                        <img class="rounded-circle float-left userImgCss" src="${pageContext.request.contextPath}/resources/img/profile/${rv.mPicture}" alt="userImg">
-			                    </div>
-			                    <div class="col-10 pl-0 css4">
-			                        <div class="row ml-0 mb-2 css1">
-			                            <p class="detailData mb-0 mr-4"><b>${rv.mId}</b></p>
-			                            <p class="font-weight-normal mr-3 detailData mb-0">${rv.rvDate}</p>
-			                            <img class="starCss mt-1" src="${pageContext.request.contextPath}/resources/img/recipe/fullStar.png" alt="1">
-			                            <img class="starCss mt-1" src="${pageContext.request.contextPath}/resources/img/recipe/fullStar.png" alt="2">
-			                            <img class="starCss mt-1" src="${pageContext.request.contextPath}/resources/img/recipe/fullStar.png" alt="3">
-			                            <img class="starCss mt-1" src="${pageContext.request.contextPath}/resources/img/recipe/fullStar.png" alt="4">
-			                            <img class="starCss mt-1 mr-3" src="${pageContext.request.contextPath}/resources/img/recipe/fullStar.png" alt="5">
-			                            <c:if test="${rv.mNum == m.mNum}">
-				                            <button type="button" class="btn btn-light p-0 mr-2 commentFontCss">수정</button>
-				                            <p class="font-weight-normal mr-2 detailData mb-0 commentFontCss">|</p>
-				                            <button type="button" class="btn btn-light p-0 commentFontCss">삭제</button>        
-										</c:if>           
-			                        </div>
-			                        <div>
-			                            <p class="commentFontCss">${rv.rvContent}</p>
-			                        </div>
+				<div class="row col-12 reviewArea">
+	                <!-- 댓글 확인 -->
+	                <c:choose>
+	                	<c:when test="${fn:length(review) == 0}">
+	                		<div class="row ml-0 mb-3 col-12 justify-content-md-center css3">
+			                    <div>
+			                    	<h3>등록 된 댓글이 없습니다.</h3>
 			                    </div>
 			                </div>
-	                	</c:forEach>
-                	</c:otherwise>
-                </c:choose>
-            
+	                	</c:when>
+	                	<c:otherwise>
+		                	<c:forEach items="${review}" var="rv">
+		                		<div class="row ml-0 mb-3 col-12 css3 reviewDiv">
+				                    <div class="col-1 pl-0 ml-3 mr-2 css4">
+				                        <img class="rounded-circle float-left userImgCss" src="${pageContext.request.contextPath}/resources/img/profile/${rv.mPicture}" alt="userImg">
+				                    </div>
+				                    <div class="col-10 pl-0 css4">
+				                        <div class="row ml-0 mb-2 css1">
+				                            <p class="detailData mId mb-0 mr-4"><b>${rv.mId}</b></p>
+				                            <p class="font-weight-normal mr-3 detailData rvDate mb-0">${rv.rvDate}</p>
+				                            <c:forEach var="index" begin="0" end="4">
+				                            	<c:choose>
+				                            		<c:when test="${index < rv.grade}">
+				                            			<img class="starCss mt-1" src="${pageContext.request.contextPath}/resources/img/recipe/fullStar.png" alt="${index} + 1">
+				                            		</c:when>
+				                            		<c:otherwise>
+				                            			<img class="starCss mt-1" src="${pageContext.request.contextPath}/resources/img/recipe/emptyStar.png" alt="${index} + 1">
+				                            		</c:otherwise>
+				                            	</c:choose>
+				                            </c:forEach>
+				                            <c:if test="${rv.mNum == m.mNum}">
+					                            <button type="button" class="btn btn-light p-0 ml-2 commentFontCss">삭제</button>        
+											</c:if>           
+				                        </div>
+				                        <div>
+				                            <p class="commentFontCss rvContent">${rv.rvContent}</p>
+				                        </div>
+				                    </div>
+				                </div>
+		                	</c:forEach>
+	                	</c:otherwise>
+	                </c:choose>
+            	</div>
+            	
                 <!-- 댓글 작성 -->
-                <div class="row mt-5 ml-0 mb-3 mr-0 pr-0 col css3 justify-content-md-center">
+                <div class="row mt-4 ml-3 mb-3 mr-0 pr-0 col css3 justify-content-md-center">
                     <div class="col-8 mb-2 css5">
                         <textarea class="form-control mt-2" name="rvContent" id="reviewContent" style="resize:none;" rows="3" placeholder="  맛 평가를 해주세요!"></textarea>
                     </div>

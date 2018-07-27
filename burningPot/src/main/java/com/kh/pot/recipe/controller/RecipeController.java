@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.kh.pot.board.model.vo.Report;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.recipe.model.service.RecipeService;
@@ -385,14 +386,12 @@ public class RecipeController {
 	}
 	
 	// 레시피 상세보기 - 신고하기
-	@ResponseBody
-	@RequestMapping("/recipe/insertReport.do")
-	public int insertReport() {
-		int result = 0;
-		
-		
-		
-		return result;
-	}
+   @ResponseBody
+   @RequestMapping("/recipe/insertReport.do")
+   public int insertReport(Report report) {
+	   
+      return recipeService.insertReport(report);
+      
+   }
 
 }

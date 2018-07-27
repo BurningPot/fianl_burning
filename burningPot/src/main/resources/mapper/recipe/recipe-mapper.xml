@@ -105,4 +105,8 @@
 		INSERT INTO REVIEW VALUES(SEQ_REVIEW.NEXTVAL, #{rNum}, #{mNum}, #{grade}, #{rvContent}, DEFAULT)
 	</insert>
 	
+	<insert id="insertReport">
+      INSERT INTO REPORT VALUES(SEQ_REPORT.NEXTVAL, #{rNum}, #{mNum}, #{rpContent})
+   	</insert>
+	
 </mapper>
