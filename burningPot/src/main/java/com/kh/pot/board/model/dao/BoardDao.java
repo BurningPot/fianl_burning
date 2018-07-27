@@ -27,9 +27,9 @@ public interface BoardDao {
 
 	
 	/*yechan*/
-	List<Map<String, String>> selectBoardList(int cPage, int numPerPage);
+	List<Map<String, String>> selectBoardList(Map<String, Object> map);
 
-	int selectBoardTotalContents();
+	int selectBoardTotalContents(Map<String, String> map);
 
 	Board selectBoardOne(int boardNo);
 
