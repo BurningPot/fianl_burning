@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.recipe.model.service.RecipeService;
 import com.kh.pot.recipe.model.vo.Recipe;
 import com.kh.pot.recipe.model.vo.RecipeContent;
+import com.kh.pot.recipe.model.vo.Recommend;
+import com.kh.pot.recipe.model.vo.Review;
 
 @Controller
 public class RecipeController {
@@ -36,7 +40,7 @@ public class RecipeController {
 	
 	// 레시피 작성 페이지
 	@RequestMapping("/recipe/recipeForm.do")
-	public String goRecipeForm(Model model) {
+	public String goRecipeForm(Model model) throws Exception {
 		String page = "";
 				
 		List<Ingredient> list = recipeService.selectCategoryList();
@@ -46,7 +50,7 @@ public class RecipeController {
 			
 			page = "recipe/recipeForm";
 		} else {
-			
+			throw new Exception("잘못 된 접근입니다.");
 		}
 		
 		return page;
@@ -133,32 +137,53 @@ public class RecipeController {
 	// 레시피 상세보기 페이지
 	@RequestMapping("/recipe/recipeDetail.do")
 	public String goRecipeDetail(@RequestParam("rNum") int rNum,
+														HttpSession session,
 														Model model) throws Exception {
 		String page = "";
-		Recipe recipe = recipeService.selectRecipeDetail(rNum);
 		
-		if (recipe != null) {			
-			String[] subList = recipe.getSubIngredient().split(",");
-			String[] mainName = recipe.getiNum().split(",");
-			String[] mainQuan = recipe.getiQuan().split(",");
-			List<Ingredient> mainNameList = null;
-			List<RecipeContent> contentList = null;
+		// 조회수 증가
+		int result = recipeService.updateCount(rNum);
+		Member m = (Member)session.getAttribute("m");
+				
+		if (result > 0) {
+			Recipe recipe = recipeService.selectRecipeDetail(rNum);
+			List<Review> review = recipeService.selectReview(rNum);
 			
-			mainNameList = recipeService.selectMainIngredientList(mainName);
-			contentList = recipeService.selectContentList(recipe.getrNum());
-			
-			if (mainNameList != null && contentList != null) {
-				page = "recipe/recipeDetail";
-				model.addAttribute("recipe", recipe);
-				model.addAttribute("subList", subList);
-				model.addAttribute("mainQuan", mainQuan);
-				model.addAttribute("mainNameList", mainNameList);
-				model.addAttribute("contentList", contentList);
+			if (recipe != null) {			
+				String[] subList = recipe.getSubIngredient().split(",");
+				String[] mainNum = recipe.getiNum().split(",");
+				String[] mainQuan = recipe.getiQuan().split(",");
+				List<Ingredient> mainNameList = new ArrayList<Ingredient>();
+				List<RecipeContent> contentList = null;
+				
+				for (int i = 0 ; i < mainNum.length ; i++) {
+					mainNameList.add(recipeService.selectMainIngredientList(mainNum[i]));
+				}
+				contentList = recipeService.selectContentList(recipe.getrNum());
+				
+				if (m != null) {
+					Recommend recommend = new Recommend(m.getmNum(), rNum);
+					recommend = recipeService.selectRecommend(recommend);
+					
+					model.addAttribute("recommend", recommend);
+				}
+				
+				if (mainNameList != null && contentList != null) {
+					page = "recipe/recipeDetail";
+					model.addAttribute("recipe", recipe);
+					model.addAttribute("subList", subList);
+					model.addAttribute("mainQuan", mainQuan);
+					model.addAttribute("mainNameList", mainNameList);
+					model.addAttribute("contentList", contentList);
+					model.addAttribute("review", review);
+				} else {
+					throw new Exception("레시피 조회 도중 문제가 발생하였습니다.");
+				}
 			} else {
-				throw new Exception("레시피 조회 도중 문제가 발생하였습니다.");
+				throw new Exception("해당 레시피 정보를 찾을 수 없습니다.");
 			}
 		} else {
-			throw new Exception("해당 레시피 정보를 찾을 수 없습니다.");
+			throw new Exception("조회수 오류 발생");
 		}
 		
 		return page;
@@ -175,12 +200,15 @@ public class RecipeController {
 			String[] subList = recipe.getSubIngredient().split(",");
 			String[] mainNum = recipe.getiNum().split(",");
 			String[] mainQuan = recipe.getiQuan().split(",");
-			List<Ingredient> mainNameList = null;
+			List<Ingredient> mainNameList = new ArrayList<Ingredient>();
 			List<RecipeContent> contentList = null;
 			List<Ingredient> list = recipeService.selectCategoryList();
-			
-			mainNameList = recipeService.selectMainIngredientList(mainNum);
+						
 			contentList = recipeService.selectContentList(recipe.getrNum());
+
+			for (int i = 0 ; i < mainNum.length ; i++) {
+				mainNameList.add(recipeService.selectMainIngredientList(mainNum[i]));
+			}
 			
 			if (mainNameList != null && contentList != null && list.size() > 0) {
 				page = "recipe/recipeUpdateForm";
@@ -211,8 +239,6 @@ public class RecipeController {
 													Model model) {
 		String page = "";
 		String deleteDir = request.getSession().getServletContext().getRealPath("/resources/img/recipeContent");
-		
-		System.out.println("확인");
 		
 		File deleteFile = new File(deleteDir + "/20180722_133519_100.PNG");
 		
@@ -277,6 +303,96 @@ public class RecipeController {
 		}
 		
 		return page;
+	}
+	
+	// 레시피 상세보기 - 좋아요 
+	@ResponseBody
+	@RequestMapping("/recipe/insertRecommend.do")
+	public int insertRecommend(@RequestParam("rNum") int rNum,
+															HttpSession session) throws Exception {
+		Member m = (Member)session.getAttribute("m");
+		int result = 0;
+		
+		if (m != null) {
+			Recommend rec = new Recommend(m.getmNum(), rNum, "plus");
+		
+			result = recipeService.insertRecommned(rec);
+			
+			if (result == 1) {
+				result = recipeService.updateRecommend(rec);
+				result = recipeService.selectRecipeDetail(rNum).getrRecommend();
+				
+				if (result < 1) {
+					throw new Exception("좋아요 버튼 오류. (error : updateRecommend / 관리자에게 문의 바랍니다.)");
+				}
+			} else {
+				throw new Exception("좋아요 버튼 오류. (error : insertRecommend / 관리자에게 문의 바랍니다.)");
+			}
+		}
+		
+		return result;
+	}
+	
+	// 레시피 상세보기 - 좋아요 삭제
+	@ResponseBody
+	@RequestMapping("/recipe/deleteRecommend.do")
+	public int deleteRecommend (@RequestParam("rNum") int rNum,
+															HttpSession session) throws Exception {
+		Member m = (Member)session.getAttribute("m");
+		int result = 0;
+		
+		if (m != null) {
+			Recommend rec = new Recommend(m.getmNum(), rNum, "minus");
+			
+			result = recipeService.deleteRecommned(rec);
+			
+			if (result == 1) {
+				result = recipeService.updateRecommend(rec);
+				result = recipeService.selectRecipeDetail(rNum).getrRecommend();
+				
+				if (result < 1) {
+					throw new Exception("좋아요 버튼 오류. (error : updateRecommend / 관리자에게 문의 바랍니다.)");
+				}
+			} else {
+				throw new Exception("좋아요 버튼 오류. (error : insertRecommend / 관리자에게 문의 바랍니다.)");
+			}
+		}
+		
+		return result;
+	}
+	
+	// 레시피 상세보기 - 댓글 작성
+	@ResponseBody
+	@RequestMapping("/recipe/insertReview.do")
+	public Review insertReview(Review review,
+														Model model,
+														HttpSession session) throws Exception {
+		Review rv = null;
+		Member m = (Member)session.getAttribute("m");
+		
+		if (m != null) {
+			System.out.println(review);
+			if (recipeService.insertReview(review) == 1) {
+				rv = review;
+			} else {
+				throw new Exception("댓글 등록 오류 (error : insertReview / 관리자에게 문의 바랍니다.)");
+			}
+		} else {
+			throw new Exception("잘못된 접근입니다. (로그인 이후 이용해 주세요.)");
+		}
+		
+		return rv;
+	}
+	
+	// 레시피 상세보기 - 신고하기
+	@ResponseBody
+	@RequestMapping("/recipe/insertReport.do")
+	public int insertReport() {
+		int result = 0;
+		
+		
+		
+		return result;
 	}
 
 }

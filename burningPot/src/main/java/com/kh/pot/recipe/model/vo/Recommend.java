@@ -9,6 +9,7 @@ public class Recommend implements Serializable{
 	
 	private int mNum;	// 회원번호
 	private int rNum;	// 레시피번호
+	private String chk;	// 삭제, 추가 구분
 	
 	public Recommend(){
 		
@@ -18,6 +19,13 @@ public class Recommend implements Serializable{
 		super();
 		this.mNum = mNum;
 		this.rNum = rNum;
+	}
+
+	public Recommend(int mNum, int rNum, String chk) {
+		super();
+		this.mNum = mNum;
+		this.rNum = rNum;
+		this.chk = chk;
 	}
 
 	public int getmNum() {
@@ -36,8 +44,17 @@ public class Recommend implements Serializable{
 		this.rNum = rNum;
 	}
 
-	
+	public String getChk() {
+		return chk;
+	}
 
-	
+	public void setChk(String chk) {
+		this.chk = chk;
+	}
+
+	@Override
+	public String toString() {
+		return "Recommend [mNum=" + mNum + ", rNum=" + rNum + ", chk=" + chk + "]";
+	}
 	
 }
