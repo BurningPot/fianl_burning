@@ -15,13 +15,14 @@ public class Review implements Serializable{
 	private int grade;				// 리뷰평점
 	private String rvContent;	// 리뷰내용
 	private Date rvDate;		// 리뷰등록일
+	private String mPicture;	// 사진
 	
 	public Review(){
 		
 	}
-
-	public Review(int rvNum, int rNum, int mNum, String mName, String mId, int grade, String rvContent,
-			Date rvDate) {
+	
+	public Review(int rvNum, int rNum, int mNum, String mName, String mId, int grade, String rvContent, Date rvDate,
+			String mPicture) {
 		super();
 		this.rvNum = rvNum;
 		this.rNum = rNum;
@@ -31,6 +32,7 @@ public class Review implements Serializable{
 		this.grade = grade;
 		this.rvContent = rvContent;
 		this.rvDate = rvDate;
+		this.mPicture = mPicture;
 	}
 
 	public int getRvNum() {
@@ -97,10 +99,19 @@ public class Review implements Serializable{
 		this.rvDate = rvDate;
 	}
 
+	public String getmPicture() {
+		return mPicture;
+	}
+
+	public void setmPicture(String mPicture) {
+		this.mPicture = mPicture;
+	}
+
 	@Override
 	public String toString() {
 		return "Review [rvNum=" + rvNum + ", rNum=" + rNum + ", mNum=" + mNum + ", mName=" + mName + ", mId=" + mId
-				+ ", grade=" + grade + ", rvContent=" + rvContent + ", rvDate=" + rvDate + "]";
+				+ ", grade=" + grade + ", rvContent=" + rvContent + ", rvDate=" + rvDate + ", mPicture=" + mPicture
+				+ "]";
 	}
-	
+
 }
