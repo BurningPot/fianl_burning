@@ -7,6 +7,14 @@
 <c:set var="now" value="<%=new java.util.Date()%>" />
 <c:set var="sysDate"><fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></c:set> 
 
+<c:set var="pi" value="${ requestScope.pi }"/>
+<c:set var="listCount" value="${ pi.listCount }"/>
+<c:set var="currentPage" value="${ pi.currentPage }"/>
+<c:set var="maxPage" value="${ pi.maxPage }"/>
+<c:set var="startPage" value="${ pi.startPage }"/>
+<c:set var="endPage" value="${ pi.endPage }"/>
+
+
 <c:import url="/WEB-INF/views/common/header.jsp" />
 <!DOCTYPE html>
 <html>
@@ -28,26 +36,46 @@
 			</h2>
 		</div>
 		<div class="container containerTop">
-			<div class="row col-sm-12 custyle justify-content-sm-center">
-				<!-- 검색 영역 -->
-				<div class="col col-sm-2">
-					<select class="form-control" id="searchCondition">
-						<option selected>선택하기</option>
-						<option value="sId">내용으로 검색</option>
-						<option value="sName">작성자로 검색</option>
-					</select>
-				</div>
-				<div class="col-sm-6">
-					<div class="input-group">
-						<input type="search" class="form-control" placeholder=" 검색 하기 " id="keyword" onkeyup="enterKey();"> 
-						<span class="input-group-btn"><button class="btn btn-secondary" type="button" onclick="search();">검색</button></span>
+
+				<!-- <div class="form-group row text-center">
+					<div class="col col-sm-12">
+					 <div class="form-check form-check-inline" id="radioOption">
+					 	<input type="radio" class="form-check-input" name="radioOption" id="radioOption0" value="allCon">
+						<label for="radioOption0">전체</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" class="form-check-input" name="radioOption" id="radioOption1" value="noti">
+						<label for="radioOption1">공지사항</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" class="form-check-input" name="radioOption" id="radioOption2" value="qna">
+						<label for="radioOption2">Q&A</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" class="form-check-input" name="radioOption" id="radioOption3" value="ingre">
+						<label for="radioOption3">재료요청</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" class="form-check-input" name="radioOption" id="radioOption4" value="ex">
+						<label for="radioOption4">기타</label>
+					  </div>
 					</div>
 				</div>
-			</div>
+			 -->
+				<div class="form-group row col-sm-12 custyle justify-content-sm-center">
+					<!-- 검색 영역 -->
+					<div class="col col-sm-2">
+						<select class="form-control" id="searchCondition" name="searchCondition">
+							<option selected>선택하기</option>
+							<option value="sAll">전체 검색</option>
+							<option value="sCon">제목+내용으로 검색</option>
+							<option value="sMem">작성자로 검색</option>
+						</select>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group">
+							<input type="search" class="form-control" placeholder="검색 하기 " id="searchBoard" name="searchBoard"> 
+							<button class="btn btn-secondary input-group-btn" type="button" onclick="searchBoard();">검색</button>
+						</div>
+					</div>
+				</div>
+		
 			<br />
 			<div class="row">
 				<div class="col-sm-4 text-left">
-					<p>총 ${totalContents}건의 게시물이 있습니다.</p>
+					<p>총 ${listCount}건의 게시물이 있습니다.</p>
 				</div>
 				<div class="col-sm-8 text-right">
 					<button class="btn btn-info" onclick="insertBoard();">글쓰기</button>
@@ -111,27 +139,79 @@
 					</c:forEach>
 				</table>
 				
-				 <%-- 페이지바를 위한 Utils의 정적메소드 사용 --%> 
-				   <% 
-				      int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
-				      int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
-				      
-				      //파라미터 cPage가 null이거나 "" 일 때에는 기본값 1로 세팅함.  
-				      String cPageTemp = request.getParameter("cPage");
-				      int cPage = 1;
-				      try{
-				    	  
-				         cPage = Integer.parseInt(cPageTemp);
-				         
-				      } catch(NumberFormatException e){
-				    	  
-				      }
-				      
-				   %>
-				   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "boardList.do") %>
+				<!-- 페이징처리할 부분 -->
+				
+					<div class="pagingArea col-lg-12" >
+					<ul class="pagination justify-content-center">
+						<!-- 가장 첫 페이지로 이동 -->
+						<li class="page-item">
+							<a class="page-link" href="${ pageContext.request.contextPath }/board/boardList.do?currentPage=1&searchBoard=${searchBoard}&searchCondition=${searchCondition}">처음</a>
+						</li>
+						
+					<!-- 한페이지 씩 앞으로 이동 -->
+					<c:if test="${ currentPage <= 1 }">
+						<li class="page-item disabled">
+							<a class="page-link" href="#">&lt;</a>
+						</li>
+					</c:if>
+					<c:if test="${ currentPage > 1 }">
+						<li class="page-item ">
+							<a class="page-link" href="${ pageContext.request.contextPath }/board/boardList.do?currentPage=${ currentPage-1 }&searchBoard=${searchBoard}&searchCondition=${searchCondition}">&lt;</a>
+						</li>
+					</c:if>
+					
+					<!-- 각 페이지 별 리스트 작성 -->
+					
+					<c:forEach var="i" begin="${ startPage }" end="${ endPage }">
+						<c:if test="${ i eq currentPage }">
+							<li class="page-item active">
+								<a class="page-link" href="#">${i}</a>
+							</li>
+						</c:if>
+						<c:if test="${ !(i eq currentPage) }">
+							<li class="page-item">
+								<a class="page-link" href="${ pageContext.request.contextPath }/board/boardList.do?currentPage=${ i }&searchBoard=${searchBoard}&searchCondition=${searchCondition}">${ i }</a>
+							</li>
+						</c:if>
+						
+					</c:forEach>
+					
+					<!-- 한페이지 씩 뒤로 이동 -->
+					<c:if test="${currentPage >= maxPage }">
+						<li class="page-item disabled">
+							<a class="page-link" href="#">&gt;</a>
+						</li>
+					</c:if>
+					<c:if test="${currentPage < maxPage }">
+						<li class="page-item">
+							<a class="page-link" href="${ pageContext.request.contextPath }/board/boardList.do?currentPage=${ currentPage +1 }&searchBoard=${searchBoard}&searchCondition=${searchCondition}">&gt;</a>
+						</li>
+					</c:if>
+					
+					<!-- 가장 마지막 페이지로 이동 -->
+					<li class="page-item">
+						<a class="page-link" href="${ pageContext.request.contextPath }/board/boardList.do?currentPage=${ maxPage }&searchBoard=${searchBoard}&searchCondition=${searchCondition}">마지막</a>
+					</li>
+					
+					</ul>
+					</div>
 		</div>
 	</div>
 <script>
+	$(function(){
+		var sb = '${searchBoard}';
+		var sc = '${searchCondition}';
+		
+		if(sb) $('#searchBoard').val(sb);
+		if(sc) $('#searchCondition').val(sc);
+
+	});
+
+	function searchBoard(){
+
+		location.href="${pageContext.request.contextPath}/board/boardList.do?searchBoard="+$('#searchBoard').val()+"&searchCondition="+$('#searchCondition').val();
+	}
+	
 	
 	   $("tr[id]").on("click",function(){
 	      var boardNo = $(this).attr("id");
@@ -139,12 +219,17 @@
 	   }).hover(function(){
 		   $(this).css('cursor','pointer');
 	   });
+	   
 	function insertBoard(){
 		if( $('#mNum').val() == null ||$('#mNum').val() ==""){
 			alert('로그인 후 이용하실 수 있습니다.');
 			$("#loginModal").modal();
 		}else location.href='${pageContext.request.contextPath}/board/insertBoard.do';
 	}
+	
+	
+	
+	
 </script>
 </body>
 </html>

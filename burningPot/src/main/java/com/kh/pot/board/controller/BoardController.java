@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.pot.admin.model.vo.PageInfo;
 import com.kh.pot.board.model.service.BoardService;
 import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.board.model.vo.BoardComment;
@@ -22,18 +23,52 @@ public class BoardController {
 	/*게시판 리스트 페이지로 이동*/
 	@RequestMapping("/board/boardList.do")
 	public String boardList(
-			@RequestParam(value="cPage", required=false, defaultValue="1") int cPage,
+			@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage,
+			@RequestParam(value="searchBoard", required=false, defaultValue="") String searchBoard,
+			@RequestParam(value="searchCondition", required=false, defaultValue="") String searchCondition,
 			Model model){
-	
+		
+		/*페이징 처리 코드 부분*/
+		
+		int startPage;		//한번에 표시될 게시글들의 시작 페이지
+		int endPage;		//한번에 표시될 게시글들의 마지막 페이지
+		int maxPage;		//전체 페이지의 마지막 페이지
 		int numPerPage = 10;	// 한 페이지 당 게시글 수
+		
+		// 1. 전체 게시글 수 구하기
+		int totalContents = boardService.selectBoardTotalContents(searchBoard, searchCondition);
 
-		// 1. 현재 페이지 컨텐츠 리스트 받아오기
-		List<Map<String, String>> list = boardService.selectBoardList(cPage, numPerPage);
+		/*페이징 계산*/
+		// 총 게시글 수에 대한 페이지 계산
+		// EX> 목록의 수가 123 개라면 페이지 수는 13페이지가 된다.
+		//     짜투리 게시글도 하나의 페이지로 취급해야 한다.
+		// 10/1 --> 0.9를 더하여 하나의 페이지로 만든다.
+		maxPage = (int)((double)totalContents / numPerPage + 0.9);
 		
-		// 2. 전체 게시글 수 구하기
-		int totalContents = boardService.selectBoardTotalContents();
+		// 첫 페이지의 번호
+		// ex) 한 화면에 10개의 페이지를 표시하는 경우 
+		startPage =(((int)((double)currentPage / numPerPage + 0.9))-1)*numPerPage +1;
 		
-		model.addAttribute("list", list).addAttribute("numPerPage",numPerPage).addAttribute("totalContents", totalContents);
+		// 한 화면에 표시할 마지막 페이지 번호
+		endPage = startPage + numPerPage -1;
+		
+		// 10페이지 까지 내용이 안 찰 경우
+		if(maxPage <endPage) {
+			endPage=maxPage;
+		}
+		
+		// 페이지 관련 변수 전달용 VO 생성
+		PageInfo pi = new PageInfo(currentPage, totalContents, numPerPage, startPage, endPage, maxPage);
+		/*페이징 계산*/
+		
+		// 2. 현재 페이지 컨텐츠 리스트 받아오기
+		List<Map<String, String>> list = boardService.selectBoardList(currentPage, numPerPage, searchBoard, searchCondition);
+		
+		model.addAttribute("list", list).addAttribute("pi",pi);
+		
+		
+		if(searchBoard !=null || searchBoard!="") model.addAttribute("searchBoard",searchBoard);
+		if(searchCondition != null || searchCondition != "") model.addAttribute("searchCondition",searchCondition);
 		
 		return "board/boardList";
 	}
