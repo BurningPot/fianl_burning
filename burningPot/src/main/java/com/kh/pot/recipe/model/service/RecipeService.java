@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.recipe.model.vo.Recipe;
 import com.kh.pot.recipe.model.vo.RecipeContent;
+import com.kh.pot.recipe.model.vo.Recommend;
+import com.kh.pot.recipe.model.vo.Review;
 
 public interface RecipeService {
 
@@ -30,7 +32,7 @@ public interface RecipeService {
 	Recipe selectRecipeDetail(int rNum);
 
 	// 식재료 명칭 조회 서비스
-	List<Ingredient> selectMainIngredientList(String[] mainName);
+	Ingredient selectMainIngredientList(String mainName);
 
 	// 해당 레시피 요리 순서 조회 서비스
 	List<RecipeContent> selectContentList(int rNum);
@@ -40,5 +42,26 @@ public interface RecipeService {
 
 	// 레시피 삭제 서비스
 	int deleteRecipe(int rNum);
+
+	// 레시피 조회 시 조회수 증가 서비스
+	int updateCount(int rNum);
+
+	// 해당 레시피 리뷰 조회 서비스
+	List<Review> selectReview(int rNum);
+
+	// 해당 레시피 좋아요 여부 확인 서비스
+	Recommend selectRecommend(Recommend rec);
+
+	// 사용자 좋아요 추가 서비스
+	int insertRecommned(Recommend rec);
+
+	// 해당 레시피 좋아요 증가/감소 서비스
+	int updateRecommend(Recommend rec);
+
+	// 사용자 좋아요 삭제 서비스
+	int deleteRecommned(Recommend rec);
+
+	// 댓글 작성 서비스
+	int insertReview(Review review);
 	
 }

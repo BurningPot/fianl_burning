@@ -13,15 +13,15 @@ public class Review implements Serializable{
 	private String mName;		// 회원이름
 	private String mId;			// 회원 아이디			
 	private int grade;				// 리뷰평점
-	private String reviewContent;	// 리뷰내용
-	private Date reviewDate;		// 리뷰등록일
+	private String rvContent;	// 리뷰내용
+	private Date rvDate;		// 리뷰등록일
 	
 	public Review(){
 		
 	}
 
-	public Review(int rvNum, int rNum, int mNum, String mName, String mId, int grade, String reviewContent,
-			Date reviewDate) {
+	public Review(int rvNum, int rNum, int mNum, String mName, String mId, int grade, String rvContent,
+			Date rvDate) {
 		super();
 		this.rvNum = rvNum;
 		this.rNum = rNum;
@@ -29,8 +29,8 @@ public class Review implements Serializable{
 		this.mName = mName;
 		this.mId = mId;
 		this.grade = grade;
-		this.reviewContent = reviewContent;
-		this.reviewDate = reviewDate;
+		this.rvContent = rvContent;
+		this.rvDate = rvDate;
 	}
 
 	public int getRvNum() {
@@ -81,24 +81,26 @@ public class Review implements Serializable{
 		this.grade = grade;
 	}
 
-	public String getReviewContent() {
-		return reviewContent;
+	public String getRvContent() {
+		return rvContent;
 	}
 
-	public void setReviewContent(String reviewContent) {
-		this.reviewContent = reviewContent;
+	public void setRvContent(String rvContent) {
+		this.rvContent = rvContent;
 	}
 
-	public Date getReviewDate() {
-		return reviewDate;
+	public Date getRvDate() {
+		return rvDate;
 	}
 
-	public void setReviewDate(Date reviewDate) {
-		this.reviewDate = reviewDate;
+	public void setRvDate(Date rvDate) {
+		this.rvDate = rvDate;
 	}
 
-	
-
-	
+	@Override
+	public String toString() {
+		return "Review [rvNum=" + rvNum + ", rNum=" + rNum + ", mNum=" + mNum + ", mName=" + mName + ", mId=" + mId
+				+ ", grade=" + grade + ", rvContent=" + rvContent + ", rvDate=" + rvDate + "]";
+	}
 	
 }
