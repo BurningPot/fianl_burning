@@ -67,12 +67,11 @@
         font-weight: bold;
     }
    
-    #detail-info>div{            
-        border: 1px solid;
+    #detail-column{ 
         font-size: 150%;
-        height: 26%;
+        height: 20%;
         padding-top:1.5%;
-    	margin-bottom: 1%;            
+    	margin-bottom: 1%;
     }
     #gender .fas{
     	font-size: 150%;
@@ -95,7 +94,9 @@
     	margin-bottom:2%;
     	color:#754F44;
     }
-        
+    .detail-column div div:first-child{
+    	text-align: center;    
+    }        
    /*
     #FBFFB9
     #FDD692
@@ -119,9 +120,7 @@
         <div class="col-lg-2 menu-bar">
              <c:import url="/WEB-INF/views/admin/sideMenu.jsp"/>         
         </div>
-        
-        
-        <div class="col-lg-8 offset-lg-2 content">       
+        <div class="col-lg-8 offset-lg-2 content">      
 
          <!--검색바-->
         <br><br>
@@ -206,9 +205,7 @@
         		$('.pagenation-member').css('display', 'none');
         		$('.whenEmpty').css('display', 'inline-block');
         	}
-        	
-        	
-        })
+        });
         
         </script> 
          
@@ -300,19 +297,19 @@
 
                 <div class="col-lg-9" id="detail-info">
                     <!-- 아이디 이메일 성별 생년월일 -->
-                    <div class="col-lg-10 offset-lg-1">
+                    <div class="col-lg-10 detail-column offset-lg-1">
                         <div class="row">
                             <div class="col-3" >아이디</div>
                             <div class="col-9" id="id"></div>
                         </div>
                     </div>
-                    <div class="col-lg-10 offset-lg-1">
+                    <div class="col-lg-10 detail-column offset-lg-1">
                         <div class="row">
                             <div class="col-3">이메일</div>
                             <div class="col-9" id="email"></div>
                         </div>
                     </div>
-                    <div class="col-lg-10 offset-lg-1">
+                    <div class="col-lg-10 detail-column offset-lg-1">
                         <div class="row">
                             <div class="col-3">성별</div>
                             <div class="col-9" id="gender">
@@ -320,7 +317,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-10 offset-lg-1">
+                    <div class="col-lg-10 detail-column offset-lg-1">
                         <div class="row">
                             <div class="col-3">생년월일</div>
                             <div class="col-9" id="birth"></div>
