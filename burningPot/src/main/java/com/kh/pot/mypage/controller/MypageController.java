@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.home.service.MainService;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.vo.Member;
@@ -102,6 +103,20 @@ public class MypageController {
 		}
 		
 		@RequestMapping("/mypage/myPosts.do")
+		public String myPostList(@RequestParam int mNum, Model model,
+				@RequestParam(value="cPage", required=false, defaultValue="1") 
+		int cPage){
+			List<Board> list = mypageService.myPostList(mNum);
+			int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
+			
+			int totalContents = mypageService.selectMyPostTotalContents();
+			
+			model.addAttribute("postList", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
+			
+			return "mypage/myPosts";
+		}
+		
+		/*@RequestMapping("/mypage/myPosts.do")
 		public String myPosts(//cPage로 받을꺼고 값이 없어도 받을수 있다 required(오버로딩처럼 쓸수있다) 값이 안들어왔을때 디폴트벨류로 1로 하겟다
 				@RequestParam(value="cPage", required=false, defaultValue="1") 
 				int cPage, Model model){
@@ -116,7 +131,7 @@ public class MypageController {
 				// 반환자료형이 모델이면 붇혀서 사용 가능
 				model.addAttribute("list", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
 			return "mypage/myPosts";
-		}
+		}*/
 		@RequestMapping("/mypage/myLike.do")
 		public String myLike(
 				//cPage로 받을꺼고 값이 없어도 받을수 있다 required(오버로딩처럼 쓸수있다) 값이 안들어왔을때 디폴트벨류로 1로 하겟다

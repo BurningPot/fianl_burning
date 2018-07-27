@@ -41,13 +41,13 @@
                     <div class="col-sm-12">
                       <br>
                       <div class="alert alert-secondary" role="alert">
-                          <td>${ m.getmId() }</td>
+                          <td>ID : ${ m.getmId() }</td>
                       </div>
                       <div class="alert alert-success" role="alert">
-                          <td>${ m.getmName() }</td>
+                          <td>닉네임 : ${ m.getmName() }</td>
                       </div>                                           
                       <div class="alert alert-info" role="alert">
-                            <td>${ m.getEmail() }</td>
+                            <td>이메일 : ${ m.getEmail() }</td>
                       </div>
                     </div>
                     </div>
@@ -144,7 +144,7 @@
                     <a class="na na1 nav-link " href="${pageContext.request.contextPath}/mypage/myPage.do">내가 올린 레시피</a>
                   </li>
                   <li class="nav-item">
-                    <a class="na na2 nav-link active" href="#">내가 쓴 글</a>
+                    <a class="na na2 nav-link active" href="${pageContext.request.contextPath}/mypage/myPosts.do">내가 쓴 글</a>
                   </li>
                   <li class="nav-item">
                     <a class="na na3 nav-link" href="${pageContext.request.contextPath}/mypage/myLike.do">좋아요</a>
@@ -155,6 +155,8 @@
                 <button type="button" class="btn btn-default btn-sm">신고</button>
                 <br>
                 <br>
+                
+                
 	
 		<div id="mp2" class="col-lg-12" style="padding : 0">
           <table id="mypage2" class="table table-hover" style="border: 1px solid lightgray;">
@@ -169,7 +171,7 @@
                     수정|삭제
                   </th>
                 </tr>
-                <c:forEach items="${ list }" var="b">
+                <c:forEach items="${postList}" var="b">
               <tr id="${b.bNum }">
                 <td>${b.bNum }</td>
                   <td>${b.bTitle }</td>
@@ -185,7 +187,7 @@
               </tbody>  
             </table>
 	                            <%-- 페이지바를 위한 Utils의 정적메소드 사용 --%> 
-   <% 
+  <% 
       int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
       int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
       
@@ -284,6 +286,8 @@
            		})
            		
            	});
+               
+               
              </script>
 </body>
 </html>

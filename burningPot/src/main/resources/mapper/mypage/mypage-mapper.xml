@@ -7,10 +7,22 @@
 		SELECT * FROM BOARD B JOIN MEMBER M ON(B.MNUM=M.MNUM) ORDER BY CATEGORY DESC, BNUM DESC
 	</select>
 	
+	<!-- 아이페이지 내가쓴글 불러오기 -->
+	<select id="seleteMyPostList" parameterType="_int" resultType="board">
+		SELECT * FROM BOARD WHERE MNUM = #{mNum}
+	</select>
+	
 	<!-- 게시판 토탈 -->
 	<select id="selectMyBoardTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM BOARD
 	</select>
+	
+	<!-- 마이페이지 내가쓴글 토탈 -->
+	<select id="selectMyPostTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
+	
+	
 	
 	<!-- 닉네임 중복확인 -->
 	<select id="checkNicDuplicate" resultType="_int">

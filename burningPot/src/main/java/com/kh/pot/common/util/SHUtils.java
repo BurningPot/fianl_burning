@@ -1,6 +1,6 @@
 package com.kh.pot.common.util;
 //여기에서 페이지네이션 디자인을 할 수 있다
-public class Utils {
+public class SHUtils {
 	
 	public static String getPageBar(int totalContents, int cPage, int numPerPage, String url ){
 		String pageBar = "";

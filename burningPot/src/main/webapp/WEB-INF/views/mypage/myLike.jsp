@@ -41,13 +41,13 @@
                     <div class="col-sm-12">
                       <br>
                       <div class="alert alert-secondary" role="alert">
-                          <td>${ m.getmId() }</td>
+                          <td>ID : ${ m.getmId() }</td>
                       </div>
                       <div class="alert alert-success" role="alert">
-                          <td>${ m.getmName() }</td>
+                          <td>닉네임 : ${ m.getmName() }</td>
                       </div>                                           
                       <div class="alert alert-info" role="alert">
-                            <td>${ m.getEmail() }</td>
+                            <td>이메일 : ${ m.getEmail() }</td>
                       </div>
                     </div>
                     </div>
@@ -144,15 +144,18 @@
                     <a class="na na1 nav-link " href="${pageContext.request.contextPath}/mypage/myPage.do">내가 올린 레시피</a>
                   </li>
                   <li class="nav-item">
-                    <a class="na na2 nav-link" href="${pageContext.request.contextPath}/mypage/myPosts.do">내가 쓴 글</a>
+                    <a class="na na2 nav-link"  id="posGo" href="#">내가 쓴 글</a>
                   </li>
                   <li class="nav-item">
                     <a class="na na3 nav-link active" href="#">좋아요</a>
                   </li>
-                </ul><br>              
+                </ul><br>                              
+                <br>
+                <br>
                 
-                <br>
-                <br>
+                <form id="postForm">
+				<input type="hidden" value="${ m.mNum }" name="mNum" />
+			  </form>
             
             
             <div id="mp3"  class="col-lg-12" style="padding : 0">
@@ -281,6 +284,10 @@
            		})
            		
            	});
+               
+               $('#posGo').on('click', function(){
+            	   $('#postForm').attr("action", "${pageContext.request.contextPath}/mypage/myPosts.do").submit();
+               });
              </script>
 </body>
 </html>
