@@ -6,7 +6,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.mypage.model.dao.MypageDao;
 
@@ -76,6 +78,18 @@ public class MypageServiceImpl implements MypageService{
 	public int deleteUserInfo(int formDel) {
 		
 		return mypageDao.deleteUserInfo(formDel);
+	}
+
+	@Override
+	public List<Board> myPostList(int mNum) {
+		
+		return mypageDao.myPostList(mNum);
+	}
+
+	@Override
+	public int selectMyPostTotalContents() {
+
+		return mypageDao.selectMyPostTotalContents();
 	}
 	
 

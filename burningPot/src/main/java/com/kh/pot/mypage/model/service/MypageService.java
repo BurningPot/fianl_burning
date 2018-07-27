@@ -3,6 +3,9 @@ package com.kh.pot.mypage.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.ui.Model;
+
+import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.member.model.vo.Member;
 
 public interface MypageService {
@@ -24,6 +27,10 @@ public interface MypageService {
 	int updateImg(String renameFileName, int numHidden);
 
 	int deleteUserInfo(int formDel);
+
+	List<Board> myPostList(int mNum);
+
+	int selectMyPostTotalContents();
 
 	
 	
