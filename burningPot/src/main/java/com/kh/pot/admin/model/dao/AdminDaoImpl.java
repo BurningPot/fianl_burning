@@ -1,5 +1,6 @@
 package com.kh.pot.admin.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -48,6 +49,18 @@ public class AdminDaoImpl implements AdminDao {
 	public List<Statistics> selectFemaleFavor() {
 		
 		return sqlSession.selectList("member.selectFemaleFavor");
+	}
+
+	@Override
+	public int updateExpelMember(HashMap<String, Object> map) {
+		
+		return sqlSession.update("member.updateExpelMember", map);
+	}
+
+	@Override
+	public int deleteAllContent(int mNum) {
+		
+		return sqlSession.delete("member.deleteAllContent", mNum);
 	}
 
 }

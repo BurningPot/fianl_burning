@@ -20,4 +20,8 @@ public interface AdminService {
 
 	List<Statistics> selectFemaleFavor();
 
+	int updateExpelMember(String mId, String newPw, int mNum);
+
+	int deleteAllContent(int mNum);
+
 }

@@ -36,7 +36,7 @@
     }
 	*/
     
-    .navi{
+    /* .navi{
     	height: 30%;
         margin-top: 10%;
 	}
@@ -48,7 +48,7 @@
         text-align: center;
         font-size: 200%;
         font-weight: bold;
-	}   
+	}    */
     .search-title{
         text-align: center;
         font-size: 200%;
@@ -65,13 +65,14 @@
         text-align: center;
         font-size: 130%;
         font-weight: bold;
-    }
-   
-    #detail-column{ 
-        font-size: 150%;
-        height: 20%;
-        padding-top:1.5%;
-    	margin-bottom: 1%;
+    }   
+    .detail-column{ 
+        font-size: 150%; !important;
+        height: 20%;!important;
+        padding-top:1%;!important;
+    	margin-bottom: 1%;!important;
+    	background:  #FDD692;   !important; 
+    	color: #754F44;	!important;
     }
     #gender .fas{
     	font-size: 150%;
@@ -95,7 +96,8 @@
     	color:#754F44;
     }
     .detail-column div div:first-child{
-    	text-align: center;    
+    	text-align: center;  
+    	font-size: 120%;  
     }        
    /*
     #FBFFB9
@@ -293,31 +295,32 @@
                     	<img src="${pageContext.request.contextPath}/resources/img/defaultPerson.png" alt="" class="col-lg-12"/>
                     </div>
                     <div class="col-lg-12" id="name">이름</div>
+                    <input type="hidden" id="numberOfMember" value=""/>
                 </div>
 
                 <div class="col-lg-9" id="detail-info">
                     <!-- 아이디 이메일 성별 생년월일 -->
-                    <div class="col-lg-10 detail-column offset-lg-1">
+                    <div class="col-lg-10 detail-column offset-lg-1" style="border: 0px;">
                         <div class="row">
                             <div class="col-3" >아이디</div>
                             <div class="col-9" id="id"></div>
                         </div>
                     </div>
-                    <div class="col-lg-10 detail-column offset-lg-1">
+                    <div class="col-lg-10 detail-column offset-lg-1" style="border: 0px;">
                         <div class="row">
                             <div class="col-3">이메일</div>
                             <div class="col-9" id="email"></div>
                         </div>
                     </div>
-                    <div class="col-lg-10 detail-column offset-lg-1">
+                    <div class="col-lg-10 detail-column offset-lg-1" style="border: 0px;">
                         <div class="row">
                             <div class="col-3">성별</div>
                             <div class="col-9" id="gender">
-                            <i class="fas fa-venus" style="display : none; color: pink"></i><i class="fas fa-mars" style="display : none; color: blue;"></i>
+                            <i class="fas fa-venus" style="display : none; color: #f902dd"></i><i class="fas fa-mars" style="display : none; color: blue;"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-10 detail-column offset-lg-1">
+                    <div class="col-lg-10 detail-column offset-lg-1" style="border: 0px;">
                         <div class="row">
                             <div class="col-3">생년월일</div>
                             <div class="col-9" id="birth"></div>
@@ -360,7 +363,7 @@
             		var gender = data.gender;
             		var birthDate = data.birthDate;
             		var picture = data.picture;
-            		
+            		var memberNumber = memberNum;
             		console.log('회원정보 : '+name+', '+id+', '+email+', '+gender+', '+birthDate+', '+picture);
             		
             		if(picture != null){
@@ -368,6 +371,7 @@
             		}
             		
             		$('#name').text(name);
+            		$('#numberOfMember').val(memberNumber);
             		$('#id').text(id);
             		$('#email').text(email);
             		$('#photo').children('img').attr('src', '${pageContext.request.contextPath}/resources/img/'+picture);
@@ -390,12 +394,31 @@
         });
         
         </script>
-        <br><br><br /><br />
+        <br><br>
+        
         <div class="col-lg-12" align="center">
-            <button class="btn btn-primary">탈퇴시키기</button>
+            <button class="btn btn-primary" onclick="expelTheBadOne()">탈퇴시키기</button>
         </div>
         <br><br>
-
+		
+		<script>
+			function expelTheBadOne(){
+				//ajax로 하자
+				var mNum = $('#numberOfMember').val();
+				console.log(mNum);
+				$.ajax({
+					url: '${pageContext.request.contextPath}/admin/updateExpelMember.do',
+					data:{
+						mNum : mNum
+					}, success: function(data){						
+						alert("회원번호 "+data+"가 강제 탈퇴 되었습니다");
+					}, error: function(data){
+						alert("강제탈퇴에 실패했습니다");
+					}
+				})
+				 
+			}
+		</script>
         
           
 
