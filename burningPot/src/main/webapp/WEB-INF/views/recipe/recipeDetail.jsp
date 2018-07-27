@@ -295,7 +295,7 @@
 	                	<c:forEach items="${review}" var="rv">
 	                		<div class="row ml-0 mb-3 col-12 css3">
 			                    <div class="col-1 pl-0 ml-3 mr-2 css4">
-			                        <img class="rounded-circle float-left userImgCss" src="${pageContext.request.contextPath}/resources/img/recipe/userImg.PNG" alt="userImg">
+			                        <img class="rounded-circle float-left userImgCss" src="${pageContext.request.contextPath}/resources/img/profile/${rv.mPicture}" alt="userImg">
 			                    </div>
 			                    <div class="col-10 pl-0 css4">
 			                        <div class="row ml-0 mb-2 css1">
