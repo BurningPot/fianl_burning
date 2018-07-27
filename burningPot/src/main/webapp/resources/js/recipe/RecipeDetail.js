@@ -52,39 +52,45 @@ $(function () {
     				alert("좋아요를 취소 했습니다.");
     				$('#goodBtn').children().remove();
     				$("#goodBtn").text("");
-    				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요" + `(`+ data +`)`);
+    				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요" + ` (`+ data +`)`);
 	    		}, error : function(e) {
 	    			alert("좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)");
 	    		}
 	    	});
 		}
 	});
-	
-	// ------------------------------------- 신고하기 버튼 영역 -------------------------------------
-	$('#reportBtn').click(function() {
-//		$('#formId').attr("action", "goReportForm.do");
-//		$('#formId').submit();
-		console.log("신고확인");
-	});
 		
     // ------------------------------------- 댓글 영역 -------------------------------------
 	 $('#reviewSubmitBtn').click(function(e) {
         if(confirm('댓글을 등록하시겠습니까?')){
     		if (mem != "") {
-        		$.ajax ({
-    	    		url : path + "/recipe/insertReview.do",
-    	    		data : {rNum : $("#rNum").val(),
-    	    					mNum : mem,
-    	    					grade : $("#scoreText").val(),
-    	    					rvContent : $("#reviewContent").val()},
-    	    		dataType : "json",
-    	    		async : false,
-    	    		success : function(data) {
-        				alert("댓글이 등록되었습니다.");
-    	    		}, error : function(e) {
-    	    			alert("댓글 등록 오류 발생 (관리자에게 문의 바랍니다.)");
-    	    		}
-    	    	});
+    			if ($("#reviewContent").val() != "") {
+					$.ajax ({
+	    	    		url : path + "/recipe/insertReview.do",
+	    	    		data : {rNum : $("#rNum").val(),
+	    	    					mNum : mem,
+	    	    					grade : $("#scoreText").val(),
+	    	    					rvContent : $("#reviewContent").val()},
+	    	    		dataType : "json",
+	    	    		async : false,
+	    	    		success : function(data) {
+	        				alert("댓글이 등록되었습니다.");
+	        				var obj = $('.reviewDiv').eq(0).clone(true);
+	        				$(obj).find('.mId').val(data.mId);
+	        				$(obj).find('.rvDate').val(data.rvDate);
+	        				$(obj.find('.rvContent').text(data.rvContent));
+	        				$(".reviewArea").append($(obj));
+	        				
+	        				$("#reviewContent").val("");
+	        				$(".scoreStar").attr("src", path + "/resources/img/recipe/emptyStar.png");
+	        				$("#reviewCount").text(Number.parseInt($("#reviewCount").text()) + 1);
+	    	    		}, error : function(e) {
+	    	    			alert("댓글 등록 오류 발생 (관리자에게 문의 바랍니다.)");
+	    	    		}
+	    	    	});
+    			} else {
+    				alert("댓글 내용을 작성해주세요!");
+    			}
     		} else {
     			console.log("비어있음");
     			alert("로그인 이후 사용 가능한 서비스 입니다. (로그인 이후 사용 바랍니다.)");
@@ -145,4 +151,28 @@ function starClick(chk) {
 		});
 		$("#scoreText").val("5");
 	}
+}
+
+//------------------------------------- 신고하기 버튼 영역 -------------------------------------
+function reportInsert(){
+   var rNo = $('#rNum').val();
+   var message = $('#message-text').val();
+
+   $.ajax ({
+      url : path + "/recipe/insertReport.do",
+      data : {rpContent : message, mNum : mem, rNum : rNo},
+      success : function(data) {
+         swal("신고 완료!", "해당 레시피에 대한 신고를 관리자에게 보냈습니다.", "success", {
+              button: false,
+         });
+      }, error : function(e) {
+         swal("신고 실패!", "신고 글 작성에 실패했습니다. TT", "error", {
+              button: false,
+         });
+      }
+   });   
+}
+
+function refresh(){
+   $('#message-text').val("");
 }

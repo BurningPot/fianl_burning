@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pot.board.model.vo.Report;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.recipe.model.dao.RecipeDao;
 import com.kh.pot.recipe.model.vo.Recipe;
@@ -137,6 +138,13 @@ public class RecipeServiceImpl implements RecipeService {
 	public int insertReview(Review review) {
 
 		return recipeDao.insertReview(review);
+		
+	}
+
+	@Override
+	public int insertReport(Report report) {
+
+		return recipeDao.insertReport(report);
 		
 	}
 

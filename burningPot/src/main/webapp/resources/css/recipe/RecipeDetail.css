@@ -24,6 +24,10 @@
     height : 15px;
 }
 
+.starCss:hover {
+    cursor: pointer;
+}
+
 .btnFontCss {
     font-size : 12pt!important;
 }
