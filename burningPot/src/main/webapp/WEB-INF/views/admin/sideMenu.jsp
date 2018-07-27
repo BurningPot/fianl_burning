@@ -13,6 +13,7 @@
 <style>
 body{
 	overflow-x: hidden;
+	font-family: 'Nanum Gothic', sans-serif;
 }
 .font-namu{
 	font-family: 'Nanum Gothic', sans-serif;

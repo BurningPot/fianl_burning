@@ -7,10 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -584,6 +586,32 @@ public class AdminController {
 		
 		
 		return "admin/adminResultPage"; 
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin/updateExpelMember.do")
+	public int updateExpel(@RequestParam int mNum){
+		
+		//바꿔야 하는 것들(mId, password, mName)			
+		
+		Random ran = new Random();
+		
+		String mId = String.valueOf((int)(ran.nextDouble()*1000000));
+		int password = (int)(ran.nextDouble()*1000000);
+		
+		System.out.println("아이디: "+mId);		
+		System.out.println("비번: "+password);		
+		
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+		
+		String newPw = bcrypt.encode(String.valueOf(password));
+		//1. Member Table에서 강제탈퇴 처리
+		adminService.updateExpelMember(mId, newPw, mNum);
+		
+		//2. Board, Board_Comment, Fridge, Recipe, Review, Review_Comment 테이블에서 해당 회원의 글들은 모조리 삭제시켜라!
+		int result = adminService.deleteAllContent(mNum);
+		System.out.println("result는?: "+result);
+		return mNum;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.kh.pot.admin.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,22 @@ public class AdminServiceImpl implements AdminService {
 	public List<Statistics> selectFemaleFavor() {
 		
 		return adminDao.selectFemaleFavor();
+	}
+
+	@Override
+	public int updateExpelMember(String mId, String newPw, int mNum) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("mId", mId);
+		map.put("password", newPw);
+		map.put("mNum", mNum);
+		return adminDao.updateExpelMember(map);
+	}
+
+	@Override
+	public int deleteAllContent(int mNum) {
+		
+		return adminDao.deleteAllContent(mNum);
 	}
 
 }
