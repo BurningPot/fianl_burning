@@ -1,5 +1,6 @@
 package com.kh.pot.admin.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.pot.admin.model.dao.AdminDao;
 import com.kh.pot.admin.model.vo.Statistics;
+import com.kh.pot.board.model.vo.Report;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -65,6 +67,24 @@ public class AdminServiceImpl implements AdminService {
 	public int deleteAllContent(int mNum) {
 		
 		return adminDao.deleteAllContent(mNum);
+	}
+
+	@Override
+	public int selectReportCount() {
+		
+		return adminDao.selectReportCount();
+	}
+
+	@Override
+	public List<Report> selectReport(int cPage, int numPerPage) {
+		
+		return adminDao.selectReport(cPage, numPerPage);
+	}
+
+	@Override
+	public Report selectReportDetail(int rpNum) {
+		
+		return adminDao.selectReportDetail(rpNum);
 	}
 
 }
