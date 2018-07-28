@@ -16,6 +16,7 @@ public class BoardComment implements Serializable{
 	private String mPicture;	// 회원 사진
 	private Date bcDate;	// 작성일
 	private String bcContent;// 댓글내용
+	private String bcDateTime;  	// 작성일 (시간포함) 
 	
 	public BoardComment(){
 		
@@ -33,7 +34,7 @@ public class BoardComment implements Serializable{
 	}
 	
 	public BoardComment(int bcNum, int bNum, int mNum, String mName, String mId, String mPicture, Date bcDate,
-			String bcContent) {
+			String bcContent, String bcDateTime) {
 		super();
 		this.bcNum = bcNum;
 		this.bNum = bNum;
@@ -43,6 +44,7 @@ public class BoardComment implements Serializable{
 		this.mPicture = mPicture;
 		this.bcDate = bcDate;
 		this.bcContent = bcContent;
+		this.bcDateTime = bcDateTime;
 	}
 
 	public int getBcNum() {
@@ -109,12 +111,19 @@ public class BoardComment implements Serializable{
 		this.mPicture = mPicture;
 	}
 
+	public String getBcDateTime() {
+		return bcDateTime;
+	}
+
+	public void setBcDateTime(String bcDateTime) {
+		this.bcDateTime = bcDateTime;
+	}
+
 	@Override
 	public String toString() {
 		return "BoardComment [bcNum=" + bcNum + ", bNum=" + bNum + ", mNum=" + mNum + ", mName=" + mName + ", mId="
-				+ mId + ", mPicture=" + mPicture + ", bcDate=" + bcDate + ", bcContent=" + bcContent + "]";
+				+ mId + ", mPicture=" + mPicture + ", bcDate=" + bcDate + ", bcContent=" + bcContent + ", bcDateTime="
+				+ bcDateTime + "]";
 	}
-
-	
 	
 }

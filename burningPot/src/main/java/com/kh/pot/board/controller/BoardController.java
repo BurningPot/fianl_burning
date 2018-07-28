@@ -25,7 +25,7 @@ public class BoardController {
 	public String boardList(
 			@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage,
 			@RequestParam(value="searchBoard", required=false, defaultValue="") String searchBoard,
-			@RequestParam(value="searchCondition", required=false, defaultValue="") String searchCondition,
+			@RequestParam(value="searchCondition", required=false, defaultValue="sAll") String searchCondition,
 			Model model){
 		
 		/*페이징 처리 코드 부분*/

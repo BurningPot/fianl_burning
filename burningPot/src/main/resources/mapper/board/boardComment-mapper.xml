@@ -4,7 +4,7 @@
 	<!-- HYD -->	
 	
 	<select id="selectBoardComment" parameterType="_int" resultType="BoardComment">
-		SELECT BCNUM, BNUM, MNUM, MNAME, MID , MPICTURE, BCCONTENT, BCDATE FROM BOARD_COMMENT JOIN MEMBER USING(MNUM)
+		SELECT BCNUM, BNUM, MNUM, MNAME, MID , MPICTURE, BCCONTENT, BCDATE, to_char(BCDATE, 'yyyy-MM-dd hh24:mi') bcDateTime FROM BOARD_COMMENT JOIN MEMBER USING(MNUM)
 		WHERE BNUM = #{bNum} ORDER BY BCNUM
 	</select>
 	<insert id="insertBoardComment" parameterType="hashmap">
