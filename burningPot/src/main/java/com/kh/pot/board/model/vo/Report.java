@@ -1,6 +1,7 @@
 package com.kh.pot.board.model.vo;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class Report implements Serializable{
 
@@ -13,12 +14,13 @@ public class Report implements Serializable{
 	private String mName;	// 신고자 이름
 	private String mId;		// 신고자 아이디	
 	private String rpContent;	// 신고내용
+	private Date rpDate;	//신고 작성일
 	
 	public Report(){
 		super();
 	}
 
-	public Report(int rpNum, int rNum, int mNum, String mName, String mId, String rpContent) {
+	public Report(int rpNum, int rNum, int mNum, String mName, String mId, String rpContent, Date rpDate) {
 		super();
 		this.rpNum = rpNum;
 		this.rNum = rNum;
@@ -26,6 +28,7 @@ public class Report implements Serializable{
 		this.mName = mName;
 		this.mId = mId;
 		this.rpContent = rpContent;
+		this.rpDate = rpDate;
 	}
 
 	public int getRpNum() {
@@ -74,6 +77,14 @@ public class Report implements Serializable{
 
 	public void setRpContent(String rpContent) {
 		this.rpContent = rpContent;
+	}
+
+	public Date getRpDate() {
+		return rpDate;
+	}
+
+	public void setRpDate(Date rpDate) {
+		this.rpDate = rpDate;
 	}
 
 	

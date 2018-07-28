@@ -56,8 +56,7 @@
 		text-align: center;			
 		padding: 1.5%; 
 		font-weight:bold;
-	}
-	
+	}	
    /*
     #FBFFB9
     #FDD692

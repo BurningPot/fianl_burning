@@ -68,6 +68,9 @@ public class AdminController {
 		//6. 여성 선호 레시피
 		ArrayList<Statistics> femaleFavor = (ArrayList<Statistics>)adminService.selectFemaleFavor();
 		
+		//7. 연령별 선호 레시피는 차후에 데이터가 충분해지면 만들자
+		
+		
 		model.addAttribute("age",ageList)
 		.addAttribute("popularRecipe", popularRecipe)
 		.addAttribute("topWriter", topWriter)
@@ -172,12 +175,12 @@ public class AdminController {
 		return map;
 	}
 	
-	// 신고게시판
+	/*// 신고게시판
 	@RequestMapping("/admin/goReport.do")
 	public String goReport(Model model){
 		model.addAttribute("commonTitle","신고게시판");
 		return "admin/adminReport"; 
-	}
+	}*/
 	
 	// Q&A게시판
 	@RequestMapping("/admin/goQNA.do")
@@ -614,6 +617,27 @@ public class AdminController {
 		return mNum;
 	}
 	
-	
+	// 신고게시판
+	/*@RequestMapping("/admin/goReport.do")
+	public String goQandA(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage){
+		model.addAttribute("commonTitle","신고 게시판");
+		
+		String bCategory = "QNA";
+		int numPerPage = 10; // 한 페이지 당 게시글 수
+			
+		ArrayList<Board> list = (ArrayList<Board>) boardService.selectBoard(cPage, numPerPage, bCategory);
+		
+		int totalContents = boardService.selectCount(bCategory);
+		
+		System.out.println("list : "+list);	
+		
+		model.addAttribute("list",list)
+		.addAttribute("numPerPage", numPerPage)
+		.addAttribute("totalContents", totalContents)
+		.addAttribute("detailMapping","detailQNA.do")
+		.addAttribute("servletMapping", "goQNA.do");
+			
+		return "admin/adminBoard";
+	}*/
 	
 }
