@@ -111,6 +111,21 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.selectOne("member.checkEmailConfirm", emailAddr);
 	}
 
+	@Override
+	public String findMemberId(HashMap<String, String> map) {
+		return sqlSession.selectOne("member.findMemberId",map);
+	}
+
+	@Override
+	public Member findMemberPwd(HashMap<String, String> map) {
+		return sqlSession.selectOne("member.findMemberPwd",map);
+	}
+
+	@Override
+	public int updatePwd(Map<String, String> map) {
+		return sqlSession.update("member.updatePwd",map);
+	}
+	
 	
 	/* 예찬 부분 */
 

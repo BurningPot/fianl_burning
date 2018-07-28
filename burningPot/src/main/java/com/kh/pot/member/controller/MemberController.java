@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.kh.pot.common.login.StringtoVo;
 import com.kh.pot.member.model.service.MemberService;
@@ -95,7 +94,7 @@ public class MemberController {
 		return "/common/msg";
 	}
 	
-//	구글 로그인 성공시 callback.do
+	//	구글 로그인 성공시 callback.do
 	@RequestMapping(value = "/callbackg.do", method = RequestMethod.GET)
 	public String doSessionAssignActionPage(HttpServletRequest request, Model model)throws Exception{
 	  String code = request.getParameter("code");

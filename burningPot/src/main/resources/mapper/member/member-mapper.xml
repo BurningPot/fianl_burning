@@ -165,5 +165,17 @@
 		SELECT ISPERMIT FROM EMAIL_CONFIRM WHERE EMAIL = #{emailAddr}
 	</select>
 	
+	<select id="findMemberId" parameterType="hashmap" resultType="string">
+		SELECT MID FROM MEMBER WHERE EMAIL = #{email} AND (to_char(BIRTHDATE,'yyMMdd') = #{birth})
+	</select>
+	
+	<select id="findMemberPwd" parameterType="hashmap" resultType="Member">
+		SELECT * FROM MEMBER WHERE MID = #{id} AND EMAIL = #{email} AND (to_char(BIRTHDATE,'yyMMdd') = #{birth})
+	</select>
+	
+	<update id="updatePwd" parameterType="hashmap">
+		UPDATE MEMBER SET PASSWORD = #{tmpKey} WHERE MID = #{id}
+	</update>
+	
 	<!-- 예찬 mapper 부분 끝 -->
 </mapper>
