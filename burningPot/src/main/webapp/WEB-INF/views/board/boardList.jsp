@@ -66,9 +66,9 @@
 					</div>
 					<div class="col-sm-6">
 						<div class="input-group">
-							<input type="search" class="form-control" placeholder="검색 하기 " id="searchBoard" name="searchBoard"> 
+							<input type="search" class="form-control pressEnt" placeholder="검색 하기 " id="searchBoard" name="searchBoard"> 
 							<button class="btn btn-secondary input-group-btn" type="button" onclick="searchBoard();">검색</button>
-						</div>
+						</div> 
 					</div>
 				</div>
 		
@@ -133,7 +133,12 @@
 								</c:if>
 							</td>
 							<td>${b.bDate}</td>
-							<td>${b.reply}</td>
+							<c:if test="${b.category eq '공지사항'}">
+								<td></td>
+							</c:if>
+							<c:if test="${b.category ne '공지사항'}">
+								<td>${b.reply}</td>
+							</c:if>
 							<td>${b.bCount}</td>
 						</tr>
 					</c:forEach>
@@ -198,6 +203,12 @@
 		</div>
 	</div>
 <script>
+	$('.pressEnt').keypress(function(event) {
+	    if (event.key === "Enter") {
+	    	searchBoard();
+	    }
+	});
+
 	$(function(){
 		var sb = '${searchBoard}';
 		var sc = '${searchCondition}';

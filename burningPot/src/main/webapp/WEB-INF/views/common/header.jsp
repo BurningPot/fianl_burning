@@ -1782,11 +1782,11 @@
 		           <div class="modal-body">
 		             <div class="form-group row">
 		                 <label for="email" class="control-label col-xs-2 col-sm-2 "><i class="far fa-envelope fa-2x"></i></label>
-		                 <input type="text" class="form-control col-xs-9 col-sm-9" id="mEmail" placeholder="이메일" required>
+		                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntID" id="mEmail" placeholder="이메일" required>
 		             </div>
 		             <div class="form-group row">
 		                 <label for="birth" class="control-label col-xs-2 col-sm-2 "><i class="fas fa-birthday-cake fa-2x"></i></label>
-		                 <input type="text" class="form-control col-xs-9 col-sm-9" id="mBirth" placeholder="ex)년월일  -> YYMMDD" required>
+		                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntID" id="mBirth" placeholder="ex)년월일  -> YYMMDD" required>
 		             </div>
 		             <div class="form-group row text-center">
 		             	<div class="col-sm-12">
@@ -1828,16 +1828,16 @@
 	           <div class="modal-body">
 	             <div class="form-group row">
 	                 <label for="userId" class="control-label col-xs-2 col-sm-2"><i class="fas fa-user fa-2x"></i></label>
-	                 <input type="text" class="form-control col-xs-9 col-sm-9" name="userId" placeholder="아이디" id="pMId" required>
+	                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntPwd" name="userId" placeholder="아이디" id="pMId" required>
 	                 <br />
 	             </div>
 	             <div class="form-group row">
 	                 <label for="email" class="control-label col-xs-2 col-sm-2 "><i class="far fa-envelope fa-2x"></i></label>
-	                 <input type="text" class="form-control col-xs-9 col-sm-9" name="email" placeholder="이메일" id="pEmail" required>
+	                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntPwd" name="email" placeholder="이메일" id="pEmail" required>
 	             </div>
 	             <div class="form-group row">
 	                 <label for="birth" class="control-label col-xs-2 col-sm-2 "><i class="fas fa-birthday-cake fa-2x"></i></label>
-	                 <input type="text" class="form-control col-xs-9 col-sm-9" name="birth" placeholder="ex) 년월일  -> YYMMDD" id="pBirth" required>
+	                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntPwd" name="birth" placeholder="ex) 년월일  -> YYMMDD" id="pBirth" required>
 	             </div>
 	             <div class="form-group row text-center">
 	             	<div class="col-sm-12">
@@ -1984,47 +1984,64 @@
 		$("#loginModal").modal();
 	}
 	
+	// 아이디 찾기 엔터키
+	$('.pressEntID').keypress(function(event) {
+	    if (event.key === "Enter") {
+	    	findId();
+	    }
+	});
+	
+	// 비밀번호 찾기 엔터키
+	$('.pressEntPwd').keypress(function(event) {
+	    if (event.key === "Enter") {
+	    	findPwd();
+	    }
+	});
+	
+	
 	function findId(){
-		$.ajax({
-			url : "${pageContext.request.contextPath}/member/findMemberId.do",
-			data : {mEmail : $('#mEmail').val(), mBirth : $('#mBirth').val() },
-			type : "POST",
-			success : function(data){
-				console.log("data.isMember="+data.isMember);
-				console.log("data.mId="+data.mId);
-				if(data.isMember != false){
-					$('#idLabel').children('p').remove();
-					$("<p style='color:green;'>회원님의 아이디가 작성하신 이메일로 발송되었습니다.<br> 메일을 확인해주세요!</p>").appendTo('#idLabel');
-				}else{
-					$('#idLabel').children('p').remove();
-					$("<p style='color:red;'>존재하는 회원이 아닙니다.</p>").appendTo('#idLabel');
+		if( ($('#mEmail').val() != null && $('#mEmail').val() != "") && ($('#mBirth').val() != null && $('#mBirth').val() != "") ){
+			$.ajax({
+				url : "${pageContext.request.contextPath}/member/findMemberId.do",
+				data : {mEmail : $('#mEmail').val(), mBirth : $('#mBirth').val() },
+				type : "POST",
+				success : function(data){
+					if(data.isMember != false){
+						$('#idLabel').children('p').remove();
+						$("<p style='color:green;'>회원님의 아이디가 작성하신 이메일로 발송되었습니다.<br> 메일을 확인해주세요!</p>").appendTo('#idLabel');
+					}else{
+						$('#idLabel').children('p').remove();
+						$("<p style='color:red;'>존재하는 회원이 아닙니다.</p>").appendTo('#idLabel');
+					}
+					/* $("<a class='rec_reipe_a badge badge-success' href='#'>" + data[i].rName + "</a>").appendTo('#rec_recipe_link'); */
+				}, error : function(data){
+					alert("아이디 찾기 오류");
 				}
-				/* $("<a class='rec_reipe_a badge badge-success' href='#'>" + data[i].rName + "</a>").appendTo('#rec_recipe_link'); */
-			}, error : function(data){
-				alert("아이디 찾기 오류");
-			}
-		});
+			});
+		}else alert('항목을 모두 입력해주세요!');
 	}
 	
 	// 비밀번호 찾기
 	function findPwd(){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/member/findPwd.do",
-			data : {pMId: $('#pMId').val(), pEmail : $('#pEmail').val(), pBirth : $('#pBirth').val()},
-			type:"POST",
-			success : function(data){
-				console.log('data.isMember'+data.isMember);
-				if(data.isMember != false){
-					$('#pwdLabel').children('p').remove();
-					$("<p style='color:green;'>회원님의 임시비밀번호가 메일로 전송되었습니다.<br>메일을 확인해주세요!</p>").appendTo('#pwdLabel');
-				}else{
-					$('#pwdLabel').children('p').remove();
-					$("<p style='color:red;'>존재하지 않는 회원입니다.<br>입력된 내용을 확인해주세요!</p>").appendTo('#pwdLabel');
+		if( ($('#pMId').val() != null && $('#pMId').val() != "") && ($('#pEmail').val() != null && $('#pEmail').val() != "") && ($('#pBirth').val() != null && $('#pBirth').val() != "") ){
+			$.ajax({
+				url:"${pageContext.request.contextPath}/member/findPwd.do",
+				data : {pMId: $('#pMId').val(), pEmail : $('#pEmail').val(), pBirth : $('#pBirth').val()},
+				type:"POST",
+				success : function(data){
+					console.log('data.isMember'+data.isMember);
+					if(data.isMember != false){
+						$('#pwdLabel').children('p').remove();
+						$("<p style='color:green;'>회원님의 임시비밀번호가 메일로 전송되었습니다.<br>메일을 확인해주세요!</p>").appendTo('#pwdLabel');
+					}else{
+						$('#pwdLabel').children('p').remove();
+						$("<p style='color:red;'>존재하지 않는 회원입니다.<br>입력된 내용을 확인해주세요!</p>").appendTo('#pwdLabel');
+					}
+				},error : function(){
+					console.log('error ajax!');
 				}
-			},error : function(){
-				console.log('error ajax!');
-			}
-		});
+			});
+		}else alert('항목을 모두 입력해주세요!');
 	}
 	
 	  /* 로그인 스크립트 끝 */
