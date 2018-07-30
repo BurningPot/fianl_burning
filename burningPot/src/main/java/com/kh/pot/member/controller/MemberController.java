@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.kh.pot.common.login.StringtoVo;
 import com.kh.pot.member.model.service.MemberService;
@@ -95,7 +94,7 @@ public class MemberController {
 		return "/common/msg";
 	}
 	
-//	구글 로그인 성공시 callback.do
+	//	구글 로그인 성공시 callback.do
 	@RequestMapping(value = "/callbackg.do", method = RequestMethod.GET)
 	public String doSessionAssignActionPage(HttpServletRequest request, Model model)throws Exception{
 	  String code = request.getParameter("code");
@@ -234,6 +233,58 @@ public class MemberController {
 		boolean isUsable = memberService.checkEmailDuplicate(email) == 0 ? true : false;
 		
 		map.put("isUsable", isUsable);
+		
+		return map;
+	}
+	
+	// 아이디 찾기
+	@ResponseBody
+	@RequestMapping("/member/findMemberId.do")
+	public Map<String, Object> findMemberId(@RequestParam String mEmail, @RequestParam String mBirth){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String memberId = memberService.findMemberId(mEmail, mBirth);
+		map.put("isMember", false);
+
+		if(memberId != null){
+			map.put("mId", memberId);
+			map.put("isMember", true);
+			
+			try {
+				memberService.findMember(mEmail, memberId, true);
+			} catch (Exception e) {
+				System.out.println("이메일 보내기 실패");
+				e.printStackTrace();
+			}
+			
+		}
+			
+		return map;
+	}
+	
+	// 비밀번호 찾기 
+	@ResponseBody
+	@RequestMapping("/member/findPwd.do")
+	public Map<String, Object> findMemberPwd(@RequestParam String pMId,
+											 @RequestParam String pEmail,
+											 @RequestParam String pBirth){
+		System.out.println("aasdfasdf");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		Member isMember = memberService.findMemberPwd(pMId, pEmail, pBirth);
+		
+		System.out.println("isMember?"+isMember);
+		
+		if(isMember != null) {
+			map.put("isMember", true);
+			
+			try{
+				memberService.findMember(pEmail, pMId, false);
+			}catch(Exception e){
+				System.out.println("메일 보내기 실패");
+				e.printStackTrace();
+			}
+		}
+		else map.put("isMember", false);
 		
 		return map;
 	}

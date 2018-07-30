@@ -53,7 +53,7 @@ public class Utils {
 			pageNo++;
 		}
 		//내가 새로추가한 부분
-		pageNo = (int)( (double)((cPage - 1)/pageBarSize) * pageBarSize) +1;
+		pageNo = (int)(((cPage - 1)/pageBarSize) * pageBarSize) +1;
 		System.out.println("----------다음부분----------");
 		System.out.println("cPage: "+cPage);
 		System.out.println("pageNo: "+pageNo);

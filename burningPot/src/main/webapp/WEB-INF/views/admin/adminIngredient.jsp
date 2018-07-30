@@ -95,7 +95,16 @@
 	<c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
 <br /><br />
 <script>
-	
+// 확장자 검사용 메소드
+function extFilter(value){
+	var ext = value.substring(value.lastIndexOf('.')+1, value.length);
+	if(ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'png' || ext.toLowerCase() == 'gif' || ext.toLowerCase() == 'jpeg' ){					
+		return true;
+	}else{    				
+		return false;
+	}        			
+}  
+// 카테고리 검색에서 div위에 hover 효과 주기	
 function hoveringDiv(){	
 	
 	$('.ing').children().hover(function(){			
@@ -110,9 +119,10 @@ function hoveringDiv(){
 	});
 	
 }
-	$(function(){
-		hoveringDiv();
-	});
+
+$(function(){
+	hoveringDiv();
+});
 	</script>
 	
 
@@ -277,6 +287,7 @@ function hoveringDiv(){
  					$('.ingredient-information').empty();
         			//$('.ingredient-information').append(html);          			        			
         			$('.ingredient-information').append(formData);
+        			
         			showImgName();
         			
         			updateIngInfo();
@@ -290,35 +301,50 @@ function hoveringDiv(){
         	
         	//재료삭제버튼을 눌렀을 경우 해당창에 띄워진 재료를 삭제한다
         	function deleteIngredient(){
-        		var iNumber = $('#iNumber').text();
+        		var iNumber = $('#iNumber').text(); 
         		
-        		var c = confirm("선택하신 재료를 삭제하시겠습니까?");
-				if(c == true){
-					$.ajax({
-	        			url:"${pageContext.request.contextPath}/admin/deleteIngredient.do",
-	        			data:{
-	        				iNumber : iNumber
-	        			}, success: function(data){
-	        				alert("삭제가 완료되었습니다");
-	        				location.href="${pageContext.request.contextPath}/admin/goIng.do";
-	        			}, error: function(data){
-	        				alert("삭제에 실패했습니다 다시 시도해주세요");
-	        			}
-	        		})
-				}else{
-					alert("재료 삭제가 취소되었습니다!");
-				}
+				swal({
+					  title: "선택하신 재료를 삭제하시겠습니까?",
+					  text: "선택하신 재료를 삭제하실 경우 복구 할 수 없습니다. 계속 진행하시겠습니까?",
+					  icon: "warning",
+					  buttons: true,
+					  dangerMode: true,
+					})
+					.then((confirmed) => {
+						
+					  if (confirmed) {
+						  $.ajax({
+			        			url:"${pageContext.request.contextPath}/admin/deleteIngredient.do",
+			        			data:{			        				
+			        				iNumber : iNumber	        				
+			        			}, success: function(data){
+			        				if(data != null)
+			        				swal("작업완료!", "선택하신 재료가 삭제되었습니다", "success").then((value) => {
+			        					location.href="${pageContext.request.contextPath}/admin/goIng.do";
+			        				});	
+			        			}, error: function(data){
+			        				swal("작업실패!", "재료삭제에 실패했습니다", "error");	     
+			        			}
+			        		})
+					  } else {
+						 swal("작업중단!", "재료삭제를 중단합니다", "info");
+					  }
+					});
+				
         	}    
         	
         	// 재료 정보 수정하기를 눌렀을 때 해당 창에 있는 정보대로 재료정보를 수정한다
         	function updateIngInfo(){
-        		$('#ing-update').on('click', function(){  			
-  					
+        		$('#ing-update').on('click', function(){ 
   					$('#h_exdate').val($('.ing-exdate').val());
   					$("#h_iName").val($('.ing-iName').val());
-  					$("#h_keyword").val($('.ing-keyword').val());
-        			
-        			$('#fileForm').attr('action', '${pageContext.request.contextPath}/admin/updateIngInfo.do').submit();
+  					$("#h_keyword").val($('.ing-keyword').val()); 
+  					/* if(){
+  						//이미지 확장자 검사후 이미지가 아니면 허용하지 않는다
+  					}else{
+  						$('#fileForm').attr('action', '${pageContext.request.contextPath}/admin/updateIngInfo.do').submit();
+  					} 
+  					 */
         		});        		
         	}        	
         	</script>
@@ -355,10 +381,10 @@ function hoveringDiv(){
             		console.log(bigCategory);
             		console.log(text);
         			
-        			if(bigCategory == "" || bigCategory == null){
-        				alert("카테고리를 선택후 추가해주세요");
-        			}else if(text == "" || text == null){
-        				alert('세부카테고리를 입력해주세요');
+        			if(bigCategory == "" || bigCategory == null){        				
+        				swal("알림", "카테고리를 선택후 추가해주세요", "info");
+        			}else if(text == "" || text == null){        				
+        				swal("알림", "세부카테고리를 입력해주세요", "info");        				
         			}else{
         				// 카테고리에 추가하기
         				$.ajax({
@@ -367,20 +393,24 @@ function hoveringDiv(){
         						bigCategory: bigCategory,
         						text: text
         					}, success: function(data){
-        						if(data == -1){
-        							alert("이미 존재하는 세부카테고리 이름입니다");
-        							$('#add-subCategory').val("");
-        						}else if(data == 0){
-        							alert("카테고리 생성에 실패하였습니다");
-        							$('#add-subCategory').val("");
-        						}else{
-        							alert(data+"개의 카테고리를 생성하였습니다!");
-        							$('#add-subCategory').val("");
-        							location.href="${pageContext.request.contextPath}/admin/goIng.do";
+        						if(data == -1){        							
+        							swal("알림", "이미 존재하는 세부카테고리 이름입니다", "info").then((value) => {
+        								$('#add-subCategory').val("");
+        							});        							
+        						}else if(data == 0){        							
+        							swal("작업실패!", "카테고리 생성에 실패하였습니다", "error").then((value) => {
+        								$('#add-subCategory').val("");
+        							}); 
+        						}else{        							
+        							swal("작업성공!", data+"개의 카테고리를 생성하였습니다!", "success").then((value) => {
+        								$('#add-subCategory').val("");
+            							location.href="${pageContext.request.contextPath}/admin/goIng.do";
+			        				});	        							
         						}
-        					}, error: function(data){
-        						alert("카테고리 생성에 실패하였습니다");
-        						$('#add-subCategory').val("");
+        					}, error: function(data){        						
+        						swal("작업실패!", "카테고리 생성에 실패하였습니다", "error").then((value) => {
+        							$('#add-subCategory').val("");
+        						});
         					}
         				})
         			}
@@ -434,8 +464,8 @@ function hoveringDiv(){
 							deleteBtnForCategory();
 							
 							
-						}, error: function(){
-							alert("재료카테고리 불러오기에 실패했습니다"); 
+						}, error: function(){					
+							swal("작업실패!", "재료카테고리 불러오기에 실패했습니다", "error");      
 						}
         			})						
         		});
@@ -446,10 +476,10 @@ function hoveringDiv(){
         				//삭제버튼을 누르면 카테고리 정보를 삭제해야지!
         				var inputCName = $('.removeCategory').children().find('select').eq(0).val();
         				var inputSubCName = $('.removeCategory').children().find('select').eq(1).val();
-        				if(inputCName == "null"){
-        					alert("큰분류를 먼저 선택해주세요");
-        				}else if(inputSubCName == "null"){
-        					alert("세부분류를 선택해주세요");
+        				if(inputCName == "null"){        					
+        					swal("알림", "큰분류를 먼저 선택해주세요", "info");          					
+        				}else if(inputSubCName == "null"){        					
+        					swal("알림", "세부분류를 선택해주세요", "info");
         				}else{
         					//삭제를 진행한다
         					$.ajax({
@@ -457,11 +487,12 @@ function hoveringDiv(){
         						data:{
         							cName: inputCName,
         							subCName: inputSubCName
-        						}, success: function(data){
-        							alert(data+"개의 카테고리가 삭제되었습니다");
-        							location.href="${pageContext.request.contextPath}/admin/goIng.do";
-        						}, error: function(data){
-        							alert("카테고리를 삭제하는데 실패하였습니다");
+        						}, success: function(data){        							
+        							swal("작업성공!", data+"개의 카테고리가 삭제되었습니다", "success").then((value) => {
+        								location.href="${pageContext.request.contextPath}/admin/goIng.do";
+        							});        							
+        						}, error: function(data){        							
+        							swal("작업실패!", "카테고리를 삭제하는데 실패하였습니다", "error");
         						}
         					});
         				}
@@ -476,7 +507,7 @@ function hoveringDiv(){
         		<div class="col-lg-12 content-sub-title" style="margin-top:3%;">재료 추가하기</div>
         		
         		<!-- 재료를 추가하는 메뉴 -->
-        		<div class="col-lg-12 test">
+        		<div class="col-lg-12">
         			<form method="post" encType="multipart/form-data" id="addIngForm">
         			<div class="row">
         				<div class="col-lg-4 test no-padding uploadImgBox">
@@ -507,24 +538,76 @@ function hoveringDiv(){
         					<br />
         					<div class="row">
         						<div class="col-lg-2" style="padding:1%;">재료이름</div>
-        						<div class="col-lg-6"><input type="text" class="form-control" name="ingName"/></div>
+        						<div class="col-lg-6"><input type="text" class="form-control" name="ingName" id="ingName"/></div>
         						<div class="col-lg-2" style="padding:1%;">유통기한</div>
-        						<div class="col-lg-2"><input type="text" class="form-control" placeholder="일단위" name="exdate"/></div>
+        						<div class="col-lg-2"><input type="text" class="form-control" placeholder="일단위" name="exdate" id="exdate"/></div>
         					</div>
         					<br />
-        					<div class="col-lg-12">
-        						<button class="btn btn-primary" onclick="addIngredient()">재료추가하기</button>
-        					</div>
+        					
         				</div>        				
         			</div>
         			</form>
+        			<br />
+        			<div class="col-lg-12">
+        				<button class="btn btn-primary" onclick="addIngredient()">재료추가하기</button>
+        			</div>
         		</div>
         	</div>
         	<br></br>
         	<script>
         	//재료 추가하기 버튼을 누를경우 컨트롤러 실행시킨다
         	function addIngredient(){
-        		$('#addIngForm').attr("action", "${pageContext.request.contextPath}/admin/insertNewIngredient.do").submit();        		
+        		
+        		console.log($('#addForUpload').prop('files').length);
+        		var fileName = "";
+        		
+        		if($('#addForUpload').prop('files').length != 0){
+        			fileName = $('#addForUpload').prop('files')[0].name;
+        		}else{
+        			swal('알림','재료사진을 입력해주세요','info');
+        		}        		
+        		
+        		console.log('재료추가 버튼 눌렀을떄 들어오게 해야해!: '+fileName);
+        		var list = new Array();
+        		list = '${ingNameList}'.split(', ');        	
+        		console.log('이것은 무엇인가: '+list);
+        		console.log(list.length);
+        		
+        		if($('#add-ing-bigCategory').val() == ""){
+        			//큰분류 선택 안했을 경우
+        			swal("알림", "큰분류를 선택해주세요", "info");
+        		}else if($('#add-ing-subCategory').val() == ""){
+        			//세부분류 선택 안했을 경우
+        			swal("알림", "세부분류를 선택해주세요", "info");
+        		}else if($('#ingName').val() == "" || $('#ingName').val() == null){
+        			//재료이름 선택 안했을 경우
+        			swal("알림", "재료이름을 입력해주세요", "info");
+        		}else if($('#exdate').val() == "" || $('#exdate').val() == null){
+        			//유통기한 입력 안했을 경우
+        			swal("알림", "유통기한을 입력해주세요", "info");
+        		}else if($('#addForUpload').val() == "" || $('#addForUpload').val() == null){
+        			//사진 등록 안했을 경우
+        			swal("알림", "재료 사진을 등록해주세요", "info");
+        		}else if(!extFilter(fileName)){
+        			//파일 확장자가 사진이 아닐경우
+        			swal("알림", "jpg, png, gif, jpeg를 제외한 파일은 업로드 할 수 없습니다", "info");
+        		}else{
+        			var result = 0;
+        			for(var i =0 ;i < list.length; i++){
+        				if(list[i] == $('#ingName').val()){
+        					result++; 
+        				}
+        			} 
+        			if(result >0){
+        				// 중복되는 이름이 있다는 뜻이다!
+        				swal('알림', '재료 이름이 이미 존재합니다', 'info');
+        			}else{
+        				//재료 등록을 허가한다
+            			$('#addIngForm').attr("action", "${pageContext.request.contextPath}/admin/insertNewIngredient.do").submit();  
+        			}
+        			
+        		}
+        		     		
         	}
         	
         	// 처음 창이 떴을 때 input:file은 보이지 않게 숨겨주는 기능
@@ -537,16 +620,24 @@ function hoveringDiv(){
 				});
 			})
 			
-        	//이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분
+        	//재료 추가 에서  이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분
 			function loadImg(value) {
-				if (value.files && value.files[0]) {
-					var reader = new FileReader();
-					reader.onload = function(e) {
-						$('.uploadImgBox').children('div').remove();							
-						$("#add-img").attr("src", e.target.result);	
-						$('#add-img').show();
-					}
-					reader.readAsDataURL(value.files[0]);					
+				console.log(value.files[0].name);
+				var fileName = value.files[0].name;
+        		
+				if(extFilter(fileName)){
+					if (value.files && value.files[0]) {
+						var reader = new FileReader();
+						reader.onload = function(e) {
+							$('.uploadImgBox').children('div').remove();							
+							$("#add-img").attr("src", e.target.result);	
+							$('#add-img').show();
+						}
+						reader.readAsDataURL(value.files[0]);
+						console.log('이미지 필터 통과?');
+					} 
+				}else{					
+					swal('알림', 'jpg, png, gif, jpeg를 제외한 파일은 업로드 할 수 없습니다', 'info');	
 				} 
 			}
 			
@@ -568,32 +659,40 @@ function hoveringDiv(){
 							}        										
 							$('#add-ing-subCategory').empty();
 							$('#add-ing-subCategory').append(html);
-						}, error: function(){
-							alert("재료카테고리 불러오기에 실패했습니다"); 
+						}, error: function(){							
+							swal("작업실패", "재료카테고리 불러오기에 실패했습니다", "error");
 						}
 					});
 				}
-			});      	
-        	        	
+			}); 
         	        	          	
         	function showImgName(){
         	//파일의 이름불러오는 방법은..?
         		$('#uploading').change(function(){
-					var fileName = $(this).prop('files')[0].name;					
-					$('#uploadingName').text(fileName);					
-        			console.log(fileName);
+					var fileName = $(this).prop('files')[0].name;
+					if(extFilter(fileName)){
+						$('#uploadingName').text(fileName);
+					}else{
+						swal('알림', 'jpg, png, gif, jpeg를 제외한 파일은 업로드 할 수 없습니다','info');
+					}				
 				})	
         	} 
         	
         	function LoadImg(value) {        		
-        		//이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분
-				if (value.files && value.files[0]) {
-					var reader = new FileReader();
-					reader.onload = function(e) {
-						$("#titleImg").attr("src", e.target.result);						
-					}
-					reader.readAsDataURL(value.files[0]);
-				} 
+        		//이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분				
+        		if(extFilter(value.files[0].name)){
+        			if (value.files && value.files[0]) {
+    					var reader = new FileReader();
+    					reader.onload = function(e) {
+    						$("#titleImg").attr("src", e.target.result);						
+    					}
+    					reader.readAsDataURL(value.files[0]);
+    				} 
+        		}else{
+        			//showImgName에서 경고 메세지를 보내기 때문에 굳이 여기서 또 보낼 필요는 없다
+        		}
+        		
+        		
 			}
         	</script>
         	

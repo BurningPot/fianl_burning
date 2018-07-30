@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 import com.kh.pot.board.model.vo.Board;
 
@@ -71,9 +72,19 @@ public class MypageDaoImpl implements MypageDao{
 	public int deleteUserInfo(int formDel) {		
 		return sqlSession.delete("mypage.deleteUserInfo", formDel);
 	}
-	
-	
 
+	@Override
+	public List<Board> myPostList(int mNum) {
+		
+		return sqlSession.selectList("mypage.seleteMyPostList", mNum);
+	}
+
+	@Override
+	public int selectMyPostTotalContents() {
+		return sqlSession.selectOne("mypage.selectMyPostTotalContents");
+	
+	
+	}
 		
 	} 
 

@@ -1,0 +1,243 @@
+
+--- Spring Test : JUnit 4.12 Guide ---
+-- 참조 문서 : http://www.nextree.co.kr/p11104/
+
+@Before : 테스트를 실행하기 전 수행할 메소드 
+
+@After : 테스트를 실행한 이 후 수행할 메소드
+
+@Test : 테스트 용도로 사용할 메소드를 명시
+
+-- 대표적인 결과 확인 메소드 --
+
+assertArrayEquals(a,b) : 배열 a와b가 일치함을 확인 
+assertEquals(a,b) : 객체 a와b의 값이 같은지 확인 
+assertSame(a,b) : 객체 a와b가 같은 객체임을 확인 
+assertTrue(a) : a가 참인지 확인 
+assertNotNull(a) : a객체가 null이 아님을 확인  
+
+-- +a ? --
+ :: http://junit.sourceforge.net/javadoc/org/junit/Assert.html
+
+Ex) 
+
+--- Spring Test For Controller ---
+
+-- 특정 값이 주어졌을 때 View 와 연동이 되는지 확인한다.
+
+package com.kh.spring.member.controller;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.servlet.ModelAndView;
+
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/security-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
+public class MemberControllerTest {
+	
+	@Autowired
+	private MemberController memberController;
+	
+	ModelAndView mv;
+	
+	@Before
+	public void init() {
+		System.out.println("스프링 MemberControllerTest 시작합니다.");
+		
+		// 올바른 예
+		//mv = memberController.memberLogin("test", "test");
+		
+		// 에러가 발생하는 경우
+		mv = memberController.memberLogin("test123", "test");
+	}
+	
+	@Test
+	public void memberLoginViewTest(){
+				
+			assertEquals("common/msg", mv.getViewName());
+	}
+	
+	@Test
+	public void memberLoginTest(){
+				
+			assertEquals("로그인 성공!", mv.getModelMap().get("msg"));
+	}
+	
+	@After
+	public void end() {
+		System.out.println("스프링 MemberControllerTest 종료합니다.");
+	}
+	
+}
+
+--- Spring Test For Service ---
+
+-- 서비스에서 특정 로직을 수행한 결과가 예상한 결과인지 확인한다.
+
+package com.kh.spring.member.model.service;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.kh.spring.member.model.vo.Member;
+
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/security-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
+public class MemberServiceTest {
+
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	// 전송할 회원 정보
+	Member m;
+	String rawPassword;
+	
+	// DB에서 받아온 회원 정보 
+	Member m_chk;
+	
+	@Before
+	public void init() {
+		System.out.println("스프링 MemberServiceTest 시작합니다.");
+		m = new Member();
+		m.setUserId("test");
+		rawPassword = "test";
+
+		System.out.println("password 암호화 전 : "+rawPassword);
+		
+		/******* password 암호화 로직 시작 *******/
+		
+		m.setPassword(bcryptPasswordEncoder.encode(rawPassword));
+		
+		/******* password 암호화 로직  끝 *******/
+		
+		System.out.println("password 암호화 후 : "+m.getPassword());
+		
+		m_chk = memberService.selectOneMember(m.getUserId());
+		
+	}
+	
+	@Test
+	public void memberEncodingPasswordChk(){
+			
+			if(m_chk != null) {
+				
+				// 현재 암호화 된 값과 DB에 있는 값이 같은 지 비교하기
+				assertThat(m.getPassword(), is(m_chk.getPassword()));
+				
+			}
+			else {
+				System.out.println("회원 조회 오류!!");
+			}
+	}
+	
+	@Test
+	public void memberRealPasswordChk(){
+			
+			if(m_chk != null) {
+				
+				// 본래의 값과 현재 암호화된 결과의 내용이 같은지 비교
+				assertTrue(bcryptPasswordEncoder.matches(rawPassword, m_chk.getPassword()));
+				
+			}
+			else {
+				System.out.println("회원 조회 오류!!");
+			}
+	}
+	
+
+	@After
+	public void end() {
+		System.out.println("스프링 MemberServiceTest 종료합니다.");
+	}
+}
+
+
+--- Spring Test For DAO ---
+
+-- 내가 예상한 값이 DataBase의 값과 같은지 비교한다.
+
+package com.kh.spring.member.model.dao;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.kh.spring.member.model.vo.Member;
+
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/security-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
+public class MemberDAOTest {
+	
+	@Autowired
+	private MemberDAO mDao;
+	
+	// 현재 로그인한 사용자의 이름 비교용 객체
+	Member m;
+	
+	@Before
+	public void init() {
+		System.out.println("스프링 MemberDAOTest 시작합니다.");
+		
+		m = mDao.selectOneMember("test");
+		
+	}
+	
+	@Test
+	public void memberLoginNameTest(){
+
+		// 로그인한 사용자의 이름이 '고길동'과 같은지 비교한다.
+		assertThat(m.getUserName(), is("고길동"));
+	}
+	
+	@After
+	public void end() {
+		System.out.println("스프링 MemberDAOTest 종료합니다.");
+	}
+}

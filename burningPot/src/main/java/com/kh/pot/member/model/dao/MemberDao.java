@@ -1,5 +1,6 @@
 package com.kh.pot.member.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,5 +25,8 @@ public interface MemberDao {
 	int userAuth(String email);
 	int deleteMail(String emailAddr);
 	String checkEmailConfirm(String emailAddr);
+	String findMemberId(HashMap<String, String> map);
+	Member findMemberPwd(HashMap<String, String> map);
+	int updatePwd(Map<String, String> map);
 	/* 예찬 부분 */
 }

@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400">
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <title>Insert title here</title>
 <style>

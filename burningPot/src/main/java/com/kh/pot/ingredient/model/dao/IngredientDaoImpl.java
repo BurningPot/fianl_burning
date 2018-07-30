@@ -115,6 +115,12 @@ public class IngredientDaoImpl implements IngredientDao {
 		return sqlSession.insert("ingredient.insertNewIngredient", map);
 	}
 
+	@Override
+	public List<String> selectAllIngredientName() {
+		
+		return sqlSession.selectList("ingredient.selectAllIngredientName");
+	}
+
 	
 	
 }

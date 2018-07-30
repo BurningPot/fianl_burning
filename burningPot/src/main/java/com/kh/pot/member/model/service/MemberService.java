@@ -3,6 +3,8 @@ package com.kh.pot.member.model.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import com.kh.pot.member.model.vo.Member;
 
 public interface MemberService {
@@ -21,6 +23,9 @@ public interface MemberService {
 	int userAuth(String userEmail, String memberAuthKey);
 	int deleteMail(String emailAddr);
 	String checkEmailConfirm(String emailAddr);
+	String findMemberId(String mEmail, String mBirth);
+	void findMember(String mEmail, String memberId, boolean isId) throws Exception;
+	Member findMemberPwd(String pMId, String pEmail, String pBirth);
 /* 예찬 부분 끝 */
 	
 }

@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:import url="/WEB-INF/views/common/header.jsp" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,11 +20,11 @@
 	
 	<!-- 게시판 본문 -->
 	<div class="container containerTop col-sm-6 col-sm-offset-3">
-		<h1 align="left">게시판 상세보기</h1>
-		<p><!-- sd -->
+		<h2 align="center">게시판 상세보기</h2>
+		<!-- <p>
 			<i class="fas fa-exclamation-circle"> 개인정보가 포함된 글이나 게시판 성격에 맞지 않은
 				글은 관리자에 의해 통보없이 삭제 될 수 있습니다.</i>
-		</p>
+		</p> -->
 		<div class="row">
 			<table class="table tableDetil"
 				style="text-align: left;">
@@ -64,7 +65,8 @@
 							</c:if>	
 						</c:if>
 						<th>작성시간</th>
-						<td>${board.bDate} 15:30</td>
+						<td>${board.bDateTime}</td>
+						<%-- <td><fmt:formatDate value="${board.bDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td> --%>
 						<th>조회수</th>
 						<td>${board.bCount}</td>
 					</tr>
@@ -123,8 +125,7 @@
 											<input type="button" class="btn btn-outline-danger btn-sm" value="삭제" onclick="deleteBoardComment(this);">
 										</c:if>
 									</th>
-									<td width="33%" align="right">2018.12.30 15:31</td>
-									<%-- <td width="30%" align="center">${bc.bcDate}</td> --%>
+									<td width="33%" align="right">${bc.bcDateTime}</td>
 								</tr>
 								<tr>
 									<td colspan="3" id="befContent">${bc.bcContent}</td>
@@ -144,7 +145,7 @@
 		<label><h4><i class="far fa-edit"></i> 댓글달기</h4></label>
 			<div class="form-group">
 				<input type="hidden" name="mNum" value="${m.mNum}" /> <input type="hidden" name="bNum" value="${board.bNum}"/><input type="hidden" name="mId" value="${m.mId}" id="mmId" />
-				<textarea style="height: 80px;" name="bcContent" id="bcContent" class="form-control"></textarea>
+				<textarea style="height: 80px;" name="bcContent" id="bcContent" class="form-control pressEnt"></textarea>
 			</div>
 			<div class="row">
 				<div class="text-left col-sm-6">
@@ -180,31 +181,7 @@
 			</div>
 		</div>
 	</form>
-	<br />
-	<div class="container col-sm-6 col-sm-offset-3">
-		<br /> <br /> <br /> <br />
-		<hr style="border: 1px solid #754F44;" />
-		<div class="row ">
-
-			<table class="table" id="nextTable">
-				<tbody>
-					<tr>
-						<th>이전글</th>
-						<td align="center" onclick="prevBoard();" id="prevTd"><span>
-								이전글이 없습니다.</span>
-						</td>
-					</tr>
-					<tr>
-						<th>다음글</th>
-						<td align="center" onclick="nextBoard();"><span> 다음글이없습니다.</span></td>
-					</tr>
-					
-				</tbody>
-			</table>
-
-		</div>
-	</div>
-
+	<br /><br /><br />
 <script>
 	
 	// 게시글 수정
@@ -221,7 +198,12 @@
 		}
 	}
 	
-	
+	// 댓글 엔터키
+	$('.pressEnt').keypress(function(event) {
+	    if (event.key === "Enter") {
+	    	insertComment();
+	    }
+	}); 
 	
 	// 댓글 등록
 	function insertComment(){

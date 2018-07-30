@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.pot.admin.model.vo.Statistics;
 import com.kh.pot.board.model.vo.Report;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -84,6 +85,18 @@ public class AdminDaoImpl implements AdminDao {
 	public Report selectReportDetail(int rpNum) {
 		
 		return (Report) sqlSession.selectOne("board.selectReportDetail", rpNum);
+	}
+
+	@Override
+	public Recipe selectReportedRecipe(int rpNum) {
+		
+		return (Recipe) sqlSession.selectOne("board.selectReportedRecipe", rpNum);
+	}
+
+	@Override
+	public int deleteRecipe(int rNum) {
+		
+		return sqlSession.delete("board.deleteRecipe", rNum);
 	}
 
 }

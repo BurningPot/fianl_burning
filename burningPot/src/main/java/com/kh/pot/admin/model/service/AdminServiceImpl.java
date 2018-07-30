@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.pot.admin.model.dao.AdminDao;
 import com.kh.pot.admin.model.vo.Statistics;
 import com.kh.pot.board.model.vo.Report;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -85,6 +86,18 @@ public class AdminServiceImpl implements AdminService {
 	public Report selectReportDetail(int rpNum) {
 		
 		return adminDao.selectReportDetail(rpNum);
+	}
+
+	@Override
+	public Recipe selectReportedRecipe(int rpNum) {
+		
+		return adminDao.selectReportedRecipe(rpNum);
+	}
+
+	@Override
+	public int deleteRecipe(int rNum) {
+		
+		return adminDao.deleteRecipe(rNum);
 	}
 
 }

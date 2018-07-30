@@ -15,6 +15,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>회원조회 메뉴</title>
 <style>
+<<<<<<< HEAD
 /* .menu-bar{            
     	background-color:white;           
         height: 100%;
@@ -50,6 +51,16 @@
         font-weight: bold;
 	}    */
     
+
+
+    .search-title{
+        text-align: center;
+        font-size: 200%;
+        font-weight: bold;
+        margin-bottom: 5%;
+
+    }
+
     #photo{ 
         margin-top: 3%;
         margin-bottom: 3%;
@@ -144,13 +155,12 @@
 			var category = "";
 			var keyword = "";			
 			if($('.custom-select').val() == "" || $('.custom-select').val() == null || $('.custom-select').val() == '검색카테고리'){
-				console.log($('.custom-select').val());
-				// 검색카테고리를 선택하지 않았을 경우
-				alert('검색카테고리를 선택해주세요!');
+				// 검색카테고리를 선택하지 않았을 경우				
+				swal("알림", "검색카테고리를 먼저 선택해주세요", "info");
 				
 			}else if($('.keyword').val() == "" || $('.keyword').val() == null){
 				//검색창에 아무것도 적지 않았을 경우
-				alert('검색어를 입력해주세요');				
+				swal("알림", "검색어를 입력해주세요", "info");
 			}else{
 				// 카테고리 선택  O, 검색창 입력 O				
 				category = $('.custom-select').val();
@@ -161,8 +171,7 @@
 		</script>
 						
         <br><br>
-        <!--회원리스트 표시되는 곳-->
-        
+        <!--회원리스트 표시되는 곳-->        
         <table class="table col-lg-12" id="member-table">
             <thead>
                 <tr>      
@@ -360,10 +369,6 @@
             		var memberNumber = memberNum;
             		console.log('회원정보 : '+name+', '+id+', '+email+', '+gender+', '+birthDate+', '+picture);
             		
-            		if(picture != null){
-            			// 사진 있을 경우 사진이 표시되게 하자
-            		}
-            		
             		$('#name').text(name);
             		$('#numberOfMember').val(memberNumber);
             		$('#id').text(id);
@@ -382,7 +387,7 @@
             		
             		
             	}, error: function(data){
-            		alert('회원의 정보를 읽어오지 못했습니다');
+            		swal('작업실패!', "회원의 정보를 읽어오지 못했습니다", 'error');
             	} 
             });
         });
@@ -404,18 +409,15 @@
 					url: '${pageContext.request.contextPath}/admin/updateExpelMember.do',
 					data:{
 						mNum : mNum
-					}, success: function(data){						
-						alert("회원번호 "+data+"가 강제 탈퇴 되었습니다");
+					}, success: function(data){	
+						swal('작업성공!', "회원번호 ["+data+"] 가 강제 탈퇴 되었습니다", 'success');
 					}, error: function(data){
-						alert("강제탈퇴에 실패했습니다");
+						swal('작업실패!', '강제탈퇴에 실패했습니다', 'error');
 					}
 				})
 				 
 			}
 		</script>
-        
-          
-
         </div>
     </div>
 </body>

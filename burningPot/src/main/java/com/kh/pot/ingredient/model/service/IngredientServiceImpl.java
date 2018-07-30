@@ -128,6 +128,12 @@ public class IngredientServiceImpl implements IngredientService {
 		return ingDao.insertNewIngredient(map);
 	}
 
+	@Override
+	public List<String> selectAllIngredientName() {
+		
+		return ingDao.selectAllIngredientName();
+	}
+
 	
 	
 

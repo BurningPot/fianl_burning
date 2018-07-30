@@ -8,6 +8,21 @@ $(function () {
 		$(this).text($(this).text().replace(/(<br>|<br\/>|<br \/>)/g, '\r\n'));
 	});
 	
+	// top 버튼 추가
+	$(".top_btn").append("<a href='#' class='click mt-2'>제목</a>");
+	$(".top_btn").append("<a href='#ingredientData' class='followArea mt-2'>재료</a>");
+	$(".top_btn").append("<a href='#recipeContentTitle' class='followArea mt-2'>순서</a>");
+
+	$('a[href*="#"]:not([href="#"])').click(function() {
+      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+        var target = $(this.hash);
+          $('html, body').animate({
+            scrollTop: target.offset().top - 100
+          }, 300);
+          return false;
+      }
+    });
+	
 	// 식재료 조회
 	$('.category').each(function(index, value) {
 		var obj = $(this);

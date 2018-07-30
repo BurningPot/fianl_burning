@@ -42,13 +42,10 @@
 		WHERE RNUM = #{rNum}
 	</select>
 	
-	<select id="selectMainIngredientList" parameterType="hashmap" resultType="ingredient">
+	<select id="selectMainIngredientList" parameterType="String" resultType="ingredient">
 		SELECT INAME, SUBSTR(CATEGORY,0,1) AS CATEGORY, INUM
 		FROM INGREDIENT
-		WHERE INUM IN 
-			<foreach item="name" collection="mainName" open="(" close=")" separator=",">
-				#{name}
-			</foreach>
+		WHERE INUM = #{name}
 	</select>
 	
 	<select id="selectContentList" parameterType="_int" resultType="recipeContent">
@@ -67,5 +64,49 @@
 		DELETE FROM RECIPE
 		WHERE RNUM = #{rNum}
 	</delete>
+	
+	<update id="updateCount" parameterType="_int">
+		UPDATE RECIPE SET RCOUNT = RCOUNT + 1 WHERE RNUM = #{rNum}
+	</update>
+	
+	<select id="selectReview" parameterType="_int" resultType="review">
+		SELECT MID, MPICTURE, J.*
+		FROM MEMBER M
+		JOIN (SELECT *
+		        FROM REVIEW
+		        WHERE RNUM = #{rNum}) J
+		ON (M.MNUM = J.MNUM)
+	</select>
+	
+	<select id="selectRecommend" resultType="recommend">
+		SELECT *
+		FROM RECOMMEND
+		WHERE RNUM = #{rNum} AND MNUM = #{mNum}
+	</select>
+	
+	<insert id="insertRecommned">
+		INSERT INTO RECOMMEND VALUES (#{mNum}, #{rNum})
+	</insert>
+	
+	<update id="updateRecommend">
+		<if test="chk.equals('plus')">
+			UPDATE RECIPE SET RRECOMMEND = RRECOMMEND + 1 WHERE RNUM = #{rNum}
+		</if>
+		<if test="chk.equals('minus')">
+			UPDATE RECIPE SET RRECOMMEND = RRECOMMEND - 1 WHERE RNUM = #{rNum}
+		</if>
+	</update>
+	
+	<delete id="deleteRecommned">
+		DELETE FROM RECOMMEND WHERE MNUM = #{mNum} AND RNUM = #{rNum}
+	</delete>
+	
+	<insert id="insertReview">
+		INSERT INTO REVIEW VALUES(SEQ_REVIEW.NEXTVAL, #{rNum}, #{mNum}, #{grade}, #{rvContent}, DEFAULT)
+	</insert>
+	
+	<insert id="insertReport">
+      INSERT INTO REPORT VALUES(SEQ_REPORT.NEXTVAL, #{rNum}, #{mNum}, #{rpContent})
+   	</insert>
 	
 </mapper>
