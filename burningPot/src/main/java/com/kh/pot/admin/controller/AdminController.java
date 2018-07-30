@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +31,7 @@ import com.kh.pot.ingredient.model.service.IngredientService;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.service.MemberService;
 import com.kh.pot.member.model.vo.Member;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 @Controller
 public class AdminController {
@@ -646,25 +646,32 @@ public class AdminController {
 		return "admin/adminReport";
 	}
 	
-	//게시판 내용보기!
-		@RequestMapping("/admin/detailReport.do")
-		public String detailReport(Model model, @RequestParam int rpNum){
+	//신고게시판 내용보기!
+	@RequestMapping("/admin/detailReport.do")
+	public String detailReport(Model model, @RequestParam int rpNum){			
 			
-			
-			model.addAttribute("commonTitle","신고 게시판");
-			Report r = adminService.selectReportDetail(rpNum);
-			
-			model.addAttribute("b", r); // 특정 게시글의 내용을 불러온다
-			
-			//ArrayList<BoardComment> bcList = (ArrayList<BoardComment>) boardService.selectBoardComment(bNum);
-			
-			model.addAttribute("detailMapping","detailReport.do")
-			.addAttribute("servletMapping", "goReport.do")
-			.addAttribute("mId", "admin")		// 임시적으로 회원의 정보를 넘겨주기 (나중에 로그인합쳐지면 세션으로 받기)
-			.addAttribute("mNum", 1);			// 임시적으로 회원의 정보를 넘겨주기
-			
-			return "admin/adminReport_Detail";
-		}
+		model.addAttribute("commonTitle","신고 게시판");
+		// 특정 게시글의 내용을 불러온다
+		Report r = adminService.selectReportDetail(rpNum);			
+		model.addAttribute("b", r); 
+		
+		Recipe rp = adminService.selectReportedRecipe(rpNum);
+		model.addAttribute("rp", rp);
+		
+		model.addAttribute("detailMapping","detailReport.do")
+		.addAttribute("servletMapping", "goReport.do")
+		.addAttribute("mId", "admin")		// 임시적으로 회원의 정보를 넘겨주기 (나중에 로그인합쳐지면 세션으로 받기)
+		.addAttribute("mNum", 1);			// 임시적으로 회원의 정보를 넘겨주기
+		
+		return "admin/adminReport_Detail";
+	}
 	
+	//신고받은 레시피 삭제하기
+	@ResponseBody
+	@RequestMapping("/admin/deleteRecipe.do")
+	public int deleteRecipe(@RequestParam int rNum){
+		
+		return adminService.deleteRecipe(rNum);			
+	}
 	
 }

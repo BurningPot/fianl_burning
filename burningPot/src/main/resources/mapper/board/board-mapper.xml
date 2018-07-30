@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="board">
 	<!-- HYD -->	
+	<delete id="deleteRecipe" parameterType="_int">
+		DELETE FROM RECIPE WHERE RNUM = #{rNum}
+	</delete>
+	
+	<select id="selectReportedRecipe" parameterType="_int" resultType="Recipe">
+		SELECT RNUM, RNAME, RIMG, MNAME FROM REPORT JOIN RECIPE RC USING(RNUM) JOIN MEMBER M ON(M.MNUM = RC.MNUM) 
+		WHERE RPNUM = #{rpNum}
+	</select>
+	
 	<select id="selectReportDetail" resultType="Report">
 		SELECT RPNUM, RPCONTENT, RPDATE, MNAME FROM REPORT JOIN MEMBER USING(MNUM) WHERE RPNUM = #{rpNum}
 	</select>

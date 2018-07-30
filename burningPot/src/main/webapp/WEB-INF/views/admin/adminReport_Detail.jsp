@@ -40,7 +40,8 @@
         <div class="col-lg-2 menu-bar">
             <c:import url="/WEB-INF/views/admin/sideMenu.jsp"/>            
         </div>
-    
+    	
+    	
         <div class="col-lg-8 offset-lg-2 content" align="center"> 
         	<div class="row first-row col-lg-12">        		
             	<div class="col-lg-1 offset-lg-1 column-title">제목</div>
@@ -63,7 +64,28 @@
 			<div class="col-lg-12">
             	<div class="col-lg-10 test" style="text-align:justify; padding: 3%;">${b.rpContent}</div>                    
             </div>            
+            <br />
+            <hr class="col-lg-12"/>
+            <br />
             
+            <div class="col-lg-12">
+            	<div class="col-lg-10 test" style="heigh:200px;">
+            		<div class="row">
+            			<div class="col-lg-4">
+            				<img src="${pageContext.request.contextPath}/resources/img/recipe/${rp.rImg}" style="margin-top: 3%;"/>
+            			</div>
+            			<div class="col-lg-7 offset-lg-1 no-padding">
+            				<div class="col-lg-11" style="font-size:200%; margin-top:2%; background: #FDD692; ">${rp.rName }</div>
+            				<div class="col-lg-11" style="font-size:200%; background:#EC7357;">${rp.mName }</div>
+            				<br />
+            				<!-- 레시피 보러가기는 레시피 상세보기로 링크를 건다 -->
+            				<button class="btn btn-success">레시피 보러가기</button>
+            				<button class="btn btn-danger" onclick="deleteThisRecipe();">레시피 삭제하기</button>  
+            				<br /><br />    				
+            			</div>            			
+            		</div>
+            	</div>            
+            </div>
             <br /><br />
             <div class="col-lg-12" align="center">            	
                 <button class="btn btn-primary" id="returnList">목록으로</button>                
@@ -78,15 +100,43 @@
         		$('#comment').keyup(function(){
         			$('#cLength').text($('#comment').val().length);        			
         		});
-        	</script>
-        	<br /><br /> 
-        	        	
-        	 <script>            	
+        	           	
             	$('#returnList').on('click', function(){
             		//목록으로 돌아간다
             		location.href="${pageContext.request.contextPath}/admin/${servletMapping}";
             	});
-        	
+            	
+            	function deleteThisRecipe(){
+            		var number = ${rp.rNum};
+            		
+            		swal({
+            			  title: "삭제를 진행합니까?",
+            			  text: "레시피를 삭제할 경우 관련 자료들은 모두 삭제됩니다",
+            			  icon: "warning",
+            			  buttons: true,
+            			  dangerMode: true,
+            			})
+            			.then((willDelete) => {
+            			  if (willDelete) {
+            			    //삭제를 누를 경우
+            			    $.ajax({
+            					url: "${pageContext.request.contextPath}/admin/deleteRecipe.do",
+            					data:{
+            						rNum : number
+            					}, success: function(data){
+            						swal("작업성공!", "선택하신 레시피가 삭제되었습니다", "success").then((value) => {
+            							location.href="${pageContext.request.contextPath}/admin/goReport.do";
+            						});
+            					}, error: function(data){
+            						swal("작업실패!", "레시피 삭제에 실패하였습니다", "error");
+            					}
+            				})
+            			  } else {
+            				//취소를 누를 경우
+            			    swal("알림", "레시피 삭제가 중단 되었습니다", "info");
+            			  }
+            			});  
+            	}
         	</script>
         	
         </div>
