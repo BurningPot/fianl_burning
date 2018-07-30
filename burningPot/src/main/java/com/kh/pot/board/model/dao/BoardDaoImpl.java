@@ -82,14 +82,15 @@ public class BoardDaoImpl implements BoardDao {
 	/*예찬 부분*/
 	
 	@Override
-	public List<Map<String, String>> selectBoardList(int cPage, int numPerPage) {
-		RowBounds rows = new RowBounds((cPage-1)* numPerPage, numPerPage);
-		return sqlSession.selectList("board.selectBoardList", null, rows);
+	public List<Map<String, String>> selectBoardList(Map<String, Object> map) {
+		/*RowBounds rows = new RowBounds((cPage-1)* numPerPage, numPerPage);*/
+		
+		return sqlSession.selectList("board.selectBoardList", map);
 	}
 
 	@Override
-	public int selectBoardTotalContents() {
-		return sqlSession.selectOne("board.selectBoardTotalContents");
+	public int selectBoardTotalContents(Map<String, String> map) {
+		return sqlSession.selectOne("board.selectBoardTotalContents", map);
 	}
 
 	@Override

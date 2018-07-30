@@ -18,7 +18,8 @@ public class Board implements Serializable{
 	private String bContent;	// 글내용
 	private String bImg;		// 사진
 	private String reply;		// 답변여부(관리자가 답변했는지) --> Q&A에만 해당되는 사항일듯
-	private int bCount;
+	private int bCount;			// 조회 수
+	private String bDateTime;  	// 작성일 (시간포함) 
 	
 	public Board(){
 		super();

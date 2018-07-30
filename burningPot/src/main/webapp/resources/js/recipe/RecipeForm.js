@@ -1,6 +1,21 @@
 $(function () {
 
     $(".fileArea").hide();
+    
+	// top 버튼 추가
+	$(".top_btn").append("<a href='#' class='click mt-2'>제목</a>");
+	$(".top_btn").append("<a href='#ingredientData' class='followArea mt-2'>재료</a>");
+	$(".top_btn").append("<a href='#subAddBtn' class='followArea mt-2'>순서</a>");
+
+	$('a[href*="#"]:not([href="#"])').click(function() {
+      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+        var target = $(this.hash);
+          $('html, body').animate({
+            scrollTop: target.offset().top - 100
+          }, 300);
+          return false;
+      }
+    });
 
     // ------------------------------------- 주재료 기능 영역 -------------------------------------
     // 주재료 추가 버튼
@@ -144,7 +159,7 @@ $(function () {
     	var obj = $(this);
     	$.ajax ({
     		url : path + "/recipe/selectIngredientList.do",
-    		data : {category : $(this).val()},
+    		data : {category : $(this).find("option:selected").text()},
     		dataType : "json",
     		success : function(data) {
     			if (data.length > 0) {
@@ -153,10 +168,10 @@ $(function () {
 	    				 $(obj).siblings('.ingrdient').append("<option class='ingredientList' value=" + value.iNum + ">" + value.iName + "</option>");
 	    			});
     			} else {
-    				alert(category + " 관련 식재료 조회에 실패했습니다!");
+    				alert($(this).find("option:selected").text() + " 관련 식재료 조회에 실패했습니다!");
     			}
     		}, error : function(e) {
-    			alert(category + " 관련 식재료 조회에 실패했습니다!");
+    			alert($(this).find("option:selected").text() + " 관련 식재료 조회에 실패했습니다!");
     		}
     	});
     });

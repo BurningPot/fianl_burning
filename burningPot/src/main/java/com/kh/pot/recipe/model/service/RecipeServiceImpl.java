@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pot.board.model.vo.Report;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.recipe.model.dao.RecipeDao;
 import com.kh.pot.recipe.model.vo.Recipe;
 import com.kh.pot.recipe.model.vo.RecipeContent;
+import com.kh.pot.recipe.model.vo.Recommend;
+import com.kh.pot.recipe.model.vo.Review;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -62,13 +65,9 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public List<Ingredient> selectMainIngredientList(String[] mainName) {
+	public Ingredient selectMainIngredientList(String mainName) {
 
-		List<String> list = Arrays.asList(mainName);
-		Map<String, List<String>> mainNameMap = new HashMap<String, List<String>>();
-		
-		mainNameMap.put("mainName", list);
-		return recipeDao.selectMainIngredientList(mainNameMap);
+		return recipeDao.selectMainIngredientList(mainName);
 		
 	}
 
@@ -90,6 +89,62 @@ public class RecipeServiceImpl implements RecipeService {
 	public int deleteRecipe(int rNum) {
 
 		return recipeDao.deleteRecipe(rNum);
+		
+	}
+
+	@Override
+	public int updateCount(int rNum) {
+
+		return recipeDao.updateCount(rNum);
+		
+	}
+
+	@Override
+	public List<Review> selectReview(int rNum) {
+
+		return recipeDao.selectReview(rNum);
+		
+	}
+
+	@Override
+	public Recommend selectRecommend(Recommend rec) {
+
+		return recipeDao.selectRecommend(rec);
+		
+	}
+
+	@Override
+	public int insertRecommned(Recommend rec) {
+
+		return recipeDao.insertRecommned(rec);
+		
+	}
+
+	@Override
+	public int updateRecommend(Recommend rec) {
+
+		return recipeDao.updateRecommend(rec);
+		
+	}
+
+	@Override
+	public int deleteRecommned(Recommend rec) {
+
+		return recipeDao.deleteRecommned(rec);
+		
+	}
+
+	@Override
+	public int insertReview(Review review) {
+
+		return recipeDao.insertReview(review);
+		
+	}
+
+	@Override
+	public int insertReport(Report report) {
+
+		return recipeDao.insertReport(report);
 		
 	}
 

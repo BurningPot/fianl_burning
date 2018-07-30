@@ -68,13 +68,13 @@
                     <div class="col-sm-12">
                       <br>
                       	<div class="alert alert-secondary" role="alert">
-                          <td>${m.mId }</td>
+                          <td>ID : ${m.mId }</td>
                       	</div>
                       	<div class="alert alert-success" role="alert">
-                          <td>${ m.mName }</td>
+                          <td>닉네임 : ${ m.mName }</td>
                       	</div>                                           
                       	<div class="alert alert-info" role="alert">
-                            <td>${ m.getEmail() }</td>
+                            <td> 이메일 : ${ m.getEmail() }</td>
                       	</div>
                       	<input type="hidden" id="mGen" value="${m.gender }" />
                    </div>
@@ -211,13 +211,17 @@
                   <li class="nav-item">
                     <a class="na na1 nav-link active" href="#">내가 올린 레시피</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="na na2 nav-link" href="${pageContext.request.contextPath}/mypage/myPosts.do">내가 쓴 글</a>
+                  <li class="nav-item"> 
+                    <a class="na na2 nav-link"  id="posGo" href="#">내가 쓴 글</a>
                   </li>
                   <li class="nav-item">
                     <a class="na na3 nav-link" href="${pageContext.request.contextPath}/mypage/myLike.do">좋아요</a>
                   </li>
-                </ul><br>              
+                </ul><br>
+                
+               <form id="postForm">
+				<input type="hidden" value="${ m.mNum }" name="mNum" />
+			  </form>
                 
 
 	
@@ -266,7 +270,7 @@
          
       }
      %>
-   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "myPage.do") %>
+   <%= com.kh.pot.common.util.SHUtils.getPageBar(totalContents, cPage, numPerPage, "myPage.do") %>
    </div>
 <br />
 <br />
@@ -298,10 +302,26 @@
 				
 						$("#profileImg").attr("src", e.target.result);
 						$('#profileImg').show();
+
+
 				}
 				reader.readAsDataURL(value.files[0]);
 		
 			} 
+			// 이미지 확장자 구하는 코드
+			 if( $("#profileImg").val() != "" ){
+
+					var ext = $('#profileImg').val().split('.').pop().toLowerCase();
+
+					      if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+
+						 alert('gif,png,jpg,jpeg 파일만 업로드 할수 있습니다.');
+
+						 return;
+
+					      }
+
+					}
 
 			console.log("사진들어오냐");
 		
@@ -443,6 +463,10 @@
            		
            	});
                
+                $('#posGo').on('click', function(){
+            	   $('#postForm').attr("action", "${pageContext.request.contextPath}/mypage/myPosts.do").submit();
+               }); 
+               
                // 회원탈퇴
                $('#infoDel').on('click', function(){
             	   var delConfirm = confirm('탈퇴 하시겠습니까?');
@@ -453,7 +477,7 @@
             	   else {
             	      alert('삭제가 취소되었습니다.');
             	   }
-               })
+               });
              </script>
              
             
