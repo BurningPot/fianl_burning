@@ -49,13 +49,7 @@
         font-size: 200%;
         font-weight: bold;
 	}    */
-    .search-title{
-        text-align: center;
-        font-size: 200%;
-        font-weight: bold;
-        margin-bottom: 5%;
-
-    }
+    
     #photo{ 
         margin-top: 3%;
         margin-bottom: 3%;
@@ -286,7 +280,7 @@
    		</div>	
    		
         <br><br>
-        <div class="col-lg-10 offset-lg-1 search-title">회원상세정보</div>
+        <div class="col-lg-10 offset-lg-1 content-sub-title">회원상세정보</div>
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-3">

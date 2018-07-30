@@ -124,7 +124,7 @@ function hoveringDiv(){
 
 <!-------------------------------------- 재료검색 부분--------------------------------------------------->     
         <div class="col-lg-8 offset-lg-2 content" align="center"> 
-        	<div class="col-lg-12" style="margin-bottom: 3%; font-size: 150%;">재료 검색</div>        	
+        	<div class="col-lg-12 content-sub-title" style="margin-bottom: 3%; font-size: 150%;">재료 검색</div>        	
         	
         	<div class="row ingMenu-search">        	
         		<div class="col-lg-6 search-category test">
@@ -207,7 +207,7 @@ function hoveringDiv(){
         	
 <!-------------------------------------- 재료정보 표시 부분--------------------------------------------------->        	
         	        	
-        	<div class="col-lg-12" style="margin-bottom: 3%; margin-top:5%;font-size: 150%;">재료 정보</div>        	
+        	<div class="col-lg-12 content-sub-title" style="margin-bottom: 3%; margin-top:5%;font-size: 150%;">재료 정보</div>        	
         	<div class="col-lg-12 ingredient-information">        		
         	</div> 
         	
@@ -327,11 +327,11 @@ function hoveringDiv(){
         
 <!-------------------------------------- 카테고리/ 추가삭제 부분--------------------------------------------------->        	
         	<br /><br /><br />
-        	<div class="col-lg-12" style="margin-bottom: 3%; font-size: 150%;">재료 검색</div>    
-        	<div class="col-lg-12 adding-menu">
+        	    
+        	<div class="col-lg-12 adding-menu">        	
         		<!-- 카테고리 추가 메뉴 -->
-        		<div class="col-lg-12" style="margin-top:1%;">카테고리 추가/삭제</div>
-        		<br />
+        		<div class="col-lg-12 content-sub-title" style="margin-top:1%;">카테고리 추가/삭제</div>
+        		
         		<div class="row text-center add-remove-Category addCategory">
         			<div class="col-lg-2">추가하기</div>
         			<div class="col-lg-2">
@@ -473,8 +473,8 @@ function hoveringDiv(){
 
 <!-------------------------------------- 재료/ 추가기능 부분 --------------------------------------------------->
         		
-        		<div class="col-lg-12" style="margin-top:3%;">재료 추가하기</div>
-        		<br />
+        		<div class="col-lg-12 content-sub-title" style="margin-top:3%;">재료 추가하기</div>
+        		
         		<!-- 재료를 추가하는 메뉴 -->
         		<div class="col-lg-12 test">
         			<form method="post" encType="multipart/form-data" id="addIngForm">

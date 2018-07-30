@@ -66,7 +66,7 @@
             </div>
             <br>
 			<div class="col-lg-12">
-            	<div class="col-lg-10 test" style="text-align:justify; padding: 3%;">${b.rpContent}</div>                    
+            	<div class="col-lg-10 rounded test" style="text-align:justify; padding: 3%;">${b.rpContent}</div>                    
             </div>            
             
             <br /><br />
