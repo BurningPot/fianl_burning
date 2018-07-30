@@ -19,10 +19,6 @@
     	padding: 0.5%;
     	
     }
-   
-        
-    
-       
    /*
     #FBFFB9
     #FDD692
@@ -36,7 +32,6 @@
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 <!-- 야매로 공간할당을 주어 처리한 부분 -->
 	<div style="height:20%;"></div>
-    
 
 	<c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
 	<br /><br />
@@ -77,7 +72,6 @@
             
             <br>
             <hr class="col-lg-12"/>
-           	                  
     		
         	<br><br>
         	<script>
@@ -85,9 +79,6 @@
         			$('#cLength').text($('#comment').val().length);        			
         		});
         	</script>
-        	
-        	
-           
         	<br /><br /> 
         	        	
         	 <script>            	

@@ -70,16 +70,14 @@
 		</div>
 		
 		<script>
+			//돋보기 버튼을 누르면 재료 검색을 실시한다
 			$('.search-ing-btn').on('click',function(){
 				$.ajax({
 					url: "${pageContext.request.contextPath}/admin/searchIngredientAjax.do",
 					dataType: "json",
 					data: {
 						keyword: $('#searchKeyword').val()
-					}, success: function(data){
-						console.log(data);
-						console.log(data.length);
-						
+					}, success: function(data){	
 						var html ="";
 						var htmlNoResult = "";
 						
@@ -103,8 +101,8 @@
 							$('.search-ing-result').empty();
 							$('.search-ing-result').append(html);							
 						}	
-					}, error: function(data){
-						console.log("재료검색 실패!");
+					}, error: function(data){						
+						swal("작업실패!", "재료검색에 실패하였습니다", "error");
 					}
 				});
 			});

@@ -162,10 +162,11 @@
             			url : "${pageContext.request.contextPath}/admin/deleteBoard.do",
             			data:{
             				bNum : bNum
-            			}, success: function(data){
-            				alert("게시글을 삭제했습니다");
+            			}, success: function(data){            				
+            				swal("작업완료!", "게시글을 삭제했습니다", "success");
             				location.href="${pageContext.request.contextPath}/admin/${servletMapping}";
             			}, error: function(){
+            				swal("작업실패!", "게시글을 삭제하는데 실패하였습니다", "error");
             				alert("게시글을 삭제하는데 실패하였습니다");
             			}
             		})
@@ -217,8 +218,7 @@
         				/* if(mId == 'admin'){
         					mId = '관리자';
         				}         */	
-        				
-        				alert('댓글작성이 완료되었습니다!');
+        				swal("작업완료!", "댓글작성이 완료되었습니다!", "success");        				
         				var html = "";
         				html += '<div class="row">';
         				html += '<div class="col-lg-2">';
@@ -235,9 +235,8 @@
         				//ajax로 댓글달기가 완료된 후에는 게시판의 답변 컬럼을 N에서 Y로 바꿔야 한다!
                 		//update를 사용해서 바꾸자 (ajax), mNum만 넘기면 되요
         				updateQnA(YorN); 
-        			},error: function(){
-        				console.log('댓글작성 실패!');
-        				alert("댓글 작성에 실패하였습니다!");
+        			},error: function(){        				
+        				swal("작업실패!", "댓글 작성에 실패하였습니다!", "error");
         			}
         		});	
         	});  
@@ -252,10 +251,10 @@
         				YorN : YorN
         			},
         			success: function(data){
-        				console.log(data+'개 업데이트 완료');
+        				console.log(data+'개 업데이트 완료');        				
         				location.href="${pageContext.request.contextPath}/admin/${detailMapping}?bNum="+bNum;
         			}, error: function(){
-        				console.log("업데이트 실패");
+        				console.log("답변완료 업데이트 실패");
         			}        			
         		});
         		
@@ -272,8 +271,8 @@
         			data: {
         				bcNum : bcNum,
         				commentEa: commentLength
-        			}, success: function(){
-        				alert('글 삭제가 완료되었습니다!');
+        			}, success: function(){        				
+        				swal("작업완료!", "게시글이 삭제되었습니다", "success");
         				
  						if(commentLength == 1){
  							//댓글이 더이상 존재 하지 않을 경우 답변컬럼을 'N'으로 바꾸어 놓아야 한다
@@ -284,6 +283,7 @@
         				location.href="${pageContext.request.contextPath}/admin/${detailMapping}?bNum="+bNum;
         			}, error: function(){
         				alert('글 삭제에 실패하였습니다!');
+        				swal("작업실패!", "게시글을 삭제하는데 실패했습니다", "error");
         			}
         		});        		
         	});
