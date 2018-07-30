@@ -35,9 +35,9 @@ public class MainDaoImpl implements MainDao{
 	}
 
 	@Override
-	public List<Recipe> searchRecipe(String search) {
+	public List<Recipe> searchRecipe(HashMap<String, Object> map) {
 
-		return sqlSession.selectList("home.searchRecipe", search);
+		return sqlSession.selectList("home.searchRecipe", map);
 	}
 
 	@Override
@@ -68,9 +68,9 @@ public class MainDaoImpl implements MainDao{
 	}
 
 	@Override
-	public List<Recipe> inquiryRecipeListBefore(String keyWord) {
+	public List<Recipe> inquiryRecipeListBefore(HashMap<String, String> map) {
 
-		List<Recipe> rlist = sqlSession.selectList("home.inquiryRecipeListBefore", keyWord);
+		List<Recipe> rlist = sqlSession.selectList("home.inquiryRecipeListBefore", map);
 		
 		System.out.println("inquiryRecipeList DaoImpl : " + rlist);
 		
@@ -91,8 +91,58 @@ public class MainDaoImpl implements MainDao{
 	
 	@Override
 	public List<Recipe> recipeTop5() {
-		// TODO Auto-generated method stub
+
 		return sqlSession.selectList("home.recipeTop5");
+	}
+
+	@Override
+	public List<Recipe> recommandRecipeListBefore(HashMap<String, String> map) {
+
+		List<Recipe> recommandRecipeListBefore = sqlSession.selectList("home.recommandRecipeListBefore", map);
+		
+		return recommandRecipeListBefore;
+	}
+
+	@Override
+	public int recommandTotalCount(String keyWord) {
+
+		return sqlSession.selectOne("home.recommandTotalCount", keyWord);
+	}
+
+	@Override
+	public List<Recipe> recommandRecipeListAfter(HashMap<String, Object> map) {
+
+		return sqlSession.selectList("home.recommandRecipeListAfter", map);
+	}
+
+	@Override
+	public List<Recipe> levelAndTimeRecipeListBefore(HashMap<String, String> map) {
+
+		return sqlSession.selectList("home.levelAndTimeRecipeListBefore", map);
+	}
+
+	@Override
+	public int levelAndTimeAfterTotalCount(String keyWord) {
+
+		return sqlSession.selectOne("home.levelAndTimeAfterTotalCount", keyWord);
+	}
+
+	@Override
+	public List<Recipe> levelAndTimeRecipeListAfter(HashMap<String, Object> map) {
+
+		return sqlSession.selectList("home.levelAndTimeRecipeListAfter", map);
+	}
+
+	@Override
+	public int updateRecommend(int recipeRNum) {
+
+		return sqlSession.update("home.updateRecommend", recipeRNum);
+	}
+
+	@Override
+	public int insertRecommend(HashMap<String, Integer> map) {
+
+		return sqlSession.insert("home.insertRecommend", map);
 	}
 
 
