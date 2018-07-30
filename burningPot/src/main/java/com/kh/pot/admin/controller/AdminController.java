@@ -27,6 +27,7 @@ import com.kh.pot.board.model.service.BoardService;
 import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.board.model.vo.BoardComment;
 import com.kh.pot.board.model.vo.Report;
+import com.kh.pot.common.exception.PotException;
 import com.kh.pot.ingredient.model.service.IngredientService;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.service.MemberService;
@@ -50,11 +51,12 @@ public class AdminController {
 	
 	// 관리자 홈
 	@RequestMapping("/admin/goAdmin.do")
-	public String goAdminMenu(Model model){
+	public String goAdminMenu(Model model) throws PotException{
 		model.addAttribute("commonTitle","관리자 페이지");
 		//1. 연령별 회원분포 정보
+		try{
 		ArrayList<Integer> ageList = (ArrayList<Integer>) adminService.selectAgeCount();
-			
+		
 		//2. 성별 회원분포 정보
 		ArrayList<Integer> genderList = (ArrayList<Integer>)adminService.selectGenderCount();
 		
@@ -79,7 +81,9 @@ public class AdminController {
 		.addAttribute("gender", genderList)
 		.addAttribute("maleFavor", maleFavor)
 		.addAttribute("femaleFavor", femaleFavor);
-		
+		}catch(Exception e){
+			throw new PotException("관리자페이지 에러!", "통계자료를 가져오는 도중 에러가 발생했습니다");
+		}
 		return "admin/adminHome";
 	}
 	
