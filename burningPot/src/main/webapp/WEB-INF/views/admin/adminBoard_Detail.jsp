@@ -240,7 +240,7 @@
         			}
         		});	
         	});  
-        	
+        	//댓글을 작성해주면 답변부분을 Y로 바꾼다
         	function updateQnA(YorN){
         		var bNum = ${b.bNum};
         		        		
@@ -259,7 +259,7 @@
         		});
         		
         	};   
-        	
+        	//댓글삭제 기능
         	$('.close').on('click',function(){        		
         		var bcNum = $(this).siblings('.bcNum').val();
         		var bNum = ${b.bNum};

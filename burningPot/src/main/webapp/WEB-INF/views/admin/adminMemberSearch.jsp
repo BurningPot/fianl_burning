@@ -15,42 +15,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>회원조회 메뉴</title>
 <style>
-<<<<<<< HEAD
-/* .menu-bar{            
-    	background-color:white;           
-        height: 100%;
-        overflow: auto;
-        position: fixed;
-        display: relative;
-    }
-    .test{
-    	border: 1px solid black;
-    }   
-    .content{
-    	display: relative;
-    }
-    #title{
-    	text-align: center;
-    	font-size: 200%;
-    	font-weight: bold;
-    	margin-bottom: 3%;
-    }
-	*/
-    
-    /* .navi{
-    	height: 30%;
-        margin-top: 10%;
-	}
-    .navi div{
-    	color:#754F44;
-        border: 1px solid white;
-        background: #FDD692;
-        height: 20%;
-        text-align: center;
-        font-size: 200%;
-        font-weight: bold;
-	}    */
-    
+
 
 
     .search-title{
@@ -347,13 +312,7 @@
         $('.member-list').on('click', function(){
         	console.log($(this).children().eq(1).text());
         	
-        	var memberNum = $(this).children().eq(1).text();
-        	/* map.put("name", m.getmName());
-    		map.put("id", m.getmId());
-    		map.put("email", m.getEmail());
-    		map.put("gender", m.getGender());
-    		map.put("birthDate", m.getBirthDate());
-    		map.put("picture", m.getmPicture()); */        	
+        	var memberNum = $(this).children().eq(1).text();        	   	
         	
         	$.ajax({
             	url : "${pageContext.request.contextPath}/admin/memberDetail.do",            	
