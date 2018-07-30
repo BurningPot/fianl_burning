@@ -28,6 +28,8 @@ public class Recipe implements Serializable{
 	private int rReport;			// 레시피 신고수
 	private int rRecommend;			// 레시피 추천수
 	private int rCount;				// 레시피 조회수
+	private int rcCheck;			// Recommend의 RNUM
+//	
 	
 	public Recipe(){
 		
@@ -54,6 +56,32 @@ public class Recipe implements Serializable{
 		this.rReport = rReport;
 		this.rRecommend = rRecommend;
 		this.rCount = rCount;
+	}
+	
+	
+
+	public Recipe(int rNum, int mNum, String mName, String mId, String rName, String rImg, int quantity, int rTime,
+			int rLevel, String iNum, String iQuan, String subIngredient, Date rDate, String rIntro, int rReport,
+			int rRecommend, int rCount, int rcCheck) {
+		super();
+		this.rNum = rNum;
+		this.mNum = mNum;
+		this.mName = mName;
+		this.mId = mId;
+		this.rName = rName;
+		this.rImg = rImg;
+		this.quantity = quantity;
+		this.rTime = rTime;
+		this.rLevel = rLevel;
+		this.iNum = iNum;
+		this.iQuan = iQuan;
+		this.subIngredient = subIngredient;
+		this.rDate = rDate;
+		this.rIntro = rIntro;
+		this.rReport = rReport;
+		this.rRecommend = rRecommend;
+		this.rCount = rCount;
+		this.rcCheck = rcCheck;
 	}
 
 	public int getrNum() {
@@ -192,12 +220,22 @@ public class Recipe implements Serializable{
 		this.rCount = rCount;
 	}
 
+	public int getRcCheck() {
+		return rcCheck;
+	}
+
+	public void setRcCheck(int rcCheck) {
+		this.rcCheck = rcCheck;
+	}
+
 	@Override
 	public String toString() {
 		return "Recipe [rNum=" + rNum + ", mNum=" + mNum + ", mName=" + mName + ", mId=" + mId + ", rName=" + rName
 				+ ", rImg=" + rImg + ", quantity=" + quantity + ", rTime=" + rTime + ", rLevel=" + rLevel + ", iNum="
 				+ iNum + ", iQuan=" + iQuan + ", subIngredient=" + subIngredient + ", rDate=" + rDate + ", rIntro="
-				+ rIntro + ", rReport=" + rReport + ", rRecommend=" + rRecommend + ", rCount=" + rCount + "]";
+				+ rIntro + ", rReport=" + rReport + ", rRecommend=" + rRecommend + ", rCount=" + rCount + ", rcCheck="
+				+ rcCheck + "]";
 	}
 
+	
 }

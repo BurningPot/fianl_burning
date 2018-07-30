@@ -43,7 +43,8 @@
 				height:100%;
 				list-style: none;
 				float: left;
-			    padding-top: 15%;
+			    padding-top: 4%;
+			    padding-bottom : 2%;
     			padding-left: 12%;
 			}
 			.searchBtnUl li {
@@ -126,7 +127,7 @@
 			/* 검색 후 정렬 버튼 css */
 			.searchResultAndsearchBtn{
 				width:100%; 
-				height:20%; 
+				height:12%; 
 				/* border:1px solid black; */
 			}			
 			.searchBtn{
@@ -163,8 +164,8 @@
 			    padding: 10px 0 20px 8px;
 			    width:50%; 
 			    float:left; 
-			    padding-left : 20%;
-			    padding-top : 3%;
+			    padding-left : 10%;
+			    padding-top : 1.5%;
 			    /* border:1px solid green; */
 			}
 			.searchRecipeCountArea > b{
@@ -1485,7 +1486,7 @@
 					<div class="recommend_recipe_area active">
 						<div class="rec_recipe">
 							<!-- <span class="badge badge-dark" id="rec_recipe_link">&lt;추천 레시피&gt; -->
-							<span class="badge badge-dark" id="rec_recipe_link">추천 레시피 
+							<span class="badge badge-pill badge-success" id="rec_recipe_link">추천 레시피 
 							
 							</span>
 						</div>
@@ -1535,13 +1536,13 @@
 					</div>
 					<c:if test="${m.mId != 'admin'}" >
 				        <div class="login_btn_after">
-			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button" onclick="goToMyPage();">
+			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button">
 			          			<i class="far fa-user fa-3x"></i>
 				            </button>
 				        </div>
 				        <div class="regist_recipe_btn_after">
 				          <button class="menuBtn_after" data-tooltip-text="Recipe Regist!!">
-				              <i class="fas fa-utensils fa-3x" onclick="location.href='${pageContext.request.contextPath}/recipe/recipeForm.do'"></i>
+				              <i class="fas fa-utensils fa-3x"></i>
 				          </button>
 				        </div>
 				        <div class="board_btn_after" data-tooltip-text="Board!!">

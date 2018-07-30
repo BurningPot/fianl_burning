@@ -21,31 +21,35 @@ public class MainServiceImpl implements MainService{
 		map.put("startNumber", startNumber);
 		map.put("endNumber", endNumber);
 		
-		
 		return mainDao.selectRecipe(map);
 	}
 
 	@Override
 	public List<Recipe> selectShowHome() {
-		// TODO Auto-generated method stub
+
 		return mainDao.selectShowHome();
 	}
 
 	@Override
 	public int selectCountAllRecipe() {
-		// TODO Auto-generated method stub
+
 		return mainDao.selectCountAllRecipe();
 	}
 
 	@Override
-	public List<Recipe> searchRecipe(String search) {
+	public List<Recipe> searchRecipe(String search, int mNum) {
 
-		return mainDao.searchRecipe(search);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("search", search);
+		map.put("mNum", mNum);
+		
+		return mainDao.searchRecipe(map);
 	}
 
 	@Override
 	public int searchTotalCount(String keyWord) {
-		// TODO Auto-generated method stub
+
 		return mainDao.searchTotalCount(keyWord);
 	}
 
@@ -64,7 +68,7 @@ public class MainServiceImpl implements MainService{
 
 	@Override
 	public int searchTotalCountHome(String search) {
-		// TODO Auto-generated method stub
+
 		return mainDao.searchTotalCountHome(search);
 	}
 
@@ -75,19 +79,25 @@ public class MainServiceImpl implements MainService{
 	}
 
 	@Override
-	public List<Recipe> inquiryRecipeListBefore(String keyWord) {
+	public List<Recipe> inquiryRecipeListBefore(String keyWord, String AscAndDesc) {
 
-		return mainDao.inquiryRecipeListBefore(keyWord);
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("keyWord", keyWord);
+		map.put("AscAndDesc", AscAndDesc);
+		
+		return mainDao.inquiryRecipeListBefore(map);
 	}
 
 	@Override
-	public List<Recipe> inquiryRecipeListAfter(String keyWord, int inquiryStartCount, int inquiryEndCount) {
+	public List<Recipe> inquiryRecipeListAfter(String keyWord, int inquiryStartCount, int inquiryEndCount, String AscAndDesc) {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("keyWord", keyWord);
 		map.put("inquiryStartCount", inquiryStartCount);
 		map.put("inquiryEndCount", inquiryEndCount);
+		map.put("AscAndDesc", AscAndDesc);
 		
 		return mainDao.inquiryRecipeListAfter(map);
 	}
@@ -98,31 +108,85 @@ public class MainServiceImpl implements MainService{
 		
 		return mainDao.recipeTop5();
 	}
-	
-	/*@Override
-	public List<Recipe> inquiryRecipeList(String keyWord, int number) {
+
+	@Override
+	public List<Recipe> recommandRecipeListBefore(String keyWord, String AscAndDesc) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("keyWord", keyWord);
+		map.put("AscAndDesc", AscAndDesc);
+				
+		return mainDao.recommandRecipeListBefore(map);
+	}
+
+	@Override
+	public int recommandTotalCount(String keyWord) {
+		
+		return mainDao.recommandTotalCount(keyWord);
+	}
+
+	@Override
+	public List<Recipe> recommandRecipeListAfter(String keyWord, int recommandStartCount, int recommandEndCount, String AscAndDesc) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("keyWord", keyWord);
+		map.put("recommandStartCount", recommandStartCount);
+		map.put("recommandEndCount", recommandEndCount);
+		map.put("AscAndDesc", AscAndDesc);
+		
+		return mainDao.recommandRecipeListAfter(map);
+	}
+
+	@Override
+	public List<Recipe> levelAndTimeRecipeListBefore(String keyWord, String AscAndDesc) {
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("keyWord", keyWord);
+		map.put("AscAndDesc", AscAndDesc);
+		
+		return mainDao.levelAndTimeRecipeListBefore(map);
+	}
+
+	@Override
+	public int levelAndTimeAfterTotalCount(String keyWord) {
+
+		return mainDao.levelAndTimeAfterTotalCount(keyWord);
+	}
+
+	@Override
+	public List<Recipe> levelAndTimeRecipeListAfter(String keyWord, int levelAndTimeStartCount, int levelAndTimeEndCount, String AscAndDesc) {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("keyWord", keyWord);
-		map.put("number, value)
+		map.put("levelAndTimeStartCount", levelAndTimeStartCount);
+		map.put("levelAndTimeEndCount", levelAndTimeEndCount);
+		map.put("AscAndDesc", AscAndDesc);
 		
-		return mainDao.inquiryRecipeList(keyWord, number);
-	}*/
+		
+		return mainDao.levelAndTimeRecipeListAfter(map);
+	}
 
+	@Override
+	public int updateRecommend(int recipeRNum) {
+		
+		return mainDao.updateRecommend(recipeRNum);
+	}
+
+	@Override
+	public int insertRecommend(int mNum, int recipeRNum) {
+
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		
+		map.put("mNum", mNum);
+		map.put("recipeRNum", recipeRNum);
+		
+		
+		return mainDao.insertRecommend(map);
+	}
 	
-
-
-//	@Override
-//	public List<Recipe> searchListScroll(int searchStartRecipe, int searchEndRecipe) {
-//		// List는 2개의 값을 동시에 보낼 수 없으므로, Map을 사용하여 DB에 보낸다.
-//		HashMap<String, Integer> searchMap = new HashMap<String, Integer>();
-//		searchMap.put("searchStartRecipe", searchStartRecipe);
-//		searchMap.put("searchEndRecipe", searchEndRecipe);
-//			
-//		return mainDao.searchListScroll(searchMap);
-//	}
-
-
 
 }
