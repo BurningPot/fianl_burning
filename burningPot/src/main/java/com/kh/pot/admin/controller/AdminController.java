@@ -344,7 +344,10 @@ public class AdminController {
 		model.addAttribute("commonTitle","재료관리 페이지");
 		
 		ArrayList<Ingredient> distinctList = (ArrayList<Ingredient>)ingService.selectDistinctName();
-		model.addAttribute("distinctList",distinctList);
+		ArrayList<String> ingNameList = (ArrayList<String>)ingService.selectAllIngredientName();
+		
+		model.addAttribute("distinctList",distinctList).addAttribute("ingNameList", ingNameList);
+		
 		
 		return "admin/adminIngredient";
 	}

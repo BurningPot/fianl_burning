@@ -46,5 +46,8 @@
 	<insert id="insertNewIngredient" parameterType="hashmap">
 		INSERT INTO INGREDIENT VALUES(SEQ_INGREDIENT.NEXTVAL, #{iName}, #{category}, #{img}, #{exdate})
 	</insert>
+	<select id="selectAllIngredientName" resultType="string">
+		SELECT INAME FROM INGREDIENT
+	</select>
 	
 </mapper>

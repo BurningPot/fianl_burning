@@ -95,7 +95,16 @@
 	<c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
 <br /><br />
 <script>
-	
+// 확장자 검사용 메소드
+function extFilter(value){
+	var ext = value.substring(value.lastIndexOf('.')+1, value.length);
+	if(ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'png' || ext.toLowerCase() == 'gif' || ext.toLowerCase() == 'jpeg' ){					
+		return true;
+	}else{    				
+		return false;
+	}        			
+}  
+// 카테고리 검색에서 div위에 hover 효과 주기	
 function hoveringDiv(){	
 	
 	$('.ing').children().hover(function(){			
@@ -110,9 +119,10 @@ function hoveringDiv(){
 	});
 	
 }
-	$(function(){
-		hoveringDiv();
-	});
+
+$(function(){
+	hoveringDiv();
+});
 	</script>
 	
 
@@ -277,6 +287,7 @@ function hoveringDiv(){
  					$('.ingredient-information').empty();
         			//$('.ingredient-information').append(html);          			        			
         			$('.ingredient-information').append(formData);
+        			
         			showImgName();
         			
         			updateIngInfo();
@@ -324,12 +335,16 @@ function hoveringDiv(){
         	
         	// 재료 정보 수정하기를 눌렀을 때 해당 창에 있는 정보대로 재료정보를 수정한다
         	function updateIngInfo(){
-        		$('#ing-update').on('click', function(){  			
-  					
+        		$('#ing-update').on('click', function(){ 
   					$('#h_exdate').val($('.ing-exdate').val());
   					$("#h_iName").val($('.ing-iName').val());
-  					$("#h_keyword").val($('.ing-keyword').val());        			
-        			$('#fileForm').attr('action', '${pageContext.request.contextPath}/admin/updateIngInfo.do').submit();
+  					$("#h_keyword").val($('.ing-keyword').val()); 
+  					/* if(){
+  						//이미지 확장자 검사후 이미지가 아니면 허용하지 않는다
+  					}else{
+  						$('#fileForm').attr('action', '${pageContext.request.contextPath}/admin/updateIngInfo.do').submit();
+  					} 
+  					 */
         		});        		
         	}        	
         	</script>
@@ -542,6 +557,22 @@ function hoveringDiv(){
         	<script>
         	//재료 추가하기 버튼을 누를경우 컨트롤러 실행시킨다
         	function addIngredient(){
+        		
+        		console.log($('#addForUpload').prop('files').length);
+        		var fileName = "";
+        		
+        		if($('#addForUpload').prop('files').length != 0){
+        			fileName = $('#addForUpload').prop('files')[0].name;
+        		}else{
+        			swal('알림','재료사진을 입력해주세요','info');
+        		}        		
+        		
+        		console.log('재료추가 버튼 눌렀을떄 들어오게 해야해!: '+fileName);
+        		var list = new Array();
+        		list = '${ingNameList}'.split(', ');        	
+        		console.log('이것은 무엇인가: '+list);
+        		console.log(list.length);
+        		
         		if($('#add-ing-bigCategory').val() == ""){
         			//큰분류 선택 안했을 경우
         			swal("알림", "큰분류를 선택해주세요", "info");
@@ -557,9 +588,24 @@ function hoveringDiv(){
         		}else if($('#addForUpload').val() == "" || $('#addForUpload').val() == null){
         			//사진 등록 안했을 경우
         			swal("알림", "재료 사진을 등록해주세요", "info");
+        		}else if(!extFilter(fileName)){
+        			//파일 확장자가 사진이 아닐경우
+        			swal("알림", "jpg, png, gif, jpeg를 제외한 파일은 업로드 할 수 없습니다", "info");
         		}else{
-        			//재료 등록을 허가한다
-        			$('#addIngForm').attr("action", "${pageContext.request.contextPath}/admin/insertNewIngredient.do").submit();  
+        			var result = 0;
+        			for(var i =0 ;i < list.length; i++){
+        				if(list[i] == $('#ingName').val()){
+        					result++; 
+        				}
+        			} 
+        			if(result >0){
+        				// 중복되는 이름이 있다는 뜻이다!
+        				swal('알림', '재료 이름이 이미 존재합니다', 'info');
+        			}else{
+        				//재료 등록을 허가한다
+            			$('#addIngForm').attr("action", "${pageContext.request.contextPath}/admin/insertNewIngredient.do").submit();  
+        			}
+        			
         		}
         		     		
         	}
@@ -574,16 +620,24 @@ function hoveringDiv(){
 				});
 			})
 			
-        	//이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분
+        	//재료 추가 에서  이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분
 			function loadImg(value) {
-				if (value.files && value.files[0]) {
-					var reader = new FileReader();
-					reader.onload = function(e) {
-						$('.uploadImgBox').children('div').remove();							
-						$("#add-img").attr("src", e.target.result);	
-						$('#add-img').show();
-					}
-					reader.readAsDataURL(value.files[0]);					
+				console.log(value.files[0].name);
+				var fileName = value.files[0].name;
+        		
+				if(extFilter(fileName)){
+					if (value.files && value.files[0]) {
+						var reader = new FileReader();
+						reader.onload = function(e) {
+							$('.uploadImgBox').children('div').remove();							
+							$("#add-img").attr("src", e.target.result);	
+							$('#add-img').show();
+						}
+						reader.readAsDataURL(value.files[0]);
+						console.log('이미지 필터 통과?');
+					} 
+				}else{					
+					swal('알림', 'jpg, png, gif, jpeg를 제외한 파일은 업로드 할 수 없습니다', 'info');	
 				} 
 			}
 			
@@ -610,27 +664,35 @@ function hoveringDiv(){
 						}
 					});
 				}
-			});      	
-        	        	
+			}); 
         	        	          	
         	function showImgName(){
         	//파일의 이름불러오는 방법은..?
         		$('#uploading').change(function(){
-					var fileName = $(this).prop('files')[0].name;					
-					$('#uploadingName').text(fileName);					
-        			console.log(fileName);
+					var fileName = $(this).prop('files')[0].name;
+					if(extFilter(fileName)){
+						$('#uploadingName').text(fileName);
+					}else{
+						swal('알림', 'jpg, png, gif, jpeg를 제외한 파일은 업로드 할 수 없습니다','info');
+					}				
 				})	
         	} 
         	
         	function LoadImg(value) {        		
-        		//이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분
-				if (value.files && value.files[0]) {
-					var reader = new FileReader();
-					reader.onload = function(e) {
-						$("#titleImg").attr("src", e.target.result);						
-					}
-					reader.readAsDataURL(value.files[0]);
-				} 
+        		//이미지 업로드 하기를 누르고 사진을 선택했을 때 사진을 미리 보여주기 하는 부분				
+        		if(extFilter(value.files[0].name)){
+        			if (value.files && value.files[0]) {
+    					var reader = new FileReader();
+    					reader.onload = function(e) {
+    						$("#titleImg").attr("src", e.target.result);						
+    					}
+    					reader.readAsDataURL(value.files[0]);
+    				} 
+        		}else{
+        			//showImgName에서 경고 메세지를 보내기 때문에 굳이 여기서 또 보낼 필요는 없다
+        		}
+        		
+        		
 			}
         	</script>
         	

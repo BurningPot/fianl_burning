@@ -37,6 +37,8 @@ public interface IngredientDao {
 
 	int insertNewIngredient(HashMap<String, Object> map);
 
+	List<String> selectAllIngredientName();
+
 	
 
 	
