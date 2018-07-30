@@ -36,6 +36,8 @@ public interface IngredientService {
 
 	int insertNewIngredient(String iName, String img, String category, String exdate);
 
+	List<String> selectAllIngredientName();
+
 	
 
 	

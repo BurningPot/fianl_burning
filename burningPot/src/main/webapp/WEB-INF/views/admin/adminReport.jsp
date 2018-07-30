@@ -64,7 +64,7 @@
     <form id="goDetail">
     <c:forEach items="${list}" var="b" varStatus="status">
     	
-    <div class="row tableContent col-lg-12">  
+    <div class="row tableContent col-lg-12">    	
     	<div class="col-lg-1 boardNumber">${b.rpNum}</div>	<!-- 글번호 -->
         <div class="col-lg-6">${b.rpContent}</div>	<!-- 제목 -->
         <div class="col-lg-2">${b.mName}</div>	<!-- 작성자 -->
