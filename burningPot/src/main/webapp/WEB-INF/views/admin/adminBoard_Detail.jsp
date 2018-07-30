@@ -86,7 +86,7 @@
             </div>
             <br>
 			<div class="col-lg-12">
-            	<div class="col-lg-10 test" style="text-align:justify; padding: 3%;">${b.bContent}</div>                    
+            	<div class="col-lg-10 rounded test" style="text-align:justify; padding: 3%;">${b.bContent}</div>                    
             </div>            
             
             <br /><br />
@@ -103,7 +103,7 @@
             <hr class="col-lg-12"/>
            	
             <div class="col-lg-12">
-            	<textarea class="col-lg-10 test" id="comment" name="comment" cols="4" rows="5" maxlength="500" placeholder="답변은 500자 이내로 입력해주세요"></textarea> 
+            	<textarea class="col-lg-10 rounded test" id="comment" name="comment" cols="4" rows="5" maxlength="500" placeholder="답변은 500자 이내로 입력해주세요"></textarea> 
             </div>
            
     		<div class="col-lg-2 offset-lg-9" style="font-size: 100%;">
@@ -240,7 +240,7 @@
         			}
         		});	
         	});  
-        	
+        	//댓글을 작성해주면 답변부분을 Y로 바꾼다
         	function updateQnA(YorN){
         		var bNum = ${b.bNum};
         		        		
@@ -259,7 +259,7 @@
         		});
         		
         	};   
-        	
+        	//댓글삭제 기능
         	$('.close').on('click',function(){        		
         		var bcNum = $(this).siblings('.bcNum').val();
         		var bNum = ${b.bNum};

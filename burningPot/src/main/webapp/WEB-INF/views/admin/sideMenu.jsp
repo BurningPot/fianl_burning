@@ -441,6 +441,12 @@ body{
     .no-padding{
     	padding: 0;
     }
+    .content-sub-title{
+        text-align: center;
+        font-size: 200%;
+        font-weight: bold;
+        margin-bottom: 5%;
+    }
 
 /*
     #FBFFB9
