@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="board">
 	<!-- HYD -->	
+	<select id="selectReportDetail" resultType="Report">
+		SELECT RPNUM, RPCONTENT, RPDATE, MNAME FROM REPORT JOIN MEMBER USING(MNUM) WHERE RPNUM = #{rpNum}
+	</select>
+	
+	<select id="selectReportCount" resultType="_int">
+		SELECT COUNT(*) FROM REPORT
+	</select>
+	
+	<select id="selectReport" resultType="Report">
+		SELECT RPNUM, MNAME, RPCONTENT, RPDATE FROM REPORT
+		JOIN MEMBER USING(MNUM) ORDER BY RPDATE
+	</select>
+	
 	<select id="selectBoard" parameterType="string" resultType="Board">
 		SELECT BNUM, CATEGORY, BTITLE, MNUM, BDATE, MNAME ,MID, REPLY, BCOUNT 
 		FROM BOARD JOIN MEMBER USING(MNUM) WHERE CATEGORY = #{bCategory} ORDER BY REPLY, BNUM DESC, BDATE

@@ -26,6 +26,7 @@ import com.kh.pot.admin.model.vo.Statistics;
 import com.kh.pot.board.model.service.BoardService;
 import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.board.model.vo.BoardComment;
+import com.kh.pot.board.model.vo.Report;
 import com.kh.pot.ingredient.model.service.IngredientService;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.service.MemberService;
@@ -618,26 +619,47 @@ public class AdminController {
 	}
 	
 	// 신고게시판
-	/*@RequestMapping("/admin/goReport.do")
-	public String goQandA(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage){
+	@RequestMapping("/admin/goReport.do")
+	public String goReport(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage){
 		model.addAttribute("commonTitle","신고 게시판");
 		
-		String bCategory = "QNA";
+		/*String bCategory = "QNA";*/
 		int numPerPage = 10; // 한 페이지 당 게시글 수
 			
-		ArrayList<Board> list = (ArrayList<Board>) boardService.selectBoard(cPage, numPerPage, bCategory);
+		ArrayList<Report> list = (ArrayList<Report>) adminService.selectReport(cPage, numPerPage);
 		
-		int totalContents = boardService.selectCount(bCategory);
+		int totalContents = adminService.selectReportCount();
 		
 		System.out.println("list : "+list);	
 		
 		model.addAttribute("list",list)
 		.addAttribute("numPerPage", numPerPage)
 		.addAttribute("totalContents", totalContents)
-		.addAttribute("detailMapping","detailQNA.do")
-		.addAttribute("servletMapping", "goQNA.do");
+		.addAttribute("detailMapping","detailReport.do")
+		.addAttribute("servletMapping", "goReport.do");
 			
-		return "admin/adminBoard";
-	}*/
+		return "admin/adminReport";
+	}
+	
+	//게시판 내용보기!
+		@RequestMapping("/admin/detailReport.do")
+		public String detailReport(Model model, @RequestParam int rpNum){
+			
+			
+			model.addAttribute("commonTitle","신고 게시판");
+			Report r = adminService.selectReportDetail(rpNum);
+			
+			model.addAttribute("b", r); // 특정 게시글의 내용을 불러온다
+			
+			//ArrayList<BoardComment> bcList = (ArrayList<BoardComment>) boardService.selectBoardComment(bNum);
+			
+			model.addAttribute("detailMapping","detailReport.do")
+			.addAttribute("servletMapping", "goReport.do")
+			.addAttribute("mId", "admin")		// 임시적으로 회원의 정보를 넘겨주기 (나중에 로그인합쳐지면 세션으로 받기)
+			.addAttribute("mNum", 1);			// 임시적으로 회원의 정보를 넘겨주기
+			
+			return "admin/adminReport_Detail";
+		}
+	
 	
 }
