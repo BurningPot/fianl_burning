@@ -4,6 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
 	.main{
@@ -32,7 +33,20 @@
       text-align: center;
       }
       
-      #
+      #profilePlaceholder {
+      margin-left : 5px;
+      	z-index: 100;
+	    position: absolute;
+	    top: 250px;
+	    background: cornsilk;
+      }
+      
+     .myS > tr {
+    	border: 1px solid #ccc;
+	    margin: 1% 0;
+	    box-shadow: 3px 3px 2px #ccc;
+	    transition: 0.5s;
+      }
 </style>
 <title>마이페이지</title>
 </head>
@@ -44,8 +58,9 @@
 <div class="main col-lg-12">
 <br />
 <br />
-	<div class="container col-lg-8 offset-lg-2" style=" width : 100%; height:300px; padding: 1%; background:white; background: 1px solid lightgray;">
+	<div class="container" style=" width : 100%; height:300px; padding: 1%; background:white; background: 1px solid lightgray;">
             <div id="myinfo" style="width:49%; height: 100%; float: left; border: 1px solid lightgray">     	
+            
             	
 <%--             	<c:if test="${ m.mPicture == 'defaultPerson.png' }">
             		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture}" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
@@ -55,12 +70,12 @@
                		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture }" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
 <%--                </c:if> --%>
                 <div id="profileWrap">
-                	<form  id="fileForm" enctype="multipart/form-data"><input type="file" id="profileBtn" name="profileBtn" onchange="LoadImg(this)"/>
+                	<form  id="fileForm" enctype="multipart/form-data"><input type="file" accept="image/*" id="profileBtn" name="profileBtn" onchange="LoadImg(this)"/>
                 		<input type="hidden" name="oriHidden" value="${ m.mPicture }"/>
                 		<input type="hidden"  name="numHidden" value="${m.mNum }"/>
                 	</form>
                 </div>
-                
+                <div id="profilePlaceholder" style="display: none;">사진 변경 프로필 클릭</div>
                    
                 <input type="hidden" value="${m.mId}" id="mId"/>
                 <!-- 내정보 div -->
@@ -68,13 +83,13 @@
                     <div class="col-sm-12">
                       <br>
                       	<div class="alert alert-secondary" role="alert">
-                          <td>ID : ${m.mId }</td>
+                          <td>ID : ${ minfo.mId }</td>
                       	</div>
                       	<div class="alert alert-success" role="alert">
-                          <td>닉네임 : ${ m.mName }</td>
+                          <td>닉네임 : ${ minfo.mName }</td>
                       	</div>                                           
                       	<div class="alert alert-info" role="alert">
-                            <td> 이메일 : ${ m.getEmail() }</td>
+                            <td> 이메일 : ${minfo.email }</td>
                       	</div>
                       	<input type="hidden" id="mGen" value="${m.gender }" />
                    </div>
@@ -98,7 +113,7 @@
                                     <label for="inputId" class="control-label">아이디</label>
                                   </div>
                                   <div class="col-sm-7">
-                                      <td>${ m.getmId() }</td>
+                                      <td>${ minfo.mId }</td>
                                   </div>
                               </div>
                               <div class="form-group row" id="divPassword">
@@ -196,7 +211,7 @@
                 </div>
                  
             <div id="refrigerator" style="width:49%; height: 100%; float: right; border: 1px solid lightgray;">
-                  <img src="${pageContext.request.contextPath }/resources/img/sodekdrh.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
+                  <img src="${pageContext.request.contextPath }/resources/img/tmakxm.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
                   <div class="refrigeratormenu">
                       뭐가들어가야 할까나
                       
@@ -227,7 +242,7 @@
 	
 			<div id="mp1" class="col-lg-12" style="padding : 0;">
           <table id="mypage1" class="table table-hover" style="border: 1px solid lightgray;">
-            <tbody style="background : white; border:1px solid ligntgray;">
+            <tbody class="myS" style="background : white; border:1px solid ligntgray;">
               <tr id="rec" style="border: 2px solid saddlebrown">
                   <th width="10%">번호</th>
                   <th width="30%">제목</th>
@@ -238,16 +253,22 @@
                     수정|삭제
                   </th>
               </tr>
-              <c:forEach items="${ list }" var="b">
-              <tr id="${b.bNum }">
-                <td>${b.bNum }</td>
-                  <td>${b.bTitle }</td>
+              <!-- success : function(data) {
+              	data.mypageList
+              	
+              	$('#mypage').attr(tr)
+              	append()
+              }; -->
+              <c:forEach items="${ recipeList }" var="b">
+              <tr id="${b.rNum }">
+                <td>${b.rNum }</td>
+                  <td>${b.rName }</td>
                   <td>${b.mName }</td>
-                  <td>${b.bDate }</td>
-                  <td>${b.bCount }</td>
+                  <td>${b.rDate }</td>
+                  <td>${b.rCount }</td>
                   <td>
-                      <button type="button" class="btn btn-default btn-sm" onclick="updateDev();">수정</button>
-                      <button type="button" class="btn btn-default btn-sm deleteMyBoard">삭제</button>
+                      <button type="button" class="btn btn-default btn-sm" onclick="updateDev(this);">수정</button>
+                      <button type="button" class="btn btn-default btn-sm deleteMyRecipe">삭제</button>
                   </td>                    
               </tr>
               </c:forEach>
@@ -270,7 +291,7 @@
          
       }
      %>
-   <%= com.kh.pot.common.util.SHUtils.getPageBar(totalContents, cPage, numPerPage, "myPage.do") %>
+   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "myPage.do") %>
    </div>
 <br />
 <br />
@@ -279,6 +300,10 @@
            <form id="delForm">
              	<input type="hidden" value="${m.mNum }" name="formDel"/>
              </form>
+             
+             <form id="refreshMypage" action="${pageContext.request.contextPath}/mypage/myPage.do">
+             	<input type="hidden" value="${m.mNum }" name="mNum"/>
+             </form>
           
           <script>
        
@@ -286,9 +311,19 @@
        $(function(){
     	   $('#profileWrap').hide();
     	   
-    	   $('#profileImg').click(function(){
-    		   $('#profileBtn').click();
+    	  
+    	   
+    	   $('#profileImg').on({
+    		'mouseenter' : function() {
+    			$('#profilePlaceholder').show();
+    		} , 'mouseleave' : function() {
+    			$('#profilePlaceholder').hide();
+    		}, 'click' : function() {
+    			$('#profilePlaceholder').hide();
+    			$('#profileBtn').click();
+    		} 
     	   });
+
        });
           
        function LoadImg(value) {
@@ -296,22 +331,11 @@
     	   if (!value.files && value.files[0])
     	   reader = new FileReader();
     	   
-			 if (value.files && value.files[0]) {
-				var reader = new FileReader();
-				reader.onload = function(e) {
-				
-						$("#profileImg").attr("src", e.target.result);
-						$('#profileImg').show();
-
-
-				}
-				reader.readAsDataURL(value.files[0]);
-		
-			} 
+			 console.log(value.files[0].name);
 			// 이미지 확장자 구하는 코드
-			 if( $("#profileImg").val() != "" ){
+			 if( value.files[0].name != "" ){
 
-					var ext = $('#profileImg').val().split('.').pop().toLowerCase();
+					var ext = value.files[0].name.split('.').pop().toLowerCase();
 
 					      if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
 
@@ -320,6 +344,19 @@
 						 return;
 
 					      }
+					      
+					      if (value.files && value.files[0]) {
+								var reader = new FileReader();
+								reader.onload = function(e) {
+								
+										$("#profileImg").attr("src", e.target.result);
+										$('#profileImg').show();
+
+
+								}
+								reader.readAsDataURL(value.files[0]);
+						
+							} 
 
 					}
 
@@ -445,23 +482,41 @@
                   // $('.nav-link').css('border','1px solid red');
                });
                
-               $('.deleteMyBoard').on('click',function(){
-           		//게시글 지워지게 한다
-           		var bNum = $(this).parent().parent().children().eq(0).text();
-           		console.log(bNum);
+               function updateDev(obj){
+            	   var rNum = $(obj).parent().parent().children().eq(0).text();
+            	  location.href="${pageContext.request.contextPath}/recipe/selectDetail.do?rNum="+rNum;
+              	  
+               }
+               
+               
+              $('.deleteMyRecipe').on('click',function(){
+           		//레시피 삭제
+           		var rNum = $(this).parent().parent().children().eq(0).text();
+           		console.log(rNum);
            		 $.ajax({
-           			url : "${pageContext.request.contextPath}/mypage/myPage.do",
+           			url : "${pageContext.request.contextPath}/mypage/myPagedelete.do",
            			data:{
-           				bNum : bNum
+           				rNum : rNum
            			}, success: function(data){
            				alert("게시글을 삭제했습니다");
-           				location.href="${pageContext.request.contextPath}/mypage/myPage.do";
+           				$('#refreshMypage').submit();
            			}, error: function(){
            				alert("게시글을 삭제하는데 실패하였습니다");
            			}
            		})
            		
            	});
+              
+          
+           	
+         /* // 게시글 삭제
+        	function deleteMyBoard(){
+        		if(confirm('글을 삭제 하시겠습니까?')==true){
+        			location.href="${pageContext.request.contextPath}/mypage/myPagedelete.do?no="+$('#bNum').val();
+        		}else{
+        			return;
+        		}
+        	} */
                
                 $('#posGo').on('click', function(){
             	   $('#postForm').attr("action", "${pageContext.request.contextPath}/mypage/myPosts.do").submit();
@@ -475,7 +530,8 @@
             	      $('#delForm').attr("action", "${pageContext.request.contextPath}/mypage/deleteUserInfo.do").submit();
             	   }
             	   else {
-            	      alert('삭제가 취소되었습니다.');
+            	     /*  alert('탈퇴가 취소되었습니다.'); */
+            	     swal('실패');
             	   }
                });
              </script>

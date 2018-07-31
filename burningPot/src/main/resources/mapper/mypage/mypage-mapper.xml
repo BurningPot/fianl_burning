@@ -22,6 +22,16 @@
 		SELECT COUNT(*) FROM BOARD
 	</select>
 	
+	<!-- 마이페이지 내가 쓴 레시피 불러오기 -->
+	<select id="selectMyRecipeList" parameterType="_int" resultType="recipe">
+		SELECT * FROM RECIPE WHERE MNUM = #{mNum}
+	</select>
+	
+	<!-- 마이페이지 내가쓴 레시피 토탈 -->
+	<select id="selectMyRecipeTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
+	
 	
 	
 	<!-- 닉네임 중복확인 -->
@@ -34,7 +44,13 @@
 		UPDATE MEMBER SET MNAME = #{nic}, PASSWORD = #{password}, EMAIL = #{email} WHERE MID = #{mId}
 	</update>
 	
-	<delete id="deleteMyBoard" parameterType="_int">
+	<!-- 레시피 삭제 -->
+	<delete id="deleteMyRecipe" parameterType="_int">
+		DELETE RECIPE WHERE RNUM = #{rNum}
+	</delete>
+	
+	<!-- 내가쓴 글 삭제 -->
+	<delete  id="deleteMyPost" parameterType="_int">
 		DELETE BOARD WHERE BNUM = #{bNum}
 	</delete>
 	
@@ -47,6 +63,10 @@
 	<delete id="deleteUserInfo" parameterType="_int">
 		DELETE FROM MEMBER WHERE  MNUM = #{formDel}
 	</delete>
+	
+	<select id="myinfoDel" parameterType="_int" resultType="member">
+		SELECT * FROM MEMBER WHERE MNUM = #{mNum}
+	</select>
 	
 	
  	<resultMap type="board" id="myBoard">

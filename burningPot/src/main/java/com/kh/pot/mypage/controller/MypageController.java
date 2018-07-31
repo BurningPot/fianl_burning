@@ -2,9 +2,7 @@ package com.kh.pot.mypage.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,18 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.home.service.MainService;
-import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.mypage.model.service.MypageService;
 import com.kh.pot.recipe.model.vo.Recipe;
+
+//m을 세션에 넣음
+@SessionAttributes(value={"m"})
 
 @Controller
 public class MypageController {
@@ -72,7 +72,7 @@ public class MypageController {
 			return result;
 		}
 	
-	@RequestMapping("/mypage/myPage.do")
+	@RequestMapping("/mypage/myPage2.do")
 	public String selectMyBoardList(
 			//cPage로 받을꺼고 값이 없어도 받을수 있다 required(오버로딩처럼 쓸수있다) 값이 안들어왔을때 디폴트벨류로 1로 하겟다
 			@RequestParam(value="cPage", required=false, defaultValue="1") 
@@ -92,18 +92,44 @@ public class MypageController {
 		
 	}
 	
-	//게시글 삭제하기!
+	//레시피 게시글 삭제하기!
 		@ResponseBody
-		@RequestMapping("/mypage/myPage222222.do")
-		public int deleteMyBoard(@RequestParam int bNum){
-			int result = mypageService.deleteMyBoard(bNum);
+		@RequestMapping("/mypage/myPagedelete.do")
+		public int deleteMyRecipe(@RequestParam int rNum){
+			int result = mypageService.deleteMyRecipe(rNum);
 			
 			return result;
 
 		}
 		
-		@RequestMapping("/mypage/myPosts.do")
-		public String myPostList(@RequestParam int mNum, Model model,
+		// 내가쓴글 삭제하기
+		@ResponseBody
+		@RequestMapping("/mypage/myPostdelete.do")
+		public int deleteMyPost(@RequestParam int bNum){
+			int result = mypageService.deleteMyPost(bNum);
+			
+			return result;
+		}
+		
+		@RequestMapping("/mypage/myPage.do")
+		public String myRecipe(@RequestParam int mNum, Model model,
+				@RequestParam(value="cPage", required=false, defaultValue="1") 
+		int cPage){
+			List<Recipe> list = mypageService.myRecipeList(mNum);
+			Member m =  mypageService.myinfoDel(mNum);
+			int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
+			
+			int totalContents = mypageService.selectMyRecipeTotalContents();
+			
+			model.addAttribute("recipeList", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
+			model.addAttribute("minfo", m);
+			
+			return "mypage/myPage";
+		}
+		
+		/*@ResponseBody*/
+		@RequestMapping(value="/mypage/myPosts.do")
+		public String myPostList( @RequestParam int mNum, Model model,
 				@RequestParam(value="cPage", required=false, defaultValue="1") 
 		int cPage){
 			List<Board> list = mypageService.myPostList(mNum);
@@ -112,6 +138,9 @@ public class MypageController {
 			int totalContents = mypageService.selectMyPostTotalContents();
 			
 			model.addAttribute("postList", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
+			
+			
+			/*System.out.println("에이잭스 스트링 값 확인 : "+ category);*/
 			
 			return "mypage/myPosts";
 		}
@@ -171,7 +200,7 @@ public class MypageController {
 				
 				//이름을 새로 만들어서 변경해준다
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-				int randomNum = (int)(Math.random() * 1000);			
+				int randomNum = (int)(Math.random() * 1000);
 				renameFileName = sdf.format(new Date(System.currentTimeMillis()))+"_"+randomNum+"."+ext;
 				
 				//새로만든 이름으로 저장경로에 저장시킨다
@@ -195,19 +224,22 @@ public class MypageController {
 			
 			}
 		}	
+			Member m = (Member)request.getSession().getAttribute("m");
+			m.setmPicture(renameFileName);
+			
+			request.getSession().setAttribute("m", m);
 			
 			return result;
 		}
 		
 		@RequestMapping("mypage/deleteUserInfo.do")
-		public String deleteUserInfo(@RequestParam int formDel, Model model){			
+		public String deleteUserInfo(@RequestParam int formDel, Model model, SessionStatus status){
 			int result = mypageService.deleteUserInfo(formDel);
 			
-			List<Recipe> list = mainService.selectShowHome();
-			
-			model.addAttribute("list", list);
-			
-			return "main";
+				// 세션 종료
+		     status.setComplete();
+		     
+			return "redirect:/";
 		}
 
 	}

@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 
 import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.member.model.vo.Member;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 public interface MypageService {
 
@@ -18,7 +19,7 @@ public interface MypageService {
 
 	int selectMyBoardTotalContents();
 
-	int deleteMyBoard(int bNum);
+	int deleteMyRecipe(int rNum);
 
 	int insertMember(Member member);
 
@@ -31,6 +32,14 @@ public interface MypageService {
 	List<Board> myPostList(int mNum);
 
 	int selectMyPostTotalContents();
+
+	List<Recipe> myRecipeList(int mNum);
+
+	int selectMyRecipeTotalContents();
+
+	Member myinfoDel(int mNum);
+
+	int deleteMyPost(int bNum);
 
 	
 	

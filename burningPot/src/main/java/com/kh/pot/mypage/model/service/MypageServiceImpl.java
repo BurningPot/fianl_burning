@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.mypage.model.dao.MypageDao;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 @Service
 public class MypageServiceImpl implements MypageService{
@@ -47,9 +48,9 @@ public class MypageServiceImpl implements MypageService{
 	}
 
 	@Override
-	public int deleteMyBoard(int bNum) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteMyRecipe(int rNum) {
+		
+		return mypageDao.deleteMyRecipe(rNum);
 	}
 
 	@Override
@@ -90,6 +91,26 @@ public class MypageServiceImpl implements MypageService{
 	public int selectMyPostTotalContents() {
 
 		return mypageDao.selectMyPostTotalContents();
+	}
+
+	@Override
+	public List<Recipe> myRecipeList(int mNum) {
+		return mypageDao.myRecipeList(mNum);
+	}
+
+	@Override
+	public int selectMyRecipeTotalContents() {
+		return mypageDao.selectMyRecipeTotalContents();
+	}
+
+	@Override
+	public Member myinfoDel(int mNum) {
+		return mypageDao.myinfoDel(mNum);
+	}
+
+	@Override
+	public int deleteMyPost(int bNum) {
+		return mypageDao.deleteMyPost(bNum);
 	}
 	
 
