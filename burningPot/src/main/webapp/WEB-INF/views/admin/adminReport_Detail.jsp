@@ -72,14 +72,14 @@
             	<div class="col-lg-10 test" style="heigh:200px;">
             		<div class="row">
             			<div class="col-lg-4">
-            				<img src="${pageContext.request.contextPath}/resources/img/recipe/${rp.rImg}" style="margin-top: 3%;"/>
+            				<img src="${pageContext.request.contextPath}/resources/img/recipeContent/${rp.rImg}" style="margin-top: 3%;"/>
             			</div>
             			<div class="col-lg-7 offset-lg-1 no-padding">
-            				<div class="col-lg-11" style="font-size:200%; margin-top:2%; background: #FDD692; ">${rp.rName }</div>
-            				<div class="col-lg-11" style="font-size:200%; background:#EC7357;">${rp.mName }</div>
+            				<div class="col-lg-11" style="font-size:200%; margin-top:2%; background: #FDD692;">${rp.rName}</div>
+            				<div class="col-lg-11" style="font-size:200%; background:#EC7357;">${rp.mName}</div>
             				<br />
             				<!-- 레시피 보러가기는 레시피 상세보기로 링크를 건다 -->
-            				<button class="btn btn-success">레시피 보러가기</button>
+            				<button class="btn btn-success" onclick="showRecipe();">레시피 보러가기</button>
             				<button class="btn btn-danger" onclick="deleteThisRecipe();">레시피 삭제하기</button>  
             				<br /><br />    				
             			</div>            			
@@ -137,6 +137,15 @@
             			  }
             			});  
             	}
+            	
+            	function showRecipe(){
+            		var number =${rp.rNum};            		
+            		window.open(
+            				"${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum="+number, '_blank'	
+            		);
+            	}
+            	
+            	
         	</script>
         	
         </div>

@@ -72,8 +72,8 @@
 	
 	
 	<div class="col-lg-6 offset-lg-6" style="padding-right: 6%;" align="right">
-		<button class="btn btn-primary">메인으로가기</button>	
-		<button class="btn btn-success">Q&A게시판</button>	
+		<button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/home/showHome.do'">메인으로가기</button>	
+		<button class="btn btn-success" onclick="location.href='${pageContext.request.contextPath}/board/boardList.do'">Q&A게시판</button>	
 	</div>
 	
 	

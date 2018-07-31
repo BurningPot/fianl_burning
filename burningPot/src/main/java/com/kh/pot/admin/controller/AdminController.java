@@ -93,7 +93,7 @@ public class AdminController {
 			@RequestParam(value="cPage", required=false, defaultValue="1") int cPage,
 			@RequestParam(value="customSelect", required=false, defaultValue="null") String customSelect,
 			@RequestParam(value="keyword", required=false, defaultValue="null") String keyword,
-			Model model){		
+			Model model) throws PotException{		
 		
 		//--페이지 처리 코드 부분
 		int startPage; 	// 한번에 표시될 게시글들의 시작 페이지
@@ -114,6 +114,7 @@ public class AdminController {
 			currentPage = cPage;
 		}
 			
+		try{
 		//전체 게시글의 수
 		int listCount = memberService.selectCountMember(currentPage, limit, customSelect, keyword); 
 		
@@ -142,6 +143,7 @@ public class AdminController {
 		//--페이지 처리 코드 부분	
 				
 		model.addAttribute("commonTitle","회원조회");
+		
 		ArrayList<Member> list = (ArrayList<Member>) memberService.selectMemberList(currentPage, limit, customSelect, keyword);
 		
 		
@@ -154,8 +156,11 @@ public class AdminController {
 		.addAttribute("cPage", currentPage)
 		.addAttribute("limit", limit);
 		
-		//페이지 처리가 필요하다				
+		}catch(Exception e){
+			throw new PotException("회원정보페이지 에러!", "회원정보를 가져오는 도중 에러가 발생했습니다!");
+		}
 		
+		//페이지 처리가 필요하다	
 		return "admin/adminMemberSearch";
 	}
 	
@@ -190,12 +195,12 @@ public class AdminController {
 	
 	// Q&A게시판
 	@RequestMapping("/admin/goQNA.do")
-	public String goQandA(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage){
+	public String goQandA(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage) throws PotException{
 		model.addAttribute("commonTitle","Q&A 게시판");
 		
 		String bCategory = "QNA";
 		int numPerPage = 10; // 한 페이지 당 게시글 수
-		
+		try{
 		ArrayList<Board> list = (ArrayList<Board>) boardService.selectBoard(cPage, numPerPage, bCategory);
 		
 		int totalContents = boardService.selectCount(bCategory);
@@ -207,17 +212,19 @@ public class AdminController {
 		.addAttribute("totalContents", totalContents)
 		.addAttribute("detailMapping","detailQNA.do")
 		.addAttribute("servletMapping", "goQNA.do");
-		
+		}catch(Exception e){
+			throw new PotException("Q&A게시판 오류!", "Q&A게시판을 불러오는 도중 에러가 발생했습니다");
+		}
 		return "admin/adminBoard";
 	}
 	
 		
 	//게시판 내용보기!
 	@RequestMapping("/admin/detailQNA.do")
-	public String detailQandA(Model model, @RequestParam int bNum){
+	public String detailQandA(Model model, @RequestParam int bNum) throws PotException{
 		String bCategory = "QNA";
-		
 		model.addAttribute("commonTitle","Q&A 게시판");
+		try{
 		Board b = boardService.selectBoardDetail(bCategory, bNum);
 		
 		model.addAttribute("b", b); // 특정 게시글의 내용을 불러온다
@@ -229,7 +236,9 @@ public class AdminController {
 		.addAttribute("servletMapping", "goQNA.do")
 		.addAttribute("mId", "admin")		// 임시적으로 회원의 정보를 넘겨주기 (나중에 로그인합쳐지면 세션으로 받기)
 		.addAttribute("mNum", 1);			// 임시적으로 회원의 정보를 넘겨주기
-		
+		}catch(Exception e){
+			throw new PotException("Q&A게시판 오류!","Q&A 게시글을 불러오는 도중 에러가 발생했습니다");
+		}
 		return "admin/adminBoard_Detail";
 	}
 	
@@ -237,8 +246,7 @@ public class AdminController {
 	@ResponseBody
 	@RequestMapping("/admin/deleteBoard.do")
 	public int deleteBoard(@RequestParam int bNum){
-		int result = boardService.deleteBoard(bNum);
-		
+		int result = boardService.deleteBoard(bNum);		
 		return result;
 	}
 	
@@ -248,19 +256,18 @@ public class AdminController {
 	public HashMap<String, Object> insertBoardComment(@RequestParam String comment, 
 			@RequestParam int bNum, @RequestParam int mNum, 
 			Model model){
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("comment", comment);
 		map.put("bNum", bNum);
 		map.put("mNum", mNum);			
 		
-		int result = boardService.insertBoardComment(map);
-		System.out.println(comment+","+ bNum+","+ mNum);
-		System.out.println("삽입성공? : "+result);	
+		boardService.insertBoardComment(map);
 		
 		ArrayList<BoardComment> list = (ArrayList<BoardComment>) boardService.selectBoardComment(bNum);
 		int lastBcNum = list.get(list.size()-1).getBcNum();
-		map.put("bcNum", lastBcNum);
-		System.out.println("lastBcNum : "+lastBcNum);
+		map.put("bcNum", lastBcNum);		
+		
 		
 		return map;
 	}
@@ -289,10 +296,11 @@ public class AdminController {
 	// 재료요청 게시판
 	@RequestMapping("/admin/goRequestIngredient.do")
 	public String goRequestIngredient(Model model, 
-			@RequestParam(value="cPage", required=false, defaultValue= "1" ) int cPage){
+			@RequestParam(value="cPage", required=false, defaultValue= "1" ) int cPage)throws PotException{
 		
 		String bCategory = "재료요청";
 		int numPerPage = 10;
+		try{
 		ArrayList<Board> list = (ArrayList<Board>) boardService.selectBoard(cPage, numPerPage, bCategory);
 		int totalContents = boardService.selectCount(bCategory);
 		
@@ -300,20 +308,22 @@ public class AdminController {
 		.addAttribute("numPerPage", numPerPage)
 		.addAttribute("totalContents", totalContents)
 		.addAttribute("detailMapping","ingRequestDetail.do")
-		.addAttribute("servletMapping", "goRequestIngredient.do");
-		
-		model.addAttribute("commonTitle","재료요청 게시판");
-		
+		.addAttribute("servletMapping", "goRequestIngredient.do")		
+		.addAttribute("commonTitle","재료요청 게시판");
+		}catch(Exception e){
+			throw new PotException("재료요청게시판 오류!","재료요청게시글을 불러오는 도중 에러가 발생했습니다");
+		}
 		return "admin/adminBoard";
 	}
 	
 	// 재료요청 게시판 내용 보기
 	@RequestMapping("/admin/ingRequestDetail.do")
-	public String ingRequestDetail(@RequestParam int bNum, Model model){
+	public String ingRequestDetail(@RequestParam int bNum, Model model)throws PotException{
 		String bCategory = "재료요청";
 		
 		model.addAttribute("commonTitle","재료요청 게시판");
 		
+		try{
 		// 특정 게시글의 정보 불러오기
 		Board b = boardService.selectBoardDetail(bCategory, bNum);
 		
@@ -326,7 +336,9 @@ public class AdminController {
 		.addAttribute("servletMapping", "goRequestIngredient.do")
 		.addAttribute("mId", "admin")		// 임시적으로 회원의 정보를 넘겨주기 (나중에 로그인합쳐지면 세션으로 받기)
 		.addAttribute("mNum", 1);			// 임시적으로 회원의 정보를 넘겨주기
-		
+		}catch(Exception e){
+			throw new PotException("재료요청게시판 오류!","재료요청글을 불러오는 도중 에러가 발생했습니다");
+		}
 		return "admin/adminIngRequest_Detail";
 	}
 	
@@ -344,14 +356,17 @@ public class AdminController {
 	 * Move to Food Ingredient Page. 2018-07-13 [HYD]
 	 ***/
 	@RequestMapping("/admin/goIng.do")
-	public String goIng(Model model){
+	public String goIng(Model model)throws PotException{
 		model.addAttribute("commonTitle","재료관리 페이지");
 		
+		try{
 		ArrayList<Ingredient> distinctList = (ArrayList<Ingredient>)ingService.selectDistinctName();
 		ArrayList<String> ingNameList = (ArrayList<String>)ingService.selectAllIngredientName();
 		
 		model.addAttribute("distinctList",distinctList).addAttribute("ingNameList", ingNameList);
-		
+		}catch(Exception e){
+			throw new PotException("재료관리 페이지 오류!","재료구분을 불러오는 도중 에러가 발생했습니다!");
+		}
 		
 		return "admin/adminIngredient";
 	}
@@ -394,7 +409,7 @@ public class AdminController {
 			@RequestParam(value="exdate", required=false, defaultValue="0") int exdate, 
 			@RequestParam String iName, @RequestParam String keyword,
 			@RequestParam String cName, @RequestParam String subCName,
-			Model model){
+			Model model)throws PotException{
 				
 		System.out.println("들어오나요?");
 		System.out.println("img원래것 이름은? :"+img);
@@ -411,6 +426,7 @@ public class AdminController {
 		
 		String renameFileName = "";
 		
+		try{
 		// file input에 무언가가 들어왔다면(수정하기를 눌러 사진을 넣어서 보냈다면) 실행시킬 부분이다
 		if(upfiles.length >0){
 			if(!upfiles[0].isEmpty()){
@@ -451,7 +467,11 @@ public class AdminController {
 			model.addAttribute("img", img);
 		}	
 	}
+		}catch(Exception e){
+			throw new PotException("재료관리 페이지 오류!","재료정보를 수정하는 도중 에러가 발생했습니다");
+		}
 		
+		try{
 		//기존에 있는 키워드는 제외하고 insert 시켜야 하므로 기존의 keyword들도 불러와야한다
 		//1. 해당 iNum에  해당하는 keyword들을 모두 제거한다
 		ingService.deleteIngKeyword(iNum);
@@ -467,7 +487,9 @@ public class AdminController {
 		.addAttribute("subCName", subCName)
 		.addAttribute("exdate", exdate)
 		.addAttribute("keyword", keywordArr);
-		
+		}catch(Exception e){
+			throw new PotException("재료관리 페이지 오류!","재료키워드를 업데이트 하던 도중 에러가 발생했습니다");
+		}
 		
 		return "admin/adminResultPage";
 	}
@@ -536,7 +558,7 @@ public class AdminController {
 			@RequestParam String bigCategory,
 			@RequestParam String subCategory, 
 			@RequestParam String ingName, @RequestParam String exdate,
-			HttpServletRequest request){
+			HttpServletRequest request)throws PotException{
 		
 		int result = 0;
 		String saveDir = request.getSession().getServletContext().getRealPath("/resources/img/ingredient");
@@ -548,6 +570,7 @@ public class AdminController {
 		}
 		
 		String renameFileName = "";
+		try{
 		if(addForUpload.length >0){
 			if(!addForUpload[0].isEmpty()){
 			String originFileName = addForUpload[0].getOriginalFilename(); // 원본파일 이름
@@ -596,7 +619,9 @@ public class AdminController {
 	}	
 		
 		model.addAttribute("msg","새로운 재료를 추가하였습니다!");
-		
+		}catch(Exception e){
+			throw new PotException("재료관리 페이지 오류!", "새로운 재료를 추가하는 도중 에러가 발생했습니다");
+		}	
 		
 		return "admin/adminResultPage"; 
 	}
@@ -629,12 +654,13 @@ public class AdminController {
 	
 	// 신고게시판
 	@RequestMapping("/admin/goReport.do")
-	public String goReport(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage){
+	public String goReport(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage) throws PotException{
 		model.addAttribute("commonTitle","신고 게시판");
 		
 		/*String bCategory = "QNA";*/
 		int numPerPage = 10; // 한 페이지 당 게시글 수
 			
+		try{
 		ArrayList<Report> list = (ArrayList<Report>) adminService.selectReport(cPage, numPerPage);
 		
 		int totalContents = adminService.selectReportCount();
@@ -646,16 +672,20 @@ public class AdminController {
 		.addAttribute("totalContents", totalContents)
 		.addAttribute("detailMapping","detailReport.do")
 		.addAttribute("servletMapping", "goReport.do");
-			
+		}catch(Exception e){
+			throw new PotException("신고게시판 오류!","신고게시판을 불러오던 도중 에러가 발생했습니다");
+		}
 		return "admin/adminReport";
 	}
 	
 	//신고게시판 내용보기!
 	@RequestMapping("/admin/detailReport.do")
-	public String detailReport(Model model, @RequestParam int rpNum){			
+	public String detailReport(Model model, @RequestParam int rpNum)throws PotException{			
 			
 		model.addAttribute("commonTitle","신고 게시판");
-		// 특정 게시글의 내용을 불러온다
+		
+		try{
+		// 특정 게시글의 내용을 불러온다	
 		Report r = adminService.selectReportDetail(rpNum);			
 		model.addAttribute("b", r); 
 		
@@ -666,7 +696,9 @@ public class AdminController {
 		.addAttribute("servletMapping", "goReport.do")
 		.addAttribute("mId", "admin")		// 임시적으로 회원의 정보를 넘겨주기 (나중에 로그인합쳐지면 세션으로 받기)
 		.addAttribute("mNum", 1);			// 임시적으로 회원의 정보를 넘겨주기
-		
+		}catch(Exception e){
+			throw new PotException("신고게시판 오류!","신고글을 읽어오던 도중 에러가 발생했습니다");
+		}
 		return "admin/adminReport_Detail";
 	}
 	
