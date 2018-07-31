@@ -34,7 +34,23 @@
 
 	<div class="container" style=" width : 100%; height:300px; padding: 1%;">
             <div id="myinfo" style="width:49%; height: 100%; float: left; border: 1px solid lightgray">
-                <img src="${pageContext.request.contextPath }/resources/img/dlalwl.jpg" class="rounded float-left" style="width:30%; height: 80%; padding: 1%;">
+                            	
+<%--             	<c:if test="${ m.mPicture == 'defaultPerson.png' }">
+            		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture}" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+            	</c:if>
+                      
+               <c:if test="${ m.mPicture != 'defaultPerson.png' }"> --%>
+               		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture }" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+<%--                </c:if> --%>
+                <div id="profileWrap">
+                	<form  id="fileForm" enctype="multipart/form-data"><input type="file" accept="image/*" id="profileBtn" name="profileBtn" onchange="LoadImg(this)"/>
+                		<input type="hidden" name="oriHidden" value="${ m.mPicture }"/>
+                		<input type="hidden"  name="numHidden" value="${m.mNum }"/>
+                	</form>
+                </div>
+                
+                   
+                <input type="hidden" value="${m.mId}" id="mId"/>
                 
                 <div class="row text-center">
                     
@@ -53,7 +69,7 @@
                     </div>
                                  
                   <div class="col-sm-12">
-                      <button type="button" class="btn btn-default btn-sm" >이미지변경</button>
+                      
                     <button type="button" class="btn btn-default btn-sm btn-toggle" data-toggle="modal" data-target="#myModal">정보수정</button>
                     <!-- 정보수정 모달창 -->
                     <div class="modal fade" id="myModal">
@@ -128,7 +144,7 @@
                 </div>
                  
             <div id="refrigerator" style="width:49%; height: 100%; float: right; border: 1px solid lightgray;">
-                  <img src="${pageContext.request.contextPath }/resources/img/sodekdrh.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
+                  <img src="${pageContext.request.contextPath }/resources/img/tmakxm.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
                   <div class="refrigeratormenu">
                       뭐가들어가야 할까나
                       
@@ -141,22 +157,57 @@
             <br>                        
               <ul class="nav nav-tabs nav-justified " style="background-color :#FDD692">
                   <li class="nav-item">
-                    <a class="na na1 nav-link " href="${pageContext.request.contextPath}/mypage/myPage.do">내가 올린 레시피</a>
+                    <a class="na na1 nav-link " id="recGo" href="#">내가 올린 레시피</a>
                   </li>
                   <li class="nav-item">
-                    <a class="na na2 nav-link active" href="${pageContext.request.contextPath}/mypage/myPosts.do">내가 쓴 글</a>
+                    <a class="na na2 nav-link active" id="posGo" href="#">내가 쓴 글</a>
                   </li>
                   <li class="nav-item">
                     <a class="na na3 nav-link" href="${pageContext.request.contextPath}/mypage/myLike.do">좋아요</a>
                   </li>
-                </ul><br>              
-                <button type="button" class="btn btn-default btn-sm">재료요청</button>
-                <button type="button" class="btn btn-default btn-sm">Q&A</button>
-                <button type="button" class="btn btn-default btn-sm">신고</button>
+                </ul>
+                <br>
+                <div id="myPostWrap">
+                	<input type="button" class="btn btn-default btn-sm" value="재료요청"/>
+	                <input type="button" class="btn btn-default btn-sm" value="Q&A"/>
+	                <input type="button" class="btn btn-default btn-sm" value="신고"/>
+                </div>
+               
                 <br>
                 <br>
                 
+                <form id="recipeForm">
+				<input type="hidden" value="${ m.mNum }" name="mNum" />
+			  </form>
+			  <form id="refreshMypost" action="${pageContext.request.contextPath}/mypage/myPosts.do">
+             	<input type="hidden" value="${m.mNum }" name="mNum"/>
+             </form>
                 
+               <!--  <script>
+                	var myPost;
+                	$('#myPostWrap').children().on("click", function(){
+                		console.log($(this).val());
+                		
+                		myPost = $(this).val();
+                		
+                		console.log("나 버튼 받고 값 바뀐다 : "+ myPost);
+                		
+                		$.ajax({
+                			url : "${pageContext.request.contextPath}/mypage/myPosts.do",
+                			data : { category : myPost },
+                			type : "get",
+                			dataType : "json",
+                			success : function(data) {
+                				
+                				
+                				
+                				
+                			}, error : function(data) {
+                				console.log("에러");
+                			}
+                		});
+                	});
+                </script> -->
 	
 		<div id="mp2" class="col-lg-12" style="padding : 0">
           <table id="mypage2" class="table table-hover" style="border: 1px solid lightgray;">
@@ -174,13 +225,13 @@
                 <c:forEach items="${postList}" var="b">
               <tr id="${b.bNum }">
                 <td>${b.bNum }</td>
-                  <td>${b.bTitle }</td>
+                  <td>[ ${b.category } ]&nbsp;${b.bTitle } </td>
                   <td>${b.mName }</td>
                   <td>${b.bDate }</td>
                   <td>${b.bCount }</td>
                   <td>
-                          <button type="button" class="btn btn-default btn-sm" onclick="updateDev();">수정</button>
-                          <button type="button" class="btn btn-default btn-sm" onclick="updateDev();"  id="deleteMyBoard">삭제</button>
+                          <button type="button" class="btn btn-default btn-sm" onclick="updateDev(this);">수정</button>
+                          <button type="button" class="btn btn-default btn-sm deleteMyBoard">삭제</button>
                       </td>                      
                   </tr>
                   </c:forEach>
@@ -203,9 +254,76 @@
    <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "myPosts.do") %>
             </div>
             
-
           </div>
           <script>
+          
+          // 이미지 변경 클릭시
+          $(function(){
+       	   $('#profileWrap').hide();
+       	   
+       	   $('#profileImg').click(function(){
+       		   $('#profileBtn').click();
+       	   });
+          });
+             
+          function LoadImg(value) {
+       	   var reader="";
+       	   if (!value.files && value.files[0])
+       	   reader = new FileReader();
+       	   
+   			 console.log(value.files[0].name);
+   			// 이미지 확장자 구하는 코드
+   			 if( value.files[0].name != "" ){
+
+   					var ext = value.files[0].name.split('.').pop().toLowerCase();
+
+   					      if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+
+   						 alert('gif,png,jpg,jpeg 파일만 업로드 할수 있습니다.');
+
+   						 return;
+
+   					      }
+   					      
+   					      if (value.files && value.files[0]) {
+   								var reader = new FileReader();
+   								reader.onload = function(e) {
+   								
+   										$("#profileImg").attr("src", e.target.result);
+   										$('#profileImg').show();
+
+
+   								}
+   								reader.readAsDataURL(value.files[0]);
+   						
+   							} 
+
+   					}
+
+   			console.log("사진들어오냐");
+   		
+   			 var form = $('#fileForm')[0];
+   			 
+   			 var data = new FormData(form);
+   			 
+   			 $.ajax({
+   				 	
+   				 	url : '${pageContext.request.contextPath}/mypage/updateImg.do',
+   			        type: "POST",
+   			        enctype: 'multipart/form-data',
+   			        processData: false,  // Important!
+   			        contentType: false,
+   			        cache: false,
+   			        data : data,
+   			        success : function (data){
+   			        	/* alert("성공"); */
+   			        	},
+   			        	error : function(data){
+   			        		alert("실패");
+   			        	}
+   			        });
+   		
+   		}
           
        // 이름 유효성 검사
       	$('#nickName').on('keyup', function(){
@@ -269,23 +387,42 @@
                   // $('.nav-link').css('border','1px solid red');
                });
                
-               $('#deleteMyBoard').on('click',function(){
+               $('.deleteMyBoard').on('click',function(){
            		//게시글 지워지게 한다
-           		var bNum = $('.first-row').eq(2).children().eq(1).text();            		
-           		
-           		$.ajax({
-           			url : "${pageContext.request.contextPath}/mypage/myPage.do",
+           		var bNum = $(this).parent().parent().children().eq(0).text();	
+           		console.log('sdf'+bNum);
+           		 $.ajax({
+           			url : "${pageContext.request.contextPath}/mypage/myPostdelete.do",
            			data:{
            				bNum : bNum
            			}, success: function(data){
            				alert("게시글을 삭제했습니다");
-           				location.href="${pageContext.request.contextPath}/mypage/${servletMapping}";
+           				$('#refreshMypost').submit();
            			}, error: function(){
            				alert("게시글을 삭제하는데 실패하였습니다");
            			}
            		})
            		
            	});
+               
+               function updateDev(obj){
+            	   var bNum = $(obj).parent().parent().children().eq(0).text();
+            	  location.href="${pageContext.request.contextPath}/board/updateBoard.do?no="+bNum;
+              	  
+               }
+               
+            
+               
+               
+               
+               
+               $('#posGo').on('click', function(){
+            	   $('#postForm').attr("action", "${pageContext.request.contextPath}/mypage/myPosts.do").submit();
+               });
+               
+               $('#recGo').on('click', function(){
+            	   $('#recipeForm').attr("action", "${pageContext.request.contextPath}/mypage/myPage.do").submit();
+               });
                
                
              </script>

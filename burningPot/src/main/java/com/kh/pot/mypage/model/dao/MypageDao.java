@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.ui.Model;
 
 import com.kh.pot.board.model.vo.Board;
+import com.kh.pot.member.model.vo.Member;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 public interface MypageDao {
 
@@ -29,6 +31,16 @@ public interface MypageDao {
 	List<Board> myPostList(int mNum);
 
 	int selectMyPostTotalContents();
+
+	List<Recipe> myRecipeList(int mNum);
+
+	int selectMyRecipeTotalContents();
+
+	int deleteMyRecipe(int rNum);
+
+	Member myinfoDel(int mNum);
+
+	int deleteMyPost(int bNum);
 	
 
 

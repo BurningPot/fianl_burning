@@ -34,7 +34,23 @@
 
 	<div class="container" style=" width : 100%; height:300px; padding: 1%;">
             <div id="myinfo" style="width:49%; height: 100%; float: left; border: 1px solid lightgray">
-                <img src="${pageContext.request.contextPath }/resources/img/dlalwl.jpg" class="rounded float-left" style="width:30%; height: 80%; padding: 1%;">
+                            	
+<%--             	<c:if test="${ m.mPicture == 'defaultPerson.png' }">
+            		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture}" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+            	</c:if>
+                      
+               <c:if test="${ m.mPicture != 'defaultPerson.png' }"> --%>
+               		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture }" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+<%--                </c:if> --%>
+                <div id="profileWrap">
+                	<form  id="fileForm" enctype="multipart/form-data"><input type="file" accept="image/*" id="profileBtn" name="profileBtn" onchange="LoadImg(this)"/>
+                		<input type="hidden" name="oriHidden" value="${ m.mPicture }"/>
+                		<input type="hidden"  name="numHidden" value="${m.mNum }"/>
+                	</form>
+                </div>
+                
+                   
+                <input type="hidden" value="${m.mId}" id="mId"/>
                 
                 <div class="row text-center">
                     
@@ -53,7 +69,7 @@
                     </div>
                                  
                   <div class="col-sm-12">
-                      <button type="button" class="btn btn-default btn-sm" >이미지변경</button>
+                      
                     <button type="button" class="btn btn-default btn-sm btn-toggle" data-toggle="modal" data-target="#myModal">정보수정</button>
                     <!-- 정보수정 모달창 -->
                     <div class="modal fade" id="myModal">
@@ -128,7 +144,7 @@
                 </div>
                  
             <div id="refrigerator" style="width:49%; height: 100%; float: right; border: 1px solid lightgray;">
-                  <img src="${pageContext.request.contextPath }/resources/img/sodekdrh.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
+                  <img src="${pageContext.request.contextPath }/resources/img/tmakxm.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
                   <div class="refrigeratormenu">
                       뭐가들어가야 할까나
                       
@@ -204,6 +220,74 @@
           </div>
           </div>
           <script>
+          
+          // 이미지 변경 클릭시
+          $(function(){
+       	   $('#profileWrap').hide();
+       	   
+       	   $('#profileImg').click(function(){
+       		   $('#profileBtn').click();
+       	   });
+          });
+             
+          function LoadImg(value) {
+       	   var reader="";
+       	   if (!value.files && value.files[0])
+       	   reader = new FileReader();
+       	   
+   			 console.log(value.files[0].name);
+   			// 이미지 확장자 구하는 코드
+   			 if( value.files[0].name != "" ){
+
+   					var ext = value.files[0].name.split('.').pop().toLowerCase();
+
+   					      if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+
+   						 alert('gif,png,jpg,jpeg 파일만 업로드 할수 있습니다.');
+
+   						 return;
+
+   					      }
+   					      
+   					      if (value.files && value.files[0]) {
+   								var reader = new FileReader();
+   								reader.onload = function(e) {
+   								
+   										$("#profileImg").attr("src", e.target.result);
+   										$('#profileImg').show();
+
+
+   								}
+   								reader.readAsDataURL(value.files[0]);
+   						
+   							} 
+
+   					}
+
+   			console.log("사진들어오냐");
+   		
+   			 var form = $('#fileForm')[0];
+   			 
+   			 var data = new FormData(form);
+   			 
+   			 $.ajax({
+   				 	
+   				 	url : '${pageContext.request.contextPath}/mypage/updateImg.do',
+   			        type: "POST",
+   			        enctype: 'multipart/form-data',
+   			        processData: false,  // Important!
+   			        contentType: false,
+   			        cache: false,
+   			        data : data,
+   			        success : function (data){
+   			        	/* alert("성공"); */
+   			        	},
+   			        	error : function(data){
+   			        		alert("실패");
+   			        	}
+   			        });
+   		
+   		}
           
        // 이름 유효성 검사
       	$('#nickName').on('keyup', function(){

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 
 import com.kh.pot.board.model.vo.Board;
+import com.kh.pot.member.model.vo.Member;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 @Repository
 public class MypageDaoImpl implements MypageDao{
@@ -81,9 +83,34 @@ public class MypageDaoImpl implements MypageDao{
 
 	@Override
 	public int selectMyPostTotalContents() {
-		return sqlSession.selectOne("mypage.selectMyPostTotalContents");
+		return sqlSession.selectOne("mypage.selectMyPostTotalContents");	
 	
-	
+	}
+
+	@Override
+	public List<Recipe> myRecipeList(int mNum) {
+		return sqlSession.selectList("mypage.selectMyRecipeList", mNum);
+	}
+
+	@Override
+	public int selectMyRecipeTotalContents() {
+		return sqlSession.selectOne("mypage.selectMyRecipeTotalContents");
+	}
+
+	@Override
+	public int deleteMyRecipe(int rNum) {
+		
+		return sqlSession.delete("mypage.deleteMyRecipe", rNum);
+	}
+
+	@Override
+	public Member myinfoDel(int mNum) {
+		return sqlSession.selectOne("mypage.myinfoDel", mNum);
+	}
+
+	@Override
+	public int deleteMyPost(int bNum) {
+		return sqlSession.delete("mypage.deleteMyPost", bNum);
 	}
 		
 	} 

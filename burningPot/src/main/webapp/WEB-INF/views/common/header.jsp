@@ -1542,7 +1542,7 @@
 				        </div>
 				        <div class="regist_recipe_btn_after">
 				          <button class="menuBtn_after" data-tooltip-text="Recipe Regist!!">
-				              <i class="fas fa-utensils fa-3x"></i>
+				              <i class="fas fa-utensils fa-3x" onclick="location.href='${pageContext.request.contextPath}/recipe/recipeForm.do'"></i>
 				          </button>
 				        </div>
 				        <div class="board_btn_after" data-tooltip-text="Board!!">
@@ -1562,7 +1562,7 @@
 				        </div>
 			        </c:if>
 			        <form action="${pageContext.request.contextPath}/mypage/myPage.do" method="POST" id="goToMyPageForm">
-			        	<input type="hidden" value="${m.mNum}" name="mNumForMyPage"/>
+			        	<input type="hidden" value="${m.mNum}" name="mNum"/>
 			        </form>
 			        <script> 
 			        	function goToMyPage(){
