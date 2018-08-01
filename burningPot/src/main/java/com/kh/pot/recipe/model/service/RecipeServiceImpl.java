@@ -99,12 +99,12 @@ public class RecipeServiceImpl implements RecipeService {
 		
 	}
 
-	@Override
-	public List<Review> selectReview(int rNum) {
-
-		return recipeDao.selectReview(rNum);
-		
-	}
+//	@Override
+//	public List<Review> selectReview(int rNum) {
+//
+//		return recipeDao.selectReview(rNum);
+//		
+//	}
 
 	@Override
 	public Recommend selectRecommend(Recommend rec) {
@@ -145,6 +145,65 @@ public class RecipeServiceImpl implements RecipeService {
 	public int insertReport(Report report) {
 
 		return recipeDao.insertReport(report);
+		
+	}
+
+	@Override
+	public Review selectReviewOne(Review rv) {
+
+		return recipeDao.selectReviewOne(rv);
+		
+	}
+
+	@Override
+	public int deleteReview(int rvNum) {
+
+		return recipeDao.deleteReview(rvNum);
+		
+	}
+
+	@Override
+	public double reviewAvgGrade(int rNum) {
+
+		return recipeDao.reviewAvgGrade(rNum);
+		
+	}
+
+	@Override
+	public int selectReviewTotalContents(int rNum) {
+
+		return recipeDao.selectReviewTotalContents(rNum);
+		
+	}
+
+	@Override
+	public List<Map<String, String>> selectReview(int rNum, int currentPage, int numPerPage) {
+
+		int startRow = (currentPage - 1) * numPerPage+1;
+		int endRow = startRow + (numPerPage-1);
+		System.out.println("startrow : " + startRow);
+		System.out.println("endRow : " + endRow);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("rNum", rNum);
+		map.put("startRow", startRow);
+		map.put("endRow",endRow);
+		
+		return recipeDao.selectReview(map);
+		
+	}
+
+	@Override
+	public int updateRecipe(Recipe recipe) {
+
+		return recipeDao.updateRecipe(recipe);
+		
+	}
+
+	@Override
+	public int deleteReviewAll(int rNum) {
+
+		return recipeDao.deleteReviewAll(rNum);
 		
 	}
 

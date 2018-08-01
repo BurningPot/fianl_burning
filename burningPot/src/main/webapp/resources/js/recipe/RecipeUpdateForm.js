@@ -234,19 +234,21 @@ function selectedNum(mainIndex) {
 
 // ------------------------------------- 이미지 등록 기능 영역 -------------------------------------
 function LoadImg(value, num) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            switch(num){
-            case 1:
-                $(".titleImage").attr("src", e.target.result);
-                break;
-            case 2:
-                $(value).siblings('.subImage').attr("src", e.target.result);
-                console.log($(value).val());
-                break;
-            }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        switch(num){
+	        case 1:
+	            $(".titleImage").attr("src", e.target.result);
+	            $("#originTitleImg").val("");
+	            break;
+	        case 2:
+	            $(value).siblings('.subImage').attr("src", e.target.result);
+	            $(value).siblings(".originSubImg").val("");
+	            console.log($(value).val());
+	            break;
         }
-        reader.readAsDataURL(value.files[0]);
+    }
+    reader.readAsDataURL(value.files[0]);
 }
 
 //------------------------------------- form action 변경 영역 -------------------------------------

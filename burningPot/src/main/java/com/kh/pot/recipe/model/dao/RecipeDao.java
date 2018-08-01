@@ -36,7 +36,7 @@ public interface RecipeDao {
 
 	int updateCount(int rNum);
 
-	List<Review> selectReview(int rNum);
+//	List<Review> selectReview(int rNum);
 
 	Recommend selectRecommend(Recommend rec);
 
@@ -49,5 +49,19 @@ public interface RecipeDao {
 	int insertReview(Review review);
 
 	int insertReport(Report report);
+
+	Review selectReviewOne(Review rv);
+
+	int deleteReview(int rvNum);
+
+	double reviewAvgGrade(int rNum);
+
+	int selectReviewTotalContents(int rNum);
+
+	List<Map<String, String>> selectReview(Map<String, Object> map);
+
+	int updateRecipe(Recipe recipe);
+
+	int deleteReviewAll(int rNum);
 
 }
