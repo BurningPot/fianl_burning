@@ -23,9 +23,25 @@
 	                <div id="refrigerator" class="rounded p-r m-r">
 	                    <div id="ref" class="recipe row">
 							<c:forEach var="ingre" items="${list}">
-								<div class="ingre m-1" id="${ingre.iNum}">
-									<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${ingre.iName}">
-								</div>								
+								<c:choose>
+									<c:when test="${ingre.expiration < 0}">										
+										<div class="ingre m-1" id="${ingre.iNum}" style="position:relative;">
+											<div class="rounded-circle re-danger" title="${ingre.iName}(유통기한 ${-ingre.expiration}일 경과)"></div>
+											<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" style="position:relative;">
+										</div>								
+									</c:when>
+									<c:when test="${ingre.expiration < 4}">
+										<div class="ingre m-1" id="${ingre.iNum}" style="position:relative;">
+											<div class="rounded-circle re-warning" title="${ingre.iName}(유통기한 ${ingre.expiration}일 남음)"></div>
+											<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" style="position:relative;">
+										</div>									
+									</c:when>
+									<c:otherwise>
+										<div class="ingre m-1" id="${ingre.iNum}">
+											<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${ingre.iName}">
+										</div>									
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
 	                    </div>                        
 	                </div>
@@ -45,22 +61,7 @@
 	
 	        <div class="col-sm-7">
 	            <div id="recipe" class="p-4 rounded rec-side left-arrow">
-
-	                <div class="recipe row">
-	                    <div class="col-sm-4">
-	                        <div style="height: 12vh">
-	                            <img src="${pageContext.request.contextPath}/resources/fridge/images/food1.png" alt="food image" class="rounded" style="max-height: 100%; min-width:100%;">
-	                        </div>
-	                    </div>
-	                    <div class="col-sm-8">
-	                        <div><h5>한라봉 소스를 곁들인 주꾸미 볶음</h5></div>
-	                        <div>건강에 좋고 맛도 좋은 간편 요리!(한줄소개)</div>
-	                        <div>작성자 : 각설탕</div>
-	                        <div>주재료 : 한라봉, 주꾸미</div>
-	                    </div>
-	                </div>
-	                <hr>
-
+					<!-- 레시피 영역 -->
 	            </div>
 	            <div style="height:3vh;"></div>
 	        </div>
@@ -80,21 +81,48 @@
 				data : {inRef : inRef},
 				success : function(data){
 					$.each(data, function(key, value){
-						$('#recipe').append(
-			                `<div class="recipe row">
-			                    <div class="col-sm-4">
-			                        <div style="height: 17vh;">
-			                            <img src="${pageContext.request.contextPath}/resources/img/recipeContent/`+value.rImg+`" alt="food image" class="rounded" style="max-height: 100%; min-width:100%;">
-			                        </div>
-			                    </div>
-			                    <div class="col-sm-8">
-			                        <div><h5>`+value.rName+`</h5></div>
-			                        <div>`+value.rIntro+`</div>
-			                        <div>작성자 : `+value.mName+`</div>
-			                        <div>주재료 : `+value.iName+`</div>
-			                    </div>
-			                </div>
-			                <hr>`)
+						if(value.untilReg < 4){		
+							$('#recipe').append(
+				                `<div class="recipe row">
+				                    <div class="col-sm-4">
+				                        <div style="height: 17vh; width:100%;" class="newReg">
+				                            <a href="${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=`+value.rNum+`">
+				                        	<img src="${pageContext.request.contextPath}/resources/img/recipeContent/`+value.rImg+`" alt="food image" class="rounded recImg" style="max-height: 100%; min-width:100%;">
+				                        	</a>
+				                        </div>
+				                    </div>
+				                    <div class="col-sm-8">
+				                        <div>
+				                        <a href="${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=`+value.rNum+`" class="btn recTitle">
+				                        <h5><b>`+value.rName+`</b></h5></a></div>
+				                        <div>`+value.rIntro+`</div>
+				                        <div>작성자 : `+value.mName+`</div>
+				                        <div>주재료 : `+value.iName+`</div>
+				                    </div>
+				                </div>
+				                <hr>`)
+						} else {
+							$('#recipe').append(
+				                `<div class="recipe row">
+				                    <div class="col-sm-4">
+				                        <div style="height: 17vh;">
+				                            <a href="${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=`+value.rNum+`">
+				                        	<img src="${pageContext.request.contextPath}/resources/img/recipeContent/`+value.rImg+`" alt="food image" class="rounded recImg" style="max-height: 100%; min-width:100%;">
+				                        	</a>
+				                        </div>
+				                    </div>
+				                    <div class="col-sm-8">
+				                        <div>
+				                        <a href="${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=`+value.rNum+`" class="btn recTitle">
+				                        <h5><b>`+value.rName+`</b></h5></a></div>
+				                        <div>`+value.rIntro+`</div>
+				                        <div>작성자 : `+value.mName+`</div>
+				                        <div>주재료 : `+value.iName+`</div>
+				                    </div>
+				                </div>
+				                <hr>`)
+						}
+						
 					});					
 				}, error : function(error, msg){
 					console.log(error+' : '+msg);

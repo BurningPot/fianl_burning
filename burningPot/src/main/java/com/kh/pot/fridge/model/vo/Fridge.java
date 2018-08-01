@@ -15,13 +15,14 @@ public class Fridge implements Serializable{
 	private String iName;		// 재료이름
 	private String iImage;		// 재료 이미지
 	private Date fDate;			// 재료등록날짜
-	private int remainDate;		// 남은유통기한 (7일)
+	private Date remainDate;	// 남은유통기한 (7일)
+	private int	expiration;		// 유통기한까지 남은 날짜 
 	
 	public Fridge(){
 		
 	}
 
-	public Fridge(int mNum, String mName, String mId, int iNum, String iName, String iImage, Date fDate, int remainDate) {
+	public Fridge(int mNum, String mName, String mId, int iNum, String iName, String iImage, Date fDate, Date remainDate, int expiration) {
 		super();
 		this.mNum = mNum;
 		this.mName = mName;
@@ -31,6 +32,7 @@ public class Fridge implements Serializable{
 		this.iImage = iImage;
 		this.fDate = fDate;
 		this.remainDate = remainDate;
+		this.expiration = expiration;
 	}
 
 	public String getiName() {
@@ -89,14 +91,20 @@ public class Fridge implements Serializable{
 		this.fDate = fDate;
 	}
 
-	public int getRemainDate() {
+	public Date getRemainDate() {
 		return remainDate;
 	}
 
-	public void setRemainDate(int remainDate) {
+	public void setRemainDate(Date remainDate) {
 		this.remainDate = remainDate;
 	}
 
-	
+	public int getExpiration() {
+		return expiration;
+	}
+
+	public void setExpiration(int expiration) {
+		this.expiration = expiration;
+	}
 	
 }

@@ -11,6 +11,7 @@ public class F_Recipe implements java.io.Serializable {
 	private String rName;		// 레시피이름
 	private String rImg;		// 레시피 타이틀이미지
 	private String rIntro;		// 요리소개
+	private int untilReg;		// 등록한지 몇일되었는지
 	private String iName;		// 재료이름
 	
 	public F_Recipe() {
@@ -79,6 +80,14 @@ public class F_Recipe implements java.io.Serializable {
 
 	public void setiName(String iName) {
 		this.iName = iName;
+	}
+
+	public int getUntilReg() {
+		return untilReg;
+	}
+
+	public void setUntilReg(int untilReg) {
+		this.untilReg = untilReg;
 	}
 	
 }

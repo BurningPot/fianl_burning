@@ -15,7 +15,7 @@
 	</select>
 	
 	<select id="checkFridge" parameterType="hashmap" resultType="Fridge">
-		SELECT MNUM, MNAME, MID, INUM, INAME, IIMAGE, FDATE, REMAINDATE FROM FRIDGE
+		SELECT MNUM, MNAME, MID, INUM, INAME, IIMAGE, FDATE, REMAINDATE, FLOOR(REMAINDATE-SYSDATE) EXPIRATION FROM FRIDGE
 		JOIN MEMBER USING(MNUM)
 		JOIN INGREDIENT USING(INUM)
 		WHERE MNUM = #{mNum}
@@ -23,7 +23,7 @@
 
 	<insert id="insertFridge" parameterType="hashmap">
         <foreach collection="ref" item="ingredient" open="INSERT ALL " separator=" " close="SELECT * FROM DUAL">
-        	INTO FRIDGE VALUES(#{mNum}, #{ingredient}, DEFAULT, null)
+        	INTO FRIDGE VALUES(#{mNum}, #{ingredient.iNum}, DEFAULT, SYSDATE+#{ingredient.exDate})
         </foreach>
 	</insert>
 	
@@ -36,7 +36,8 @@
 	</delete>
 	
 	<select id="findRecipe" parameterType="hashmap" resultType="recipe">
-		SELECT * FROM RECIPE
+		SELECT MNUM, RNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT, MCATEGORY, MID, PASSWORD, EMAIL, MNAME, GENDER, BIRTHDATE, MPICTURE, EXPEL, ENROLLDATE, FLOOR(SYSDATE-RDATE) UNTILREG
+		FROM RECIPE
 		JOIN MEMBER USING(MNUM)
 		WHERE 
 		<foreach collection="inRef" item="data" separator=" OR ">
@@ -45,6 +46,14 @@
 	</select>
 	
 	<select id="bringName" parameterType="string" resultType="ingredient">
+		SELECT * FROM INGREDIENT
+		WHERE INUM IN 
+		<foreach collection="data" item="type" open="(" close=")" separator=",">
+            #{type}
+        </foreach>
+	</select>
+	
+	<select id="selectIngre" parameterType="hashmap" resultType="ingredient">
 		SELECT * FROM INGREDIENT
 		WHERE INUM IN 
 		<foreach collection="data" item="type" open="(" close=")" separator=",">

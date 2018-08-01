@@ -85,6 +85,7 @@ public class RefController {
 			fr.setrName(rec.getrName());
 			fr.setrImg(rec.getrImg());
 			fr.setrIntro(rec.getrIntro());
+			fr.setUntilReg(rec.getUntilReg());
 			newList.add(fr);
 			data.add(rec.getiNum());
 		}

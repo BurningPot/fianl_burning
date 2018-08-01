@@ -47,5 +47,10 @@ public class FridgeDaoImpl implements FridgeDao {
 		return sqlSession.selectList("fridge.bringName", data);
 	}
 
+	@Override
+	public List<Fridge> selectIngre(Map<String, Object> data) {
+		return sqlSession.selectList("fridge.selectIngre", data);
+	}
+
 	
 }
