@@ -38,6 +38,9 @@
 		color: red;
 		margin: 2%;
 	}
+	.search-ing-btn{
+		cursor: pointer;
+	}
 
 </style>
 
@@ -56,7 +59,7 @@
 				<input type="text" class="form-control" id="searchKeyword"/>
       		</div>
       		<div class="col-lg-2">
-      			<i class="fa fa-search search-ing-btn" style="font-size:36px"></i>
+      			<i class="fa fa-search search-ing-btn" style="font-size:36px" onclick="searchIngredient();"></i>
       		</div>
       	</div>
       </div>
@@ -69,44 +72,49 @@
 			</ol>
 		</div>
 		
-		<script>
-			//돋보기 버튼을 누르면 재료 검색을 실시한다
-			$('.search-ing-btn').on('click',function(){
-				$.ajax({
-					url: "${pageContext.request.contextPath}/admin/searchIngredientAjax.do",
-					dataType: "json",
-					data: {
-						keyword: $('#searchKeyword').val()
-					}, success: function(data){	
-						var html ="";
-						var htmlNoResult = "";
+		<script>	
+					
+		function searchIngredient(){
+			$.ajax({
+				url: "${pageContext.request.contextPath}/admin/searchIngredientAjax.do",
+				dataType: "json",
+				data: {
+					keyword: $('#searchKeyword').val()
+				}, success: function(data){	
+					var html ="";
+					var htmlNoResult = "";
+					
+					if(data.length == 0){
+						htmlNoResult = '<div class="col-lg-12 no-result-icon" align="center"><i class="fas fa-exclamation-triangle fa-3x"></i></div><div class="col-lg-12 search-no-result">검색 결과가 존재하지 않습니다</div>';
 						
-						if(data.length == 0){
-							htmlNoResult = '<div class="col-lg-12 no-result-icon" align="center"><i class="fas fa-exclamation-triangle fa-3x"></i></div><div class="col-lg-12 search-no-result">검색 결과가 존재하지 않습니다</div>';
-							console.log(htmlNoResult);
-							$('.search-ing-result').empty();
-							$('.search-ing-result').append(htmlNoResult);
-						}else{							
-							for(var i =0 ; i< data.length; i++){
-								html += '<div class="col-lg-12 resultContents">';
-								html += '<span class="row">';
-								html += '<span class="col-lg-5 ingSearchImg">';
-								html += '<img src="${pageContext.request.contextPath}/resources/img/ingredient/'+data[i].iImage+'" class="col-lg-12" alt=""/>';
-								html += '</span>';
-								html += '<span class="col-lg-7 ingSearchContent test">';
-								html += data[i].iName;
-								html += '</span></span></div>';							
-							}
-							
-							$('.search-ing-result').empty();
-							$('.search-ing-result').append(html);							
-						}	
-					}, error: function(data){						
-						swal("작업실패!", "재료검색에 실패하였습니다", "error");
-					}
-				});
+						$('.search-ing-result').empty();
+						$('.search-ing-result').append(htmlNoResult);
+					}else{							
+						for(var i =0 ; i< data.length; i++){
+							html += '<div class="col-lg-12 resultContents">';
+							html += '<span class="row">';
+							html += '<span class="col-lg-5 ingSearchImg">';
+							html += '<img src="${pageContext.request.contextPath}/resources/img/ingredient/'+data[i].iImage+'" class="col-lg-12" alt=""/>';
+							html += '</span>';
+							html += '<span class="col-lg-7 ingSearchContent test">';
+							html += data[i].iName;
+							html += '</span></span></div>';							
+						}
+						
+						$('.search-ing-result').empty();
+						$('.search-ing-result').append(html);							
+					}	
+				}, error: function(data){						
+					swal("작업실패!", "재료검색에 실패하였습니다", "error");
+				}
 			});
-		
+		}
+		//엔터키만 쳐도 검색된다
+		$('#searchKeyword').keypress(function(e){
+			 if(e.which == 13) {
+			       searchIngredient();
+			    }
+		});				
 		</script>
 			
 				
