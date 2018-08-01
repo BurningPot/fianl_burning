@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div style="height:5vh;">
-                    <button class="btn btn-block com" onclick="updateComplete();">수정 완료</button>
+                    <button class="btn btn-block com" onclick="updateComplete();"><b>수정 완료</b></button>
                 </div>
             </div>
         </div>

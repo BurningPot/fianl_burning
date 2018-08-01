@@ -1,8 +1,8 @@
 package com.kh.pot.recipe.model.vo;
 
 import java.io.Serializable;
+
 import java.sql.Date;
-import java.util.List;
 
 public class Recipe implements Serializable{
 
@@ -30,6 +30,7 @@ public class Recipe implements Serializable{
 	private int rCount;				// 레시피 조회수
 	private int rcCheck;			// Recommend의 RNUM
 //	
+	private int untilReg;			// 등록한지 몇일 지났는지
 	
 	public Recipe(){
 		
@@ -226,6 +227,14 @@ public class Recipe implements Serializable{
 
 	public void setRcCheck(int rcCheck) {
 		this.rcCheck = rcCheck;
+	}
+
+	public int getUntilReg() {
+		return untilReg;
+	}
+
+	public void setUntilReg(int untilReg) {
+		this.untilReg = untilReg;
 	}
 
 	@Override

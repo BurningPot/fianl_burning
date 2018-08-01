@@ -75,7 +75,7 @@ public class FridgeServiceImpl implements FridgeService {
 			}
 
 			data.put("delIngre", delIngre);
-			data.put("ref", newIngre);
+			data.put("data", newIngre);
 			
 			if(delIngre.size() != 0){
 				int del = friDao.deleteFridge(data);
@@ -83,6 +83,8 @@ public class FridgeServiceImpl implements FridgeService {
 			}
 			
 			if(newIngre.size() != 0){
+				List<Fridge> newIngreObj = friDao.selectIngre(data);
+				data.put("ref", newIngreObj);
 				int ins = friDao.insertFridge(data);
 				result += ins;
 			}
