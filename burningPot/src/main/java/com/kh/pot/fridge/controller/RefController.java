@@ -33,7 +33,7 @@ public class RefController {
 		
 		if(m == null) throw new FridgeException("로그인 정보 없음!!!");
 		
-		if(!(inRef == "" || inRef.length() == 0)) friService.updateComplete(inRef, m.getmNum());
+		/*if(!(inRef == "" || inRef.length() == 0))*/ friService.updateComplete(inRef, m.getmNum());
 		
 		List<Fridge> list = friService.checkFridge(m.getmNum());
 		
