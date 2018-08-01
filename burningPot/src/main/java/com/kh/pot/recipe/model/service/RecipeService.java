@@ -48,7 +48,7 @@ public interface RecipeService {
 	int updateCount(int rNum);
 
 	// 해당 레시피 리뷰 조회 서비스
-	List<Review> selectReview(int rNum);
+//	List<Review> selectReview(int rNum);
 
 	// 해당 레시피 좋아요 여부 확인 서비스
 	Recommend selectRecommend(Recommend rec);
@@ -65,6 +65,28 @@ public interface RecipeService {
 	// 댓글 작성 서비스
 	int insertReview(Review review);
 
+	// 신고하기 서비스
 	int insertReport(Report report);
+
+	// 작성한 댓글 정보 조회 서비스
+	Review selectReviewOne(Review rv);
+
+	// 댓글 삭제 서비스
+	int deleteReview(int rvNum);
+
+	// 상세보기 리뷰 평점 계산 서비스
+	double reviewAvgGrade(int rNum);
+
+	// 상세보기 리뷰 페이징 서비스 - 전체 리뷰 수 구하기
+	int selectReviewTotalContents(int rNum);
+
+	// 해당 레시피 리뷰 조회 서비스
+	List<Map<String, String>> selectReview(int rNum, int currentPage, int numPerPage);
+
+	// 레시피 정보 수정 서비스
+	int updateRecipe(Recipe recipe);
+
+	// 레시피 삭제 시 해당 레시피 리뷰 전체 삭제 서비스 
+	int deleteReviewAll(int rNum);
 	
 }

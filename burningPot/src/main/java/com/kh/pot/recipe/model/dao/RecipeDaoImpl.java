@@ -58,7 +58,6 @@ public class RecipeDaoImpl implements RecipeDao {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 		int randomNum = (int)(Math.random() * 1000);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + "_" + randomNum + "." + ext;
-		System.out.println("타이틀 : " + renameFileName);
 		
 		return renameFileName;
 	}
@@ -105,12 +104,12 @@ public class RecipeDaoImpl implements RecipeDao {
 		
 	}
 
-	@Override
-	public List<Review> selectReview(int rNum) {
-
-		return sqlSession.selectList("recipe.selectReview", rNum);
-		
-	}
+//	@Override
+//	public List<Review> selectReview(int rNum) {
+//
+//		return sqlSession.selectList("recipe.selectReview", rNum);
+//		
+//	}
 
 	@Override
 	public Recommend selectRecommend(Recommend rec) {
@@ -128,13 +127,14 @@ public class RecipeDaoImpl implements RecipeDao {
 
 	@Override
 	public int updateRecommend(Recommend rec) {
-		Recipe recipe = null;
+//		Recipe recipe = null;
 		
-		if (sqlSession.update("recipe.updateRecommend", rec) == 1) {
-			recipe = sqlSession.selectOne("recipe.selectRecipeDetail", rec);
-		};
+//		if (sqlSession.update("recipe.updateRecommend", rec) == 1) {
+//			recipe = sqlSession.selectOne("recipe.selectRecipeDetail", rec);
+//		};
 		
-		return recipe.getrRecommend();
+//		return recipe.getrRecommend();
+		return sqlSession.update("recipe.updateRecommend", rec);
 		
 	}
 
@@ -154,12 +154,62 @@ public class RecipeDaoImpl implements RecipeDao {
 
 	@Override
 	public int insertReport(Report report) {
-		
-		   System.out.println(report.getRpContent());
-		   System.out.println(report.getmNum());
-		   System.out.println(report.getrNum());
-		
+
 		return sqlSession.insert("recipe.insertReport", report);
+		
+	}
+
+	@Override
+	public Review selectReviewOne(Review rv) {
+
+		return sqlSession.selectOne("recipe.selectReviewOne", rv);
+		
+	}
+
+	@Override
+	public int deleteReview(int rvNum) {
+
+		return sqlSession.delete("recipe.deleteReview", rvNum);
+		
+	}
+
+	@Override
+	public double reviewAvgGrade(int rNum) {
+		double result = 0;
+		
+		if (sqlSession.selectOne("recipe.reviewAvgGrade", rNum) != null) {
+			result = sqlSession.selectOne("recipe.reviewAvgGrade", rNum);
+		}
+		
+		return result;
+		
+	}
+
+	@Override
+	public int selectReviewTotalContents(int rNum) {
+
+		return sqlSession.selectOne("recipe.selectReviewTotalContents", rNum);
+		
+	}
+
+	@Override
+	public List<Map<String, String>> selectReview(Map<String, Object> map) {
+
+		return sqlSession.selectList("recipe.selectReview", map);
+		
+	}
+
+	@Override
+	public int updateRecipe(Recipe recipe) {
+
+		return sqlSession.update("recipe.updateRecipe", recipe);
+		
+	}
+
+	@Override
+	public int deleteReviewAll(int rNum) {
+
+		return sqlSession.delete("recipe.deleteReviewAll", rNum);
 		
 	}
 

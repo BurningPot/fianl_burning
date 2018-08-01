@@ -22,28 +22,28 @@
 		<div style="height: 20%;"></div>
         
         <div class="container">
-	        <form id="formId" action="updateRecipe.do" method="POST" enctype="multipart/form-data">
+	        <form id="formId" action="updateRecipe.do" method="POST" enctype="multipart/form-data" accept="image/*">
                	<!-- 레시피 정보 입력 영역 -->
                 <div class="row recipeBox mt-5">
                     <div class="col-sm-9 pl-3 mt-3 mb-3 testCss">
                         <div class="input-group mt-3 align-self-center">
                             <label class="mb-0 align-self-center dataTitle" style="width:130px;" for="recipeTitle" id="recipeTitle-add"><b>레시피 제목</b></label>
                             &nbsp;&nbsp;&nbsp;
-                            <input type="text" class="form-control textStyle" placeholder="레시피 제목을 입력해주세요." aria-label="recipeTitle" aria-describedby="recipeTitle-add" value="${recipe.rName}">
+                            <input type="text" class="form-control textStyle" name="rName" placeholder="레시피 제목을 입력해주세요." aria-label="recipeTitle" aria-describedby="recipeTitle-add" value="${recipe.rName}">
                             <!-- 레시피 번호 -->
       							<input type="hidden" name="rNum" value="${recipe.rNum}" />
                         </div>
                         <div class="input-group mt-5">
                             <label class="mb-0 align-self-center dataTitle" style="width:130px;" for="recipeIntroduce" id="recipeIntroduce-add"><b>한줄 소개</b></label>
                             &nbsp;&nbsp;&nbsp;
-                            <input type="text" class="form-control textStyle" placeholder="레시피를 소개해주세요. 예)맥주와 잘 어울리는 안주" aria-label="recipeIntroduce" aria-describedby="recipeIntroduce-add" value="${recipe.rIntro}">
+                            <input type="text" class="form-control textStyle"  name="rIntro"placeholder="레시피를 소개해주세요. 예)맥주와 잘 어울리는 안주" aria-label="recipeIntroduce" aria-describedby="recipeIntroduce-add" value="${recipe.rIntro}">
                         </div>
                         <div class="input-group mt-5">
                             <label class="mb-0 align-self-center dataTitle" style="width:130px;" for="recipeData"><b>요리 정보</b></label>
                             &nbsp;&nbsp;&nbsp;
                             <label class="mb-0 align-self-center"><b>인원</b></label>
                             &nbsp;&nbsp;&nbsp;
-                            <select class="custom-select selectStyle" name="people" id="people">
+                            <select class="custom-select selectStyle" name="quantity" id="people">
                                 <option value="0" selected>인원</option>
                                 	<option value="1" <c:if test="${recipe.quantity == 1}">selected</c:if>>1인분</option>
                                 	<option value="2" <c:if test="${recipe.quantity == 2}">selected</c:if>>2인분</option>
@@ -55,7 +55,7 @@
                             &nbsp;&nbsp;&nbsp;
                             <label class="mb-0 align-self-center"><b>시간</b></label>
                             &nbsp;&nbsp;&nbsp;
-                            <select class="custom-select selectStyle" name="cookTime" id="cookTime">
+                            <select class="custom-select selectStyle" name="rTime" id="cookTime">
                                 <option value="0" selected>시간</option>
                                 <option value="1" <c:if test="${recipe.rTime == 1}">selected</c:if>>10분 이내</option>
                                 <option value="2" <c:if test="${recipe.rTime == 2}">selected</c:if>>20분 이내</option>
@@ -66,7 +66,7 @@
                             &nbsp;&nbsp;&nbsp;
                             <label class="mb-0 align-self-center"><b>난이도</b></label>
                             &nbsp;&nbsp;&nbsp;
-                            <select class="custom-select selectStyle" name="cookLevel" id="cookLevel">
+                            <select class="custom-select selectStyle" name="rLevel" id="cookLevel">
                                 <option value="0" selected>요리난이도</option>
                                 <option value="1" <c:if test="${recipe.rLevel == 1}">selected</c:if>>아무나</option>
                                 <option value="2" <c:if test="${recipe.rLevel == 2}">selected</c:if>>초급</option>
@@ -78,6 +78,7 @@
                     <div class="col-sm-3 card align-self-center mt-3 mb-3" style="border:none;">
                         <img class="card-img titleImage" id="titleImgArea" src="${pageContext.request.contextPath}/resources/img/recipeContent/${recipe.rImg}" alt="대표사진">
                         <input type="file" id="titleImg" class="fileArea" name="rImgFile" onchange="LoadImg(this,1);">
+       					<input type="hidden" name="originTitleImg" id="originTitleImg" value="${recipe.rImg}" />
                     </div>
                 </div>  
                 
@@ -105,11 +106,11 @@
 			                                        </c:forEach>
 			                                    </select>
 			                                    &nbsp;&nbsp;&nbsp;
-			                                    <select class="custom-select selectStyle ingrdient" name="ingrdient">
+			                                    <select class="custom-select selectStyle ingrdient" name="iNum">
 			                                        <!-- <option value="0" selected>식재료</option> -->
 			                                    </select>
 			                                    &nbsp;&nbsp;&nbsp;
-			                                    <input type="text" class="form-control textStyle mainAddText" placeholder="계량 정보 예) 300g or 1/2개" aria-label="mainIngredient" aria-describedby="mainIngredientTitle" value="${mainQuan}">
+			                                    <input type="text" class="form-control textStyle mainAddText" name="iQuan" placeholder="계량 정보 예) 300g or 1/2개" aria-label="mainIngredient" aria-describedby="mainIngredientTitle" value="${mainQuan}">
 			                                    <div class="col-1 delBtnArea">
 			                                        <button type="button" class="addBtn p-0 btn btn-light"><img src="${pageContext.request.contextPath}/resources/img/recipe/delete.png" class="addBtnImg mt-2 mb-2 mainDelIcon" style="display:none;" alt="삭제"></button>
 			                                    </div>
@@ -136,11 +137,11 @@
 									<c:choose>
 										<c:when test="${status.count % 2 == 1}">
                            					<div class="row m-0 pr-3 mb-2 input-group subAddForm">
-			                                    <input type="text" class="form-control textStyle subIngredient" placeholder="식재료명" aria-label="addIngredient" aria-describedby="addIngredientTitle" value="${sub}">
+			                                    <input type="text" class="form-control textStyle subIngredient"name="subIngredient"  placeholder="식재료명" aria-label="addIngredient" aria-describedby="addIngredientTitle" value="${sub}">
 			                                    &nbsp;&nbsp;&nbsp;
 	                                   	</c:when>
 										<c:when test="${status.count % 2 == 0}">
-                                    			<input type="text" class="form-control textStyle subIngredientQuan" placeholder="계량 정보 예) 300g or 2T or 1/2개" aria-label="addIngredient" aria-describedby="addIngredientTitle" value="${sub}">
+                                    			<input type="text" class="form-control textStyle subIngredientQuan"name="subIngredient"  placeholder="계량 정보 예) 300g or 2T or 1/2개" aria-label="addIngredient" aria-describedby="addIngredientTitle" value="${sub}">
 			                                    <div class="col-1 delBtnArea">
 			                                        <button type="button" class="addBtn p-0 btn btn-light"><img src="${pageContext.request.contextPath}/resources/img/recipe/delete.png" class="addBtnImg mt-2 mb-2 subDelIcon" style="display:none;" alt="삭제"></button>
 			                                    </div>
@@ -177,6 +178,7 @@
 	                                    <img class="addRecipeImg mt-2 mb-4 img-thumbnail subImage subImgArea" src="${pageContext.request.contextPath}/resources/img/recipeContent/${contentList.rContentimg}" alt="요리사진">
 	                                    <button type="button" class="addBtn p-0 ml-2 btn btn-light"><img src="${pageContext.request.contextPath}/resources/img/recipe/delete.png" class="addBtnImg mt-2 mb-2 recipeDelIcon" style="display:none;" alt="삭제"></button>
 	                                    <input type="file" class="fileArea subImg" name="rContentimg" onchange="LoadImg(this,2);">
+       									<input type="hidden" class="originSubImg" name="originSubImg" value="${contentList.rContentimg}" />
 	                                </div>
 	                            </div>
                            	</c:forEach>

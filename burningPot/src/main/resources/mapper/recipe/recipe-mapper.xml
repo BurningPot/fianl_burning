@@ -69,13 +69,24 @@
 		UPDATE RECIPE SET RCOUNT = RCOUNT + 1 WHERE RNUM = #{rNum}
 	</update>
 	
-	<select id="selectReview" parameterType="_int" resultType="review">
+<!-- 	<select id="selectReview" parameterType="_int" resultType="review">
 		SELECT MID, MPICTURE, J.*
 		FROM MEMBER M
 		JOIN (SELECT *
 		        FROM REVIEW
 		        WHERE RNUM = #{rNum}) J
 		ON (M.MNUM = J.MNUM)
+	</select> -->
+	<select id="selectReview" parameterType="hashmap" resultType="review">
+		SELECT * 
+		FROM (SELECT MID, MPICTURE, J.*, ROWNUM R_NUM
+					FROM MEMBER M
+					JOIN (SELECT *
+					        FROM REVIEW
+					        WHERE RNUM = #{rNum}) J
+					ON (M.MNUM = J.MNUM)
+					ORDER BY RVNUM)
+		WHERE R_NUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
 	<select id="selectRecommend" resultType="recommend">
@@ -102,11 +113,48 @@
 	</delete>
 	
 	<insert id="insertReview">
+   		<selectKey keyProperty="rvNum" resultType="_int" order="AFTER">
+			SELECT SEQ_REVIEW.CURRVAL FROM DUAL
+		</selectKey>
 		INSERT INTO REVIEW VALUES(SEQ_REVIEW.NEXTVAL, #{rNum}, #{mNum}, #{grade}, #{rvContent}, DEFAULT)
 	</insert>
 	
-	<insert id="insertReport" parameterType="report">
+	<insert id="insertReport">
       INSERT INTO REPORT VALUES(SEQ_REPORT.NEXTVAL, #{rNum}, #{mNum}, #{rpContent}, DEFAULT)
    	</insert>
+   	
+   	<select id="selectReviewOne" parameterType="_int" resultType="review">
+		SELECT MID, MPICTURE, J.*
+		FROM MEMBER M
+		JOIN (SELECT *
+		        FROM REVIEW
+		        WHERE RNUM = #{rNum} AND RVNUM = #{rvNum}) J
+		ON (M.MNUM = J.MNUM)
+	</select>
+	
+	<delete id="deleteReview">
+		DELETE FROM REVIEW WHERE RVNUM = #{rvNum}
+	</delete>
+	
+	<select id="reviewAvgGrade" parameterType="_int" resultType="_double">
+		SELECT ROUND(AVG(GRADE), 1) GRADE
+		FROM REVIEW
+		WHERE RNUM = #{rNum}
+	</select>
+	
+	<select id="selectReviewTotalContents" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM REVIEW
+		WHERE RNUM = #{rNum}
+	</select>
+	
+	<update id="updateRecipe">
+		UPDATE RECIPE SET RNAME = #{rName}, RIMG = #{rImg}, QUANTITY = #{quantity}, RTIME = #{rTime}, RLEVEL = #{rLevel}, INUM = #{iNum}, IQUAN = #{iQuan}, SUBINGREDIENT = #{subIngredient}, RDATE = SYSDATE, RINTRO = #{rIntro}
+		WHERE RNUM = #{rNum}
+	</update>
+	
+	<delete id="deleteReviewAll">
+		DELETE FROM REVIEW WHERE RNUM = #{rNum}
+	</delete>
 	
 </mapper>

@@ -22,15 +22,23 @@ $(function () {
           return false;
       }
     });
+	
+	if (keyword == "review") {
+		$('html, body').animate({
+			scrollTop : $("#commentData").offset().top -100
+		}, 300);
+		return false;
+	}
 
 	// ------------------------------------- 좋아요 버튼 영역 -------------------------------------
 	$("#goodBtn").click(function() {
 		var textArr = $(this).text().split(" ");
 		
 		if (textArr[1] != "취소") {
+			console.log($(this).text());
 			$.ajax ({
 	    		url : path + "/recipe/insertRecommend.do",
-	    		data : {rNum : $("#rNum").val()},
+	    		data : {rNum : rNum},
 	    		dataType : "json",
 	    		async : false,
 	    		success : function(data) {
@@ -43,9 +51,10 @@ $(function () {
 	    		}
 	    	});
 		} else {
+			console.log($(this).text());
 			$.ajax ({
 	    		url : path + "/recipe/deleteRecommend.do",
-	    		data : {rNum : $("#rNum").val()},
+	    		data : {rNum : rNum},
 	    		dataType : "json",
 	    		async : false,
 	    		success : function(data) {
@@ -60,46 +69,37 @@ $(function () {
 		}
 	});
 		
-    // ------------------------------------- 댓글 영역 -------------------------------------
-	 $('#reviewSubmitBtn').click(function(e) {
-        if(confirm('댓글을 등록하시겠습니까?')){
-    		if (mem != "") {
-    			if ($("#reviewContent").val() != "") {
-					$.ajax ({
-	    	    		url : path + "/recipe/insertReview.do",
-	    	    		data : {rNum : $("#rNum").val(),
-	    	    					mNum : mem,
-	    	    					grade : $("#scoreText").val(),
-	    	    					rvContent : $("#reviewContent").val()},
-	    	    		dataType : "json",
-	    	    		async : false,
-	    	    		success : function(data) {
-	        				alert("댓글이 등록되었습니다.");
-	        				var obj = $('.reviewDiv').eq(0).clone(true);
-	        				$(obj).find('.mId').val(data.mId);
-	        				$(obj).find('.rvDate').val(data.rvDate);
-	        				$(obj.find('.rvContent').text(data.rvContent));
-	        				$(".reviewArea").append($(obj));
-	        				
-	        				$("#reviewContent").val("");
-	        				$(".scoreStar").attr("src", path + "/resources/img/recipe/emptyStar.png");
-	        				$("#reviewCount").text(Number.parseInt($("#reviewCount").text()) + 1);
-	    	    		}, error : function(e) {
-	    	    			alert("댓글 등록 오류 발생 (관리자에게 문의 바랍니다.)");
-	    	    		}
-	    	    	});
-    			} else {
-    				alert("댓글 내용을 작성해주세요!");
-    			}
-    		} else {
-    			console.log("비어있음");
-    			alert("로그인 이후 사용 가능한 서비스 입니다. (로그인 이후 사용 바랍니다.)");
-    		}
-		} else {
-            e.preventDefault();
-            console.log("작성취소");
-        }
-    });
+    // ------------------------------------- 댓글 등록 영역 -------------------------------------
+//	 $('#reviewSubmitBtn').click(function(e) {
+//        if(confirm('댓글을 등록하시겠습니까?')){
+//    		if (mem != "") {
+//    			if ($("#reviewContent").val() != "") {
+//    				console.log("등록");
+//    				$("#formId").submit();
+//    				alert("댓글 작성 완료");
+//    			} else {
+//    				alert("댓글 내용을 작성해주세요!");
+//    			}
+//    		} else {
+//    			console.log("비어있음");
+//    			alert("로그인 이후 사용 가능한 서비스 입니다. (로그인 이후 사용 바랍니다.)");
+//    		}
+//		} else {
+//            e.preventDefault();
+//            console.log("작성취소");
+//        }
+//    });
+	 
+	// ------------------------------------- 댓글 삭제 영역 -------------------------------------
+//	 $(".reviewDelBtn").click(function(e) {
+//		 console.log("확인");
+//		 var area = $(this);
+//		 if(confirm('댓글을 삭제하시겠습니까?')){
+//			 area.parent().parent().parent().parent().submit();
+//		 } else {
+//            e.preventDefault();
+//        }
+//	 });
 	 
 });
 
@@ -166,7 +166,7 @@ function reportInsert(){
               button: false,
          });
       }, error : function(e) {
-         swal("신고 실패!", "신고 글 작성에 실패했습니다. TT", "error", {
+         swal("신고 실패!", "신고 글 작성에 실패했습니다.", "error", {
               button: false,
          });
       }
@@ -175,4 +175,35 @@ function reportInsert(){
 
 function refresh(){
    $('#message-text').val("");
+}
+
+// ------------------------------------- 댓글 등록 영역 -------------------------------------
+function reviewSubmit() {
+	if(confirm('댓글을 등록하시겠습니까?')){
+		if (mem != "") {
+			if ($("#reviewContent").val() != "") {
+				console.log("등록");
+				$("#formId").submit();
+				alert("댓글 작성 완료");
+			} else {
+				alert("댓글 내용을 작성해주세요!");
+			}
+		} else {
+			console.log("비어있음");
+			alert("로그인 이후 사용 가능한 서비스 입니다. (로그인 이후 사용 바랍니다.)");
+		}
+	} else {
+        e.preventDefault();
+        console.log("작성취소");
+    }
+}
+
+// ------------------------------------- 댓글 삭제 영역 -------------------------------------
+function reviewDelete(e) {
+	var area = $(e);
+	 if(confirm('댓글을 삭제하시겠습니까?')){
+		 area.parent().parent().parent().parent().submit();
+	 } else {
+       e.preventDefault();
+   }
 }
