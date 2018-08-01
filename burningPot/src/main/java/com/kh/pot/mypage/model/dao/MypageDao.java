@@ -28,13 +28,13 @@ public interface MypageDao {
 
 	int deleteUserInfo(int formDel);
 
-	List<Board> myPostList(int mNum);
+	List<Board> myPostList(int cPage, int numPerPage, int mNum);
 
-	int selectMyPostTotalContents();
+	int selectMyPostTotalContents(int mNum);
 
-	List<Recipe> myRecipeList(int mNum);
+	List<Recipe> myRecipeList(int cPage, int numPerPage, int mNum);
 
-	int selectMyRecipeTotalContents();
+	int selectMyRecipeTotalContents(int mNum);
 
 	int deleteMyRecipe(int rNum);
 

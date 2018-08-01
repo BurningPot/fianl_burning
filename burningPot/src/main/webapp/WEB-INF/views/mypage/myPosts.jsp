@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@page import="com.kh.pot.member.model.vo.Member"%>
+    <% Member m = (Member)session.getAttribute("m"); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,9 +14,7 @@
         text-decoration:none;
         color:#495057;
       }
-      #he{
-        text-align: center;
-      }
+
       .table > tbody > tr > td{       
         text-align: center;
       }
@@ -24,8 +24,12 @@
       #refrigerator{             
         text-align: center; 
       }
+      #refBtn{
+      	top: 30%;
+      	left: 70%;
+      }
       
-      #
+      
 </style>
 <title>마이페이지</title>
 </head>
@@ -145,11 +149,16 @@
                  
             <div id="refrigerator" style="width:49%; height: 100%; float: right; border: 1px solid lightgray;">
                   <img src="${pageContext.request.contextPath }/resources/img/tmakxm.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
-                  <div class="refrigeratormenu">
-                      뭐가들어가야 할까나
-                      
-                  </div>    
-                  <button type="button" class="btn btn-default btn-sm">내 냉장고 가기</button>            
+                  	<div id="ref" class="recipe row">
+							<c:forEach var="ingre" items="${refList}">
+								<div class="ingre m-1" id="${ingre.iNum}">
+									<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${ingre.iName}" style="height : 7vh; width : 7vh;">
+								</div>								
+							</c:forEach>
+	                    </div>
+	                    <div id="refBtn" style="position:absolute;">
+                  			<button type="button" class="btn btn-default btn-lg" onclick="gorefMain(this);">내 냉장고 가기</button>
+                  		</div>     
             </div>
           </div> 
 
@@ -212,7 +221,7 @@
 		<div id="mp2" class="col-lg-12" style="padding : 0">
           <table id="mypage2" class="table table-hover" style="border: 1px solid lightgray;">
               <tbody>
-                <tr class="active" id="he" style="border: 2px solid saddlebrown">
+                <tr class="active" style="border: 2px solid saddlebrown;  text-align: center;">
                     <th width="10%">번호</th>
                   <th width="30%">제목</th>
                   <th width="15%">작성자</th>
@@ -224,13 +233,13 @@
                 </tr>
                 <c:forEach items="${postList}" var="b">
               <tr id="${b.bNum }">
-                <td>${b.bNum }</td>
-                  <td>[ ${b.category } ]&nbsp;${b.bTitle } </td>
-                  <td>${b.mName }</td>
-                  <td>${b.bDate }</td>
-                  <td>${b.bCount }</td>
+                 <td class="btd">${b.bNum }</td>
+                  <td class="btd">[ ${b.category } ]&nbsp;${b.bTitle } </td>
+                  <td class="btd">${b.mName }</td>
+                  <td class="btd">${b.bDate }</td>
+                  <td class="btd">${b.bCount }</td>
                   <td>
-                          <button type="button" class="btn btn-default btn-sm" onclick="updateDev(this);">수정</button>
+                          <button type="button" class="btn btn-default btn-sm updateMyBoard">수정</button>
                           <button type="button" class="btn btn-default btn-sm deleteMyBoard">삭제</button>
                       </td>                      
                   </tr>
@@ -241,6 +250,7 @@
   <% 
       int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
       int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
+      int mNum =m.getmNum();
       
       //파라미터 cPage가 null이거나 "" 일 때에는 기본값 1로 세팅함.  
       String cPageTemp = request.getParameter("cPage");
@@ -251,7 +261,7 @@
          
       }
      %>
-   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "myPosts.do") %>
+   <%= com.kh.pot.common.util.sh_Utils.getPageBar(totalContents, cPage, numPerPage, "myPosts.do",mNum) %>
             </div>
             
           </div>
@@ -405,11 +415,46 @@
            		
            	});
                
-               function updateDev(obj){
-            	   var bNum = $(obj).parent().parent().children().eq(0).text();
+               // 내가쓴글 보러가기
+                $(".btd").on("click",function(){
+         	      var boardNo = $(this).parent().attr("id");
+         	      console.log(boardNo);
+         	      location.href = "${pageContext.request.contextPath}/board/boardDetail.do?no="+boardNo;
+         	   }).hover(function(){
+         		   $(this).css('cursor','pointer');
+         	   });
+               
+              /*  $("tr[id]").on("click",function(){
+         	      var boardNo = $(this).attr("id");
+         	      location.href = "${pageContext.request.contextPath}/board/boardDetail.do?no="+boardNo;
+         	   }).hover(function(){
+         		   $(this).css('cursor','pointer');
+         	   }); */
+               
+               // 내가쓴 글 수정하러가기
+               $('.updateMyBoard').on('click',function(){
+            	   var bNum = $(this).parent().parent().children().eq(0).text();
+            	   console.log(bNum);
             	  location.href="${pageContext.request.contextPath}/board/updateBoard.do?no="+bNum;
               	  
+               });
+               /* 
+               function updateDev(obj){
+            	   var bNum = $(obj).parent().parent().children().eq(0).text();
+            	   console.log(bNum);
+            	 // location.href="${pageContext.request.contextPath}/board/updateBoard.do?no="+bNum;
+              	  
                }
+ */               
+            // 내 냉장고 가기 버튼
+               function gorefMain(obj){
+           	   var mNum = $(obj).parent().parent().children().eq(0).text();
+           	  location.href="${pageContext.request.contextPath}/fridge/refMain.do?mNum="+mNum;
+             	  
+              }
+              /*  /board/boardDetail.do */
+              
+              
                
             
                

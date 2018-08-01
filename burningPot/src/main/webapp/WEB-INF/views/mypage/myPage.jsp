@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@page import="com.kh.pot.member.model.vo.Member"%>
+    <% Member m = (Member)session.getAttribute("m"); %>
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,9 +32,6 @@
       #refrigerator{             
         text-align: center; 
       }
-      #rec{
-      text-align: center;
-      }
       
       #profilePlaceholder {
       margin-left : 5px;
@@ -46,6 +46,10 @@
 	    margin: 1% 0;
 	    box-shadow: 3px 3px 2px #ccc;
 	    transition: 0.5s;
+      }
+      #refBtn{
+      	top: 30%;
+      	left: 70%;
       }
 </style>
 <title>마이페이지</title>
@@ -94,7 +98,7 @@
                       	<input type="hidden" id="mGen" value="${m.gender }" />
                    </div>
                  </div>
-                                 
+                       
                 <!-- 이미지 변경 버튼 -->
                 <div class="col-sm-12">           
                     <!-- <button type="button" class="btn btn-default btn-sm"  id="UpImg">이미지변경</button> -->				
@@ -210,13 +214,20 @@
                   </div>
                 </div>
                  
+                 
             <div id="refrigerator" style="width:49%; height: 100%; float: right; border: 1px solid lightgray;">
                   <img src="${pageContext.request.contextPath }/resources/img/tmakxm.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
-                  <div class="refrigeratormenu">
-                      뭐가들어가야 할까나
-                      
-                  </div>    
-                  <button type="button" class="btn btn-default btn-sm">내 냉장고 가기</button>
+                  
+	                    <div id="ref" class="recipe row">
+							<c:forEach var="ingre" items="${refList}">
+								<div class="ingre m-1" id="${ingre.iNum}">
+									<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${ingre.iName}" style="height : 7vh; width : 7vh;">
+								</div>								
+							</c:forEach>
+	                    </div>        
+                  <div id="refBtn" style="position:absolute;">
+                  	<button type="button" class="btn btn-default btn-lg" onclick="gorefMain(this);">내 냉장고 가기</button>
+                  </div>
             </div>
           </div> 
 
@@ -243,7 +254,7 @@
 			<div id="mp1" class="col-lg-12" style="padding : 0;">
           <table id="mypage1" class="table table-hover" style="border: 1px solid lightgray;">
             <tbody class="myS" style="background : white; border:1px solid ligntgray;">
-              <tr id="rec" style="border: 2px solid saddlebrown">
+              <tr style="border: 2px solid saddlebrown; text-align: center; ">
                   <th width="10%">번호</th>
                   <th width="30%">제목</th>
                   <th width="15%">작성자</th>
@@ -281,6 +292,11 @@
    <% 
       int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
       int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
+     
+     
+   	  int mNum =m.getmNum();
+   	  
+     // int mNum = Integer.parseInt(String.valueOf(request.getAttribute("mNum")));
       
       //파라미터 cPage가 null이거나 "" 일 때에는 기본값 1로 세팅함.  
       String cPageTemp = request.getParameter("cPage");
@@ -291,7 +307,7 @@
          
       }
      %>
-   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "myPage.do") %>
+   <%= com.kh.pot.common.util.sh_Utils.getPageBar(totalContents, cPage, numPerPage,"myPage.do",mNum) %>
    </div>
 <br />
 <br />
@@ -482,15 +498,31 @@
                   // $('.nav-link').css('border','1px solid red');
                });
                
+               // 레시피 수정하기 가기
                function updateDev(obj){
             	   var rNum = $(obj).parent().parent().children().eq(0).text();
             	  location.href="${pageContext.request.contextPath}/recipe/selectDetail.do?rNum="+rNum;
               	  
                }
                
+               // 내 냉장고 가기 버튼
+                function gorefMain(obj){
+            	   var mNum = $(obj).parent().parent().children().eq(0).text();
+            	  location.href="${pageContext.request.contextPath}/fridge/refMain.do?mNum="+mNum;
+              	  
+               }
                
+             // 내가쓴글 보러가기
+                $("tr[id]").on("click",function(){
+                	var rNum = $(this).attr("id");
+          	     
+          	      location.href = "${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum="+rNum;
+          	   }).hover(function(){
+          		   $(this).css('cursor','pointer');
+          	   });
+               
+              //레시피 삭제
               $('.deleteMyRecipe').on('click',function(){
-           		//레시피 삭제
            		var rNum = $(this).parent().parent().children().eq(0).text();
            		console.log(rNum);
            		 $.ajax({

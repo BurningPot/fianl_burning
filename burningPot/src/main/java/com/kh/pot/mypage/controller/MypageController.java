@@ -21,6 +21,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pot.board.model.vo.Board;
+import com.kh.pot.fridge.model.service.FridgeService;
+import com.kh.pot.fridge.model.vo.Fridge;
 import com.kh.pot.home.service.MainService;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.mypage.model.service.MypageService;
@@ -37,6 +39,9 @@ public class MypageController {
 	
 	@Autowired
 	MainService mainService;
+	
+	@Autowired
+	FridgeService friService;
 	
 /*	@RequestMapping("mypage/myPage.do")
 	public String myPage(){
@@ -115,12 +120,16 @@ public class MypageController {
 		public String myRecipe(@RequestParam int mNum, Model model,
 				@RequestParam(value="cPage", required=false, defaultValue="1") 
 		int cPage){
-			List<Recipe> list = mypageService.myRecipeList(mNum);
+			
 			Member m =  mypageService.myinfoDel(mNum);
+			
 			int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
+			List<Recipe> list = mypageService.myRecipeList(cPage, numPerPage, mNum);
+			int totalContents = mypageService.selectMyRecipeTotalContents(mNum);
 			
-			int totalContents = mypageService.selectMyRecipeTotalContents();
+			List<Fridge> refList = friService.checkFridge(m.getmNum());
 			
+			model.addAttribute("refList", refList);		
 			model.addAttribute("recipeList", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
 			model.addAttribute("minfo", m);
 			
@@ -131,41 +140,31 @@ public class MypageController {
 		@RequestMapping(value="/mypage/myPosts.do")
 		public String myPostList( @RequestParam int mNum, Model model,
 				@RequestParam(value="cPage", required=false, defaultValue="1") 
-		int cPage){
-			List<Board> list = mypageService.myPostList(mNum);
+		int cPage){			
+			Member m =  mypageService.myinfoDel(mNum);
+			
 			int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
+			List<Board> list = mypageService.myPostList(cPage, numPerPage, mNum);
+			int totalContents = mypageService.selectMyPostTotalContents(mNum);
 			
-			int totalContents = mypageService.selectMyPostTotalContents();
+			List<Fridge> refList = friService.checkFridge(m.getmNum());
 			
+			model.addAttribute("refList", refList);				
 			model.addAttribute("postList", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
-			
+			model.addAttribute("minfo", m);
 			
 			/*System.out.println("에이잭스 스트링 값 확인 : "+ category);*/
 			
 			return "mypage/myPosts";
 		}
 		
-		/*@RequestMapping("/mypage/myPosts.do")
-		public String myPosts(//cPage로 받을꺼고 값이 없어도 받을수 있다 required(오버로딩처럼 쓸수있다) 값이 안들어왔을때 디폴트벨류로 1로 하겟다
-				@RequestParam(value="cPage", required=false, defaultValue="1") 
-				int cPage, Model model){
-				int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
-				
-				// 1. 현재 페이지 컨텐츠 리스트 받아오기
-				List<Map<String, String>> list = mypageService.selectMyBoardList(cPage, numPerPage);
-				
-				// 2. 전체 게시글 수 구하기
-				int totalContents = mypageService.selectMyBoardTotalContents();
-				
-				// 반환자료형이 모델이면 붇혀서 사용 가능
-				model.addAttribute("list", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
-			return "mypage/myPosts";
-		}*/
+
 		@RequestMapping("/mypage/myLike.do")
-		public String myLike(
+		public String myLike( @RequestParam int mNum, Model model,
 				//cPage로 받을꺼고 값이 없어도 받을수 있다 required(오버로딩처럼 쓸수있다) 값이 안들어왔을때 디폴트벨류로 1로 하겟다
 				@RequestParam(value="cPage", required=false, defaultValue="1") 
-				int cPage, Model model){
+				int cPage){
+				Member m =  mypageService.myinfoDel(mNum);
 				int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
 				
 				// 1. 현재 페이지 컨텐츠 리스트 받아오기
@@ -174,8 +173,13 @@ public class MypageController {
 				// 2. 전체 게시글 수 구하기
 				int totalContents = mypageService.selectMyBoardTotalContents();
 				
+				List<Fridge> refList = friService.checkFridge(m.getmNum());
+				
+				model.addAttribute("refList", refList);				
 				// 반환자료형이 모델이면 붇혀서 사용 가능
 				model.addAttribute("list", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
+				model.addAttribute("minfo", m);
+				
 			return "mypage/myLike";
 		}
 		
