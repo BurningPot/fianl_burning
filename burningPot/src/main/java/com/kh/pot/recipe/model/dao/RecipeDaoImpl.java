@@ -154,7 +154,11 @@ public class RecipeDaoImpl implements RecipeDao {
 
 	@Override
 	public int insertReport(Report report) {
-
+		
+		   System.out.println(report.getRpContent());
+		   System.out.println(report.getmNum());
+		   System.out.println(report.getrNum());
+		
 		return sqlSession.insert("recipe.insertReport", report);
 		
 	}

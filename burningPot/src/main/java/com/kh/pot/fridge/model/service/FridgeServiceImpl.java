@@ -39,16 +39,20 @@ public class FridgeServiceImpl implements FridgeService {
 		List<String> inputIngre = new ArrayList<String>();
 		Collections.addAll(inputIngre, ref);
 		Map<String, Object> data = new HashMap<String, Object>();
+		System.out.println("들어온 물품 수 : "+inputIngre.size());
 		
 		data.put("mNum", mNum);
 		
 		List<Fridge> checkFridge = friDao.checkFridge(data);
+		System.out.println("냉장고에 있는 수 : "+checkFridge.size());
 		List<Fridge> inIngre = new ArrayList<Fridge>();		// 기존에 있던 물품 중 현재도 담겨있는 것
 		List<Fridge> delIngre = new ArrayList<Fridge>();	// 기존에 있던 물품 중 제거한 물품
 		List<String> newIngre = new ArrayList<String>();	// 기존에 없다가 새로 들어온 물품
 		
 		if(checkFridge.isEmpty() || checkFridge == null) {
-			data.put("ref", inputIngre);
+			data.put("data", inputIngre);
+			List<Fridge> newIngreObj = friDao.selectIngre(data);
+			data.put("ref", newIngreObj);
 			friDao.insertFridge(data);
 		} else if(inputIngre.isEmpty() || inputIngre.get(0).equals("")){
 			data.put("delIngre", checkFridge);
