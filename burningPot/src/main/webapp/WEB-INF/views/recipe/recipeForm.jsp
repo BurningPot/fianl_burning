@@ -22,7 +22,8 @@
         
         <div class="container">
 
-            <form action="insertRecipe.do" method="POST" enctype="multipart/form-data" accept="image/*">
+           <form action="insertRecipe.do" method="POST" enctype="multipart/form-data" accept="image/*">
+
                 <!-- 레시피 정보 입력 영역 -->
                 <div class="row recipeBox mt-5">
                     <div class="col-sm-9 pl-3 mt-3 mb-3 testCss">

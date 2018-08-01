@@ -1,8 +1,8 @@
 package com.kh.pot.common.util;
 //여기에서 페이지네이션 디자인을 할 수 있다
-public class SHUtils {
+public class sh_Utils {
 	
-	public static String getPageBar(int totalContents, int cPage, int numPerPage, String url ){
+	public static String getPageBar(int totalContents, int cPage, int numPerPage, String url, int mNum){
 		String pageBar = "";
 		int pageBarSize = 5;
 		cPage = cPage==0?1:cPage;
@@ -13,7 +13,7 @@ public class SHUtils {
 		//1.pageBar작성
 		//pageBar순회용변수 
 	
-		int pageNo = (int)( (double)((cPage - 1)/pageBarSize) * pageBarSize) +1;
+		int pageNo = (int)(((cPage - 1)/pageBarSize) * pageBarSize) +1;
 		//종료페이지 번호 세팅
 		int pageEnd = pageNo+pageBarSize-1;
 		System.out.println("pageStart["+pageNo+"] ~ pageEnd["+pageEnd+"]");
@@ -33,12 +33,13 @@ public class SHUtils {
 		}
 		else {
 			pageBar += "<li class='page-item'>";
-			pageBar += "<a class='page-link' href='javascript:fn_paging("+(pageNo-1)+")'>이전</a>";
+			pageBar += "<a class='page-link' href='javascript:fn_paging("+(cPage-1)+','+(mNum)+");'>이전</a>";
 			pageBar += "</li>";
 		}
 		
 		// pageNo section
 		while(!(pageNo>pageEnd || pageNo > totalPage)){
+
 			if(cPage == pageNo ){
 				pageBar += "<li class='page-item active'>";
 				pageBar += "<a class='page-link'>"+pageNo+"</a>";
@@ -46,7 +47,7 @@ public class SHUtils {
 			} 
 			else {
 				pageBar += "<li class='page-item'>";
-				pageBar += "<a class='page-link' href='javascript:fn_paging("+pageNo+")'>"+pageNo+"</a>";
+				pageBar += "<a class='page-link' href='javascript:fn_paging("+pageNo+','+mNum+");'>"+pageNo+"</a>";
 				pageBar += "</li>";
 			}
 			pageNo++;
@@ -66,7 +67,7 @@ public class SHUtils {
 			
 		} else {
 			pageBar += "<li class='page-item'>";
-			pageBar += "<a class='page-link' href='javascript:fn_paging("+(pageNo+1)+")'>다음</a>";
+			pageBar += "<a class='page-link' href='javascript:fn_paging("+(cPage+1)+','+(mNum)+");'>다음</a>";
 			pageBar += "</li>";
 		}
 		
@@ -75,9 +76,9 @@ public class SHUtils {
 		//2.스크립트 태그 작성
 		//fn_paging함수
 		pageBar += "<script>";
-		pageBar += "function fn_paging(cPage,numPerPage){";
-		pageBar += "location.href='"+url+"?cPage='+cPage;";
-		pageBar += "}";
+		pageBar += "function fn_paging(cPage,mNum){";
+		pageBar += "location.href=' "+url+ "?cPage='+cPage+'&mNum='+mNum";
+		pageBar += "};";
 		pageBar += "</script>";
 		
 		

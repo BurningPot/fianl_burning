@@ -7,19 +7,19 @@
 		SELECT * FROM BOARD B JOIN MEMBER M ON(B.MNUM=M.MNUM) ORDER BY CATEGORY DESC, BNUM DESC
 	</select>
 	
-	<!-- 아이페이지 내가쓴글 불러오기 -->
-	<select id="seleteMyPostList" parameterType="_int" resultType="board">
-		SELECT * FROM BOARD WHERE MNUM = #{mNum}
-	</select>
-	
 	<!-- 게시판 토탈 -->
 	<select id="selectMyBoardTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM BOARD
 	</select>
 	
+	<!-- 아이페이지 내가쓴글 불러오기 -->
+	<select id="seleteMyPostList" parameterType="_int" resultType="board">
+		SELECT * FROM BOARD WHERE MNUM = #{mNum}
+	</select>
+	
 	<!-- 마이페이지 내가쓴글 토탈 -->
 	<select id="selectMyPostTotalContents" resultType="_int">
-		SELECT COUNT(*) FROM BOARD
+		SELECT COUNT(*) FROM BOARD WHERE MNUM = #{mNum}
 	</select>
 	
 	<!-- 마이페이지 내가 쓴 레시피 불러오기 -->
@@ -29,7 +29,7 @@
 	
 	<!-- 마이페이지 내가쓴 레시피 토탈 -->
 	<select id="selectMyRecipeTotalContents" resultType="_int">
-		SELECT COUNT(*) FROM BOARD
+		SELECT COUNT(*) FROM BOARD WHERE MNUM = #{mNum}
 	</select>
 	
 	

@@ -82,25 +82,25 @@ public class MypageServiceImpl implements MypageService{
 	}
 
 	@Override
-	public List<Board> myPostList(int mNum) {
+	public List<Board> myPostList(int cPage, int numPerPage, int mNum) {
 		
-		return mypageDao.myPostList(mNum);
+		return mypageDao.myPostList(cPage, numPerPage, mNum);
 	}
 
 	@Override
-	public int selectMyPostTotalContents() {
+	public int selectMyPostTotalContents(int mNum) {
 
-		return mypageDao.selectMyPostTotalContents();
+		return mypageDao.selectMyPostTotalContents(mNum);
 	}
 
 	@Override
-	public List<Recipe> myRecipeList(int mNum) {
-		return mypageDao.myRecipeList(mNum);
+	public List<Recipe> myRecipeList(int cPage, int numPerPage, int mNum) {
+		return mypageDao.myRecipeList(cPage, numPerPage, mNum);
 	}
 
 	@Override
-	public int selectMyRecipeTotalContents() {
-		return mypageDao.selectMyRecipeTotalContents();
+	public int selectMyRecipeTotalContents(int mNum) {
+		return mypageDao.selectMyRecipeTotalContents(mNum);
 	}
 
 	@Override

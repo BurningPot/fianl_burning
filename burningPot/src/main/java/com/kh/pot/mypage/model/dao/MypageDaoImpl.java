@@ -76,25 +76,30 @@ public class MypageDaoImpl implements MypageDao{
 	}
 
 	@Override
-	public List<Board> myPostList(int mNum) {
+	public List<Board> myPostList(int cPage, int numPerPage, int mNum) {
 		
-		return sqlSession.selectList("mypage.seleteMyPostList", mNum);
+		RowBounds rows = new RowBounds( (cPage-1)*numPerPage, numPerPage);
+		
+		return sqlSession.selectList("mypage.seleteMyPostList", mNum, rows);
 	}
 
 	@Override
-	public int selectMyPostTotalContents() {
-		return sqlSession.selectOne("mypage.selectMyPostTotalContents");	
+	public int selectMyPostTotalContents(int mNum) {
+		return sqlSession.selectOne("mypage.selectMyPostTotalContents", mNum);	
 	
 	}
 
 	@Override
-	public List<Recipe> myRecipeList(int mNum) {
-		return sqlSession.selectList("mypage.selectMyRecipeList", mNum);
+	public List<Recipe> myRecipeList(int cPage, int numPerPage, int mNum) {
+						
+		RowBounds rows = new RowBounds( (cPage-1)*numPerPage, numPerPage);
+		
+		return sqlSession.selectList("mypage.selectMyRecipeList", mNum, rows);
 	}
 
 	@Override
-	public int selectMyRecipeTotalContents() {
-		return sqlSession.selectOne("mypage.selectMyRecipeTotalContents");
+	public int selectMyRecipeTotalContents(int mNum) {
+		return sqlSession.selectOne("mypage.selectMyRecipeTotalContents", mNum);
 	}
 
 	@Override

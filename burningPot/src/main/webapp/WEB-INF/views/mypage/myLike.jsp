@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@page import="com.kh.pot.member.model.vo.Member"%>
+    <% Member m = (Member)session.getAttribute("m"); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -149,7 +151,7 @@
                       뭐가들어가야 할까나
                       
                   </div>    
-                  <button type="button" class="btn btn-default btn-sm">내 냉장고 가기</button>            
+                  <button type="button" class="btn btn-default btn-sm" onclick="gorefMain(this);">내 냉장고 가기</button>            
             </div>
           </div> 
 
@@ -206,7 +208,7 @@
    <% 
       int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
       int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
-      
+      int mNum =m.getmNum();
       //파라미터 cPage가 null이거나 "" 일 때에는 기본값 1로 세팅함.  
       String cPageTemp = request.getParameter("cPage");
       int cPage = 1;
@@ -216,7 +218,7 @@
          
       }
      %>
-   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "myLike.do") %>              
+   <%= com.kh.pot.common.util.sh_Utils.getPageBar(totalContents, cPage, numPerPage, "myLike.do", mNum) %>
           </div>
           </div>
           <script>
@@ -368,6 +370,13 @@
            		})
            		
            	});
+               
+            // 내 냉장고 가기 버튼
+               function gorefMain(obj){
+           	   var mNum = $(obj).parent().parent().children().eq(0).text();
+           	  location.href="${pageContext.request.contextPath}/fridge/refMain.do?mNum="+mNum;
+             	  
+              }
                
                $('#posGo').on('click', function(){
             	   $('#postForm').attr("action", "${pageContext.request.contextPath}/mypage/myPosts.do").submit();
