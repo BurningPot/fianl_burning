@@ -233,9 +233,8 @@ public class AdminController {
 		
 		model.addAttribute("bcList", bcList)
 		.addAttribute("detailMapping","detailQNA.do")
-		.addAttribute("servletMapping", "goQNA.do")
-		.addAttribute("mId", "admin")		// 임시적으로 회원의 정보를 넘겨주기 (나중에 로그인합쳐지면 세션으로 받기)
-		.addAttribute("mNum", 1);			// 임시적으로 회원의 정보를 넘겨주기
+		.addAttribute("servletMapping", "goQNA.do");
+		
 		}catch(Exception e){
 			throw new PotException("Q&A게시판 오류!","Q&A 게시글을 불러오는 도중 에러가 발생했습니다");
 		}
@@ -333,9 +332,8 @@ public class AdminController {
 		model.addAttribute("bcList", bcList)
 		.addAttribute("b",b)
 		.addAttribute("detailMapping","ingRequestDetail.do")
-		.addAttribute("servletMapping", "goRequestIngredient.do")
-		.addAttribute("mId", "admin")		// 임시적으로 회원의 정보를 넘겨주기 (나중에 로그인합쳐지면 세션으로 받기)
-		.addAttribute("mNum", 1);			// 임시적으로 회원의 정보를 넘겨주기
+		.addAttribute("servletMapping", "goRequestIngredient.do");
+		
 		}catch(Exception e){
 			throw new PotException("재료요청게시판 오류!","재료요청글을 불러오는 도중 에러가 발생했습니다");
 		}
@@ -524,11 +522,7 @@ public class AdminController {
 			
 			System.out.println("sub카테고리들은 들어오나? : "+list.get(i).getSubCName());
 		}
-		/*System.out.println("map1의 크기는? : "+map1.size());
-		System.out.println("map2의 크기는? : "+map2.size());
-		System.out.println("map1은 ? : "+map1.toString());
-		System.out.println("map2는 ? : "+map2.toString());*/
-		
+				
 		//준비는 끝났다! 이제 들어온 text가 기존의 세부 카테고리와 겹치지는 않는지 검사해보자
 		for(int i=0; i<list.size();i++){
 			if(list.get(i).getSubCName().equals(text)){
@@ -693,9 +687,8 @@ public class AdminController {
 		model.addAttribute("rp", rp);
 		
 		model.addAttribute("detailMapping","detailReport.do")
-		.addAttribute("servletMapping", "goReport.do")
-		.addAttribute("mId", "admin")		// 임시적으로 회원의 정보를 넘겨주기 (나중에 로그인합쳐지면 세션으로 받기)
-		.addAttribute("mNum", 1);			// 임시적으로 회원의 정보를 넘겨주기
+		.addAttribute("servletMapping", "goReport.do");
+		
 		}catch(Exception e){
 			throw new PotException("신고게시판 오류!","신고글을 읽어오던 도중 에러가 발생했습니다");
 		}

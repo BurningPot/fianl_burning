@@ -132,7 +132,7 @@
             		<div class="col-lg-10">
             			<div class="row">
             				<div class="col-lg-11">
-            					${bc.mId} 
+            					${bc.mName} 
             					<span style="display:none">${bc.mNum}</span>
             					<span style="display:none">${bc.bcNum}</span>
             				</div>
@@ -202,7 +202,7 @@
       			
       			//var comment1 = comment.substring(0,100);
       			
-        		var mNum = ${mNum}; 
+        		var mNum = ${m.mNum}; 
         		
         		//ajax로 댓글달기 
         		$.ajax({
@@ -213,28 +213,30 @@
         				bNum: ${b.bNum}        				
         			},
         			success: function(data){
-        				var mId = "${mId}";
+        				var mName = "${m.mName}";
         				
         				/* if(mId == 'admin'){
         					mId = '관리자';
         				}         */	
-        				swal("작업완료!", "댓글작성이 완료되었습니다!", "success");        				
-        				var html = "";
-        				html += '<div class="row">';
-        				html += '<div class="col-lg-2">';
-        				html += '<img src="${pageContext.request.contextPath}/resources/img/defaultPerson.png" class="rounded float-left col-lg-12" alt="...">';
-        				html += '</div><div class="col-lg-10">';
-        				html += '<div class="row">';
-        				html += '<div class="col-lg-11">'+ mId +'<span style="display:none">'+mNum+'</span></div>' 				        				
-        				html += '<div class="col-lg-1"><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-        				html += '<input type="hidden" value="'+data.bcNum+'" class="bcNum"/></div></div>';
-        				html += '<div class="col-lg-11">'+comment+'</div></div><hr class="col-lg-12"/></div>';
+        				swal("작업완료!", "댓글작성이 완료되었습니다!", "success").then((value) => {
+        					var html = "";
+            				html += '<div class="row">';
+            				html += '<div class="col-lg-2">';
+            				html += '<img src="${pageContext.request.contextPath}/resources/img/defaultPerson.png" class="rounded float-left col-lg-12" alt="...">';
+            				html += '</div><div class="col-lg-10">';
+            				html += '<div class="row">';
+            				html += '<div class="col-lg-11">'+ mName +'<span style="display:none">'+mNum+'</span></div>' 				        				
+            				html += '<div class="col-lg-1"><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            				html += '<input type="hidden" value="'+data.bcNum+'" class="bcNum"/></div></div>';
+            				html += '<div class="col-lg-11">'+comment+'</div></div><hr class="col-lg-12"/></div>';
+            				
+            				$('#insertComment').append(html);
+            				
+            				//ajax로 댓글달기가 완료된 후에는 게시판의 답변 컬럼을 N에서 Y로 바꿔야 한다!
+                    		//update를 사용해서 바꾸자 (ajax), mNum만 넘기면 되요
+            				updateQnA(YorN); 
+        				});        				
         				
-        				$('#insertComment').append(html);
-        				
-        				//ajax로 댓글달기가 완료된 후에는 게시판의 답변 컬럼을 N에서 Y로 바꿔야 한다!
-                		//update를 사용해서 바꾸자 (ajax), mNum만 넘기면 되요
-        				updateQnA(YorN); 
         			},error: function(){        				
         				swal("작업실패!", "댓글 작성에 실패하였습니다!", "error");
         			}
