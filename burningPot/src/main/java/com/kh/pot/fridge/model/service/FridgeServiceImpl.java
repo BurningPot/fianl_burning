@@ -39,60 +39,59 @@ public class FridgeServiceImpl implements FridgeService {
 		List<String> inputIngre = new ArrayList<String>();
 		Collections.addAll(inputIngre, ref);
 		Map<String, Object> data = new HashMap<String, Object>();
-		System.out.println("들어온 물품 수 : "+inputIngre.size());
 		
 		data.put("mNum", mNum);
 		
 		List<Fridge> checkFridge = friDao.checkFridge(data);
-		System.out.println("냉장고에 있는 수 : "+checkFridge.size());
 		List<Fridge> inIngre = new ArrayList<Fridge>();		// 기존에 있던 물품 중 현재도 담겨있는 것
 		List<Fridge> delIngre = new ArrayList<Fridge>();	// 기존에 있던 물품 중 제거한 물품
 		List<String> newIngre = new ArrayList<String>();	// 기존에 없다가 새로 들어온 물품
 		
-		if(checkFridge.isEmpty() || checkFridge == null) {
-			data.put("data", inputIngre);
-			List<Fridge> newIngreObj = friDao.selectIngre(data);
-			data.put("ref", newIngreObj);
-			friDao.insertFridge(data);
-		} else if(inputIngre.isEmpty() || inputIngre.get(0).equals("")){
-			data.put("delIngre", checkFridge);
-			friDao.deleteFridge(data);
-		} else {
-			for(Fridge origin : checkFridge){
-				for(int i=0 ; i<inputIngre.size() ; i++){
-					if(origin.getiNum() == Integer.parseInt(inputIngre.get(i))) {
-						inIngre.add(origin);
-					}
-				}
-			}
-			
-			delIngre.addAll(checkFridge);
-			delIngre.removeAll(inIngre);
-			
-			newIngre.addAll(inputIngre);
-			for(int i = 0 ; i < newIngre.size() ; i++){
-				for(Fridge fri : inIngre){
-					if(Integer.parseInt(newIngre.get(i)) == fri.getiNum()) {
-						newIngre.remove(i);
-					}
-				}
-			}
-
-			data.put("delIngre", delIngre);
-			data.put("data", newIngre);
-			
-			if(delIngre.size() != 0){
-				int del = friDao.deleteFridge(data);
-				result += del;
-			}
-			
-			if(newIngre.size() != 0){
+		if(!((checkFridge.isEmpty() || checkFridge == null) && (inputIngre.isEmpty() || inputIngre.get(0).equals("")))){
+			if(checkFridge.isEmpty() || checkFridge == null) {
+				data.put("data", inputIngre);
 				List<Fridge> newIngreObj = friDao.selectIngre(data);
 				data.put("ref", newIngreObj);
-				int ins = friDao.insertFridge(data);
-				result += ins;
+				friDao.insertFridge(data);
+			} else if(inputIngre.isEmpty() || inputIngre.get(0).equals("")){
+				data.put("delIngre", checkFridge);
+				friDao.deleteFridge(data);
+			} else {
+				for(Fridge origin : checkFridge){
+					for(int i=0 ; i<inputIngre.size() ; i++){
+						if(origin.getiNum() == Integer.parseInt(inputIngre.get(i))) {
+							inIngre.add(origin);
+						}
+					}
+				}
+				
+				delIngre.addAll(checkFridge);
+				delIngre.removeAll(inIngre);
+				
+				newIngre.addAll(inputIngre);
+				for(int i = 0 ; i < newIngre.size() ; i++){
+					for(Fridge fri : inIngre){
+						if(Integer.parseInt(newIngre.get(i)) == fri.getiNum()) {
+							newIngre.remove(i);
+						}
+					}
+				}
+	
+				data.put("delIngre", delIngre);
+				data.put("data", newIngre);
+				
+				if(delIngre.size() != 0){
+					int del = friDao.deleteFridge(data);
+					result += del;
+				}
+				
+				if(newIngre.size() != 0){
+					List<Fridge> newIngreObj = friDao.selectIngre(data);
+					data.put("ref", newIngreObj);
+					int ins = friDao.insertFridge(data);
+					result += ins;
+				}
 			}
-			
 		}
 		
 		return result;

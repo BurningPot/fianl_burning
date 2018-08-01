@@ -106,7 +106,7 @@
 	</insert>
 	
 	<insert id="insertReport" parameterType="report">
-      INSERT INTO REPORT VALUES(SEQ_REPORT.NEXTVAL, #{rNum}, #{mNum}, #{rpContent})
+      INSERT INTO REPORT VALUES(SEQ_REPORT.NEXTVAL, #{rNum}, #{mNum}, #{rpContent}, DEFAULT)
    	</insert>
 	
 </mapper>
