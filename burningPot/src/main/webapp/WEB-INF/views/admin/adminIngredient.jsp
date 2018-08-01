@@ -273,7 +273,7 @@ $(function(){
  					html += '<div class="col-lg-12 ing-info-secondLine">[<span id="iNumber">'+data[0].iNum+'</span>]&nbsp;<input type="text" class="col-lg-6 ing-iName" value="'+data[0].iName+'"/></div>';
  					html += '<div class="col-lg-12 no-padding ing-info-thirdLine">';
  					html += '<div class="col-lg-12">관련키워드</div>';
- 					html += '<div class="col-lg-12"><input type="text" class="form-control col-lg-12 ing-keyword" value="'+keywordList+'"/><div class="col-lg-12">*키워드 입력시 띄어쓰기없이 #(재료명)으로 입력해주세요*</div></div>';
+ 					html += '<div class="col-lg-12"><input type="text" class="form-control col-lg-12 ing-keyword" value="'+keywordList+'"/><div class="col-lg-12">*키워드 입력시 띄어쓰기없이 한글로만  #(재료명)으로 입력해주세요*</div></div>';
  					html += '</div></div></div>';
  					html += '<input type="hidden" value="'+data[0].iNum+'" name="iNum" id="h_iNum"/>';
  					html += '<input type="hidden" value="'+data[0].iImage+'" name="img" id="h_img"/>';
@@ -336,15 +336,51 @@ $(function(){
         	// 재료 정보 수정하기를 눌렀을 때 해당 창에 있는 정보대로 재료정보를 수정한다
         	function updateIngInfo(){
         		$('#ing-update').on('click', function(){ 
-  					$('#h_exdate').val($('.ing-exdate').val());
-  					$("#h_iName").val($('.ing-iName').val());
-  					$("#h_keyword").val($('.ing-keyword').val()); 
-  					/* if(){
-  						//이미지 확장자 검사후 이미지가 아니면 허용하지 않는다
+  					
+  					var exdate = $('.ing-exdate').val(); 					
+  					var keyword = $('.ing-keyword').val();
+  					var iName = $('.ing-iName').val();					
+  							
+  					var regExp = /[^가-힣]/g; //한글이 아닌 것이 있는가?						
+  					var regExp_Number = /[^\d]/g; //숫자가 아닌것이 있는가?
+  					  					
+  					//키워드 하나하나를 쪼개서 검사할 용도로 만든 배열
+  					var keywordArr = keyword.split("#");
+  					  					
+  					//틀린 키워드들을 담을 배열
+  					var falseKeyword = new Array();
+  					
+  					for(var i= 1; i< keywordArr.length; i++){
+  						if(regExp.test(keywordArr[i])){
+  							falseKeyword.push(keywordArr[i]);  							
+  						}  						
+  					}  					
+  					var $fileInput = $('#uploading');
+  					
+  					
+  					if(falseKeyword.length > 0){  
+  						// 재료키워드가 올바른지 확인
+  						swal("알림","재료키워드가 올바르지 않습니다 : "+falseKeyword,"info");
+  					}else if(regExp_Number.test(exdate)){
+  						// 유통기한에 숫자가 아닌 것이 있는지 확인
+  						swal("알림","유통기한엔 숫자만 입력해주시기 바랍니다","info");
   					}else{
-  						$('#fileForm').attr('action', '${pageContext.request.contextPath}/admin/updateIngInfo.do').submit();
-  					} 
-  					 */
+  						$("#h_keyword").val(keyword); 
+  						$('#h_exdate').val(parseInt(exdate));
+  						$("#h_iName").val(iName); 	
+  						//이미지 확장자검사
+  						if($fileInput.val() != ""){
+  	  						var fileName = $fileInput.prop('files')[0].name;
+  	  						  					
+  	  						if(!extFilter(fileName)){
+  	  							swal("알림","이미지 확장자가 아니면 파일을 수정할 수 없습니다","info")
+  	  						}else{
+  	  							$('#fileForm').attr('action', '${pageContext.request.contextPath}/admin/updateIngInfo.do').submit();
+  	  						} 
+  	  					}else{
+  	  						$('#fileForm').attr('action', '${pageContext.request.contextPath}/admin/updateIngInfo.do').submit();
+  	  					}
+  					}  					
         		});        		
         	}        	
         	</script>

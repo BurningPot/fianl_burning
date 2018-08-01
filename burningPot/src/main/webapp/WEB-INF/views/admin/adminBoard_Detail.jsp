@@ -163,11 +163,11 @@
             			data:{
             				bNum : bNum
             			}, success: function(data){            				
-            				swal("작업완료!", "게시글을 삭제했습니다", "success");
-            				location.href="${pageContext.request.contextPath}/admin/${servletMapping}";
+            				swal("작업완료!", "게시글을 삭제했습니다", "success").then((value) => {
+            					location.href="${pageContext.request.contextPath}/admin/${servletMapping}";
+            				});            				
             			}, error: function(){
-            				swal("작업실패!", "게시글을 삭제하는데 실패하였습니다", "error");
-            				alert("게시글을 삭제하는데 실패하였습니다");
+            				swal("작업실패!", "게시글을 삭제하는데 실패하였습니다", "error");            				
             			}
             		})
             		

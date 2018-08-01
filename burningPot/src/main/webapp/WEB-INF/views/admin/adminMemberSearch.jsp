@@ -342,9 +342,7 @@
             		}else{
             			/* location.href="" */ //에러페이지로 넘어간다
             		}  
-            		$('#birth').text(birthDate);            		
-            		
-            		
+            		$('#birth').text(birthDate); 
             	}, error: function(data){
             		swal('작업실패!', "회원의 정보를 읽어오지 못했습니다", 'error');
             	} 
@@ -369,7 +367,9 @@
 					data:{
 						mNum : mNum
 					}, success: function(data){	
-						swal('작업성공!', "회원번호 ["+data+"] 가 강제 탈퇴 되었습니다", 'success');
+						swal('작업성공!', "회원번호 ["+data+"] 가 강제 탈퇴 되었습니다", 'success').then((value) => {
+							location.href="${pageContext.request.contextPath}/admin/goSearchMember.do";
+						});
 					}, error: function(data){
 						swal('작업실패!', '강제탈퇴에 실패했습니다', 'error');
 					}
