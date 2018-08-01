@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<c:import url="/WEB-INF/views/common/speech.jsp" />
 <!DOCTYPE html>
 <html>
 
@@ -666,7 +667,7 @@
 		}
 		
 		.search_bar {
-			width: 95.4%;
+			width: 90%;
 			height: 80%;
 			text-align: center;
 			outline: none;
@@ -1109,7 +1110,7 @@
 				height: 100%;
 			}
 			.search_bar {
-				width: 90%; 
+				width: 85%; 
 				height: 100%;
 			}
 			.btn_search {
@@ -1419,7 +1420,7 @@
 			    /* padding: 1%; */
 		    }
 			.search_bar {
-				width: 90%; 
+				width: 80%; 
 				height: 100%;
 			}
 			.btn_search {
@@ -1481,6 +1482,18 @@
 							<img class="btn_img"
 								src="${pageContext.request.contextPath }/resources/img/돋보기.PNG">
 						</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-microphone" id="speechBtn" data-tooltip-text="speechMode"></i>
+						<form class="row col-sm-12">
+						<div id="speechInput" style="display:none; background:blue;">	
+				        	<div class="input-group">
+						     <div class="input-group-prepend">
+						       <span class="input-group-text" style="background-color:green; color:white; ">듣고있어요</span>
+						    </div>
+						    <input type="text" class="form-control" id="speechVal">
+						    <input type="hidden" id="spSw" value="0"/>
+						  </div>
+						</div>
+						</form>
 					</div>
 					
 					<div class="recommend_recipe_area active">
@@ -1489,8 +1502,11 @@
 							<span class="badge badge-pill badge-success" id="rec_recipe_link">추천 레시피 
 							
 							</span>
+							<input type="hidden" id="isOpen" value="0" />
+				         	<!-- onclick="location.href='${pageContext.request.contextPath}/board/goSpeech.do'" -->
 						</div>
 					</div>
+						
 				</div>
 				
 				<!-- 로그인 안했을 때 -->
@@ -1498,7 +1514,7 @@
 	      		<div class="b-seg-right_before nav navbar-nav navbar-right">
 					<div class="menu_full">
 				      	<div class="menu_home_btn">
-							<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
+							<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 								<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 							</button>
 						</div>
@@ -1530,13 +1546,13 @@
       		  <div class="b-seg-right_after nav navbar-nav navbar-right">
 			      <div class="menu_full">
 		      	  	<div class="menu_home_btn_after">
-						<button class="menuBtn_after" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
+						<button class="menuBtn_after" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
 					<c:if test="${m.mId != 'admin'}" >
 				        <div class="login_btn_after">
-			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button">
+			          		<button class="menuBtn_after" data-tooltip-text="MYPAGE!!" type="button" onclick="goToMyPage();">
 			          			<i class="far fa-user fa-3x"></i>
 				            </button>
 				        </div>
@@ -1617,7 +1633,7 @@
 			      </div>
 			      <div class="menu_before">
 			      	<div class="menu_home_btn_before">
-						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
+						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
@@ -1648,7 +1664,7 @@
 			      </div>
 			      <div class="menu_after">
 			      	<div class="menu_home_btn_after">
-						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
+						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
@@ -1999,7 +2015,7 @@
 	    }
 	});
 	
-	
+	// 아이디 찾기
 	function findId(){
 		if( ($('#mEmail').val() != null && $('#mEmail').val() != "") && ($('#mBirth').val() != null && $('#mBirth').val() != "") ){
 			$.ajax({
@@ -2046,6 +2062,35 @@
 	}
 	
 	  /* 로그인 스크립트 끝 */
+	  /* 음성버튼 */
+	  $('#speechBtn').on("click",function(){
+
+		   speechOn();
+		   
+		  if($('#spSw').val() == 0){
+		  	$('#speechInput').show("slow");
+		  	
+		  	speechOn();
+/* 		  	console.log('0:'+annyang.isListening()); */
+
+			$('#speechBtn').css("color","red");  
+		  	$('#spSw').val(1);
+		  
+		  }else if($('#spSw').val() == 1){
+		  	$('#speechInput').hide("slow");
+		  	// Remove all callbacks from all events:
+		  	annyang.pause();
+		  	annyang.removeCommands();
+
+		  	$('#speechBtn').css("color","black");  
+		  	$('#spSw').val(0); 
+		  }
+		  
+		  /* speechInput */
+	  });
+	  
+	  
+	  /* 음성버튼 끝 */
 	  
 	</script>
 	<%-- <div class="seg_btn_area">

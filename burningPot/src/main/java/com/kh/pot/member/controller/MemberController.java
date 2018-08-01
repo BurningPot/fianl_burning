@@ -50,7 +50,6 @@ public class MemberController {
 		this.naverLoginVO = naverLoginVO;
 	}
 	
-
 	@Autowired
 	private GoogleConnectionFactory googleConnectionFactory;
 	@Autowired
@@ -140,7 +139,7 @@ public class MemberController {
 		  
 		  return "/member/googleEnroll";
 	  }else{
-		  m = memberService.selectMemberId(m.getmId());
+		  m = memberService.selectMemberId(profile.getId());
 		  msg="환영합니다.!!"+m.getmName()+" 님";
 		  model.addAttribute("m",m);
 	  }

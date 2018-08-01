@@ -118,15 +118,15 @@
 	<!-- HYD -->
 	
 	<!-- 예찬 mapper 부분 -->
-	<select id="checkIdDuplicate" resultType="_int">
+	<select id="checkIdDuplicate" parameterType="string" resultType="_int">
 		SELECT COUNT(*) AS CNT FROM MEMBER WHERE MID = #{mId}
 	</select>
 	
-	<select id="checkEmailDuplicate" resultType="_int">
+	<select id="checkEmailDuplicate" parameterType="string" resultType="_int">
 		SELECT COUNT(*) AS CNT FROM MEMBER WHERE EMAIL = #{email}
 	</select>
 	
-	<select id="checkNameDuplicate" resultType="_int">
+	<select id="checkNameDuplicate" parameterType="string" resultType="_int">
 		SELECT COUNT(*) AS CNT FROM MEMBER WHERE MNAME = #{mName}
 	</select>
 	
