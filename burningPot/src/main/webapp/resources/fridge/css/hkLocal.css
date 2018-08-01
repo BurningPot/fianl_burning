@@ -96,7 +96,7 @@
         width: 0;
         height: 0;
         border: 20px solid transparent;
-        border-right-color: rgba(182, 243, 208, 0.83);
+        border-right-color: rgba(251, 255, 185, 0.83);
         border-left: 0;
         border-top: 0;
     }
@@ -118,7 +118,7 @@
 	    background: rgb(218, 241, 238);
 	}
 	.rec-side::-webkit-scrollbar-track {
-	    background: rgba(182, 243, 208, 0.83);
+	    background: rgba(251, 255, 185, 0.83);
 	}
 	/* Handle */
 	.rec-side::-webkit-scrollbar-thumb, #refrigerator::-webkit-scrollbar-thumb {
@@ -180,13 +180,11 @@
     #info{
         float : right;
     }
-    .ref-side{
-        height : 80vh;
-    }
     .rec-side{
         height : 77vh;
-        background:rgba(182, 243, 208, 0.83); 
+        background:rgba(251, 255, 185, 0.83); 
         margin-right:-13%;
+        overflow-x: hidden;
         overflow-y: scroll;
     }
     .ui-tooltip, .arrow:after {
@@ -425,7 +423,8 @@
     }
     .rec-side{
         height : 70vh;
-        background:rgba(182, 243, 208, 0.83);
+        background:rgba(251, 255, 185, 0.83);
+        overflow-x: hidden; 
         overflow-y: scroll;
     }
 	/* Track */
