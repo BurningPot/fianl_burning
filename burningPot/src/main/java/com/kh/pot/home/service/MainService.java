@@ -12,7 +12,7 @@ public interface MainService {
 
 	int selectCountAllRecipe();
 
-	List<Recipe> searchRecipe(String search);
+	List<Recipe> searchRecipe(String search, int mNum);
 
 	int searchTotalCount(String keyWord);
 
@@ -22,11 +22,27 @@ public interface MainService {
 
 	int inquiryTotalCount(String keyWord);
 
-	List<Recipe> inquiryRecipeListBefore(String keyWord);
+	List<Recipe> inquiryRecipeListBefore(String keyWord, String AscAndDesc);
 
-	List<Recipe> inquiryRecipeListAfter(String keyWord, int inquiryStartCount, int inquiryEndCount);
+	List<Recipe> inquiryRecipeListAfter(String keyWord, int inquiryStartCount, int inquiryEndCount, String AscAndDesc);
 
 	List<Recipe> recipeTop5();
+
+	List<Recipe> recommandRecipeListBefore(String keyWord, String AscAndDesc);
+
+	int recommandTotalCount(String keyWord);
+
+	List<Recipe> recommandRecipeListAfter(String keyWord, int recommandStartCount, int recommandEndCount, String AscAndDesc);
+
+	List<Recipe> levelAndTimeRecipeListBefore(String keyWord, String AscAndDesc);
+
+	int levelAndTimeAfterTotalCount(String keyWord);
+
+	List<Recipe> levelAndTimeRecipeListAfter(String keyWord, int levelAndTimeStartCount, int levelAndTimeEndCount, String AscAndDesc);
+
+	int updateRecommend(int recipeRNum);
+
+	int insertRecommend(int mNum, int recipeRNum);
 	
 	
 

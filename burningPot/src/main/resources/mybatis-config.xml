@@ -12,6 +12,9 @@
 		<typeAlias type="com.kh.pot.board.model.vo.BoardComment" alias="boardComment"></typeAlias>
 		<typeAlias type="com.kh.pot.recipe.model.vo.RecipeContent" alias="recipeContent"></typeAlias>
 		<typeAlias type="com.kh.pot.admin.model.vo.Statistics" alias="statistics"></typeAlias>
+		<typeAlias type="com.kh.pot.board.model.vo.Report" alias="report"></typeAlias>
+		<typeAlias type="com.kh.pot.recipe.model.vo.Review" alias="review"></typeAlias>
+		<typeAlias type="com.kh.pot.recipe.model.vo.Recommend" alias="recommend"></typeAlias>
 	</typeAliases>
 	
 	<!-- <typeHandlers>

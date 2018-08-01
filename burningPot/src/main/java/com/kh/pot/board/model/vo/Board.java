@@ -18,7 +18,8 @@ public class Board implements Serializable{
 	private String bContent;	// 글내용
 	private String bImg;		// 사진
 	private String reply;		// 답변여부(관리자가 답변했는지) --> Q&A에만 해당되는 사항일듯
-	private int bCount;
+	private int bCount;			// 조회 수
+	private String bDateTime;  	// 작성일 (시간포함) 
 	
 	public Board(){
 		super();
@@ -41,7 +42,7 @@ public class Board implements Serializable{
 	}
 	
 	public Board(int bNum, String category, String bTitle, int mNum, String mId, String mName, String mPicture,
-			Date bDate, String bContent, String bImg, String reply, int bCount) {
+			Date bDate, String bContent, String bImg, String reply, int bCount, String bDateTime) {
 		super();
 		this.bNum = bNum;
 		this.category = category;
@@ -55,6 +56,15 @@ public class Board implements Serializable{
 		this.bImg = bImg;
 		this.reply = reply;
 		this.bCount = bCount;
+		this.bDateTime = bDateTime;
+	}
+
+	public String getbDateTime() {
+		return bDateTime;
+	}
+
+	public void setbDateTime(String bDateTime) {
+		this.bDateTime = bDateTime;
 	}
 
 	public int getbNum() {
@@ -157,12 +167,8 @@ public class Board implements Serializable{
 	public String toString() {
 		return "Board [bNum=" + bNum + ", category=" + category + ", bTitle=" + bTitle + ", mNum=" + mNum + ", mId="
 				+ mId + ", mName=" + mName + ", mPicture=" + mPicture + ", bDate=" + bDate + ", bContent=" + bContent
-				+ ", bImg=" + bImg + ", reply=" + reply + ", bCount=" + bCount + "]";
+				+ ", bImg=" + bImg + ", reply=" + reply + ", bCount=" + bCount + ", bDateTime=" + bDateTime + "]";
 	}
-
-	
-	
-	
 	
 	
 }

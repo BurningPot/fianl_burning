@@ -86,7 +86,7 @@
             </div>
             <br>
 			<div class="col-lg-12">
-            	<div class="col-lg-10 test" style="text-align:justify; padding: 3%;">${b.bContent}</div>                    
+            	<div class="col-lg-10 rounded test" style="text-align:justify; padding: 3%;">${b.bContent}</div>                    
             </div>            
             
             <br /><br />
@@ -103,7 +103,7 @@
             <hr class="col-lg-12"/>
            	
             <div class="col-lg-12">
-            	<textarea class="col-lg-10 test" id="comment" name="comment" cols="4" rows="5" maxlength="500" placeholder="답변은 500자 이내로 입력해주세요"></textarea> 
+            	<textarea class="col-lg-10 rounded test" id="comment" name="comment" cols="4" rows="5" maxlength="500" placeholder="답변은 500자 이내로 입력해주세요"></textarea> 
             </div>
            
     		<div class="col-lg-2 offset-lg-9" style="font-size: 100%;">
@@ -132,7 +132,7 @@
             		<div class="col-lg-10">
             			<div class="row">
             				<div class="col-lg-11">
-            					${bc.mId} 
+            					${bc.mName} 
             					<span style="display:none">${bc.mNum}</span>
             					<span style="display:none">${bc.bcNum}</span>
             				</div>
@@ -162,10 +162,11 @@
             			url : "${pageContext.request.contextPath}/admin/deleteBoard.do",
             			data:{
             				bNum : bNum
-            			}, success: function(data){
-            				alert("게시글을 삭제했습니다");
+            			}, success: function(data){            				
+            				swal("작업완료!", "게시글을 삭제했습니다", "success");
             				location.href="${pageContext.request.contextPath}/admin/${servletMapping}";
             			}, error: function(){
+            				swal("작업실패!", "게시글을 삭제하는데 실패하였습니다", "error");
             				alert("게시글을 삭제하는데 실패하였습니다");
             			}
             		})
@@ -201,7 +202,7 @@
       			
       			//var comment1 = comment.substring(0,100);
       			
-        		var mNum = ${mNum}; 
+        		var mNum = ${m.mNum}; 
         		
         		//ajax로 댓글달기 
         		$.ajax({
@@ -212,36 +213,36 @@
         				bNum: ${b.bNum}        				
         			},
         			success: function(data){
-        				var mId = "${mId}";
+        				var mName = "${m.mName}";
         				
         				/* if(mId == 'admin'){
         					mId = '관리자';
         				}         */	
+        				swal("작업완료!", "댓글작성이 완료되었습니다!", "success").then((value) => {
+        					var html = "";
+            				html += '<div class="row">';
+            				html += '<div class="col-lg-2">';
+            				html += '<img src="${pageContext.request.contextPath}/resources/img/defaultPerson.png" class="rounded float-left col-lg-12" alt="...">';
+            				html += '</div><div class="col-lg-10">';
+            				html += '<div class="row">';
+            				html += '<div class="col-lg-11">'+ mName +'<span style="display:none">'+mNum+'</span></div>' 				        				
+            				html += '<div class="col-lg-1"><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            				html += '<input type="hidden" value="'+data.bcNum+'" class="bcNum"/></div></div>';
+            				html += '<div class="col-lg-11">'+comment+'</div></div><hr class="col-lg-12"/></div>';
+            				
+            				$('#insertComment').append(html);
+            				
+            				//ajax로 댓글달기가 완료된 후에는 게시판의 답변 컬럼을 N에서 Y로 바꿔야 한다!
+                    		//update를 사용해서 바꾸자 (ajax), mNum만 넘기면 되요
+            				updateQnA(YorN); 
+        				});        				
         				
-        				alert('댓글작성이 완료되었습니다!');
-        				var html = "";
-        				html += '<div class="row">';
-        				html += '<div class="col-lg-2">';
-        				html += '<img src="${pageContext.request.contextPath}/resources/img/defaultPerson.png" class="rounded float-left col-lg-12" alt="...">';
-        				html += '</div><div class="col-lg-10">';
-        				html += '<div class="row">';
-        				html += '<div class="col-lg-11">'+ mId +'<span style="display:none">'+mNum+'</span></div>' 				        				
-        				html += '<div class="col-lg-1"><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-        				html += '<input type="hidden" value="'+data.bcNum+'" class="bcNum"/></div></div>';
-        				html += '<div class="col-lg-11">'+comment+'</div></div><hr class="col-lg-12"/></div>';
-        				
-        				$('#insertComment').append(html);
-        				
-        				//ajax로 댓글달기가 완료된 후에는 게시판의 답변 컬럼을 N에서 Y로 바꿔야 한다!
-                		//update를 사용해서 바꾸자 (ajax), mNum만 넘기면 되요
-        				updateQnA(YorN); 
-        			},error: function(){
-        				console.log('댓글작성 실패!');
-        				alert("댓글 작성에 실패하였습니다!");
+        			},error: function(){        				
+        				swal("작업실패!", "댓글 작성에 실패하였습니다!", "error");
         			}
         		});	
         	});  
-        	
+        	//댓글을 작성해주면 답변부분을 Y로 바꾼다
         	function updateQnA(YorN){
         		var bNum = ${b.bNum};
         		        		
@@ -252,15 +253,15 @@
         				YorN : YorN
         			},
         			success: function(data){
-        				console.log(data+'개 업데이트 완료');
+        				console.log(data+'개 업데이트 완료');        				
         				location.href="${pageContext.request.contextPath}/admin/${detailMapping}?bNum="+bNum;
         			}, error: function(){
-        				console.log("업데이트 실패");
+        				console.log("답변완료 업데이트 실패");
         			}        			
         		});
         		
         	};   
-        	
+        	//댓글삭제 기능
         	$('.close').on('click',function(){        		
         		var bcNum = $(this).siblings('.bcNum').val();
         		var bNum = ${b.bNum};
@@ -272,8 +273,8 @@
         			data: {
         				bcNum : bcNum,
         				commentEa: commentLength
-        			}, success: function(){
-        				alert('글 삭제가 완료되었습니다!');
+        			}, success: function(){        				
+        				swal("작업완료!", "게시글이 삭제되었습니다", "success");
         				
  						if(commentLength == 1){
  							//댓글이 더이상 존재 하지 않을 경우 답변컬럼을 'N'으로 바꾸어 놓아야 한다
@@ -284,6 +285,7 @@
         				location.href="${pageContext.request.contextPath}/admin/${detailMapping}?bNum="+bNum;
         			}, error: function(){
         				alert('글 삭제에 실패하였습니다!');
+        				swal("작업실패!", "게시글을 삭제하는데 실패했습니다", "error");
         			}
         		});        		
         	});

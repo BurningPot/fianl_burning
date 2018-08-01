@@ -47,46 +47,51 @@ public class FridgeServiceImpl implements FridgeService {
 		List<Fridge> delIngre = new ArrayList<Fridge>();	// 기존에 있던 물품 중 제거한 물품
 		List<String> newIngre = new ArrayList<String>();	// 기존에 없다가 새로 들어온 물품
 		
-		if(checkFridge.isEmpty() || checkFridge == null) {
-			data.put("ref", inputIngre);
-			friDao.insertFridge(data);
-		} else if(inputIngre.isEmpty() || inputIngre.get(0).equals("")){
-			data.put("delIngre", checkFridge);
-			friDao.deleteFridge(data);
-		} else {
-			for(Fridge origin : checkFridge){
-				for(int i=0 ; i<inputIngre.size() ; i++){
-					if(origin.getiNum() == Integer.parseInt(inputIngre.get(i))) {
-						inIngre.add(origin);
+		if(!((checkFridge.isEmpty() || checkFridge == null) && (inputIngre.isEmpty() || inputIngre.get(0).equals("")))){
+			if(checkFridge.isEmpty() || checkFridge == null) {
+				data.put("data", inputIngre);
+				List<Fridge> newIngreObj = friDao.selectIngre(data);
+				data.put("ref", newIngreObj);
+				friDao.insertFridge(data);
+			} else if(inputIngre.isEmpty() || inputIngre.get(0).equals("")){
+				data.put("delIngre", checkFridge);
+				friDao.deleteFridge(data);
+			} else {
+				for(Fridge origin : checkFridge){
+					for(int i=0 ; i<inputIngre.size() ; i++){
+						if(origin.getiNum() == Integer.parseInt(inputIngre.get(i))) {
+							inIngre.add(origin);
+						}
 					}
 				}
-			}
-			
-			delIngre.addAll(checkFridge);
-			delIngre.removeAll(inIngre);
-			
-			newIngre.addAll(inputIngre);
-			for(int i = 0 ; i < newIngre.size() ; i++){
-				for(Fridge fri : inIngre){
-					if(Integer.parseInt(newIngre.get(i)) == fri.getiNum()) {
-						newIngre.remove(i);
+				
+				delIngre.addAll(checkFridge);
+				delIngre.removeAll(inIngre);
+				
+				newIngre.addAll(inputIngre);
+				for(int i = 0 ; i < newIngre.size() ; i++){
+					for(Fridge fri : inIngre){
+						if(Integer.parseInt(newIngre.get(i)) == fri.getiNum()) {
+							newIngre.remove(i);
+						}
 					}
 				}
+	
+				data.put("delIngre", delIngre);
+				data.put("data", newIngre);
+				
+				if(delIngre.size() != 0){
+					int del = friDao.deleteFridge(data);
+					result += del;
+				}
+				
+				if(newIngre.size() != 0){
+					List<Fridge> newIngreObj = friDao.selectIngre(data);
+					data.put("ref", newIngreObj);
+					int ins = friDao.insertFridge(data);
+					result += ins;
+				}
 			}
-
-			data.put("delIngre", delIngre);
-			data.put("ref", newIngre);
-			
-			if(delIngre.size() != 0){
-				int del = friDao.deleteFridge(data);
-				result += del;
-			}
-			
-			if(newIngre.size() != 0){
-				int ins = friDao.insertFridge(data);
-				result += ins;
-			}
-			
 		}
 		
 		return result;

@@ -2,6 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="board">
 	<!-- HYD -->	
+	<delete id="deleteRecipe" parameterType="_int">
+		DELETE FROM RECIPE WHERE RNUM = #{rNum}
+	</delete>
+	
+	<select id="selectReportedRecipe" parameterType="_int" resultType="Recipe">
+		SELECT RNUM, RNAME, RIMG, MNAME FROM REPORT JOIN RECIPE RC USING(RNUM) JOIN MEMBER M ON(M.MNUM = RC.MNUM) 
+		WHERE RPNUM = #{rpNum}
+	</select>
+	
+	<select id="selectReportDetail" resultType="Report">
+		SELECT RPNUM, RPCONTENT, RPDATE, MNAME FROM REPORT JOIN MEMBER USING(MNUM) WHERE RPNUM = #{rpNum}
+	</select>
+	
+	<select id="selectReportCount" resultType="_int">
+		SELECT COUNT(*) FROM REPORT
+	</select>
+	
+	<select id="selectReport" resultType="Report">
+		SELECT RPNUM, MNAME, RPCONTENT, RPDATE FROM REPORT
+		JOIN MEMBER USING(MNUM) ORDER BY RPDATE
+	</select>
+	
 	<select id="selectBoard" parameterType="string" resultType="Board">
 		SELECT BNUM, CATEGORY, BTITLE, MNUM, BDATE, MNAME ,MID, REPLY, BCOUNT 
 		FROM BOARD JOIN MEMBER USING(MNUM) WHERE CATEGORY = #{bCategory} ORDER BY REPLY, BNUM DESC, BDATE
@@ -76,7 +98,7 @@
 	</select>
 	
 	<select id="selectBaordOne" parameterType="_int" resultType="Board">
-		SELECT BNUM, CATEGORY, BTITLE, MNUM, BDATE, BCONTENT, MNAME ,MID, REPLY, BCOUNT, MPICTURE
+		SELECT BNUM, CATEGORY, BTITLE, MNUM, BDATE, BCONTENT, MNAME ,MID, REPLY, BCOUNT, MPICTURE, to_char(BDATE, 'yyyy-MM-dd hh24:mi') bDateTime
 			FROM BOARD JOIN MEMBER USING(MNUM) WHERE BNUM = #{boardNo}
 	</select>
 	
@@ -94,31 +116,6 @@
 	<update id="updateBoard">
 		UPDATE BOARD SET BTITLE = #{bTitle}, BCONTENT= #{bContent} WHERE BNUM = #{bNum}
 	</update>
-	
-	<!-- 
-	BNUM
-	CATEGORY
-	BTITLE
-	MNUM
-	BDATE
-	BCONTENT
-	BIMG
-	REPLY
-	BCOUNT -->
-	
-<!-- 	
-	private int bNum;		// 글번호
-	private String category;	// 글구분
-	private String bTitle;		// 글제목
-	private int mNum;		// 회원번호
-	private String mId;			// 회원아이디
-	private String mName;		// 회원 이름
-	private Date bDate;			// 작성일
-	private String bContent;	// 글내용
-	private String bImg;		// 사진
-	private String reply;		// 답변여부(관리자가 답변했는지)  Q&A에만 해당되는 사항일듯
-	private int bCount;
-	 -->
 	
 	<!-- 예찬 mapper 부분  끝 -->
 

@@ -8,6 +8,21 @@ $(function () {
 		$(this).text($(this).text().replace(/(<br>|<br\/>|<br \/>)/g, '\r\n'));
 	});
 	
+	// top 버튼 추가
+	$(".top_btn").append("<a href='#' class='click mt-2'>제목</a>");
+	$(".top_btn").append("<a href='#ingredientData' class='followArea mt-2'>재료</a>");
+	$(".top_btn").append("<a href='#recipeContentTitle' class='followArea mt-2'>순서</a>");
+
+	$('a[href*="#"]:not([href="#"])').click(function() {
+      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+        var target = $(this.hash);
+          $('html, body').animate({
+            scrollTop: target.offset().top - 100
+          }, 300);
+          return false;
+      }
+    });
+	
 	// 식재료 조회
 	$('.category').each(function(index, value) {
 		var obj = $(this);
@@ -219,19 +234,21 @@ function selectedNum(mainIndex) {
 
 // ------------------------------------- 이미지 등록 기능 영역 -------------------------------------
 function LoadImg(value, num) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            switch(num){
-            case 1:
-                $(".titleImage").attr("src", e.target.result);
-                break;
-            case 2:
-                $(value).siblings('.subImage').attr("src", e.target.result);
-                console.log($(value).val());
-                break;
-            }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        switch(num){
+	        case 1:
+	            $(".titleImage").attr("src", e.target.result);
+	            $("#originTitleImg").val("");
+	            break;
+	        case 2:
+	            $(value).siblings('.subImage').attr("src", e.target.result);
+	            $(value).siblings(".originSubImg").val("");
+	            console.log($(value).val());
+	            break;
         }
-        reader.readAsDataURL(value.files[0]);
+    }
+    reader.readAsDataURL(value.files[0]);
 }
 
 //------------------------------------- form action 변경 영역 -------------------------------------

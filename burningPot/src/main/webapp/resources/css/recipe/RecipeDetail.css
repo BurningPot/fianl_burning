@@ -24,6 +24,10 @@
     height : 15px;
 }
 
+.scoreStar:hover {
+    cursor: pointer;
+}
+
 .btnFontCss {
     font-size : 12pt!important;
 }

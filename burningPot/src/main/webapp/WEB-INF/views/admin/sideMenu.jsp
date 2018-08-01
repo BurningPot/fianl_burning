@@ -7,12 +7,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400">
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <title>Insert title here</title>
 <style>
 body{
 	overflow-x: hidden;
+	font-family: 'Nanum Gothic', sans-serif;
 }
 .font-namu{
 	font-family: 'Nanum Gothic', sans-serif;
@@ -439,6 +440,12 @@ body{
     } */
     .no-padding{
     	padding: 0;
+    }
+    .content-sub-title{
+        text-align: center;
+        font-size: 200%;
+        font-weight: bold;
+        margin-bottom: 5%;
     }
 
 /*

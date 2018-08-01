@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<c:import url="/WEB-INF/views/common/speech.jsp" />
 <!DOCTYPE html>
 <html>
 
@@ -43,7 +44,8 @@
 				height:100%;
 				list-style: none;
 				float: left;
-			    padding-top: 15%;
+			    padding-top: 4%;
+			    padding-bottom : 2%;
     			padding-left: 12%;
 			}
 			.searchBtnUl li {
@@ -126,7 +128,7 @@
 			/* 검색 후 정렬 버튼 css */
 			.searchResultAndsearchBtn{
 				width:100%; 
-				height:20%; 
+				height:12%; 
 				/* border:1px solid black; */
 			}			
 			.searchBtn{
@@ -163,8 +165,8 @@
 			    padding: 10px 0 20px 8px;
 			    width:50%; 
 			    float:left; 
-			    padding-left : 20%;
-			    padding-top : 3%;
+			    padding-left : 10%;
+			    padding-top : 1.5%;
 			    /* border:1px solid green; */
 			}
 			.searchRecipeCountArea > b{
@@ -665,7 +667,7 @@
 		}
 		
 		.search_bar {
-			width: 95.4%;
+			width: 90%;
 			height: 80%;
 			text-align: center;
 			outline: none;
@@ -1108,7 +1110,7 @@
 				height: 100%;
 			}
 			.search_bar {
-				width: 90%; 
+				width: 85%; 
 				height: 100%;
 			}
 			.btn_search {
@@ -1418,7 +1420,7 @@
 			    /* padding: 1%; */
 		    }
 			.search_bar {
-				width: 90%; 
+				width: 80%; 
 				height: 100%;
 			}
 			.btn_search {
@@ -1480,16 +1482,31 @@
 							<img class="btn_img"
 								src="${pageContext.request.contextPath }/resources/img/돋보기.PNG">
 						</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-microphone" id="speechBtn" data-tooltip-text="speechMode"></i>
+						<form class="row col-sm-12">
+						<div id="speechInput" style="display:none; background:blue;">	
+				        	<div class="input-group">
+						     <div class="input-group-prepend">
+						       <span class="input-group-text" style="background-color:green; color:white; ">듣고있어요</span>
+						    </div>
+						    <input type="text" class="form-control" id="speechVal">
+						    <input type="hidden" id="spSw" value="0"/>
+						  </div>
+						</div>
+						</form>
 					</div>
 					
 					<div class="recommend_recipe_area active">
 						<div class="rec_recipe">
 							<!-- <span class="badge badge-dark" id="rec_recipe_link">&lt;추천 레시피&gt; -->
-							<span class="badge badge-dark" id="rec_recipe_link">추천 레시피 
+							<span class="badge badge-pill badge-success" id="rec_recipe_link">추천 레시피 
 							
 							</span>
+							<input type="hidden" id="isOpen" value="0" />
+				         	<!-- onclick="location.href='${pageContext.request.contextPath}/board/goSpeech.do'" -->
 						</div>
 					</div>
+						
 				</div>
 				
 				<!-- 로그인 안했을 때 -->
@@ -1497,7 +1514,7 @@
 	      		<div class="b-seg-right_before nav navbar-nav navbar-right">
 					<div class="menu_full">
 				      	<div class="menu_home_btn">
-							<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
+							<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 								<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 							</button>
 						</div>
@@ -1529,7 +1546,7 @@
       		  <div class="b-seg-right_after nav navbar-nav navbar-right">
 			      <div class="menu_full">
 		      	  	<div class="menu_home_btn_after">
-						<button class="menuBtn_after" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
+						<button class="menuBtn_after" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
@@ -1616,7 +1633,7 @@
 			      </div>
 			      <div class="menu_before">
 			      	<div class="menu_home_btn_before">
-						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
+						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
@@ -1647,7 +1664,7 @@
 			      </div>
 			      <div class="menu_after">
 			      	<div class="menu_home_btn_after">
-						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='showHome.do'">
+						<button class="menuBtn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 							<img class="home_logo_btn_img" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</button>
 					</div>
@@ -1744,12 +1761,6 @@
 		          	<a href="${pageContext.request.contextPath}/login/googleLogin.do"><img height="43"
 						src="${pageContext.request.contextPath}/resources/img/login/googleLogin.png" /></a>     
 		       	  </div>
-		       	 <!-- <div class="text-center" style="margin-top:1%">
-		       	  <a id="custom-login-btn" href="javascript:loginWithKakao()">
-					<img src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" height="40" width="185"/>
-				  </a>
-				 </div>
-				  -->
 				<br />
 				<!-- SNS 로그인 끝 -->
 			</div>
@@ -1784,20 +1795,20 @@
 		              <span aria-hidden="true">&times;</span>
 		            </button>
 		          </div>
-		           <form action="#" method="post" class="form-horizontal" role="form"> 
+		           <form action="#" method="post" class="form-horizontal" role="form" id="findIdFrm"> 
 		           <div class="modal-body">
 		             <div class="form-group row">
-		                 <label for="userName" class="control-label col-xs-2 col-sm-2"><i class="fas fa-user fa-2x"></i></label>
-		                 <input type="text" class="form-control col-xs-9 col-sm-9" name="userName" placeholder="이름" required>
-		                 <br />
-		             </div>
-		             <div class="form-group row">
 		                 <label for="email" class="control-label col-xs-2 col-sm-2 "><i class="far fa-envelope fa-2x"></i></label>
-		                 <input type="password" class="form-control col-xs-9 col-sm-9" name="email" placeholder="이메일" required>
+		                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntID" id="mEmail" placeholder="이메일" required>
 		             </div>
 		             <div class="form-group row">
 		                 <label for="birth" class="control-label col-xs-2 col-sm-2 "><i class="fas fa-birthday-cake fa-2x"></i></label>
-		                 <input type="password" class="form-control col-xs-9 col-sm-9" name="birth" placeholder="ex)년도/월/일  -> 00/00/00" required>
+		                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntID" id="mBirth" placeholder="ex)년월일  -> YYMMDD" required>
+		             </div>
+		             <div class="form-group row text-center">
+		             	<div class="col-sm-12">
+				        	 <label id="idLabel"></label>
+				         </div>
 		             </div>
 		             <div class="form-group row">
 		              <div class="col-sm-7">
@@ -1805,11 +1816,14 @@
 		              		<button type="button" class="btn btn-link" data-dismiss="modal" onclick="findPwdModal();">비밀번호를 잊으셨나요?</button>
 						</div>
 		              </div>
+		              <div class="col-sm-5 text-right">
+		              	<button type="button" class="btn btn-outline-warning" data-dismiss="modal" onclick="goLogin();">로그인하기</button>
+		              </div>
 		             </div>
 		           </div>
 		           <div class="modal-footer">
 					<button type="button" class="btn btn-outline-warning" data-dismiss="modal">취소</button>
-		               <button type="submit" class="btn btn-warning" >아이디 찾기</button>
+		               <button type="button" class="btn btn-warning" onclick="findId();" >아이디 찾기</button>
 		           </div>
 		           </form> 
 		 		</div>
@@ -1831,16 +1845,21 @@
 	           <div class="modal-body">
 	             <div class="form-group row">
 	                 <label for="userId" class="control-label col-xs-2 col-sm-2"><i class="fas fa-user fa-2x"></i></label>
-	                 <input type="text" class="form-control col-xs-9 col-sm-9" name="userId" placeholder="아이디" required>
+	                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntPwd" name="userId" placeholder="아이디" id="pMId" required>
 	                 <br />
 	             </div>
 	             <div class="form-group row">
 	                 <label for="email" class="control-label col-xs-2 col-sm-2 "><i class="far fa-envelope fa-2x"></i></label>
-	                 <input type="password" class="form-control col-xs-9 col-sm-9" name="email" placeholder="이메일" required>
+	                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntPwd" name="email" placeholder="이메일" id="pEmail" required>
 	             </div>
 	             <div class="form-group row">
 	                 <label for="birth" class="control-label col-xs-2 col-sm-2 "><i class="fas fa-birthday-cake fa-2x"></i></label>
-	                 <input type="password" class="form-control col-xs-9 col-sm-9" name="birth" placeholder="ex)년도/월/일  -> 00/00/00" required>
+	                 <input type="text" class="form-control col-xs-9 col-sm-9 pressEntPwd" name="birth" placeholder="ex) 년월일  -> YYMMDD" id="pBirth" required>
+	             </div>
+	             <div class="form-group row text-center">
+	             	<div class="col-sm-12">
+			        	 <label id="pwdLabel"></label>
+			         </div>
 	             </div>
 	             <div class="form-group row">
 	              <div class="col-sm-7">
@@ -1848,11 +1867,14 @@
 	              		<button type="button" class="btn btn-link" data-dismiss="modal" onclick="findIdModal();">아이디를 잊으셨나요?</button>
 					</div>
 	              </div>
+	              <div class="col-sm-5 text-right">
+	              	<button type="button" class="btn btn-outline-warning" data-dismiss="modal" onclick="goLogin();">로그인하기</button>
+	              </div>
 	             </div>
 	           </div>
 	           <div class="modal-footer">
 				<button type="button" class="btn btn-outline-warning" data-dismiss="modal">취소</button>
-	               <button type="submit" class="btn btn-warning" >비밀번호 찾기</button>
+	               <button type="button" class="btn btn-warning" onclick="findPwd();">비밀번호 찾기</button>
 	           </div>
 	           </form> 
 	 		</div>
@@ -1974,7 +1996,101 @@
 	function findPwdModal(){
 		  $("#findPwdModal").modal();
 	}
+	
+	function goLogin(){
+		$("#loginModal").modal();
+	}
+	
+	// 아이디 찾기 엔터키
+	$('.pressEntID').keypress(function(event) {
+	    if (event.key === "Enter") {
+	    	findId();
+	    }
+	});
+	
+	// 비밀번호 찾기 엔터키
+	$('.pressEntPwd').keypress(function(event) {
+	    if (event.key === "Enter") {
+	    	findPwd();
+	    }
+	});
+	
+	// 아이디 찾기
+	function findId(){
+		if( ($('#mEmail').val() != null && $('#mEmail').val() != "") && ($('#mBirth').val() != null && $('#mBirth').val() != "") ){
+			$.ajax({
+				url : "${pageContext.request.contextPath}/member/findMemberId.do",
+				data : {mEmail : $('#mEmail').val(), mBirth : $('#mBirth').val() },
+				type : "POST",
+				success : function(data){
+					if(data.isMember != false){
+						$('#idLabel').children('p').remove();
+						$("<p style='color:green;'>회원님의 아이디가 작성하신 이메일로 발송되었습니다.<br> 메일을 확인해주세요!</p>").appendTo('#idLabel');
+					}else{
+						$('#idLabel').children('p').remove();
+						$("<p style='color:red;'>존재하는 회원이 아닙니다.</p>").appendTo('#idLabel');
+					}
+					/* $("<a class='rec_reipe_a badge badge-success' href='#'>" + data[i].rName + "</a>").appendTo('#rec_recipe_link'); */
+				}, error : function(data){
+					alert("아이디 찾기 오류");
+				}
+			});
+		}else alert('항목을 모두 입력해주세요!');
+	}
+	
+	// 비밀번호 찾기
+	function findPwd(){
+		if( ($('#pMId').val() != null && $('#pMId').val() != "") && ($('#pEmail').val() != null && $('#pEmail').val() != "") && ($('#pBirth').val() != null && $('#pBirth').val() != "") ){
+			$.ajax({
+				url:"${pageContext.request.contextPath}/member/findPwd.do",
+				data : {pMId: $('#pMId').val(), pEmail : $('#pEmail').val(), pBirth : $('#pBirth').val()},
+				type:"POST",
+				success : function(data){
+					console.log('data.isMember'+data.isMember);
+					if(data.isMember != false){
+						$('#pwdLabel').children('p').remove();
+						$("<p style='color:green;'>회원님의 임시비밀번호가 메일로 전송되었습니다.<br>메일을 확인해주세요!</p>").appendTo('#pwdLabel');
+					}else{
+						$('#pwdLabel').children('p').remove();
+						$("<p style='color:red;'>존재하지 않는 회원입니다.<br>입력된 내용을 확인해주세요!</p>").appendTo('#pwdLabel');
+					}
+				},error : function(){
+					console.log('error ajax!');
+				}
+			});
+		}else alert('항목을 모두 입력해주세요!');
+	}
+	
 	  /* 로그인 스크립트 끝 */
+	  /* 음성버튼 */
+	  $('#speechBtn').on("click",function(){
+
+		   speechOn();
+		   
+		  if($('#spSw').val() == 0){
+		  	$('#speechInput').show("slow");
+		  	
+		  	speechOn();
+/* 		  	console.log('0:'+annyang.isListening()); */
+
+			$('#speechBtn').css("color","red");  
+		  	$('#spSw').val(1);
+		  
+		  }else if($('#spSw').val() == 1){
+		  	$('#speechInput').hide("slow");
+		  	// Remove all callbacks from all events:
+		  	annyang.pause();
+		  	annyang.removeCommands();
+
+		  	$('#speechBtn').css("color","black");  
+		  	$('#spSw').val(0); 
+		  }
+		  
+		  /* speechInput */
+	  });
+	  
+	  
+	  /* 음성버튼 끝 */
 	  
 	</script>
 	<%-- <div class="seg_btn_area">

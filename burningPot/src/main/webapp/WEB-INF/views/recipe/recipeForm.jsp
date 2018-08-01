@@ -22,7 +22,8 @@
         
         <div class="container">
 
-            <form action="insertRecipe.do" method="POST" enctype="multipart/form-data" >
+           <form action="insertRecipe.do" method="POST" enctype="multipart/form-data" accept="image/*">
+
                 <!-- 레시피 정보 입력 영역 -->
                 <div class="row recipeBox mt-5">
                     <div class="col-sm-9 pl-3 mt-3 mb-3 testCss">
@@ -37,7 +38,7 @@
                             &nbsp;&nbsp;&nbsp;
                             <input type="text" class="form-control textStyle focusChk" name="rIntro" id="recipeIntroduce" placeholder="레시피를 소개해주세요. 예)맥주와 잘 어울리는 안주" aria-label="recipeIntroduce" aria-describedby="recipeIntroduce-add">
                         </div>
-                        <div class="input-group mt-5">
+                        <div class="input-group mt-5" id="levelArea">
                             <label class="mb-0 align-self-center dataTitle" style="width:130px;" for="recipeData"><b>요리 정보</b></label>
                             &nbsp;&nbsp;&nbsp;
                             <label class="mb-0 align-self-center"><b>인원</b></label>

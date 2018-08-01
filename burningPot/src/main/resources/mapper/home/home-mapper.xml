@@ -25,11 +25,16 @@
 	</select>
 	
 	<!-- parameterType="Dao에서 넘기는 값의 형태", resultType="어떤 정보들을 받아 오는지의 타입" -->
-	<select id="searchRecipe" parameterType="string" resultType="recipe">
-		<![CDATA[
-		SELECT ROWNUM, RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
-       	FROM RECIPE R 
-       	WHERE R.SUBINGREDIENT LIKE '%'||#{search}||'%' OR R.RNAME LIKE '%'||#{search}||'%' AND ROWNUM >=1 AND ROWNUM <=8
+	<select id="searchRecipe" parameterType="hashmap" resultType="recipe">
+		
+		SELECT DISTINCT 
+		ROWNUM, R.MNUM, R.RNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+		<if test="mNum != 0">
+		, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND R.RNUM=C.RNUM) "rcCheck"
+        </if>
+        FROM RECIPE R 
+        <![CDATA[
+        WHERE R.SUBINGREDIENT LIKE '%'||#{search}||'%' OR R.RNAME LIKE '%'||#{search}||'%' AND ROWNUM >=1 AND ROWNUM <=8
        	]]>
 	</select>
 	
@@ -41,7 +46,7 @@
 	
 	<select id="searchRecipeList" resultType="recipe" parameterType="hashmap">
 		<![CDATA[
-		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY QUANTITY) C 
+		SELECT C.* FROM (SELECT ROWNUM AS "R", rNum, mNum, rLevel, rTime, quantity, rImg, rName, rRecommend FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY QUANTITY) C 
 		WHERE C.R >= #{searchStartCount} AND C.R <= #{searchEndCount} 
 		ORDER BY ROWNUM
 		]]>
@@ -51,22 +56,28 @@
 		SELECT COUNT(*) FROM RECIPE R WHERE R.SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR R.RNAME LIKE '%'||#{keyWord}||'%'
 	</select>
 	
-	<!-- 조회가 많은 순서대로 정렬 -->
+	<!-- 조회가 많은/적은 순서대로 정렬 -->
 	<select id="inquiryTotalCount" resultType="_int">
 		SELECT COUNT(*) FROM RECIPE R WHERE R.SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR R.RNAME LIKE '%'||#{keyWord}||'%'
 	</select>
 	
-	<select id="inquiryRecipeListBefore" resultType="recipe">
+	<select id="inquiryRecipeListBefore" resultType="recipe" parameterType="hashmap">
 		<![CDATA[
-		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName, rCount FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RCOUNT DESC) C 
-		WHERE C.R >= 1 AND C.R <= 8
+		SELECT *
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RCOUNT ${AscAndDesc}) C)
+		WHERE "rn" >= 1 AND "rn" <= 8
 		]]>
 	</select>
 	
 	<select id="inquiryRecipeListAfter" resultType="recipe" parameterType="hashmap">
 		<![CDATA[
-		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName, rCount FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RCOUNT DESC) C 
-		WHERE C.R >= #{inquiryStartCount} AND C.R <= #{inquiryEndCount}
+		SELECT *
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RCOUNT ${AscAndDesc}) C)
+		WHERE "rn" >= #{inquiryStartCount} AND "rn" <= #{inquiryEndCount}
 		]]>
 	</select>
 	
@@ -93,4 +104,65 @@
 		WHERE ROWNUM <= 5
 		]]>
 	</select>
+	
+	<!-- 추천수 많은/적은 순서로 정렬 -->
+	<select id="recommandRecipeListBefore" resultType="recipe" parameterType="hashmap">
+		<![CDATA[
+		SELECT *
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RRECOMMEND ${AscAndDesc}) C)
+		WHERE "rn" >= 1 AND "rn" <= 8
+		]]>
+	</select>
+	
+	<select id="recommandTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM RECIPE R WHERE R.SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR R.RNAME LIKE '%'||#{keyWord}||'%'
+	</select>
+	
+	<select id="recommandRecipeListAfter" resultType="recipe" parameterType="hashmap">
+		<![CDATA[
+		SELECT *
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RRECOMMEND ${AscAndDesc}) C)
+		WHERE "rn" >= #{recommandStartCount} AND "rn" <= #{recommandEndCount}
+		]]>
+	</select>
+	
+	<!-- 난이도 및 시간으로 정렬 -->
+	<select id="levelAndTimeRecipeListBefore" resultType="recipe" parameterType="hashmap">
+		<![CDATA[
+		SELECT *
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RLEVEL ${AscAndDesc}, P.RTIME ${AscAndDesc}) C)
+		WHERE "rn" >= 1 AND "rn" <= 8    
+		]]>
+	</select>
+	
+	<select id="levelAndTimeAfterTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM RECIPE R WHERE R.SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR R.RNAME LIKE '%'||#{keyWord}||'%'
+	</select>
+	
+	<select id="levelAndTimeRecipeListAfter" resultType="recipe" parameterType="hashmap">
+		<![CDATA[
+		SELECT *
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RLEVEL ${AscAndDesc}, P.RTIME ${AscAndDesc}) C)
+		WHERE "rn" >= #{levelAndTimeStartCount} AND "rn" <= #{levelAndTimeEndCount}
+		]]>
+	</select>
+	
+	<!-- 따봉 클릭 시 추천수 +1 -->
+	<update id="updateRecommend" parameterType="_int">
+		UPDATE RECIPE SET RRECOMMEND = RRECOMMEND + '1' WHERE RNUM = #{recipeRNum}
+	</update>
+	
+	
+	<!-- recommend table insert -->
+	<insert id="insertRecommend" parameterType="_int">
+		INSERT INTO RECOMMEND VALUES(#{mNum} , #{recipeRNum})
+	</insert>
 </mapper>

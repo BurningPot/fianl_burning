@@ -10,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pot.board.model.vo.Report;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.recipe.model.vo.Recipe;
 import com.kh.pot.recipe.model.vo.RecipeContent;
+import com.kh.pot.recipe.model.vo.Recommend;
+import com.kh.pot.recipe.model.vo.Review;
 
 @Repository
 public class RecipeDaoImpl implements RecipeDao {
@@ -55,7 +58,6 @@ public class RecipeDaoImpl implements RecipeDao {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 		int randomNum = (int)(Math.random() * 1000);
 		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + "_" + randomNum + "." + ext;
-		System.out.println("타이틀 : " + renameFileName);
 		
 		return renameFileName;
 	}
@@ -68,9 +70,9 @@ public class RecipeDaoImpl implements RecipeDao {
 	}
 
 	@Override
-	public List<Ingredient> selectMainIngredientList(Map mainName) {
+	public Ingredient selectMainIngredientList(String mainName) {
 
-		return sqlSession.selectList("recipe.selectMainIngredientList", mainName);
+		return sqlSession.selectOne("recipe.selectMainIngredientList", mainName);
 		
 	}
 
@@ -92,6 +94,122 @@ public class RecipeDaoImpl implements RecipeDao {
 	public int deleteRecipe(int rNum) {
 
 		return sqlSession.delete("recipe.deleteRecipe", rNum);
+		
+	}
+
+	@Override
+	public int updateCount(int rNum) {
+
+		return sqlSession.update("recipe.updateCount", rNum);
+		
+	}
+
+//	@Override
+//	public List<Review> selectReview(int rNum) {
+//
+//		return sqlSession.selectList("recipe.selectReview", rNum);
+//		
+//	}
+
+	@Override
+	public Recommend selectRecommend(Recommend rec) {
+
+		return sqlSession.selectOne("recipe.selectRecommend", rec);
+		
+	}
+
+	@Override
+	public int insertRecommned(Recommend rec) {
+
+		return sqlSession.insert("recipe.insertRecommned", rec);
+		
+	}
+
+	@Override
+	public int updateRecommend(Recommend rec) {
+//		Recipe recipe = null;
+		
+//		if (sqlSession.update("recipe.updateRecommend", rec) == 1) {
+//			recipe = sqlSession.selectOne("recipe.selectRecipeDetail", rec);
+//		};
+		
+//		return recipe.getrRecommend();
+		return sqlSession.update("recipe.updateRecommend", rec);
+		
+	}
+
+	@Override
+	public int deleteRecommned(Recommend rec) {
+
+		return sqlSession.delete("recipe.deleteRecommned", rec);
+		
+	}
+
+	@Override
+	public int insertReview(Review review) {
+
+		return sqlSession.insert("recipe.insertReview", review);
+		
+	}
+
+	@Override
+	public int insertReport(Report report) {
+
+		return sqlSession.insert("recipe.insertReport", report);
+		
+	}
+
+	@Override
+	public Review selectReviewOne(Review rv) {
+
+		return sqlSession.selectOne("recipe.selectReviewOne", rv);
+		
+	}
+
+	@Override
+	public int deleteReview(int rvNum) {
+
+		return sqlSession.delete("recipe.deleteReview", rvNum);
+		
+	}
+
+	@Override
+	public double reviewAvgGrade(int rNum) {
+		double result = 0;
+		
+		if (sqlSession.selectOne("recipe.reviewAvgGrade", rNum) != null) {
+			result = sqlSession.selectOne("recipe.reviewAvgGrade", rNum);
+		}
+		
+		return result;
+		
+	}
+
+	@Override
+	public int selectReviewTotalContents(int rNum) {
+
+		return sqlSession.selectOne("recipe.selectReviewTotalContents", rNum);
+		
+	}
+
+	@Override
+	public List<Map<String, String>> selectReview(Map<String, Object> map) {
+
+		return sqlSession.selectList("recipe.selectReview", map);
+		
+	}
+
+	@Override
+	public int updateRecipe(Recipe recipe) {
+
+		return sqlSession.update("recipe.updateRecipe", recipe);
+		
+	}
+
+	@Override
+	public int deleteReviewAll(int rNum) {
+
+		return sqlSession.delete("recipe.deleteReviewAll", rNum);
 		
 	}
 

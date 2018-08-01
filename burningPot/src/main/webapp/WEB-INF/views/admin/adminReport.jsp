@@ -10,22 +10,23 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap-4.1.1/bootstrap.css"> --%>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>신고게시판</title>
+<title>문의게시판</title>
 
- <style>
-     
-        .table-head{
-            background: lightgray;
-            text-align: center;
-
-        }
-        .table-content{
-            text-align: center;
-        }
-        .menu-title{
-            text-align: center;
-            font-size: 200%;
-        }
+<style>
+.tableHead{
+	background: #754F44;
+    color: #FBFFB9;
+    text-align: center;
+    font-size: 140%;
+}
+.tableContent{        	
+	text-align: center;
+    padding: 0.5%;
+}
+.menu-title{
+	text-align: center;
+	font-size: 200%;
+}
          /*
     #FBFFB9
     #FDD692
@@ -33,7 +34,7 @@
     #754F44
     */
     
-    </style>
+</style>
 
 </head>
 <body>
@@ -41,9 +42,7 @@
 <!-- 야매로 공간할당을 주어 처리한 부분 -->
 	<div style="height:20%;"></div>
     
-
-
-        
+    
 <c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
 <br><br>
 <div class="row">
@@ -53,34 +52,70 @@
             
 <div class="col-lg-8 offset-lg-2 content"> 
 	<!--여기 게시판이 들어갈거야-->
-    <div class="container col-lg-12">
-    	<div class="row table-head">
-        	<div class="col-lg-1">번호</div>
-            <div class="col-lg-6">제목</div>
-            <div class="col-lg-2">작성자</div>
-            <div class="col-lg-2">작성일</div>
-            <div class="col-lg-1">신고수</div>
-        </div>
-    	<div class="row table-content">
-    		<div class="col-lg-1">1</div>
-        	<div class="col-lg-6">이것은 제목이다. 제목은 글 이름이다</div>
-        	<div class="col-lg-2">한연두</div>
-        	<div class="col-lg-2">2018/06/29</div>
-        	<div class="col-lg-1">50</div>
-    	</div>
+	<div class="container col-lg-12">
+    <div class="row tableHead col-lg-12">
+    	<div class="col-lg-1">번호</div>
+        <div class="col-lg-6">제목</div>
+        <div class="col-lg-2">작성자</div>
+        <div class="col-lg-2">작성일</div>                 
+    </div>
+      
+    <!-- db의 내용들이 들어올 곳이다 -->      
+    <form id="goDetail">
+    <c:forEach items="${list}" var="b" varStatus="status">
+    	
+    <div class="row tableContent col-lg-12">    	
+    	<div class="col-lg-1 boardNumber">${b.rpNum}</div>	<!-- 글번호 -->
+        <div class="col-lg-6">${b.rpContent}</div>	<!-- 제목 -->
+        <div class="col-lg-2">${b.mName}</div>	<!-- 작성자 -->
+        <div class="col-lg-2">${b.rpDate}</div>	<!-- 작성일 -->        
+    </div>    	
+    </c:forEach>
+    </form>
+    	
+    <script>
+    	$('.tableContent').hover(function(){
+    		$(this).css({
+    			background: '#FDD692',
+    			cursor : 'pointer'					
+    		})
+    	}, function(){
+    		$(this).css({
+    			background: 'white',
+    			color: 'black'
+    		})
+    	});
+    		
+    	</script>
 	</div>
 <br><br><br>
-	<div class="col-lg-4 offset-lg-5">
-		<nav aria-label="Page navigation example">
-    		<ul class="pagination">
-        		<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            	<li class="page-item"><a class="page-link" href="#">1</a></li>
-            	<li class="page-item"><a class="page-link" href="#">2</a></li>
-            	<li class="page-item"><a class="page-link" href="#">3</a></li>
-            	<li class="page-item"><a class="page-link" href="#">Next</a></li>
-        	</ul>
-   		</nav>
-	</div>
+    
+
+	<!-- Paging -->
+	<%-- 페이지바를 위한 Utils의 정적메소드 사용 --%> 
+   	<% 
+      int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
+      int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
+      String servletMapping = (String)request.getAttribute("servletMapping");     
+      
+      //파라미터 cPage가 null이거나 "" 일 때에는 기본값 1로 세팅함.  
+      String cPageTemp = request.getParameter("cPage");
+      int cPage = 1;
+      try{
+         cPage = Integer.parseInt(cPageTemp);
+      } catch(NumberFormatException e){
+         
+      }
+      
+   %>
+   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, servletMapping) %>
+	<script>
+	$('.tableContent').on('click', function(){    			
+		var bNumber = $(this).children().eq(0).text();  
+		
+		location.href='${pageContext.request.contextPath}/admin/${detailMapping}?rpNum='+bNumber;
+	});
+	</script>
 
 </div>
                 

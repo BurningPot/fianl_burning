@@ -2,6 +2,7 @@ package com.kh.pot.member.model.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -159,6 +160,69 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String checkEmailConfirm(String emailAddr) {
 		return memberDao.checkEmailConfirm(emailAddr);
+	}
+
+	@Override
+	public String findMemberId(String mEmail, String mBirth) {
+    	
+		HashMap<String, String> map = new HashMap<String, String>();
+        map.put("email", mEmail);
+        map.put("birth", mBirth);
+    	
+		return memberDao.findMemberId(map);
+	}
+
+	@Override
+	public void findMember(String mEmail, String memberId, boolean isId) throws Exception {
+		
+		if(isId){
+	    	// 아이디 찾기 메일 전송
+	        MailHandler sendMail = new MailHandler(mailSender);
+	        sendMail.setSubject("BurningPot 아이디 찾기");
+	        sendMail.setText(
+	                new StringBuffer().append("회원님의 아이디는 <br><h2>")
+	                .append(memberId)
+	                .append("</h2>입니다.").toString());
+	        sendMail.setFrom("burningpotdo@gmail.com", "BurningPot ");
+	        sendMail.setTo(mEmail);
+	        sendMail.send();
+		}else{
+			// 비밀번호 찾기 메일 전송
+			String tmpPwd = new TempKey().getKey(6,false);  // 임시비밀번호 생성
+
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("id", memberId);
+			map.put("tmpKey", tmpPwd);
+			
+			System.out.println("tmpPwd="+tmpPwd);
+
+			int updateR = memberDao.updatePwd(map);
+			
+			if(updateR > 0){
+			
+				MailHandler sendMail = new MailHandler(mailSender);
+		        sendMail.setSubject("[BurningPot] 임시비밀번호 발급");
+		        sendMail.setText(
+		                new StringBuffer().append(memberId).append("님의 임시비밀번호는 <br><br><h2>")
+		                .append(tmpPwd)
+		                .append("</h2><br>입니다.")
+		                .append("<br>임시비밀번호로 로그인 후 변경해주세요!").toString());
+		        sendMail.setFrom("burningpotdo@gmail.com", "BurningPot ");
+		        sendMail.setTo(mEmail);
+		        sendMail.send();
+			}else System.out.println("임시 비밀번호 변경 실패!");
+		}
+		   
+	}
+
+	@Override
+	public Member findMemberPwd(String pMId, String pEmail, String pBirth) {
+		HashMap<String, String> map = new HashMap<String, String>();
+        map.put("id", pMId);
+        map.put("email", pEmail);
+        map.put("birth", pBirth);
+        
+		return memberDao.findMemberPwd(map);
 	}
 
 	/* 예찬 부분  끝*/

@@ -1,12 +1,17 @@
 package com.kh.pot.admin.model.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.pot.admin.model.vo.Statistics;
+import com.kh.pot.board.model.vo.Report;
+import com.kh.pot.recipe.model.vo.Recipe;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -48,6 +53,50 @@ public class AdminDaoImpl implements AdminDao {
 	public List<Statistics> selectFemaleFavor() {
 		
 		return sqlSession.selectList("member.selectFemaleFavor");
+	}
+
+	@Override
+	public int updateExpelMember(HashMap<String, Object> map) {
+		
+		return sqlSession.update("member.updateExpelMember", map);
+	}
+
+	@Override
+	public int deleteAllContent(int mNum) {
+		
+		return sqlSession.delete("member.deleteAllContent", mNum);
+	}
+
+	@Override
+	public int selectReportCount() {
+		
+		return sqlSession.selectOne("board.selectReportCount");
+	}
+
+	@Override
+	public List<Report> selectReport(int cPage, int numPerPage) {
+		
+		RowBounds rows = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		
+		return sqlSession.selectList("board.selectReport", null, rows);
+	}
+
+	@Override
+	public Report selectReportDetail(int rpNum) {
+		
+		return (Report) sqlSession.selectOne("board.selectReportDetail", rpNum);
+	}
+
+	@Override
+	public Recipe selectReportedRecipe(int rpNum) {
+		
+		return (Recipe) sqlSession.selectOne("board.selectReportedRecipe", rpNum);
+	}
+
+	@Override
+	public int deleteRecipe(int rNum) {
+		
+		return sqlSession.delete("board.deleteRecipe", rNum);
 	}
 
 }

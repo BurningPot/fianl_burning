@@ -39,8 +39,9 @@
 		display:none;
 	}
 	.table-content{
-		background:white;
+		background:snow;
 		padding:0.5%;
+		
 	}
 	.content-title{
 		text-align: center;
@@ -55,8 +56,7 @@
 		text-align: center;			
 		padding: 1.5%; 
 		font-weight:bold;
-	}
-	
+	}	
    /*
     #FBFFB9
     #FDD692
@@ -139,8 +139,8 @@
         	<br />
         	</div> 
         	
-        	<br /> 
-        	        
+        	<br />        	        
+        	
         	<div class="col-lg-12 test toggleBar">
         		<i class="fas fa-plus-square"></i>
         		<i class="fas fa-minus-square"></i>
@@ -282,6 +282,8 @@
         	</div>
         	
         	<br />
+        	
+        	<!-- 연령별 통계는 나중에하는게 좋을 것같다. 데이터가 충분치 않아서 특정 계층의 데이터가 너무 부족하다 -->
         	<div class="col-lg-12 test toggleBar">
         		<i class="fas fa-plus-square"></i>
         		<i class="fas fa-minus-square"></i>
