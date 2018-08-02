@@ -99,8 +99,8 @@
 			arr.push($(this).attr('id'));
 		}); 
    		$('#inRef').val(arr);
-		
- 		$("#refUpdate").attr("action","${pageContext.request.contextPath}/fridge/refMain.do");
+		console.log(arr);
+ 		$("#refUpdate").attr("action","${pageContext.request.contextPath}/fridge/updateComplete.do");
 		$("#refUpdate").submit();
     }
 </script>
