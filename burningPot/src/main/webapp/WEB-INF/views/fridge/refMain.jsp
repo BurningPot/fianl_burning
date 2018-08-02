@@ -129,6 +129,8 @@
 				}
 			});
 		});
+  		
+  		
 	</script>
 	
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/fridge/jquery-ui/jquery-ui.min.js"></script>

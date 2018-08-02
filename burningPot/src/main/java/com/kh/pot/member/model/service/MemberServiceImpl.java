@@ -26,7 +26,6 @@ public class MemberServiceImpl implements MemberService {
    @Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
-   
    @Override
    public List<Member> selectMemberList(int cPage, int limit, String customSelect, String keyword) {
             
@@ -137,11 +136,18 @@ public class MemberServiceImpl implements MemberService {
         
     }
     
+
     // Server IP 구함
+
     public String FindMyIP() { 
        InetAddress ip =null;
        try { 
           ip = InetAddress.getLocalHost(); 
+
+          System.out.println("Host Name = [" + ip.getHostName() + "]"); 
+          System.out.println("Host Address = [" + ip.getHostAddress() + "]"); 
+
+
        } catch (Exception e) { 
           System.out.println(e);
        }
@@ -207,6 +213,18 @@ public class MemberServiceImpl implements MemberService {
       }else{
          // 비밀번호 찾기 메일 전송
          String tmpPwd = new TempKey().getKey(6,false);  // 임시비밀번호 생성
+
+
+         Map<String, String> map = new HashMap<String, String>();
+         map.put("id", memberId);
+         map.put("tmpKey", tmpPwd);
+         
+         System.out.println("tmpPwd="+tmpPwd);
+
+         int updateR = memberDao.updatePwd(map);
+         
+         if(updateR > 0){
+
          Map<String, String> map = new HashMap<String, String>();
          map.put("id", memberId);
          
@@ -220,6 +238,7 @@ public class MemberServiceImpl implements MemberService {
         int updateR = memberDao.updatePwd(map);
          
         if(updateR > 0){
+
          
             MailHandler sendMail = new MailHandler(mailSender);
               sendMail.setSubject("[BurningPot] 임시비밀번호 발급");
