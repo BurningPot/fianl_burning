@@ -31,43 +31,44 @@ $(function () {
 	}
 
 	// ------------------------------------- 좋아요 버튼 영역 -------------------------------------
-	$("#goodBtn").click(function() {
-		var textArr = $(this).text().split(" ");
-		
-		if (textArr[1] != "취소") {
-			console.log($(this).text());
-			$.ajax ({
-	    		url : path + "/recipe/insertRecommend.do",
-	    		data : {rNum : rNum},
-	    		dataType : "json",
-	    		async : false,
-	    		success : function(data) {
-    				alert("좋아요를 눌렀습니다.");
-    				$('#goodBtn').children().remove();
-    				$("#goodBtn").text("");
-    				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요 취소" + ` (`+ data +`)`);
-	    		}, error : function(e) {
-	    			alert("좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)");
-	    		}
-	    	});
-		} else {
-			console.log($(this).text());
-			$.ajax ({
-	    		url : path + "/recipe/deleteRecommend.do",
-	    		data : {rNum : rNum},
-	    		dataType : "json",
-	    		async : false,
-	    		success : function(data) {
-    				alert("좋아요를 취소 했습니다.");
-    				$('#goodBtn').children().remove();
-    				$("#goodBtn").text("");
-    				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요" + ` (`+ data +`)`);
-	    		}, error : function(e) {
-	    			alert("좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)");
-	    		}
-	    	});
-		}
-	});
+//	$("#goodBtn").click(function() {
+//		var textArr = $(this).text().split(" ");
+//		console.log("확인");
+//		
+//		if (textArr[1] != "취소") {
+//			console.log($(this).text());
+//			$.ajax ({
+//	    		url : path + "/recipe/insertRecommend.do",
+//	    		data : {rNum : rNum},
+//	    		dataType : "json",
+//	    		async : false,
+//	    		success : function(data) {
+//    				alert("좋아요를 눌렀습니다.");
+//    				$('#goodBtn').children().remove();
+//    				$("#goodBtn").text("");
+//    				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요 취소" + ` (`+ data +`)`);
+//	    		}, error : function(e) {
+//	    			alert("좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)");
+//	    		}
+//	    	});
+//		} else {
+//			console.log($(this).text());
+//			$.ajax ({
+//	    		url : path + "/recipe/deleteRecommend.do",
+//	    		data : {rNum : rNum},
+//	    		dataType : "json",
+//	    		async : false,
+//	    		success : function(data) {
+//    				alert("좋아요를 취소 했습니다.");
+//    				$('#goodBtn').children().remove();
+//    				$("#goodBtn").text("");
+//    				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요" + ` (`+ data +`)`);
+//	    		}, error : function(e) {
+//	    			alert("좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)");
+//	    		}
+//	    	});
+//		}
+//	});
 		
     // ------------------------------------- 댓글 등록 영역 -------------------------------------
 //	 $('#reviewSubmitBtn').click(function(e) {
@@ -206,4 +207,43 @@ function reviewDelete(e) {
 	 } else {
        e.preventDefault();
    }
+}
+
+function addGood(e) {
+	var textArr = $(e).text().split(" ");
+	console.log("확인");
+	
+	if (textArr[1] != "취소") {
+		console.log($(e).text());
+		$.ajax ({
+    		url : path + "/recipe/insertRecommend.do",
+    		data : {rNum : rNum},
+    		dataType : "json",
+    		async : false,
+    		success : function(data) {
+				alert("좋아요를 눌렀습니다.");
+				$('#goodBtn').children().remove();
+				$("#goodBtn").text("");
+				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요 취소" + ` (`+ data +`)`);
+    		}, error : function(e) {
+    			alert("좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)");
+    		}
+    	});
+	} else {
+		console.log($(e).text());
+		$.ajax ({
+    		url : path + "/recipe/deleteRecommend.do",
+    		data : {rNum : rNum},
+    		dataType : "json",
+    		async : false,
+    		success : function(data) {
+				alert("좋아요를 취소 했습니다.");
+				$('#goodBtn').children().remove();
+				$("#goodBtn").text("");
+				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요" + ` (`+ data +`)`);
+    		}, error : function(e) {
+    			alert("좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)");
+    		}
+    	});
+	}
 }
