@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.recipe.model.vo.Recipe;
+import com.kh.pot.recipe.model.vo.Recommend;
 
 public interface MypageService {
 
@@ -40,6 +41,12 @@ public interface MypageService {
 	Member myinfoDel(int mNum);
 
 	int deleteMyPost(int bNum);
+
+	List<Recipe> myLikeList(int cPage, int numPerPage, int mNum);
+
+	int selectMyLikeTotalContents(int mNum);
+
+	int cancelMyLike(int rNum, int mNum);
 
 	
 	

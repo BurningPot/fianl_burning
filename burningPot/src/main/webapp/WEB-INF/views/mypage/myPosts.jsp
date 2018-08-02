@@ -8,13 +8,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
+	
+	.main{
+		background-image: url("${pageContext.request.contextPath}/resources/img/tlrekd2.jpg");
+		-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;
 
+	}
 
 	.container > ul > li > a{
         text-decoration:none;
         color:#495057;
       }
-
+      #he{
+        text-align: center;
+      }
       .table > tbody > tr > td{       
         text-align: center;
       }
@@ -23,6 +30,21 @@
       } */
       #refrigerator{             
         text-align: center; 
+      }
+      
+      #profilePlaceholder {
+      margin-left : 5px;
+      	z-index: 100;
+	    position: absolute;
+	    top: 250px;
+	    background: cornsilk;
+      }
+      
+     .myS > tr {
+    	border: 1px solid #ccc;
+	    margin: 1% 0;
+	    box-shadow: 3px 3px 2px #ccc;
+	    transition: 0.5s;
       }
       #refBtn{
       	top: 30%;
@@ -34,9 +56,15 @@
 <title>마이페이지</title>
 </head>
 <c:import url="/WEB-INF/views/common/header.jsp"/>
-<body><div style="height:20%;"></div>
+<body>
 
-	<div class="container" style=" width : 100%; height:300px; padding: 1%;">
+<div style="height:20%;"></div>
+
+<div class="main col-lg-12">
+<br />
+<br />
+
+	<div class="container" style=" width : 100%; height:300px; padding: 1%; background:white; background: 1px solid lightgray;">
             <div id="myinfo" style="width:49%; height: 100%; float: left; border: 1px solid lightgray">
                             	
 <%--             	<c:if test="${ m.mPicture == 'defaultPerson.png' }">
@@ -52,7 +80,7 @@
                 		<input type="hidden"  name="numHidden" value="${m.mNum }"/>
                 	</form>
                 </div>
-                
+                <div id="profilePlaceholder" style="display: none;">사진 변경 프로필 클릭</div>
                    
                 <input type="hidden" value="${m.mId}" id="mId"/>
                 
@@ -69,6 +97,7 @@
                       <div class="alert alert-info" role="alert">
                             <td>이메일 : ${ m.getEmail() }</td>
                       </div>
+                      <input type="hidden" id="mGen" value="${m.gender }" />
                     </div>
                     </div>
                                  
@@ -132,7 +161,7 @@
                                       <label for="inputGender" class="control-label">성별</label>
                                     </div>
                                     <div class="col-sm-7">
-                                      <th>${gender}</th>
+                                      <th><p id="gen"></p></th>
                                     </div>
                                   </div>
                          </div>                       
@@ -143,6 +172,36 @@
                           </div>
                         </div>
                      </div>
+                     <script>
+                     
+                     // 정보수정
+                     $(function(){
+                    	 console.log('아이디'+$('#mId').val());
+                    	 console.log($('#mGen').val());
+                    	 $('#gen').text($('#mGen').val());
+                    	 
+                     });
+                     	$('#sjBtn').on('click', function(){
+                     		console.log("들어오냐");
+                     		               		
+                     		$.ajax({
+                     			url : "${pageContext.request.contextPath}/mypage/mypageEnrollEnd.do",
+                     			data : {
+                     				nic: $('#nicName').val(),
+                     				email : $('#email').val(),
+                     				password : $('#password').val(),
+                     				mId : $('#mId').val()  
+                     			},
+                     			success: function(data){
+                     				alert("수정완료. 재로그인하세요");
+                     				location.href="${pageContext.request.contextPath}/member/memberLogout.do";
+                     			},
+                     			error : function(){
+                     				alert("변경할 내용을 입력해주세요");
+                     			}
+                     		})
+                     	});
+                     </script>
                     <button type="button" class="btn btn-default btn-sm">회원탈퇴</button>
                   </div>
                 </div>
@@ -172,7 +231,7 @@
                     <a class="na na2 nav-link active" id="posGo" href="#">내가 쓴 글</a>
                   </li>
                   <li class="nav-item">
-                    <a class="na na3 nav-link" href="${pageContext.request.contextPath}/mypage/myLike.do">좋아요</a>
+                    <a class="na na3 nav-link" id="likGo" href="#">좋아요</a>
                   </li>
                 </ul>
                 <br>
@@ -188,41 +247,21 @@
                 <form id="recipeForm">
 				<input type="hidden" value="${ m.mNum }" name="mNum" />
 			  </form>
+			  
+			  <form id="likeForm">
+				<input type="hidden" value="${ m.mNum }" name="mNum" />
+			  </form>
+			  
 			  <form id="refreshMypost" action="${pageContext.request.contextPath}/mypage/myPosts.do">
              	<input type="hidden" value="${m.mNum }" name="mNum"/>
              </form>
                 
-               <!--  <script>
-                	var myPost;
-                	$('#myPostWrap').children().on("click", function(){
-                		console.log($(this).val());
-                		
-                		myPost = $(this).val();
-                		
-                		console.log("나 버튼 받고 값 바뀐다 : "+ myPost);
-                		
-                		$.ajax({
-                			url : "${pageContext.request.contextPath}/mypage/myPosts.do",
-                			data : { category : myPost },
-                			type : "get",
-                			dataType : "json",
-                			success : function(data) {
-                				
-                				
-                				
-                				
-                			}, error : function(data) {
-                				console.log("에러");
-                			}
-                		});
-                	});
-                </script> -->
-	
+             
 		<div id="mp2" class="col-lg-12" style="padding : 0">
           <table id="mypage2" class="table table-hover" style="border: 1px solid lightgray;">
-              <tbody>
-                <tr class="active" style="border: 2px solid saddlebrown;  text-align: center;">
-                    <th width="10%">번호</th>
+              <tbody class="myS" style="background : white; border:1px solid ligntgray;">
+                <tr style="border: 2px solid saddlebrown;  text-align: center;">
+                  <th width="10%">번호</th>
                   <th width="30%">제목</th>
                   <th width="15%">작성자</th>
                   <th width="20%">작성일</th>
@@ -271,9 +310,19 @@
           $(function(){
        	   $('#profileWrap').hide();
        	   
-       	   $('#profileImg').click(function(){
-       		   $('#profileBtn').click();
+       	  
+       	   
+       	   $('#profileImg').on({
+       		'mouseenter' : function() {
+       			$('#profilePlaceholder').show();
+       		} , 'mouseleave' : function() {
+       			$('#profilePlaceholder').hide();
+       		}, 'click' : function() {
+       			$('#profilePlaceholder').hide();
+       			$('#profileBtn').click();
+       		} 
        	   });
+
           });
              
           function LoadImg(value) {
@@ -397,6 +446,8 @@
                   // $('.nav-link').css('border','1px solid red');
                });
                
+               
+               
                $('.deleteMyBoard').on('click',function(){
            		//게시글 지워지게 한다
            		var bNum = $(this).parent().parent().children().eq(0).text();	
@@ -467,6 +518,10 @@
                
                $('#recGo').on('click', function(){
             	   $('#recipeForm').attr("action", "${pageContext.request.contextPath}/mypage/myPage.do").submit();
+               });
+               
+               $('#likGo').on('click', function(){
+            	   $('#likeForm').attr("action", "${pageContext.request.contextPath}/mypage/myLike.do").submit();
                });
                
                

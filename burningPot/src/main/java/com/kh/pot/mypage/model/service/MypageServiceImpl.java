@@ -12,6 +12,7 @@ import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.mypage.model.dao.MypageDao;
 import com.kh.pot.recipe.model.vo.Recipe;
+import com.kh.pot.recipe.model.vo.Recommend;
 
 @Service
 public class MypageServiceImpl implements MypageService{
@@ -97,6 +98,11 @@ public class MypageServiceImpl implements MypageService{
 	public List<Recipe> myRecipeList(int cPage, int numPerPage, int mNum) {
 		return mypageDao.myRecipeList(cPage, numPerPage, mNum);
 	}
+	
+	@Override
+	public List<Recipe> myLikeList(int cPage, int numPerPage, int mNum) {
+		return mypageDao.myLikeList(cPage, numPerPage, mNum);
+	}
 
 	@Override
 	public int selectMyRecipeTotalContents(int mNum) {
@@ -112,6 +118,18 @@ public class MypageServiceImpl implements MypageService{
 	public int deleteMyPost(int bNum) {
 		return mypageDao.deleteMyPost(bNum);
 	}
+
+	@Override
+	public int selectMyLikeTotalContents(int mNum) {
+		return mypageDao.selectMyLikeTotalContents(mNum);
+	}
+
+	@Override
+	public int cancelMyLike(int rNum, int mNum) {
+		return mypageDao.cancelMyLike(rNum, mNum);
+	}
+
+	
 	
 
 }
