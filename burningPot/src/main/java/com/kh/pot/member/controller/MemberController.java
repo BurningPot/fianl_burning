@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.impl.GoogleTemplate;
@@ -55,6 +56,9 @@ public class MemberController {
 	@Autowired
 	private OAuth2Parameters googleOAuth2Parameters;
 
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
 	
 	//네이버 로그인 성공시 callback호출 메소드
 	@RequestMapping(value = "/callback.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -184,9 +188,18 @@ public class MemberController {
 		return "common/msg";
 	}
 	
-/*	@Autowired
-	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	*/	
+	//음성 세션 설정
+	@ResponseBody
+	@RequestMapping("/member/setSKey.do")
+	public String setSKey(@RequestParam String key, HttpSession session){
+		if(session != null){
+			session.getAttribute("speechKey");
+		}
+		session.setAttribute("speechKey",key);
+		return key;
+	}
+	
+	
 	@ResponseBody
 	@RequestMapping("/member/deleteConfirmMail.do")
 	public Map<String, Object> deleteMail(@RequestParam String emailAddr, SessionStatus status){
@@ -266,7 +279,6 @@ public class MemberController {
 	public Map<String, Object> findMemberPwd(@RequestParam String pMId,
 											 @RequestParam String pEmail,
 											 @RequestParam String pBirth){
-		System.out.println("aasdfasdf");
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		Member isMember = memberService.findMemberPwd(pMId, pEmail, pBirth);
@@ -379,7 +391,7 @@ public class MemberController {
 	@RequestMapping("member/memberEnrollEnd.do")
 	public String memberEnrollEnd( @RequestParam String birth,
 			Member member, Model model) throws ParseException{
-
+		// 회원 설정
 		member.setmCategory("회원");
 		
 		/*날짜 변환*/
@@ -388,7 +400,13 @@ public class MemberController {
 		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 		
 		member.setBirthDate(sqlDate);
-
+		
+		/******* password 암호화 *******/
+//		암호화 부분 주석 
+		/*String rawPassword = member.getPassword();
+		System.out.println("password 암호화 전 : "+rawPassword);
+		member.setPassword(bcryptPasswordEncoder.encode(rawPassword));*/
+		
 		// 회원 저장
 		int result = memberService.insertMember(member);
 		
@@ -405,7 +423,7 @@ public class MemberController {
 	}
 	
 	// 로그인
-	@RequestMapping("member/login.do")
+	@RequestMapping(value="member/login.do", method=RequestMethod.POST)
 	public String login(@RequestParam String userId,
 						@RequestParam String password,
 						Model model){
@@ -415,7 +433,9 @@ public class MemberController {
 		String loc="/";
 		
 		if(m != null){
-			if(password.equals(m.getPassword())){
+			// 암호화 주석
+			//if(bcryptPasswordEncoder.matches(password, m.getPassword())) {
+			 if(password.equals(m.getPassword())){
 				msg="환영합니다.!!"+m.getmName()+" 님";
 				model.addAttribute("m",m);
 			}else{
