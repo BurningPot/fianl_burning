@@ -158,7 +158,6 @@ public class RecipeController {
 		// 조회수 증가
 		int result = recipeService.updateCount(rNum);
 		Member m = (Member)session.getAttribute("m");
-		System.out.println("키워드 : " +keyword);
 		
 		// ------------------------ 페이징 처리 [START] ------------------------
 		int startPage; 	// 한번에 표시될 게시글들의 시작 페이지
@@ -186,12 +185,6 @@ public class RecipeController {
 		if(maxPage <endPage) {
 			endPage=maxPage;
 		}
-		
-		System.out.println("현재 페이지 : " + currentPage);
-		System.out.println("전체 게시글 수 : " + totalReview);
-		System.out.println("시작 : " + startPage);
-		System.out.println("끝 : " + endPage);
-		System.out.println("총 페이지 수 : " + maxPage);
 		
 		PageInfo pi = new PageInfo(currentPage, totalReview, numPerPage, startPage, endPage, maxPage);
 		model.addAttribute("pi", pi);
@@ -318,7 +311,6 @@ public class RecipeController {
 			MultipartFile mf = fileToMultipartFile(fileImg);	// file형식 이미지명 multipartfile로 변경
 			
 			recipe.setrImg(recipeService.renameFile(mf));
-			System.out.println(recipe);
 			
 			result = recipeService.updateRecipe(recipe);
 			
@@ -358,7 +350,6 @@ public class RecipeController {
 							
 							try {
 								mf.transferTo(new File(saveDir + "/" + renameFileName));
-								System.out.println(mf.getOriginalFilename() + " ---> " + renameFileName);
 							} catch (IllegalStateException | IOException e) {
 								e.printStackTrace();
 							}
@@ -373,7 +364,6 @@ public class RecipeController {
 							
 							try {
 								f.transferTo(new File(saveDir + "/" + renameFileName));
-								System.out.println(f.getOriginalFilename() + " ---> " + renameFileName);
 							} catch (IllegalStateException | IOException e) {
 								e.printStackTrace();
 							}
@@ -394,8 +384,6 @@ public class RecipeController {
 		if (!contentList.isEmpty()) {		// 받아온 데이터 값 확인
 			for (RecipeContent rc : contentList) {
 				File deleteFile = new File(saveDir + "/" + rc.getrContentimg());
-				System.out.println("이미지 확인 : " + rc.getrContentimg());
-				System.out.println("이미지 확인 : " + deleteFile.getAbsolutePath());
 				
 				if (deleteFile.exists()) {
 					if (deleteFile.delete()) {
@@ -517,13 +505,11 @@ public class RecipeController {
 			
 			if (result == 1) {
 				result = recipeService.updateRecommend(rec);
-				System.out.println("update : " + result);
 				if (result < 1) {
 					throw new Exception("좋아요 버튼 오류. (error : updateRecommend / 관리자에게 문의 바랍니다.)");
 				}
 				
 				result = recipeService.selectRecipeDetail(rNum).getrRecommend();
-				System.out.println("update : " + result);
 			} else {
 				throw new Exception("좋아요 버튼 오류. (error : insertRecommend / 관리자에게 문의 바랍니다.)");
 			}
@@ -541,9 +527,7 @@ public class RecipeController {
 		String msg="";
 		String loc ="/recipe/recipeDetail.do";
 		Member m = (Member)session.getAttribute("m");
-		
-		System.out.println("리뷰 확인 : " + review);
-		
+				
 		if (m != null) {
 			if (recipeService.insertReview(review) == 1) {
 				msg="댓글 등록 완료";
