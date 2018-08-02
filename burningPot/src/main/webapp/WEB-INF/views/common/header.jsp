@@ -1482,12 +1482,13 @@
 							<img class="btn_img"
 								src="${pageContext.request.contextPath }/resources/img/돋보기.PNG">
 						</button>
-						&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-microphone" id="speechBtn" data-tooltip-text="speechMode"></i>
+						<!-- 음성 검색 -->
+						&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-microphone fa-3x" id="speechBtn" data-tooltip-text="speechMode"></i>
 						<form class="row col-sm-12">
 						<div id="speechInput" style="display:none; background:blue;">	
 				        	<div class="input-group">
 						     <div class="input-group-prepend">
-						       <span class="input-group-text" style="background-color:green; color:white; ">듣고있어요</span>
+						       <span class="input-group-text" style="background-color:green; color:white; "><i class="fas fa-microphone-alt"></i></span>
 						    </div>
 						    <input type="text" class="form-control" id="speechVal">
 						    <input type="hidden" id="spSw" value="0"/>
@@ -1900,6 +1901,20 @@
 			}
 		});
 		
+		// 음성 검색 
+		var speech ='<c:out value="${sessionScope.speechKey}" />';
+		console.log('speech:'+speech);
+		if(speech){
+			$('#speechVal').val(speech);
+		  	$('#speechInput').show("slow");
+			
+			speechOn();
+			
+			$('#speechBtn').css("color","red");  
+		  	$('#spSw').val(1);
+		}
+		
+		
 	});
 	
 	function searchRecipe(){
@@ -2077,13 +2092,22 @@
 		  	$('#spSw').val(1);
 		  
 		  }else if($('#spSw').val() == 1){
+			 
 		  	$('#speechInput').hide("slow");
 		  	// Remove all callbacks from all events:
-		  	annyang.pause();
+		  	console.log(annyang);
+		  	console.log('isisListening?:'+annyang.isListening());
+		  	
 		  	annyang.removeCommands();
-
+		  	annyang.abort();
+		  	console.log('isisListening?:'+annyang.isListening());
+		  	
 		  	$('#speechBtn').css("color","black");  
-		  	$('#spSw').val(0); 
+		  	$('#spSw').val(0);
+		  	
+		  	<% 
+     		session.removeAttribute("speechKey");
+			%>
 		  }
 		  
 		  /* speechInput */
