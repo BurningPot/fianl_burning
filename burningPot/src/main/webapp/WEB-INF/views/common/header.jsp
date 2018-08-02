@@ -1609,8 +1609,8 @@
 				              <i class="fas fa-sign-out-alt fa-3x"></i>
 				          </button>
 				        </div>
-			        </c:if>
-			        
+			        </c:if>	
+			        		        
 		       	</div>
 		       	<div class="b-seg-right nav navbar-nav navbar-right">
 					<div class="seg_btn_area">
