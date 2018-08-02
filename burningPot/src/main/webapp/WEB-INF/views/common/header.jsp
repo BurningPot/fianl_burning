@@ -1469,7 +1469,7 @@
 				<div class="b-seg-logo navbar-header">
 					<div class="logo_wrap navbar-brand">
 						<%-- <a class="home_btn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath}/main.jsp'"> --%>
-						<a class="home_btn" onclick="location.href='showHome.do'">
+						<a class="home_btn" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 							<img class="img-logo" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</a>
 					</div>
