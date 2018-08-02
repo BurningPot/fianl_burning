@@ -150,7 +150,7 @@
             
             
             
-            if (scrollHeight == documentHeight) { //문서의 맨끝에 도달했을때 내용 추가 
+            if (scrollHeight == documentHeight) {  //문서의 맨끝에 도달했을때 내용 추가 
             	//console.log("끝?");
             	 var str1 = "★채우는 공간";   
                  var str2 = "Recipe !";
@@ -167,8 +167,16 @@
 	               		var level = "";
 	               		var rTime = "";
 	               		var quantity = "";
+	               		//var rcCheck = "";
+	               		//var recipeRNum ="";
 	            		for(var i = 0; i < data.length; i++){
 	            			console.log("count : " + count);
+	            			
+	            			//rcCheck = data[i].rcCheck;
+	            			//recipeRNum = data[i].recipeRNum;
+	            			console.log("data[i].rcCheck : " + data[i].rcCheck );
+	            			console.log("data[i].recipeRNum : " + data[i].rNum );
+	            			
 	            			
 	            			if(data[i].rLevel == 1){
 	                			level="아무나";
@@ -203,15 +211,17 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
+	            			if(data[i].rcCheck == data[i].rNum ){
 	            			$("<li>" + 
 	               				"<div class='like_and_aver_area'>" +
 	               					"<div class='like_btn_area'>" +
 	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-	               							"<i class='far fa-thumbs-up'></i>" +
+	               						"<i class='fas fa-thumbs-up'></i>" +
 	               						"</button>" +
 	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
 		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
 	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
 	               					"</div>" + 
 	               					"<div class='aver_btn_area'>" + 
 	               						"<h5>" + str1 + "</h5>"+
@@ -227,6 +237,35 @@
 	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
 	               				"</div>" +
 	               			"</li>").appendTo(".recipeList");
+	            			
+	            			} else if(data[i].rcCheck != data[i].rNum ){
+	            				$("<li>" + 
+	    	               				"<div class='like_and_aver_area'>" +
+	    	               					"<div class='like_btn_area'>" +
+	    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+	    	               						"<i class='far fa-thumbs-up'></i>" +
+	    	               						"</button>" +
+	    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+	    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+	    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+	    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+	    	               					"</div>" + 
+	    	               					"<div class='aver_btn_area'>" + 
+	    	               						"<h5>" + str1 + "</h5>"+
+	    	               					"</div> " +
+	    	               				"</div>" + 
+	    	               				"<div class='recipe_img_area'>" +
+	    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+	    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+	    	               				"</div>" +
+	    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+	    	               					"<div class='recipe_level'>" + level + "</div>" +
+	    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+	    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+	    	               				"</div>" +
+	    	               			"</li>").appendTo(".recipeList");
+	            			}
+                       
 		            		}
 	            		
 	            	}, error : function(data){
@@ -265,7 +304,9 @@
 						$(".recipeList").empty();
 						
 	            		for(var i = 0; i < data.length; i++){
-	            			console.log("count : " + count);
+	            			console.log("mNum : " + data[i].mNum);
+	            			console.log("rNum : " + data[i].rNum);
+	            			console.log("rcCheck : "+ data[i].rcCheck);
 	            			if(data[i].rLevel == 1){
 	                			level="아무나";
 	                		} else if(data[i].rLevel == 2){
@@ -299,30 +340,60 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
-						$("<li>" + 
-	          				"<div class='like_and_aver_area'>" +
-	          					"<div class='like_btn_area'>" +
-	          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-	          							"<i class='far fa-thumbs-up'></i>" +
-	          						"</button>" +
-	          						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
-	          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
-        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
-	          					"</div>" + 
-	          					"<div class='aver_btn_area'>" + 
-	          						"<h5>" + str1 + "</h5>"+
-	          					"</div> " +
-	          				"</div>" + 
-	          				"<div class='recipe_img_area'>" +
-	          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-	          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-	          				"</div>" +
-	          				"<div class='recipe_levle_and_time_and_writer_area'>" +
-	          					"<div class='recipe_level'>" + level + "</div>" +
-	          					"<div class='recipe_time'>" + rTime + "</div>" +
-	          					"<div class='recipe_writer'>" + quantity + "</div>" +
-	          				"</div>" +
-	          			"</li>").appendTo(".recipeList");
+	            			if(data[i].rcCheck == data[i].rNum ){
+		            			$("<li>" + 
+		               				"<div class='like_and_aver_area'>" +
+		               					"<div class='like_btn_area'>" +
+		               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		               						"<i class='fas fa-thumbs-up'></i>" +
+		               						"</button>" +
+		               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		               					"</div>" + 
+		               					"<div class='aver_btn_area'>" + 
+		               						"<h5>" + str1 + "</h5>"+
+		               					"</div> " +
+		               				"</div>" + 
+		               				"<div class='recipe_img_area'>" +
+		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		               				"</div>" +
+		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		               					"<div class='recipe_level'>" + level + "</div>" +
+		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		               				"</div>" +
+		               			"</li>").appendTo(".recipeList");
+		            			
+		            			} else if(data[i].rcCheck != data[i].rNum ){
+		            				$("<li>" + 
+		    	               				"<div class='like_and_aver_area'>" +
+		    	               					"<div class='like_btn_area'>" +
+		    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		    	               						"<i class='far fa-thumbs-up'></i>" +
+		    	               						"</button>" +
+		    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+		    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		    	               					"</div>" + 
+		    	               					"<div class='aver_btn_area'>" + 
+		    	               						"<h5>" + str1 + "</h5>"+
+		    	               					"</div> " +
+		    	               				"</div>" + 
+		    	               				"<div class='recipe_img_area'>" +
+		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		    	               				"</div>" +
+		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		    	               					"<div class='recipe_level'>" + level + "</div>" +
+		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		    	               				"</div>" +
+		    	               			"</li>").appendTo(".recipeList");
+		            			}
 	            		}
 	            		
 	            		$(window).bind("scroll", inquiryInfinityScrollFunction);
@@ -391,30 +462,60 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
-							$("<li>" + 
-		          				"<div class='like_and_aver_area'>" +
-		          					"<div class='like_btn_area'>" +
-		          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-		          							"<i class='far fa-thumbs-up'></i>" +
-		          						"</button>" +
-		          						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
-		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
-	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
-		          					"</div>" + 
-		          					"<div class='aver_btn_area'>" + 
-		          						"<h5>" + str1 + "</h5>"+
-		          					"</div> " +
-		          				"</div>" + 
-		          				"<div class='recipe_img_area'>" +
-		          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-		          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-		          				"</div>" +
-		          				"<div class='recipe_levle_and_time_and_writer_area'>" +
-		          					"<div class='recipe_level'>" + level + "</div>" +
-		          					"<div class='recipe_time'>" + rTime + "</div>" +
-		          					"<div class='recipe_writer'>" + quantity + "</div>" +
-		          				"</div>" +
-		          			"</li>").appendTo(".recipeList");
+	            			if(data[i].rcCheck == data[i].rNum ){
+		            			$("<li>" + 
+		               				"<div class='like_and_aver_area'>" +
+		               					"<div class='like_btn_area'>" +
+		               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		               						"<i class='fas fa-thumbs-up'></i>" +
+		               						"</button>" +
+		               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		               					"</div>" + 
+		               					"<div class='aver_btn_area'>" + 
+		               						"<h5>" + str1 + "</h5>"+
+		               					"</div> " +
+		               				"</div>" + 
+		               				"<div class='recipe_img_area'>" +
+		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		               				"</div>" +
+		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		               					"<div class='recipe_level'>" + level + "</div>" +
+		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		               				"</div>" +
+		               			"</li>").appendTo(".recipeList");
+		            			
+		            			} else if(data[i].rcCheck != data[i].rNum ){
+		            				$("<li>" + 
+		    	               				"<div class='like_and_aver_area'>" +
+		    	               					"<div class='like_btn_area'>" +
+		    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		    	               						"<i class='far fa-thumbs-up'></i>" +
+		    	               						"</button>" +
+		    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+		    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		    	               					"</div>" + 
+		    	               					"<div class='aver_btn_area'>" + 
+		    	               						"<h5>" + str1 + "</h5>"+
+		    	               					"</div> " +
+		    	               				"</div>" + 
+		    	               				"<div class='recipe_img_area'>" +
+		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		    	               				"</div>" +
+		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		    	               					"<div class='recipe_level'>" + level + "</div>" +
+		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		    	               				"</div>" +
+		    	               			"</li>").appendTo(".recipeList");
+		            			}
 		            		}
 		            		
 		            		$(window).bind("scroll", inquiryInfinityScrollFunction);
@@ -497,30 +598,60 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
-						$("<li>" + 
-	          				"<div class='like_and_aver_area'>" +
-	          					"<div class='like_btn_area'>" +
-	          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-	          							"<i class='far fa-thumbs-up'></i>" +
-	          						"</button>" +
-	          						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
-	          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
-        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
-	          					"</div>" + 
-	          					"<div class='aver_btn_area'>" + 
-	          						"<h5>" + str1 + "</h5>"+
-	          					"</div> " +
-	          				"</div>" + 
-	          				"<div class='recipe_img_area'>" +
-	          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-	          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-	          				"</div>" +
-	          				"<div class='recipe_levle_and_time_and_writer_area'>" +
-	          					"<div class='recipe_level'>" + level + "</div>" +
-	          					"<div class='recipe_time'>" + rTime + "</div>" +
-	          					"<div class='recipe_writer'>" + quantity + "</div>" +
-	          				"</div>" +
-	          			"</li>").appendTo(".recipeList");
+	            			if(data[i].rcCheck == data[i].rNum ){
+		            			$("<li>" + 
+		               				"<div class='like_and_aver_area'>" +
+		               					"<div class='like_btn_area'>" +
+		               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		               						"<i class='fas fa-thumbs-up'></i>" +
+		               						"</button>" +
+		               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		               					"</div>" + 
+		               					"<div class='aver_btn_area'>" + 
+		               						"<h5>" + str1 + "</h5>"+
+		               					"</div> " +
+		               				"</div>" + 
+		               				"<div class='recipe_img_area'>" +
+		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		               				"</div>" +
+		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		               					"<div class='recipe_level'>" + level + "</div>" +
+		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		               				"</div>" +
+		               			"</li>").appendTo(".recipeList");
+		            			
+		            			} else if(data[i].rcCheck != data[i].rNum ){
+		            				$("<li>" + 
+		    	               				"<div class='like_and_aver_area'>" +
+		    	               					"<div class='like_btn_area'>" +
+		    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		    	               						"<i class='far fa-thumbs-up'></i>" +
+		    	               						"</button>" +
+		    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+		    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		    	               					"</div>" + 
+		    	               					"<div class='aver_btn_area'>" + 
+		    	               						"<h5>" + str1 + "</h5>"+
+		    	               					"</div> " +
+		    	               				"</div>" + 
+		    	               				"<div class='recipe_img_area'>" +
+		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		    	               				"</div>" +
+		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		    	               					"<div class='recipe_level'>" + level + "</div>" +
+		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		    	               				"</div>" +
+		    	               			"</li>").appendTo(".recipeList");
+		            			}
 	            		}
 	            		
 	            		$(window).bind("scroll", recommandInfinityScrollFunction);
@@ -589,30 +720,60 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
-							$("<li>" + 
-		          				"<div class='like_and_aver_area'>" +
-		          					"<div class='like_btn_area'>" +
-		          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-		          							"<i class='far fa-thumbs-up'></i>" +
-		          						"</button>" +
-		          						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
-		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
-	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
-		          					"</div>" + 
-		          					"<div class='aver_btn_area'>" + 
-		          						"<h5>" + str1 + "</h5>"+
-		          					"</div> " +
-		          				"</div>" + 
-		          				"<div class='recipe_img_area'>" +
-		          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-		          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-		          				"</div>" +
-		          				"<div class='recipe_levle_and_time_and_writer_area'>" +
-		          					"<div class='recipe_level'>" + level + "</div>" +
-		          					"<div class='recipe_time'>" + rTime + "</div>" +
-		          					"<div class='recipe_writer'>" + quantity + "</div>" +
-		          				"</div>" +
-		          			"</li>").appendTo(".recipeList");
+	            			if(data[i].rcCheck == data[i].rNum ){
+		            			$("<li>" + 
+		               				"<div class='like_and_aver_area'>" +
+		               					"<div class='like_btn_area'>" +
+		               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		               						"<i class='fas fa-thumbs-up'></i>" +
+		               						"</button>" +
+		               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		               					"</div>" + 
+		               					"<div class='aver_btn_area'>" + 
+		               						"<h5>" + str1 + "</h5>"+
+		               					"</div> " +
+		               				"</div>" + 
+		               				"<div class='recipe_img_area'>" +
+		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		               				"</div>" +
+		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		               					"<div class='recipe_level'>" + level + "</div>" +
+		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		               				"</div>" +
+		               			"</li>").appendTo(".recipeList");
+		            			
+		            			} else if(data[i].rcCheck != data[i].rNum ){
+		            				$("<li>" + 
+		    	               				"<div class='like_and_aver_area'>" +
+		    	               					"<div class='like_btn_area'>" +
+		    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		    	               						"<i class='far fa-thumbs-up'></i>" +
+		    	               						"</button>" +
+		    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+		    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		    	               					"</div>" + 
+		    	               					"<div class='aver_btn_area'>" + 
+		    	               						"<h5>" + str1 + "</h5>"+
+		    	               					"</div> " +
+		    	               				"</div>" + 
+		    	               				"<div class='recipe_img_area'>" +
+		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		    	               				"</div>" +
+		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		    	               					"<div class='recipe_level'>" + level + "</div>" +
+		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		    	               				"</div>" +
+		    	               			"</li>").appendTo(".recipeList");
+		            			}
 		            		}
 		            		
 		            		$(window).bind("scroll", recommandInfinityScrollFunction);
@@ -693,30 +854,60 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
-						$("<li>" + 
-	          				"<div class='like_and_aver_area'>" +
-	          					"<div class='like_btn_area'>" +
-	          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-	          							"<i class='far fa-thumbs-up'></i>" +
-	          						"</button>" +
-	          						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
-	          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
-        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
-	          					"</div>" + 
-	          					"<div class='aver_btn_area'>" + 
-	          						"<h5>" + str1 + "</h5>"+
-	          					"</div> " +
-	          				"</div>" + 
-	          				"<div class='recipe_img_area'>" +
-	          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-	          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-	          				"</div>" +
-	          				"<div class='recipe_levle_and_time_and_writer_area'>" +
-	          					"<div class='recipe_level'>" + level + "</div>" +
-	          					"<div class='recipe_time'>" + rTime + "</div>" +
-	          					"<div class='recipe_writer'>" + quantity + "</div>" +
-	          				"</div>" +
-	          			"</li>").appendTo(".recipeList");
+	            			if(data[i].rcCheck == data[i].rNum ){
+		            			$("<li>" + 
+		               				"<div class='like_and_aver_area'>" +
+		               					"<div class='like_btn_area'>" +
+		               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		               						"<i class='fas fa-thumbs-up'></i>" +
+		               						"</button>" +
+		               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		               					"</div>" + 
+		               					"<div class='aver_btn_area'>" + 
+		               						"<h5>" + str1 + "</h5>"+
+		               					"</div> " +
+		               				"</div>" + 
+		               				"<div class='recipe_img_area'>" +
+		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		               				"</div>" +
+		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		               					"<div class='recipe_level'>" + level + "</div>" +
+		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		               				"</div>" +
+		               			"</li>").appendTo(".recipeList");
+		            			
+		            			} else if(data[i].rcCheck != data[i].rNum ){
+		            				$("<li>" + 
+		    	               				"<div class='like_and_aver_area'>" +
+		    	               					"<div class='like_btn_area'>" +
+		    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		    	               						"<i class='far fa-thumbs-up'></i>" +
+		    	               						"</button>" +
+		    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+		    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		    	               					"</div>" + 
+		    	               					"<div class='aver_btn_area'>" + 
+		    	               						"<h5>" + str1 + "</h5>"+
+		    	               					"</div> " +
+		    	               				"</div>" + 
+		    	               				"<div class='recipe_img_area'>" +
+		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		    	               				"</div>" +
+		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		    	               					"<div class='recipe_level'>" + level + "</div>" +
+		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		    	               				"</div>" +
+		    	               			"</li>").appendTo(".recipeList");
+		            			}
 	            		}
 	            		
 	            		$(window).bind("scroll", levelAndTimeInfinityScrollFunction);
@@ -785,30 +976,60 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
-							$("<li>" + 
-		          				"<div class='like_and_aver_area'>" +
-		          					"<div class='like_btn_area'>" +
-		          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-		          							"<i class='far fa-thumbs-up'></i>" +
-		          						"</button>" +
-		          						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
-		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
-	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
-		          					"</div>" + 
-		          					"<div class='aver_btn_area'>" + 
-		          						"<h5>" + str1 + "</h5>"+
-		          					"</div> " +
-		          				"</div>" + 
-		          				"<div class='recipe_img_area'>" +
-		          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-		          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-		          				"</div>" +
-		          				"<div class='recipe_levle_and_time_and_writer_area'>" +
-		          					"<div class='recipe_level'>" + level + "</div>" +
-		          					"<div class='recipe_time'>" + rTime + "</div>" +
-		          					"<div class='recipe_writer'>" + quantity + "</div>" +
-		          				"</div>" +
-		          			"</li>").appendTo(".recipeList");
+	            			if(data[i].rcCheck == data[i].rNum ){
+		            			$("<li>" + 
+		               				"<div class='like_and_aver_area'>" +
+		               					"<div class='like_btn_area'>" +
+		               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		               						"<i class='fas fa-thumbs-up'></i>" +
+		               						"</button>" +
+		               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		               					"</div>" + 
+		               					"<div class='aver_btn_area'>" + 
+		               						"<h5>" + str1 + "</h5>"+
+		               					"</div> " +
+		               				"</div>" + 
+		               				"<div class='recipe_img_area'>" +
+		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		               				"</div>" +
+		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		               					"<div class='recipe_level'>" + level + "</div>" +
+		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		               				"</div>" +
+		               			"</li>").appendTo(".recipeList");
+		            			
+		            			} else if(data[i].rcCheck != data[i].rNum ){
+		            				$("<li>" + 
+		    	               				"<div class='like_and_aver_area'>" +
+		    	               					"<div class='like_btn_area'>" +
+		    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		    	               						"<i class='far fa-thumbs-up'></i>" +
+		    	               						"</button>" +
+		    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+		    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		    	               					"</div>" + 
+		    	               					"<div class='aver_btn_area'>" + 
+		    	               						"<h5>" + str1 + "</h5>"+
+		    	               					"</div> " +
+		    	               				"</div>" + 
+		    	               				"<div class='recipe_img_area'>" +
+		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		    	               				"</div>" +
+		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		    	               					"<div class='recipe_level'>" + level + "</div>" +
+		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		    	               				"</div>" +
+		    	               			"</li>").appendTo(".recipeList");
+		            			}
 		            		}
 		            		
 		            		$(window).bind("scroll", levelAndTimeInfinityScrollFunction);
@@ -905,30 +1126,60 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
-						$("<li>" + 
-	          				"<div class='like_and_aver_area'>" +
-	          					"<div class='like_btn_area'>" +
-	          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-	          							"<i class='far fa-thumbs-up'></i>" +
-	          						"</button>" +
-	          						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
-	          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
-        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
-	          					"</div>" + 
-	          					"<div class='aver_btn_area'>" + 
-	          						"<h5>" + str1 + "</h5>"+
-	          					"</div> " +
-	          				"</div>" + 
-	          				"<div class='recipe_img_area'>" +
-	          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-	          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-	          				"</div>" +
-	          				"<div class='recipe_levle_and_time_and_writer_area'>" +
-	          					"<div class='recipe_level'>" + level + "</div>" +
-	          					"<div class='recipe_time'>" + rTime + "</div>" +
-	          					"<div class='recipe_quantity'>" + quantity + "</div>" +
-	          				"</div>" +
-	          			"</li>").appendTo(".recipeList");
+	            			if(data[i].rcCheck == data[i].rNum ){
+		            			$("<li>" + 
+		               				"<div class='like_and_aver_area'>" +
+		               					"<div class='like_btn_area'>" +
+		               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		               						"<i class='fas fa-thumbs-up'></i>" +
+		               						"</button>" +
+		               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		               					"</div>" + 
+		               					"<div class='aver_btn_area'>" + 
+		               						"<h5>" + str1 + "</h5>"+
+		               					"</div> " +
+		               				"</div>" + 
+		               				"<div class='recipe_img_area'>" +
+		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		               				"</div>" +
+		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		               					"<div class='recipe_level'>" + level + "</div>" +
+		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		               				"</div>" +
+		               			"</li>").appendTo(".recipeList");
+		            			
+		            			} else if(data[i].rcCheck != data[i].rNum ){
+		            				$("<li>" + 
+		    	               				"<div class='like_and_aver_area'>" +
+		    	               					"<div class='like_btn_area'>" +
+		    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		    	               						"<i class='far fa-thumbs-up'></i>" +
+		    	               						"</button>" +
+		    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+		    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		    	               					"</div>" + 
+		    	               					"<div class='aver_btn_area'>" + 
+		    	               						"<h5>" + str1 + "</h5>"+
+		    	               					"</div> " +
+		    	               				"</div>" + 
+		    	               				"<div class='recipe_img_area'>" +
+		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		    	               				"</div>" +
+		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		    	               					"<div class='recipe_level'>" + level + "</div>" +
+		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		    	               				"</div>" +
+		    	               			"</li>").appendTo(".recipeList");
+		            			}
 	            		}
 	            		
 	            		 /* Top 버튼 */
@@ -1034,30 +1285,60 @@
 		                		} else {
 		                			quantity = "5인분 이상";
 		                		}
-							$("<li>" + 
-		          				"<div class='like_and_aver_area'>" +
-		          					"<div class='like_btn_area'>" +
-		          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-		          							"<i class='far fa-thumbs-up'></i>" +
-		          						"</button>" +
-		          						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
-		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
-	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
-		          					"</div>" + 
-		          					"<div class='aver_btn_area'>" + 
-		          						"<h5>" + str1 + "</h5>"+
-		          					"</div> " +
-		          				"</div>" + 
-		          				"<div class='recipe_img_area'>" +
-		          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-		          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-		          				"</div>" +
-		          				"<div class='recipe_levle_and_time_and_writer_area'>" +
-		          					"<div class='recipe_level'>" + level + "</div>" +
-		          					"<div class='recipe_time'>" + rTime + "</div>" +
-		          					"<div class='recipe_quantity'>" + quantity + "</div>" +
-		          				"</div>" +
-		          			"</li>").appendTo(".recipeList");
+		            			if(data[i].rcCheck == data[i].rNum ){
+			            			$("<li>" + 
+			               				"<div class='like_and_aver_area'>" +
+			               					"<div class='like_btn_area'>" +
+			               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+			               						"<i class='fas fa-thumbs-up'></i>" +
+			               						"</button>" +
+			               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+				          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+			        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+			        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+			               					"</div>" + 
+			               					"<div class='aver_btn_area'>" + 
+			               						"<h5>" + str1 + "</h5>"+
+			               					"</div> " +
+			               				"</div>" + 
+			               				"<div class='recipe_img_area'>" +
+			               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+			               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+			               				"</div>" +
+			               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+			               					"<div class='recipe_level'>" + level + "</div>" +
+			               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+			               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+			               				"</div>" +
+			               			"</li>").appendTo(".recipeList");
+			            			
+			            			} else if(data[i].rcCheck != data[i].rNum ){
+			            				$("<li>" + 
+			    	               				"<div class='like_and_aver_area'>" +
+			    	               					"<div class='like_btn_area'>" +
+			    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+			    	               						"<i class='far fa-thumbs-up'></i>" +
+			    	               						"</button>" +
+			    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+			    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+			    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+			    	               					"</div>" + 
+			    	               					"<div class='aver_btn_area'>" + 
+			    	               						"<h5>" + str1 + "</h5>"+
+			    	               					"</div> " +
+			    	               				"</div>" + 
+			    	               				"<div class='recipe_img_area'>" +
+			    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+			    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+			    	               				"</div>" +
+			    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+			    	               					"<div class='recipe_level'>" + level + "</div>" +
+			    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+			    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+			    	               				"</div>" +
+			    	               			"</li>").appendTo(".recipeList");
+			            			}
 		            		}
 		            		
 		            		 /* Top 버튼 */
@@ -1156,30 +1437,60 @@
 		                		} else {
 		                			quantity = "5인분 이상";
 		                		}
-							$("<li>" + 
-		          				"<div class='like_and_aver_area'>" +
-		          					"<div class='like_btn_area'>" +
-		          						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
-		          							"<i class='far fa-thumbs-up'></i>" +
-		          						"</button>" +
-		          						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
-		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
-	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
-		          					"</div>" + 
-		          					"<div class='aver_btn_area'>" + 
-		          						"<h5>" + str1 + "</h5>"+
-		          					"</div> " +
-		          				"</div>" + 
-		          				"<div class='recipe_img_area'>" +
-		          				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-		          					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-		          				"</div>" +
-		          				"<div class='recipe_levle_and_time_and_writer_area'>" +
-		          					"<div class='recipe_level'>" + level + "</div>" +
-		          					"<div class='recipe_time'>" + rTime + "</div>" +
-		          					"<div class='recipe_quantity'>" + quantity + "</div>" +
-		          				"</div>" +
-		          			"</li>").appendTo(".recipeList");
+		            			if(data[i].rcCheck == data[i].rNum ){
+			            			$("<li>" + 
+			               				"<div class='like_and_aver_area'>" +
+			               					"<div class='like_btn_area'>" +
+			               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+			               						"<i class='fas fa-thumbs-up'></i>" +
+			               						"</button>" +
+			               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+				          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+			        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+			        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+			               					"</div>" + 
+			               					"<div class='aver_btn_area'>" + 
+			               						"<h5>" + str1 + "</h5>"+
+			               					"</div> " +
+			               				"</div>" + 
+			               				"<div class='recipe_img_area'>" +
+			               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+			               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+			               				"</div>" +
+			               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+			               					"<div class='recipe_level'>" + level + "</div>" +
+			               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+			               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+			               				"</div>" +
+			               			"</li>").appendTo(".recipeList");
+			            			
+			            			} else if(data[i].rcCheck != data[i].rNum ){
+			            				$("<li>" + 
+			    	               				"<div class='like_and_aver_area'>" +
+			    	               					"<div class='like_btn_area'>" +
+			    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+			    	               						"<i class='far fa-thumbs-up'></i>" +
+			    	               						"</button>" +
+			    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+			    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+			    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+			    	               					"</div>" + 
+			    	               					"<div class='aver_btn_area'>" + 
+			    	               						"<h5>" + str1 + "</h5>"+
+			    	               					"</div> " +
+			    	               				"</div>" + 
+			    	               				"<div class='recipe_img_area'>" +
+			    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+			    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+			    	               				"</div>" +
+			    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+			    	               					"<div class='recipe_level'>" + level + "</div>" +
+			    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+			    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+			    	               				"</div>" +
+			    	               			"</li>").appendTo(".recipeList");
+			            			}
 		            		}
 		            		
 		            		 /* Top 버튼 */
@@ -1274,18 +1585,36 @@
 			            else if ($(obj).children().hasClass('fas fa-thumbs-up')) {
 			                $(obj).children().removeClass('fas fa-thumbs-up').addClass('far fa-thumbs-up');
 			                
-			                
+			                if(classs.indexOf(mNum) != 0)	{
+			                     $.ajax({
+			                    	 url : "${pageContext.request.contextPath}/home/likeBtnCancel.do",
+			                    	 type: "GET",
+			                    	 dataType : "json",
+			                    	 data : {
+			                    	
+			                    		 mNum : mNum,
+			                    		 recipeRNum : recipeRNum,
+			                    		 recipeRRecommend : recipeRRecommend
+			                    		 
+			                    	 }, success : function(data){
+			                    		 
+			                    		console.log("ajax에서 추천 성공!");
+			                    		
+			                    		
+			                    	 }, error : function(data){
+			                    		 
+			                    		 console.log("ajax 찜목록 진입 실패!");
+			                    		 
+			                    	 }
+		                     	});
+			                } 
 			                
 			            }
-	
-	        		
-	        		
-	        		
+
 	      		  } else {
 	      			  console.log("따봉 버튼 메소드 안댐");
         			  alert("로그인을 해주세요.");
         			  $("#loginModal").modal();
-	        		
 	      		  }
 	           
 			}

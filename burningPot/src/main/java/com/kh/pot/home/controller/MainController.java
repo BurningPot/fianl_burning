@@ -84,10 +84,26 @@ public class MainController {
 	// 검색 이후의 무한스크롤 적용
 	@ResponseBody
 	@RequestMapping("/home/searchRecipeObject.do")
-	public List<Recipe> searchRecipeObject(Model model, @RequestParam("number") int number, @RequestParam("keyWord") String keyWord){
+	public List<Recipe> searchRecipeObject(Model model, 
+											@RequestParam("number") int number, 
+											HttpSession session, 
+											@RequestParam("keyWord") String keyWord){
+		
+		Member m = (Member)session.getAttribute("m");
+		
+		int mNum = 0;
+		
+		System.out.println("현재 로그인한 사람의 정보"+m);
+		//System.out.println("사람의 번호"+ m.getmNum());
+		
+		if(m != null){
+			mNum = m.getmNum();
+		}
 		
 		System.out.println("number : " + number);
 		System.out.println("keyWord : " + keyWord);
+		System.out.println("mNum : " + mNum);
+		
 		
 		// 레시피의 총 개수를 구한다.
 		int searchTotalCount = mainService.searchTotalCount(keyWord);
@@ -110,7 +126,7 @@ public class MainController {
 		
 	
 		// 시작값과 최종값을 list에 담아 쿼리문으로 보낸다.
-			List<Recipe> searchList = mainService.searchRecipeList(searchStartCount, searchEndCount, keyWord);
+			List<Recipe> searchList = mainService.searchRecipeList(searchStartCount, searchEndCount, keyWord, mNum);
 			for(int i = 0; i< searchList.size();i++){
 				System.out.println(searchList.get(i).getrName());
 			}
@@ -140,7 +156,19 @@ public class MainController {
 	public List<Recipe> inquiryBefore(Model model, 
 									  @RequestParam("keyWord") String keyWord,
 									  @RequestParam("TrueAndFalse") boolean TrueAndFalse,
-									  @RequestParam("AscAndDesc") String AscAndDesc){
+									  @RequestParam("AscAndDesc") String AscAndDesc,
+									  HttpSession session){
+		
+		Member m = (Member)session.getAttribute("m");
+		
+		int mNum = 0;
+		
+		System.out.println("현재 로그인한 사람의 정보"+m);
+		//System.out.println("사람의 번호"+ m.getmNum());
+		
+		if(m != null){
+			mNum = m.getmNum();
+		}
 		
 		System.out.println("------------- 조회가 많은 순서대로 정렬하는 메소드 시작! ----------------");
 		System.out.println("keyWord : " + keyWord);
@@ -151,7 +179,7 @@ public class MainController {
 		
 		if(TrueAndFalse == true){
 			
-			inquiryRecipeListBefore = mainService.inquiryRecipeListBefore(keyWord, AscAndDesc);
+			inquiryRecipeListBefore = mainService.inquiryRecipeListBefore(keyWord, AscAndDesc, mNum);
 			
 //			TrueAndFalse = false;
 //			AscAndDesc = "ASC";
@@ -160,7 +188,7 @@ public class MainController {
 			System.out.println("버튼 1번 클릭 시 AscAndDesc : " + AscAndDesc);
 		} else {
 			
-			inquiryRecipeListBefore = mainService.inquiryRecipeListBefore(keyWord, AscAndDesc);
+			inquiryRecipeListBefore = mainService.inquiryRecipeListBefore(keyWord, AscAndDesc, mNum);
 			
 //			TrueAndFalse = true;
 //			AscAndDesc = "DESC";
@@ -181,7 +209,20 @@ public class MainController {
 									 @RequestParam("keyWord") String keyWord, 
 									 @RequestParam("number") int number,
 									 @RequestParam("TrueAndFalse") boolean TrueAndFalse,
-									 @RequestParam("AscAndDesc") String AscAndDesc){
+									 @RequestParam("AscAndDesc") String AscAndDesc,
+									 HttpSession session){
+		
+		
+		Member m = (Member)session.getAttribute("m");
+		
+		int mNum = 0;
+		
+		System.out.println("현재 로그인한 사람의 정보"+m);
+		//System.out.println("사람의 번호"+ m.getmNum());
+		
+		if(m != null){
+			mNum = m.getmNum();
+		}
 		
 		System.out.println("------------- 조회가 많은 순서대로 정렬 후 무한스크롤 메소드 시작! ----------------");
 		System.out.println("keyWord : " + keyWord);
@@ -210,13 +251,13 @@ public class MainController {
 			
 			AscAndDesc = "DESC"; // 강제로 바꿔줬음
 			
-			inquiryRecipeListAfter = mainService.inquiryRecipeListAfter(keyWord, inquiryStartCount, inquiryEndCount, AscAndDesc);
+			inquiryRecipeListAfter = mainService.inquiryRecipeListAfter(keyWord, inquiryStartCount, inquiryEndCount, AscAndDesc, mNum);
 		
 		} else {
 			
 			AscAndDesc = "ASC"; // 강제로 바꿔줬음
 			
-			inquiryRecipeListAfter = mainService.inquiryRecipeListAfter(keyWord, inquiryStartCount, inquiryEndCount, AscAndDesc);
+			inquiryRecipeListAfter = mainService.inquiryRecipeListAfter(keyWord, inquiryStartCount, inquiryEndCount, AscAndDesc, mNum);
 			
 		}
 		for(int i = 0 ; i<inquiryRecipeListAfter.size(); i++){
@@ -234,8 +275,22 @@ public class MainController {
 	public List<Recipe> recommandBefore(Model model, 
 										  @RequestParam("keyWord") String keyWord,
 										  @RequestParam("TrueAndFalse") boolean TrueAndFalse,
-										  @RequestParam("AscAndDesc") String AscAndDesc){
+										  @RequestParam("AscAndDesc") String AscAndDesc,
+										  HttpSession session){
 		
+		
+		Member m = (Member)session.getAttribute("m");
+		
+		int mNum = 0;
+		
+		System.out.println("현재 로그인한 사람의 정보"+m);
+		//System.out.println("사람의 번호"+ m.getmNum());
+		
+		if(m != null){
+			mNum = m.getmNum();
+		}
+
+										  
 		System.out.println("------------- 추천수가 많은 순서대로 정렬하는 메소드 시작! ----------------");
 		System.out.println("keyWord : " + keyWord);
 		System.out.println("TrueAndFalse : " + TrueAndFalse);
@@ -245,18 +300,15 @@ public class MainController {
 		
 		if(TrueAndFalse == true){
 			
-			recommandRecipeListBefore = mainService.recommandRecipeListBefore(keyWord, AscAndDesc);
-
+			recommandRecipeListBefore = mainService.recommandRecipeListBefore(keyWord, AscAndDesc, mNum);
 			
-			System.out.println("추천수 정렬 한 레시피 버튼 1번 클릭 시 TrueAndFalse : " + TrueAndFalse);
-			System.out.println("추천수 정렬 한 레시피 버튼 1번 클릭 시 AscAndDesc : " + AscAndDesc);
 		} else {
-			recommandRecipeListBefore = mainService.recommandRecipeListBefore(keyWord, AscAndDesc);
+			
+			recommandRecipeListBefore = mainService.recommandRecipeListBefore(keyWord, AscAndDesc, mNum);
 
-			System.out.println("추천수 정렬 한 레시피 버튼 2번 클릭 시 TrueAndFalse : " + TrueAndFalse);
-			System.out.println("추천수 정렬 한 레시피 버튼 2번 클릭 시 AscAndDesc : " + AscAndDesc);
 		}
 		for(int i = 0 ; i<recommandRecipeListBefore.size(); i++){
+			
 			System.out.println("추천수 정렬 한 레시피 제목 : " + recommandRecipeListBefore.get(i).getrName());
 		}
 		
@@ -270,26 +322,27 @@ public class MainController {
 										@RequestParam("keyWord") String keyWord, 
 										@RequestParam("number") int number,
 										@RequestParam("TrueAndFalse") boolean TrueAndFalse,
-										@RequestParam("AscAndDesc") String AscAndDesc){
+										@RequestParam("AscAndDesc") String AscAndDesc,
+										HttpSession session){
 		
-		System.out.println("------------- 추천수가 많은 순서대로 정렬 후 무한스크롤 메소드 시작! ----------------");
-		System.out.println("keyWord : " + keyWord);
-		System.out.println("number : " + number);
+		
+		Member m = (Member)session.getAttribute("m");
+		
+		int mNum = 0;
+		
+		if(m != null){
+			mNum = m.getmNum();
+		}
 		
 		int recommandTotalCount = mainService.recommandTotalCount(keyWord);		
 		
-		System.out.println("recommandTotalCount : " + recommandTotalCount);
 		
 		int recommandStartCount = number;
 		int recommandEndCount = number + 8;
-		
-		System.out.println("recommandStartCount : " + recommandStartCount);
-		System.out.println("recommandEndCount : " + recommandEndCount);
-		
+	
 		if(recommandEndCount >= recommandTotalCount){
 			recommandEndCount = recommandTotalCount;
 		}
-		System.out.println("if문 이후의 recommandEndCount : " + recommandEndCount);
 		
 		model.addAttribute("recommandEndCount", recommandEndCount);
 		
@@ -299,21 +352,16 @@ public class MainController {
 			
 			AscAndDesc = "DESC"; // 강제로 바꿔줬음
 			
-			recommandRecipeListAfter = mainService.recommandRecipeListAfter(keyWord, recommandStartCount, recommandEndCount, AscAndDesc);
+			recommandRecipeListAfter = mainService.recommandRecipeListAfter(keyWord, recommandStartCount, recommandEndCount, AscAndDesc, mNum);
 		
 		} else {
 			
 			AscAndDesc = "ASC"; // 강제로 바꿔줬음
 			
-			recommandRecipeListAfter = mainService.recommandRecipeListAfter(keyWord, recommandStartCount, recommandEndCount, AscAndDesc);
+			recommandRecipeListAfter = mainService.recommandRecipeListAfter(keyWord, recommandStartCount, recommandEndCount, AscAndDesc, mNum);
 			
 		}
-		for(int i = 0 ; i<recommandRecipeListAfter.size(); i++){
-			System.out.println("추천수 정렬 후 무한 스크롤 레시피 제목 : " + recommandRecipeListAfter.get(i).getrName());
-		}
-		
-		System.out.println(recommandRecipeListAfter.size());
-		
+	
 		return recommandRecipeListAfter;
 	}
 	
@@ -323,30 +371,28 @@ public class MainController {
 	public List<Recipe> levelAndTimeBefore(Model model, 
 											@RequestParam("keyWord") String keyWord,
 											@RequestParam("TrueAndFalse") boolean TrueAndFalse,
-											@RequestParam("AscAndDesc") String AscAndDesc){
+											@RequestParam("AscAndDesc") String AscAndDesc,
+											HttpSession session){
 		
-		System.out.println("------------- 난이도 및 시간이 많은 순서대로 정렬하는 메소드 시작! ----------------");
-		System.out.println("keyWord : " + keyWord);
-		System.out.println("TrueAndFalse : " + TrueAndFalse);
-		System.out.println("AscAndDesc : " + AscAndDesc);
+		
+			Member m = (Member)session.getAttribute("m");
+			
+			int mNum = 0;
+			
+			if(m != null){
+				mNum = m.getmNum();
+			}
 		
 		List<Recipe> levelAndTimeRecipeListBefore;
 		
 		if(TrueAndFalse == true){
 			
-			levelAndTimeRecipeListBefore = mainService.levelAndTimeRecipeListBefore(keyWord, AscAndDesc);
-
-			
-			System.out.println("추천수 정렬 한 레시피 버튼 1번 클릭 시 TrueAndFalse : " + TrueAndFalse);
-			System.out.println("추천수 정렬 한 레시피 버튼 1번 클릭 시 AscAndDesc : " + AscAndDesc);
+			levelAndTimeRecipeListBefore = mainService.levelAndTimeRecipeListBefore(keyWord, AscAndDesc, mNum);
+		
 		} else {
-			levelAndTimeRecipeListBefore = mainService.levelAndTimeRecipeListBefore(keyWord, AscAndDesc);
+			
+			levelAndTimeRecipeListBefore = mainService.levelAndTimeRecipeListBefore(keyWord, AscAndDesc, mNum);
 
-			System.out.println("추천수 정렬 한 레시피 버튼 2번 클릭 시 TrueAndFalse : " + TrueAndFalse);
-			System.out.println("추천수 정렬 한 레시피 버튼 2번 클릭 시 AscAndDesc : " + AscAndDesc);
-		}
-		for(int i = 0 ; i<levelAndTimeRecipeListBefore.size(); i++){
-			System.out.println("추천수 정렬 한 레시피 제목 : " + levelAndTimeRecipeListBefore.get(i).getrName());
 		}
 		
 		return levelAndTimeRecipeListBefore;
@@ -358,26 +404,26 @@ public class MainController {
 											@RequestParam("keyWord") String keyWord, 
 											@RequestParam("number") int number,
 											@RequestParam("TrueAndFalse") boolean TrueAndFalse,
-											@RequestParam("AscAndDesc") String AscAndDesc){
+											@RequestParam("AscAndDesc") String AscAndDesc,
+											HttpSession session){
 		
-		System.out.println("------------- 난이도 및 시간이 많은 순서대로 정렬 후 무한스크롤 메소드 시작! ----------------");
-		System.out.println("keyWord : " + keyWord);
-		System.out.println("number : " + number);
 		
+		Member m = (Member)session.getAttribute("m");
+		
+		int mNum = 0;
+		
+		if(m != null){
+			mNum = m.getmNum();
+		}
+	
 		int levelAndTimeTotalCount = mainService.levelAndTimeAfterTotalCount(keyWord);		
-		
-		System.out.println("levelAndTimeAfterTotalCount : " + levelAndTimeTotalCount);
 		
 		int levelAndTimeStartCount = number;
 		int levelAndTimeEndCount = number + 8;
 		
-		System.out.println("levelAndTimeStartCount : " + levelAndTimeStartCount);
-		System.out.println("levelAndTimeEndCount : " + levelAndTimeEndCount);
-		
 		if(levelAndTimeEndCount >= levelAndTimeTotalCount){
 			levelAndTimeEndCount = levelAndTimeTotalCount;
 		}
-		System.out.println("if문 이후의 levelAndTimeEndCount : " + levelAndTimeEndCount);
 		
 		model.addAttribute("levelAndTimeEndCount", levelAndTimeEndCount);
 		
@@ -387,20 +433,15 @@ public class MainController {
 			
 			AscAndDesc = "DESC"; // 강제로 바꿔줬음
 			
-			levelAndTimeRecipeListAfter = mainService.levelAndTimeRecipeListAfter(keyWord, levelAndTimeStartCount, levelAndTimeEndCount, AscAndDesc);
+			levelAndTimeRecipeListAfter = mainService.levelAndTimeRecipeListAfter(keyWord, levelAndTimeStartCount, levelAndTimeEndCount, AscAndDesc, mNum);
 		
 		} else {
 			
 			AscAndDesc = "ASC"; // 강제로 바꿔줬음
 			
-			levelAndTimeRecipeListAfter = mainService.levelAndTimeRecipeListAfter(keyWord, levelAndTimeStartCount, levelAndTimeEndCount, AscAndDesc);
+			levelAndTimeRecipeListAfter = mainService.levelAndTimeRecipeListAfter(keyWord, levelAndTimeStartCount, levelAndTimeEndCount, AscAndDesc, mNum);
 			
 		}
-		for(int i = 0 ; i<levelAndTimeRecipeListAfter.size(); i++){
-			System.out.println("추천수 정렬 후 무한 스크롤 레시피 제목 : " + levelAndTimeRecipeListAfter.get(i).getrName());
-		}
-		
-		System.out.println(levelAndTimeRecipeListAfter.size());
 		
 		return levelAndTimeRecipeListAfter;
 	}
@@ -411,7 +452,7 @@ public class MainController {
 	// 5-1. 따봉 했을 때메소드
 	@ResponseBody
 	@RequestMapping("/home/likeBtnCheck.do")
-	public boolean likeBtn(Model model, 
+	public boolean likeBtnCheck(Model model, 
 							@RequestParam("mNum") int mNum, 
 							@RequestParam("recipeRNum") int recipeRNum, 
 							@RequestParam("recipeRRecommend") int recipeRRecommend){
@@ -422,7 +463,7 @@ public class MainController {
 		System.out.println("Controller에서의 recipeRNum : " + recipeRNum);
 		System.out.println("Controller에서의 recipeRRecommend : " + recipeRRecommend);
 		
-		int updateRecommend = mainService.updateRecommend(recipeRNum);
+		int updateRecommend = mainService.updatePlusRecommend(recipeRNum);
 		
 		if(updateRecommend == 1) {
 			System.out.println(recipeRNum + "번 레시피의 추천수가 +1 되었습니다.");
@@ -443,16 +484,62 @@ public class MainController {
 	}
 	
 	// 5-2. likeBtn 취소
+	@ResponseBody
+	@RequestMapping("/home/likeBtnCancel.do")
+	public boolean likeBtnCancel(Model model,
+							@RequestParam("mNum") int mNum, 
+							@RequestParam("recipeRNum") int recipeRNum, 
+							@RequestParam("recipeRRecommend") int recipeRRecommend) {
+		
+		
+		boolean TaF = false;
+		
+		System.out.println("Controller에서의 mId : " + mNum);
+		System.out.println("Controller에서의 recipeRNum : " + recipeRNum);
+		System.out.println("Controller에서의 recipeRRecommend : " + recipeRRecommend);
+		
+		int updateRecommend = mainService.updateMinusRecommend(recipeRNum);
+		
+		if(updateRecommend == 1) {
+			System.out.println(recipeRNum + "번 레시피의 추천수가 -1 되었습니다.");
+			
+			int insertRecommend = mainService.deleteRecommend(mNum, recipeRNum);
+			
+			if(insertRecommend == 1){
+				System.out.println("Recommend Table에 정상적으로 삭제되었습니다.");
+				
+				TaF = true;
+				
+			} else {
+				System.out.println("Recommend Table에 정보 삭제가 실패하였습니다.");
+			}
+		}
+		
+		return TaF;
+	}
+	
+	
 	
 	// 6. Recipe 객체를 불러와서 Main.jsp에 레시피 명, 난이도, 소요시간, 작성자 불러오는 메소드
 	
 	@RequestMapping(value = {"showHome.do", "home/showHome.do"})
-	public String showHome(Model model){
+	public String showHome(Model model, HttpSession session){
+		
+		
+		Member m = (Member)session.getAttribute("m");
+		
+		int mNum = 0;
+		
+		if(m != null){
+			mNum = m.getmNum();
+		}
+		
+		
 		System.out.println("showHome");
 		
 		int recipeCount = mainService.selectCountAllRecipe();
 		
-		List<Recipe> list = mainService.selectShowHome();
+		List<Recipe> list = mainService.selectShowHome(mNum);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("recipeCount", recipeCount);
@@ -464,7 +551,20 @@ public class MainController {
 	
 	@ResponseBody
 	@RequestMapping(value= {"recipeObject.do", "home/recipeObject.do"})
-	public List<Recipe> recipeObject(Model model, @RequestParam int number){
+	public List<Recipe> recipeObject(Model model, 
+										@RequestParam("number") int number,
+										HttpSession session){
+		
+		
+		Member m = (Member)session.getAttribute("m");
+		
+		int mNum = 0;
+		
+		if(m != null){
+			mNum = m.getmNum();
+		}
+		
+		
 		System.out.println("recipeObject");
 		
 		int recipeCount = mainService.selectCountAllRecipe();
@@ -478,13 +578,7 @@ public class MainController {
 		System.out.println("startNumber: "+startNumber);
 		System.out.println("endNumber: "+endNumber);
 		
-		List<Recipe> list = mainService.selectRecipe(startNumber, endNumber);
-		
-		//model.addAttribute("list", list);
-		for(int i = 0; i< list.size();i++){
-			System.out.println(list.get(i).getrName());
-		}
-		
+		List<Recipe> list = mainService.selectRecipe(startNumber, endNumber, mNum);
 		
 		return list;
 	}

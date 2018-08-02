@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="home">
-	
+
 	<!-- 등록된 Recipe가 그냥 뽑힘 -->
 	<select id="selectRecipe" resultType="recipe" parameterType="hashmap">
-		<![CDATA[
-		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName FROM RECIPE ORDER BY QUANTITY) C 
-		WHERE C.R >= #{startNumber} AND C.R <= #{endNumber}
-		ORDER BY ROWNUM 
-		]]>
-
+		
+		SELECT *
+	 	<![CDATA[
+		FROM (SELECT DISTINCT  ROWNUM AS "rcrc", R.MNUM, R.RNUM, 
+		             RNAME, RIMG, QUANTITY, RTIME, RLEVEL, 
+		             INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, 
+		             RREPORT, RRECOMMEND, RCOUNT
+        ]]>
+             	  <if test="mNum != 0">
+		             ,(select RC.RNUM from RECOMMEND RC WHERE RC.MNUM = #{mNum} AND R.RNUM = RC.RNUM) "rcCheck"
+	              </if>
+		      FROM RECIPE R) C
+      	<![CDATA[  
+		WHERE "rcrc" >= #{startNumber} AND "rcrc" <= #{endNumber}
+		ORDER BY "rcrc"
+	]]>
+		
 	</select>
 	
-	<select id="selectShowHome" resultType="recipe">
-		<![CDATA[
-		SELECT C.* FROM (SELECT ROWNUM AS "R", rLevel, rTime, quantity, rImg, rName FROM RECIPE ORDER BY QUANTITY) C 
-		WHERE C.R >= 1 AND C.R <= 8
-		ORDER BY ROWNUM 
-		]]>
+	<select id="selectShowHome" resultType="recipe" parameterType="hashmap" >
+		
+		SELECT DISTINCT 
+		ROWNUM, R.MNUM, R.RNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+		<if test="mNum != 0">
+		, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND R.RNUM=C.RNUM) "rcCheck"
+        </if>
+        FROM RECIPE R 
+        <![CDATA[
+        WHERE ROWNUM >=1 AND ROWNUM <=8
+       	]]>
 	</select>
 	
 	<select id="selectCountAllRecipe" resultType="_int">
@@ -45,11 +61,25 @@
 	</select>
 	
 	<select id="searchRecipeList" resultType="recipe" parameterType="hashmap">
-		<![CDATA[
-		SELECT C.* FROM (SELECT ROWNUM AS "R", rNum, mNum, rLevel, rTime, quantity, rImg, rName, rRecommend FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY QUANTITY) C 
-		WHERE C.R >= #{searchStartCount} AND C.R <= #{searchEndCount} 
-		ORDER BY ROWNUM
+		
+		SELECT *
+	 	<![CDATA[
+		FROM (SELECT DISTINCT  ROWNUM AS "rcrc", R.MNUM, R.RNUM, 
+		             RNAME, RIMG, QUANTITY, RTIME, RLEVEL, 
+		             INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, 
+		             RREPORT, RRECOMMEND, RCOUNT
+        ]]>
+             	  <if test="mNum != 0">
+		             ,(select RC.RNUM from RECOMMEND RC WHERE RC.MNUM = #{mNum} AND R.RNUM = RC.RNUM) "rcCheck"
+	              </if>
+		      FROM RECIPE R
+		      WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY QUANTITY) C
+      	<![CDATA[  
+		WHERE "rcrc" >= #{searchStartCount} AND "rcrc" <= #{searchEndCount}
+		ORDER BY "rcrc"
 		]]>
+		
+		
 	</select>
 		
 	<select id="searchTotalCount" resultType="_int">
@@ -62,21 +92,33 @@
 	</select>
 	
 	<select id="inquiryRecipeListBefore" resultType="recipe" parameterType="hashmap">
-		<![CDATA[
+		
 		SELECT *
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		<![CDATA[
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+		]]> 
+			<if test="mNum != 0">
+			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+			</if>
 		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RCOUNT ${AscAndDesc}) C)
+					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
+		<![CDATA[
 		WHERE "rn" >= 1 AND "rn" <= 8
 		]]>
+		
 	</select>
 	
 	<select id="inquiryRecipeListAfter" resultType="recipe" parameterType="hashmap">
-		<![CDATA[
 		SELECT *
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		<![CDATA[
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+		]]> 
+			<if test="mNum != 0">
+			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+			</if>
 		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RCOUNT ${AscAndDesc}) C)
+					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
+		<![CDATA[
 		WHERE "rn" >= #{inquiryStartCount} AND "rn" <= #{inquiryEndCount}
 		]]>
 	</select>
@@ -107,11 +149,16 @@
 	
 	<!-- 추천수 많은/적은 순서로 정렬 -->
 	<select id="recommandRecipeListBefore" resultType="recipe" parameterType="hashmap">
-		<![CDATA[
 		SELECT *
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		<![CDATA[
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+		]]> 
+			<if test="mNum != 0">
+			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+			</if>
 		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RRECOMMEND ${AscAndDesc}) C)
+					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
+		<![CDATA[
 		WHERE "rn" >= 1 AND "rn" <= 8
 		]]>
 	</select>
@@ -121,22 +168,32 @@
 	</select>
 	
 	<select id="recommandRecipeListAfter" resultType="recipe" parameterType="hashmap">
-		<![CDATA[
 		SELECT *
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		<![CDATA[
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+		]]> 
+			<if test="mNum != 0">
+			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+			</if>
 		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RRECOMMEND ${AscAndDesc}) C)
+					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
+		<![CDATA[
 		WHERE "rn" >= #{recommandStartCount} AND "rn" <= #{recommandEndCount}
 		]]>
 	</select>
 	
 	<!-- 난이도 및 시간으로 정렬 -->
 	<select id="levelAndTimeRecipeListBefore" resultType="recipe" parameterType="hashmap">
-		<![CDATA[
 		SELECT *
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		<![CDATA[
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+		]]> 
+			<if test="mNum != 0">
+			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+			</if>
 		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RLEVEL ${AscAndDesc}, P.RTIME ${AscAndDesc}) C)
+					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
+		<![CDATA[
 		WHERE "rn" >= 1 AND "rn" <= 8    
 		]]>
 	</select>
@@ -146,23 +203,39 @@
 	</select>
 	
 	<select id="levelAndTimeRecipeListAfter" resultType="recipe" parameterType="hashmap">
-		<![CDATA[
 		SELECT *
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT 
+		<![CDATA[
+		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+		]]> 
+			<if test="mNum != 0">
+			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+			</if>
 		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE P WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY P.RLEVEL ${AscAndDesc}, P.RTIME ${AscAndDesc}) C)
+					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
+		<![CDATA[
 		WHERE "rn" >= #{levelAndTimeStartCount} AND "rn" <= #{levelAndTimeEndCount}
 		]]>
 	</select>
 	
 	<!-- 따봉 클릭 시 추천수 +1 -->
-	<update id="updateRecommend" parameterType="_int">
+	<update id="updatePlusRecommend" parameterType="_int">
 		UPDATE RECIPE SET RRECOMMEND = RRECOMMEND + '1' WHERE RNUM = #{recipeRNum}
 	</update>
 	
-	
 	<!-- recommend table insert -->
-	<insert id="insertRecommend" parameterType="_int">
+	<insert id="insertRecommend" parameterType="hashmap">
 		INSERT INTO RECOMMEND VALUES(#{mNum} , #{recipeRNum})
 	</insert>
+	
+	<!-- 따봉 취소 시 추천수 -1 -->
+	<update id="updateMinusRecommend" parameterType="_int">
+		UPDATE RECIPE SET RRECOMMEND = RRECOMMEND - '1' WHERE RNUM = #{recipeRNum}
+	</update>
+	
+	<!-- recommend table delete -->
+	<delete id="deleteRecommend" parameterType="hashmap" >
+		DELETE FROM RECOMMEND WHERE MNUM = #{mNum} AND RNUM = #{recipeRNum}
+	</delete>
+	
+	
 </mapper>

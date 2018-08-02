@@ -16,18 +16,24 @@ public class MainServiceImpl implements MainService{
 	MainDao mainDao;
 	
 	@Override
-	public List<Recipe> selectRecipe(int startNumber, int endNumber) {
+	public List<Recipe> selectRecipe(int startNumber, int endNumber, int mNum) {
+		
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("startNumber", startNumber);
 		map.put("endNumber", endNumber);
+		map.put("mNum", mNum);
 		
 		return mainDao.selectRecipe(map);
 	}
 
 	@Override
-	public List<Recipe> selectShowHome() {
+	public List<Recipe> selectShowHome(int mNum) {
 
-		return mainDao.selectShowHome();
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		
+		map.put("mNum", mNum);
+		
+		return mainDao.selectShowHome(map);
 	}
 
 	@Override
@@ -54,13 +60,14 @@ public class MainServiceImpl implements MainService{
 	}
 
 	@Override
-	public List<Recipe> searchRecipeList(int searchStartCount, int searchEndCount, String keyWord) {
+	public List<Recipe> searchRecipeList(int searchStartCount, int searchEndCount, String keyWord, int mNum) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("searchStartCount", searchStartCount);
 		map.put("searchEndCount", searchEndCount);
 		map.put("keyWord", keyWord);
+		map.put("mNum", mNum);
 		
 		
 		return mainDao.searchRecipeList(map);
@@ -79,18 +86,19 @@ public class MainServiceImpl implements MainService{
 	}
 
 	@Override
-	public List<Recipe> inquiryRecipeListBefore(String keyWord, String AscAndDesc) {
+	public List<Recipe> inquiryRecipeListBefore(String keyWord, String AscAndDesc, int mNum) {
 
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("keyWord", keyWord);
 		map.put("AscAndDesc", AscAndDesc);
+		map.put("mNum", mNum);
 		
 		return mainDao.inquiryRecipeListBefore(map);
 	}
 
 	@Override
-	public List<Recipe> inquiryRecipeListAfter(String keyWord, int inquiryStartCount, int inquiryEndCount, String AscAndDesc) {
+	public List<Recipe> inquiryRecipeListAfter(String keyWord, int inquiryStartCount, int inquiryEndCount, String AscAndDesc, int mNum) {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
@@ -98,6 +106,7 @@ public class MainServiceImpl implements MainService{
 		map.put("inquiryStartCount", inquiryStartCount);
 		map.put("inquiryEndCount", inquiryEndCount);
 		map.put("AscAndDesc", AscAndDesc);
+		map.put("mNum", mNum);
 		
 		return mainDao.inquiryRecipeListAfter(map);
 	}
@@ -110,12 +119,13 @@ public class MainServiceImpl implements MainService{
 	}
 
 	@Override
-	public List<Recipe> recommandRecipeListBefore(String keyWord, String AscAndDesc) {
+	public List<Recipe> recommandRecipeListBefore(String keyWord, String AscAndDesc, int mNum) {
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("keyWord", keyWord);
 		map.put("AscAndDesc", AscAndDesc);
+		map.put("mNum", mNum);
 				
 		return mainDao.recommandRecipeListBefore(map);
 	}
@@ -127,7 +137,7 @@ public class MainServiceImpl implements MainService{
 	}
 
 	@Override
-	public List<Recipe> recommandRecipeListAfter(String keyWord, int recommandStartCount, int recommandEndCount, String AscAndDesc) {
+	public List<Recipe> recommandRecipeListAfter(String keyWord, int recommandStartCount, int recommandEndCount, String AscAndDesc, int mNum) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
@@ -135,17 +145,19 @@ public class MainServiceImpl implements MainService{
 		map.put("recommandStartCount", recommandStartCount);
 		map.put("recommandEndCount", recommandEndCount);
 		map.put("AscAndDesc", AscAndDesc);
+		map.put("mNum", mNum);
 		
 		return mainDao.recommandRecipeListAfter(map);
 	}
 
 	@Override
-	public List<Recipe> levelAndTimeRecipeListBefore(String keyWord, String AscAndDesc) {
+	public List<Recipe> levelAndTimeRecipeListBefore(String keyWord, String AscAndDesc, int mNum) {
 
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("keyWord", keyWord);
 		map.put("AscAndDesc", AscAndDesc);
+		map.put("mNum", mNum);
 		
 		return mainDao.levelAndTimeRecipeListBefore(map);
 	}
@@ -157,7 +169,7 @@ public class MainServiceImpl implements MainService{
 	}
 
 	@Override
-	public List<Recipe> levelAndTimeRecipeListAfter(String keyWord, int levelAndTimeStartCount, int levelAndTimeEndCount, String AscAndDesc) {
+	public List<Recipe> levelAndTimeRecipeListAfter(String keyWord, int levelAndTimeStartCount, int levelAndTimeEndCount, String AscAndDesc, int mNum) {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
@@ -165,15 +177,16 @@ public class MainServiceImpl implements MainService{
 		map.put("levelAndTimeStartCount", levelAndTimeStartCount);
 		map.put("levelAndTimeEndCount", levelAndTimeEndCount);
 		map.put("AscAndDesc", AscAndDesc);
+		map.put("mNum", mNum);
 		
 		
 		return mainDao.levelAndTimeRecipeListAfter(map);
 	}
 
 	@Override
-	public int updateRecommend(int recipeRNum) {
+	public int updatePlusRecommend(int recipeRNum) {
 		
-		return mainDao.updateRecommend(recipeRNum);
+		return mainDao.updatePlusRecommend(recipeRNum);
 	}
 
 	@Override
@@ -184,9 +197,24 @@ public class MainServiceImpl implements MainService{
 		map.put("mNum", mNum);
 		map.put("recipeRNum", recipeRNum);
 		
-		
 		return mainDao.insertRecommend(map);
 	}
-	
 
+	@Override
+	public int updateMinusRecommend(int recipeRNum) {
+
+		return mainDao.updateMinusRecommend(recipeRNum);
+	}
+
+	@Override
+	public int deleteRecommend(int mNum, int recipeRNum) {
+
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		
+		map.put("mNum", mNum);
+		map.put("recipeRNum", recipeRNum);
+		
+		return mainDao.deleteRecommend(map);
+	}
+	
 }

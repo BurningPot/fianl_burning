@@ -9,7 +9,7 @@ public interface MainDao {
 
 	List<Recipe> selectRecipe(HashMap<String, Integer> map);
 
-	List<Recipe> selectShowHome();
+	List<Recipe> selectShowHome(HashMap<String, Integer> map);
 	
 	int selectCountAllRecipe();
 
@@ -23,26 +23,31 @@ public interface MainDao {
 
 	int inquiryTotalCount(String keyWord);
 
-	List<Recipe> inquiryRecipeListBefore(HashMap<String, String> map);
+	List<Recipe> inquiryRecipeListBefore(HashMap<String, Object> map);
 
 	List<Recipe> inquiryRecipeListAfter(HashMap<String, Object> map);
 
 	List<Recipe> recipeTop5();
 
-	List<Recipe> recommandRecipeListBefore(HashMap<String, String> map);
+	List<Recipe> recommandRecipeListBefore(HashMap<String, Object> map);
 
 	int recommandTotalCount(String keyWord);
 
 	List<Recipe> recommandRecipeListAfter(HashMap<String, Object> map);
 
-	List<Recipe> levelAndTimeRecipeListBefore(HashMap<String, String> map);
+	List<Recipe> levelAndTimeRecipeListBefore(HashMap<String, Object> map);
 
 	int levelAndTimeAfterTotalCount(String keyWord);
 
 	List<Recipe> levelAndTimeRecipeListAfter(HashMap<String, Object> map);
 
-	int updateRecommend(int recipeRNum);
+	int updatePlusRecommend(int recipeRNum);
 
 	int insertRecommend(HashMap<String, Integer> map);
+
+	int updateMinusRecommend(int recipeRNum);
+
+	int deleteRecommend(HashMap<String, Integer> map);
+	
 	
 }
