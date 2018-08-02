@@ -7,6 +7,22 @@
 		SELECT * FROM BOARD B JOIN MEMBER M ON(B.MNUM=M.MNUM) ORDER BY CATEGORY DESC, BNUM DESC
 	</select>
 	
+	
+	<select id="selectMyLikeList" parameterType="_int" resultType="recipe">
+		SELECT r.RNUM, r.MNUM, m.MNAME, r.RNAME, RDATE, RCOUNT FROM RECOMMEND re 
+		JOIN RECIPE r ON(r.RNUM = re.RNUM)
+		 JOIN MEMBER m on(r.MNUM=m.MNUM) 
+		WHERE re.MNUM= #{mNum}
+	</select>
+	
+	<!-- 토탈 -->
+	<select id="selectMyLikeTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM RECOMMEND re 
+		JOIN RECIPE r ON(r.RNUM = re.RNUM)
+		 JOIN MEMBER m on(r.MNUM=m.MNUM) 
+		WHERE re.MNUM= #{mNum}
+	</select>
+	
 	<!-- 게시판 토탈 -->
 	<select id="selectMyBoardTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM BOARD
@@ -52,6 +68,10 @@
 	<!-- 내가쓴 글 삭제 -->
 	<delete  id="deleteMyPost" parameterType="_int">
 		DELETE BOARD WHERE BNUM = #{bNum}
+	</delete>
+
+	<delete id="cancelMyLike" parameterType="hashmap">
+		DELETE RECOMMEND WHERE RNUM = #{rNum} AND MNUM = #{mNum}
 	</delete>
 	
 	<!-- 이미지 업로드 -->

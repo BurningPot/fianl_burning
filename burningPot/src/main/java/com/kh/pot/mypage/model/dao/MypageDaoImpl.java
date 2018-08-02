@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
-import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 
 import com.kh.pot.board.model.vo.Board;
 import com.kh.pot.member.model.vo.Member;
@@ -96,10 +94,23 @@ public class MypageDaoImpl implements MypageDao{
 		
 		return sqlSession.selectList("mypage.selectMyRecipeList", mNum, rows);
 	}
+	
+	@Override
+	public List<Recipe> myLikeList(int cPage, int numPerPage, int mNum) {
+		
+		RowBounds rows = new RowBounds( (cPage-1)*numPerPage, numPerPage);
+		
+		return sqlSession.selectList("mypage.selectMyLikeList", mNum, rows);
+	}
 
 	@Override
 	public int selectMyRecipeTotalContents(int mNum) {
 		return sqlSession.selectOne("mypage.selectMyRecipeTotalContents", mNum);
+	}
+	
+	@Override
+	public int selectMyLikeTotalContents(int mNum) {
+		return sqlSession.selectOne("mypage.selectMyLikeTotalContents", mNum);
 	}
 
 	@Override
@@ -117,6 +128,19 @@ public class MypageDaoImpl implements MypageDao{
 	public int deleteMyPost(int bNum) {
 		return sqlSession.delete("mypage.deleteMyPost", bNum);
 	}
+
+	@Override
+	public int cancelMyLike(int rNum, int mNum) {
+		
+		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+		hmap.put("rNum", rNum);
+		hmap.put("mNum", mNum);
+		return sqlSession.delete("mypage.cancelMyLike", hmap);
+	}
+
+	
+
+	
 		
 	} 
 

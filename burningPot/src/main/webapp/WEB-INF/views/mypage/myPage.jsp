@@ -241,11 +241,15 @@
                     <a class="na na2 nav-link"  id="posGo" href="#">내가 쓴 글</a>
                   </li>
                   <li class="nav-item">
-                    <a class="na na3 nav-link" href="${pageContext.request.contextPath}/mypage/myLike.do">좋아요</a>
+                    <a class="na na3 nav-link" id="likGo" href="#">좋아요</a>
                   </li>
                 </ul><br>
                 
                <form id="postForm">
+				<input type="hidden" value="${ m.mNum }" name="mNum" />
+			  </form>
+			  
+			  <form id="likeForm">
 				<input type="hidden" value="${ m.mNum }" name="mNum" />
 			  </form>
                 
@@ -272,13 +276,13 @@
               }; -->
               <c:forEach items="${ recipeList }" var="b">
               <tr id="${b.rNum }">
-                <td>${b.rNum }</td>
-                  <td>${b.rName }</td>
-                  <td>${b.mName }</td>
-                  <td>${b.rDate }</td>
-                  <td>${b.rCount }</td>
+                <td class="rtd">${b.rNum }</td>
+                  <td class="rtd">${b.rName }</td>
+                  <td class="rtd">${b.mName }</td>
+                  <td class="rtd">${b.rDate }</td>
+                  <td class="rtd">${b.rCount }</td>
                   <td>
-                      <button type="button" class="btn btn-default btn-sm" onclick="updateDev(this);">수정</button>
+                      <button type="button" class="btn btn-default btn-sm updateMyRecipe">수정</button>
                       <button type="button" class="btn btn-default btn-sm deleteMyRecipe">삭제</button>
                   </td>                    
               </tr>
@@ -498,12 +502,47 @@
                   // $('.nav-link').css('border','1px solid red');
                });
                
-               // 레시피 수정하기 가기
+               // 내가쓴 레시피 보러가기
+               $(".rtd").on("click",function(){
+        	      var rNum = $(this).parent().attr("id");
+        	      console.log(rNum);
+        	      location.href = "${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum="+rNum;
+        	   }).hover(function(){
+        		   $(this).css('cursor','pointer');
+        	   });
+               
+               // 수정
+               $('.updateMyRecipe').on('click',function(){
+            	   var rNum = $(this).parent().parent().children().eq(0).text();
+            	   console.log(rNum);
+            	  location.href="${pageContext.request.contextPath}/recipe/selectDetail.do?rNum="+rNum;
+              	  
+               });
+               
+               /* // 레시피 수정하기 가기
                function updateDev(obj){
             	   var rNum = $(obj).parent().parent().children().eq(0).text();
             	  location.href="${pageContext.request.contextPath}/recipe/selectDetail.do?rNum="+rNum;
               	  
-               }
+               } */
+               
+               //레시피 삭제
+               $('.deleteMyRecipe').on('click',function(){
+            		var rNum = $(this).parent().parent().children().eq(0).text();
+            		console.log(rNum);
+            		 $.ajax({
+            			url : "${pageContext.request.contextPath}/mypage/myPagedelete.do",
+            			data:{
+            				rNum : rNum
+            			}, success: function(data){
+            				alert("게시글을 삭제했습니다");
+            				$('#refreshMypage').submit();
+            			}, error: function(){
+            				alert("게시글을 삭제하는데 실패하였습니다");
+            			}
+            		})
+            		
+            	});
                
                // 내 냉장고 가기 버튼
                 function gorefMain(obj){
@@ -512,32 +551,18 @@
               	  
                }
                
-             // 내가쓴글 보러가기
+               
+               
+             /* // 내가쓴글 보러가기
                 $("tr[id]").on("click",function(){
                 	var rNum = $(this).attr("id");
           	     
           	      location.href = "${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum="+rNum;
           	   }).hover(function(){
           		   $(this).css('cursor','pointer');
-          	   });
+          	   }); */
                
-              //레시피 삭제
-              $('.deleteMyRecipe').on('click',function(){
-           		var rNum = $(this).parent().parent().children().eq(0).text();
-           		console.log(rNum);
-           		 $.ajax({
-           			url : "${pageContext.request.contextPath}/mypage/myPagedelete.do",
-           			data:{
-           				rNum : rNum
-           			}, success: function(data){
-           				alert("게시글을 삭제했습니다");
-           				$('#refreshMypage').submit();
-           			}, error: function(){
-           				alert("게시글을 삭제하는데 실패하였습니다");
-           			}
-           		})
-           		
-           	});
+             
               
           
            	
@@ -549,10 +574,21 @@
         			return;
         		}
         	} */
-               
+               // 내가쓴 글 클릭시 이동
                 $('#posGo').on('click', function(){
             	   $('#postForm').attr("action", "${pageContext.request.contextPath}/mypage/myPosts.do").submit();
-               }); 
+               });
+        	
+        	// 내가좋아요 클릭시 이동
+            $('#likGo').on('click', function(){
+        	   $('#likeForm').attr("action", "${pageContext.request.contextPath}/mypage/myLike.do").submit();
+           });
+        	
+        	
+        	// 내가 좋아요 누른곳 클릭시 이동
+        	$('#likGo').on('click', function(){
+         	   $('#likeForm').attr("action", "${pageContext.request.contextPath}/mypage/myLike.do").submit();
+            }); 
                
                // 회원탈퇴
                $('#infoDel').on('click', function(){

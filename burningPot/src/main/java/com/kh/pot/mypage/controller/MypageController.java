@@ -27,6 +27,7 @@ import com.kh.pot.home.service.MainService;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.mypage.model.service.MypageService;
 import com.kh.pot.recipe.model.vo.Recipe;
+import com.kh.pot.recipe.model.vo.Recommend;
 
 //m을 세션에 넣음
 @SessionAttributes(value={"m"})
@@ -115,6 +116,14 @@ public class MypageController {
 			
 			return result;
 		}
+
+		// 좋아요 취소
+		@ResponseBody
+		@RequestMapping("/mypage/myLikedelete.do")
+		public int cancelMyLike(@RequestParam int rNum, @RequestParam int mNum){
+			int result = mypageService.cancelMyLike(rNum, mNum);
+			return result;
+		}
 		
 		@RequestMapping("/mypage/myPage.do")
 		public String myRecipe(@RequestParam int mNum, Model model,
@@ -147,6 +156,7 @@ public class MypageController {
 			List<Board> list = mypageService.myPostList(cPage, numPerPage, mNum);
 			int totalContents = mypageService.selectMyPostTotalContents(mNum);
 			
+			
 			List<Fridge> refList = friService.checkFridge(m.getmNum());
 			
 			model.addAttribute("refList", refList);				
@@ -160,24 +170,21 @@ public class MypageController {
 		
 
 		@RequestMapping("/mypage/myLike.do")
-		public String myLike( @RequestParam int mNum, Model model,
+		public String myLikeList( @RequestParam int mNum, Model model,
 				//cPage로 받을꺼고 값이 없어도 받을수 있다 required(오버로딩처럼 쓸수있다) 값이 안들어왔을때 디폴트벨류로 1로 하겟다
 				@RequestParam(value="cPage", required=false, defaultValue="1") 
 				int cPage){
 				Member m =  mypageService.myinfoDel(mNum);
 				int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
 				
-				// 1. 현재 페이지 컨텐츠 리스트 받아오기
-				List<Map<String, String>> list = mypageService.selectMyBoardList(cPage, numPerPage);
+				List<Recipe> list = mypageService.myLikeList(cPage, numPerPage, mNum);
 				
-				// 2. 전체 게시글 수 구하기
-				int totalContents = mypageService.selectMyBoardTotalContents();
+				int totalContents = mypageService.selectMyLikeTotalContents(mNum);
 				
 				List<Fridge> refList = friService.checkFridge(m.getmNum());
 				
 				model.addAttribute("refList", refList);				
-				// 반환자료형이 모델이면 붇혀서 사용 가능
-				model.addAttribute("list", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
+				model.addAttribute("likeList", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
 				model.addAttribute("minfo", m);
 				
 			return "mypage/myLike";

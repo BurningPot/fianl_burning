@@ -8,7 +8,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
+	.main{
+		background-image: url("${pageContext.request.contextPath}/resources/img/tlrekd2.jpg");
+		-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;
 
+	}
 
 	.container > ul > li > a{
         text-decoration:none;
@@ -23,18 +27,40 @@
       /* #myinfo{       
         text-align: center;
       } */
+      
       #refrigerator{             
         text-align: center; 
       }
       
-      #
+      #profilePlaceholder {
+      margin-left : 5px;
+      	z-index: 100;
+	    position: absolute;
+	    top: 250px;
+	    background: cornsilk;
+      }
+      
+     .myS > tr {
+    	border: 1px solid #ccc;
+	    margin: 1% 0;
+	    box-shadow: 3px 3px 2px #ccc;
+	    transition: 0.5s;
+      }
+      #refBtn{
+      	top: 30%;
+      	left: 70%;
+      }
 </style>
 <title>마이페이지</title>
 </head>
 <c:import url="/WEB-INF/views/common/header.jsp"/>
-<body><div style="height:20%;"></div>
+<body>
+<div style="height:20%;"></div>
+<div class="main col-lg-12">
+<br />
+<br />
 
-	<div class="container" style=" width : 100%; height:300px; padding: 1%;">
+	<div class="container" style=" width : 100%; height:300px; padding: 1%; background:white; background: 1px solid lightgray;">
             <div id="myinfo" style="width:49%; height: 100%; float: left; border: 1px solid lightgray">
                             	
 <%--             	<c:if test="${ m.mPicture == 'defaultPerson.png' }">
@@ -50,7 +76,7 @@
                 		<input type="hidden"  name="numHidden" value="${m.mNum }"/>
                 	</form>
                 </div>
-                
+                <div id="profilePlaceholder" style="display: none;">사진 변경 프로필 클릭</div>
                    
                 <input type="hidden" value="${m.mId}" id="mId"/>
                 
@@ -67,6 +93,7 @@
                       <div class="alert alert-info" role="alert">
                             <td>이메일 : ${ m.getEmail() }</td>
                       </div>
+                      <input type="hidden" id="mGen" value="${m.gender }" />
                     </div>
                     </div>
                                  
@@ -130,7 +157,7 @@
                                       <label for="inputGender" class="control-label">성별</label>
                                     </div>
                                     <div class="col-sm-7">
-                                      <th>${gender}</th>
+                                      <th><p id="gen"></p></th>
                                     </div>
                                   </div>
                          </div>                       
@@ -141,17 +168,52 @@
                           </div>
                         </div>
                      </div>
+                     <script>
+                     
+                     // 정보수정
+                     $(function(){
+                    	 console.log('아이디'+$('#mId').val());
+                    	 console.log($('#mGen').val());
+                    	 $('#gen').text($('#mGen').val());
+                    	 
+                     });
+                     	$('#sjBtn').on('click', function(){
+                     		console.log("들어오냐");
+                     		               		
+                     		$.ajax({
+                     			url : "${pageContext.request.contextPath}/mypage/mypageEnrollEnd.do",
+                     			data : {
+                     				nic: $('#nicName').val(),
+                     				email : $('#email').val(),
+                     				password : $('#password').val(),
+                     				mId : $('#mId').val()  
+                     			},
+                     			success: function(data){
+                     				alert("수정완료. 재로그인하세요");
+                     				location.href="${pageContext.request.contextPath}/member/memberLogout.do";
+                     			},
+                     			error : function(){
+                     				alert("변경할 내용을 입력해주세요");
+                     			}
+                     		})
+                     	});
+                     </script>
                     <button type="button" class="btn btn-default btn-sm">회원탈퇴</button>
                   </div>
                 </div>
                  
             <div id="refrigerator" style="width:49%; height: 100%; float: right; border: 1px solid lightgray;">
                   <img src="${pageContext.request.contextPath }/resources/img/tmakxm.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
-                  <div class="refrigeratormenu">
-                      뭐가들어가야 할까나
-                      
-                  </div>    
-                  <button type="button" class="btn btn-default btn-sm" onclick="gorefMain(this);">내 냉장고 가기</button>            
+                  		<div id="ref" class="recipe row">
+							<c:forEach var="ingre" items="${refList}">
+								<div class="ingre m-1" id="${ingre.iNum}">
+									<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${ingre.iName}" style="height : 7vh; width : 7vh;">
+								</div>								
+							</c:forEach>
+	                    </div>    
+	                    <div id="refBtn" style="position:absolute;">
+                  <button type="button" class="btn btn-default btn-sm" onclick="gorefMain(this);">내 냉장고 가기</button>   
+                  </div>         
             </div>
           </div> 
 
@@ -159,7 +221,7 @@
             <br>                        
               <ul class="nav nav-tabs nav-justified " style="background-color :#FDD692">
                   <li class="nav-item">
-                    <a class="na na1 nav-link " href="${pageContext.request.contextPath}/mypage/myPage.do">내가 올린 레시피</a>
+                    <a class="na na1 nav-link " id="recGo" href="#">내가 올린 레시피</a>
                   </li>
                   <li class="nav-item">
                     <a class="na na2 nav-link"  id="posGo" href="#">내가 쓴 글</a>
@@ -167,38 +229,39 @@
                   <li class="nav-item">
                     <a class="na na3 nav-link active" href="#">좋아요</a>
                   </li>
-                </ul><br>                              
-                <br>
-                <br>
+                </ul><br>
                 
                 <form id="postForm">
+				<input type="hidden" value="${ m.mNum }" name="mNum" />
+			  </form>
+			  
+			  <form id="recipeForm">
 				<input type="hidden" value="${ m.mNum }" name="mNum" />
 			  </form>
             
             
             <div id="mp3"  class="col-lg-12" style="padding : 0">
             <table id="mypage3" class="table table-hover" style="border: 1px solid lightgray;">
-                <tbody>
-                  <tr  id="he" style="border: 2px solid saddlebrown">               
+                <tbody class="myS" style="background : white; border:1px solid ligntgray;">
+                  <tr style="border: 2px solid saddlebrown; text-align: center;">               
                       <th width="10%">번호</th>
                       <th width="30%">제목</th>
                       <th width="15%">작성자</th>
                       <th width="20%">작성일</th>
                       <th width="10%">조회</th>
                       <th width="15%">
-                        수정|삭제
+                        좋아요
                       </th>
                   </tr>
-                  <c:forEach items="${ list }" var="b">
-              <tr id="${b.bNum }">
-                <td>${b.bNum }</td>
-                  <td>${b.bTitle }</td>
-                  <td>${b.mName }</td>
-                  <td>${b.bDate }</td>
-                  <td>${b.bCount }</td>
+                  <c:forEach items="${ likeList }" var="b">
+              <tr id="${b.rNum }">
+                <td class="rtd">${b.rNum }</td>
+                  <td class="rtd">${b.rName }</td>
+                  <td class="rtd">${b.mName }</td>
+                  <td class="rtd">${b.rDate }</td>
+                  <td class="rtd">${b.rCount }</td>
                   <td>
-                          <button type="button" class="btn btn-default btn-sm" onclick="updateDev();">수정</button>
-                          <button type="button" class="btn btn-default btn-sm" onclick="updateDev();"  id="deleteMyBoard">삭제</button>
+                          <button type="button" class="btn btn-default btn-sm cancelMyLikeRecipe">좋아요취소</button>
                         </td>
                     </tr>
                     </c:forEach>                   
@@ -221,15 +284,30 @@
    <%= com.kh.pot.common.util.sh_Utils.getPageBar(totalContents, cPage, numPerPage, "myLike.do", mNum) %>
           </div>
           </div>
+          
+          <form id="refreshMypage" action="${pageContext.request.contextPath}/mypage/myLike.do">
+             	<input type="hidden" value="${m.mNum }" name="mNum"/>
+             </form>
+             
           <script>
           
           // 이미지 변경 클릭시
           $(function(){
        	   $('#profileWrap').hide();
        	   
-       	   $('#profileImg').click(function(){
-       		   $('#profileBtn').click();
+       	  
+       	   
+       	   $('#profileImg').on({
+       		'mouseenter' : function() {
+       			$('#profilePlaceholder').show();
+       		} , 'mouseleave' : function() {
+       			$('#profilePlaceholder').hide();
+       		}, 'click' : function() {
+       			$('#profilePlaceholder').hide();
+       			$('#profileBtn').click();
+       		} 
        	   });
+
           });
              
           function LoadImg(value) {
@@ -353,6 +431,37 @@
                   // $('.nav-link').css('border','1px solid red');
                });
                
+            // 내가누른 좋아요 레시피 보러가기
+               $(".rtd").on("click",function(){
+        	      var rNum = $(this).parent().attr("id");
+        	      console.log(rNum);
+        	      location.href = "${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum="+rNum;
+        	   }).hover(function(){
+        		   $(this).css('cursor','pointer');
+        	   });
+            
+             //레시피 삭제
+               $('.cancelMyLikeRecipe').on('click',function(){
+            		var rNum = $(this).parent().parent().children().eq(0).text();
+            		var mNum = '${m.mNum}';
+            		console.log(rNum);
+            		console.log(mNum);
+            		  $.ajax({           			  
+            			 type:"POST",
+            			url : "${pageContext.request.contextPath}/mypage/myLikedelete.do",          			
+            			data:{
+            				rNum : rNum,
+            				mNum:mNum
+            			}, success: function(data){
+            				alert("좋아요를 취소했습니다");
+            				$('#refreshMypage').submit();
+            			}, error: function(){
+            				alert("좋아요 취소가 실패하였습니다");
+            			}
+            		}) 		
+            	});
+             
+               
                $('#deleteMyBoard').on('click',function(){
            		//게시글 지워지게 한다
            		var bNum = $('.first-row').eq(2).children().eq(1).text();            		
@@ -380,6 +489,10 @@
                
                $('#posGo').on('click', function(){
             	   $('#postForm').attr("action", "${pageContext.request.contextPath}/mypage/myPosts.do").submit();
+               });
+               
+               $('#recGo').on('click', function(){
+            	   $('#recipeForm').attr("action", "${pageContext.request.contextPath}/mypage/myPage.do").submit();
                });
              </script>
 </body>
