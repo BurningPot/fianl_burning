@@ -77,7 +77,7 @@
                     </div>
                     <div class="col-sm-3 card align-self-center titleImgAreaDiv mt-3 mb-3" style="border:none;">
                         <img class="card-img titleImage" id="titleImgArea" src="${pageContext.request.contextPath}/resources/img/recipe/titleImg.PNG" alt="대표사진">
-                        <input type="file" id="titleImg" class="fileArea" name="rImgFile" onchange="LoadImg(this,1)">
+                        <input type="file" id="titleImg" class="fileArea" name="rImgFile" onchange="LoadImg(this,1)" accept="image/gif, image/jpeg, image/png">
                     </div>
                 </div>  
                 
@@ -158,7 +158,7 @@
                                 <div class="col-4 mb-0 css3">
                                     <img class="addRecipeImg mt-2 mb-4 img-thumbnail subImage subImgArea" src="${pageContext.request.contextPath}/resources/img/recipe/addImg.png" alt="요리사진">
                                     <button type="button" class="addBtn p-0 ml-2 btn btn-light"><img src="${pageContext.request.contextPath}/resources/img/recipe/delete.png" class="addBtnImg mt-2 mb-2 recipeDelIcon" style="display:none;" alt="삭제"></button>
-                                    <input type="file" class="fileArea subImg" name="rContentimg" onchange="LoadImg(this,2)">
+                                    <input type="file" class="fileArea subImg" name="rContentimg" onchange="LoadImg(this,2)" accept="image/gif, image/jpeg, image/png">
                                 </div>
                             </div>
                         </div>

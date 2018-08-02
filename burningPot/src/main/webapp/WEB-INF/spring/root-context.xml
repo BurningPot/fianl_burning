@@ -56,17 +56,17 @@
 	</bean>
 	
 	<!-- 1-1 log4jdbc 설정 적용하기 -->
-	<!-- <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
-		<constructor-arg ref="realDataSource"/>
+	<bean id="logdataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSource"/>
 		<property name="logFormatter">
 			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
 				<property name="loggingType" value="MULTI_LINE"/>
 				<property name="sqlPrefix" value="[SQL]"/>
 			</bean>
 		</property>	
-	</bean> -->
+	</bean>
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
+		<property name="dataSource" ref="logdataSource"/>
 	</bean>
 	    
 	<!-- 2. myBatis(JDBC)설정 : SqlSessionFactory-->
