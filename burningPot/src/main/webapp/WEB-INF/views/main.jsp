@@ -15,23 +15,31 @@
 				<%-- <b>"${list.size()}"</b>으로 검색한 결과 입니다.<br> --%>
 				<b>BurningPot</b>에는 현재 <b>${recipeCount}</b>개의 맛있는 레시피가 있습니다.
 			</div>
-			<div class="searchBtn">
+			<!-- <div class="searchBtn">
 				<ul class="searchBtnUl">
 					<li><button type="button" class="searchBtnA1" onclick="inquiry();">조회</button></li> 
 					<li><button type="button" class="searchBtnA2" onclick="recommand();">추천</button></li>
 					<li><button type="button" class="searchBtnA3" onclick="cookLevel();">난이도</button></li>
 				</ul>
-			</div>
+			</div> -->
 		</div>
 		<ul class="recipeList">
 			<c:forEach items="${list}" var="recipe">
 				<li>
 					<div class='like_and_aver_area'>
 						<div class='like_btn_area'>
-							<button onfocus=this.blur() type='button' class='like_btn'
-								onclick='heartClicked(this);'>
-								<i class='far fa-thumbs-up'></i>
-							</button>
+							<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>
+								<c:if test="${recipe.rcCheck == recipe.rNum}">
+		                        	<i class='fas fa-thumbs-up'></i>
+		                        </c:if>
+		                        <c:if test="${recipe.rcCheck != recipe.rNum}">
+		                        	<i class='far fa-thumbs-up'></i>
+		                        </c:if>
+		                     </button>
+	                         <input id="recipeMNum" type="hidden"  value="${recipe.mNum}"/>
+	           				 <input id="recipeRNum" type="hidden" value="${recipe.rNum}"/>
+	                     	 <input id="recipeRRecommend" type="hidden" value="${recipe.rRecommend}"/>
+	                     	 <input id="rcCheck" type="hidden" value="${recipe.rcCheck}"/>
 						</div>
 						<div class='aver_btn_area'>
 							<h5></h5>
@@ -103,6 +111,7 @@
 
 	<script>		
 		var count = 9;
+		
 		$(document).mouseup(function(e){
 		    var container = $('.menuContainer');
 		    if(!container.is(e.target) && container.has(e.target).length === 0)
@@ -128,7 +137,7 @@
             var scrollHeight = $(window).scrollTop() + $(window).height();
             //console.log("scrollHeight : " + scrollHeight);
             
-            
+            var mNum = '${m.mNum}';
             
             if (scrollHeight == documentHeight) { //문서의 맨끝에 도달했을때 내용 추가 
             	console.log("끝");
@@ -141,7 +150,8 @@
 	               	type : "GET",
 	               	dataType : "json",
 	               	data:{
-	               		number: count
+	               		number: count,
+	               		mNum : mNum
 	               	},success: function(data){
 	               		console.log("count는?: "+count);
 	               		count += 9;
@@ -185,27 +195,60 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
-	                		$("<li>" + 
-                				"<div class='like_and_aver_area'>" +
-                					"<div class='like_btn_area'>" +
-                						"<button onfocus=this.blur() type='button' class='like_btn' onclick='heartClicked(this);'>" +
-                							"<i class='far fa-thumbs-up'></i>" +
-                						"</button>" +
-                					"</div>" + 
-                					"<div class='aver_btn_area'>" + 
-                						"<h5>" + "</h5>"+
-                					"</div> " +
-                				"</div>" + 
-                				"<div class='recipe_img_area'>" +
-                				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-                					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
-                				"</div>" +
-                				"<div class='recipe_levle_and_time_and_writer_area'>" +
-                					"<div class='recipe_level'>" + level + "</div>" +
-                					"<div class='recipe_time'>" + rTime + "</div>" +
-                					"<div class='recipe_quantity'>" + quantity + "</div>" +
-                				"</div>" +
-                			"</li>").appendTo(".recipeList");
+	            			if(data[i].rcCheck == data[i].rNum ){
+		            			$("<li>" + 
+		               				"<div class='like_and_aver_area'>" +
+		               					"<div class='like_btn_area'>" +
+		               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		               						"<i class='fas fa-thumbs-up'></i>" +
+		               						"</button>" +
+		               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+			          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		               					"</div>" + 
+		               					"<div class='aver_btn_area'>" + 
+		               						"<h5>" + str1 + "</h5>"+
+		               					"</div> " +
+		               				"</div>" + 
+		               				"<div class='recipe_img_area'>" +
+		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		               				"</div>" +
+		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		               					"<div class='recipe_level'>" + level + "</div>" +
+		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		               				"</div>" +
+		               			"</li>").appendTo(".recipeList");
+		            			
+		            			} else if(data[i].rcCheck != data[i].rNum ){
+		            				$("<li>" + 
+		    	               				"<div class='like_and_aver_area'>" +
+		    	               					"<div class='like_btn_area'>" +
+		    	               						"<button onfocus=this.blur() type='button' class='like_btn' onclick='likeClicked(this);'>" +
+		    	               						"<i class='far fa-thumbs-up'></i>" +
+		    	               						"</button>" +
+		    	               						"<input id='recipeMNum' type='hidden' value='"+ data[i].mNum +"' />" +
+		    		          						"<input id='recipeRNum' type='hidden' value='"+ data[i].rNum +"'  />" + 
+		    	        							"<input id='recipeRRecommend' type='hidden' value='"+ data[i].rRecommend +"' />" +
+		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
+		    	               					"</div>" + 
+		    	               					"<div class='aver_btn_area'>" + 
+		    	               						"<h5>" + str1 + "</h5>"+
+		    	               					"</div> " +
+		    	               				"</div>" + 
+		    	               				"<div class='recipe_img_area'>" +
+		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
+		    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		    	               				"</div>" +
+		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
+		    	               					"<div class='recipe_level'>" + level + "</div>" +
+		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
+		    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		    	               				"</div>" +
+		    	               			"</li>").appendTo(".recipeList");
+		            			}
 	                	 }
 	               	},
 	                 error: function(data){
@@ -217,70 +260,110 @@
 		
 
 
-        function heartClicked(obj) {
-          
-            if ($(obj).children().hasClass('far fa-thumbs-up')) {
-                $(obj).children().removeClass('far fa-thumbs-up').addClass('fas fa-thumbs-up');
-                // if(id.indexOf('R') != -1)	{
-                //     $.ajax({
-                <%-- //         url:"<%=request.getContextPath()%>/likerooms.it", --%>
-                //         type:"get",
-                //         data : {
-                //             rId : id,
-                //             mId : mId
-                //         },
-                //         success:function(data){
-                //             alert(data+'님 숙소찜목록에 성공적으로 추가했습니다');		    						
-                //         }
-                // });
-                // }else{
-                //     $.ajax({
-                <%-- //         url:"<%=request.getContextPath()%>/liketrips.it", --%>
-                //         type:"get",
-                //         data : {
-                //             tId : id,
-                //             mId : mId
-                //         },
-                //         success:function(data){
-                //             alert(data+'님 트립찜목록에 성공적으로 추가했습니다');		    						
-                //         }
-                //     });
-                // }
-				//
-                // }else{
-                //     $(obj).children().removeClass('glyphicon-heart').addClass('glyphicon-heart-empty');
-                //     if(id.indexOf('R') != -1)	{
-                //         $.ajax({
-                <%-- //             url:"<%=request.getContextPath()%>/likerooms.del", --%>
-                //             type:"get",
-                //             data : {
-                //                 rId : id,
-                //                 mId : mId
-                //             },
-                //             success:function(data){
-                //                 alert(data+'님 숙소찜목록에서 성공적으로 삭제했습니다');		    						
-                //             }
-                //         });
-                // }else{
-                //     $.ajax({
-                <%-- //         url:"<%=request.getContextPath()%>/liketrips.del", --%>
-                //         type:"get",
-                //         data : {
-                //             tId : id,
-                //             mId : mId
-                //         },
-                //         success:function(data){
-                //             alert(data+'님 트립찜목록에 성공적으로 삭제했습니다');		    						
-                //         }
-                //     });
-                // }
-                // }
-                <%--  <%}else %> alert('로그인 한 뒤 사용하세요'); --%>
-            }
-            else if ($(obj).children().hasClass('fas fa-thumbs-up')) {
-                $(obj).children().removeClass('fas fa-thumbs-up').addClass('far fa-thumbs-up');
-            }
-        }
+		function likeClicked(obj) {
+	           
+        	/* 멤버 정보를 받아와야해 
+        	
+        		1.로그인이 안되어 있을 경우
+				  	-> 로그인 창이 뜨게 처리  : 해결
+				
+				2. 로그인이 되어있을 경우					   
+				   	-> 버튼 클릭시 RECIPE 테이블의 recommand 수 +1
+				  
+				   RECOMMAND 테이블에 로그인한 멤버 번호 mNum과 레시피 번호인 rNum 을 insert
+				
+				3. 다시 클릭했을 경우 반대로 처리한다.(DLELTE)
+
+        	*/
+        	
+        	 /* 로그인했을 때 */ 
+      		  if ('${m.mId}' != "") {
+        		console.log("따봉 버튼 메소드 실행");
+        		console.log("멤버 값 : " + '${m.mId}');
+        		
+        		var mId = '${m.mId}'; // 로그인한 멤버 id
+        		var classs = $(obj).children().attr('class');
+        		var mNum = '${m.mNum}'; // 로그인한 멤버 번호
+        		var recipeMNum = $(obj).siblings('#recipeMNum').val(); // 레시피를 등록한 멤버 번호
+        		var recipeRNum = $(obj).siblings('#recipeRNum').val(); // 등록한 레시피 번호
+        		var recipeRRecommend = $(obj).siblings('#recipeRRecommend').val(); // 등록된 레시피의 추천수
+        		
+        		console.log("mId : " + mId);
+        		console.log("mNum : " + mNum);
+        		console.log("classs : " + classs);
+        		console.log("인덱스 : " + classs.indexOf(mNum));
+        		console.log("recipeMNum : " + $(obj).siblings('#recipeMNum').val());
+        		console.log("recipeRNum : " + $(obj).siblings('#recipeRNum').val());
+        		console.log("recipeRRecommend : " + $(obj).siblings('#recipeRRecommend').val());
+        		console.log("sdf:"+$(obj).siblings('#rcCheck').val());
+        		
+        		 if ($(obj).children().hasClass('far fa-thumbs-up')) {
+		                $(obj).children().removeClass('far fa-thumbs-up').addClass('fas fa-thumbs-up');
+		                
+		                if(classs.indexOf(mNum) != 0)	{
+		                     $.ajax({
+		                    	 url : "${pageContext.request.contextPath}/home/likeBtnCheck.do",
+		                    	 type: "GET",
+		                    	 dataType : "json",
+		                    	 data : {
+		                    	
+		                    		 mNum : mNum,
+		                    		 recipeRNum : recipeRNum,
+		                    		 recipeRRecommend : recipeRRecommend
+		                    		 
+		                    	 }, success : function(data){
+		                    		 
+		                    		console.log("ajax에서 추천 성공!");
+		                    		
+		                    		
+		                    	 }, error : function(data){
+		                    		 
+		                    		 console.log("ajax 찜목록 진입 실패!@#!@@$!");
+		                    		 
+		                    	 }
+	                     	});
+		                } 
+        		 	}
+		            else if ($(obj).children().hasClass('fas fa-thumbs-up')) {
+		                $(obj).children().removeClass('fas fa-thumbs-up').addClass('far fa-thumbs-up');
+		                
+		                if(classs.indexOf(mNum) != 0)	{
+		                     $.ajax({
+		                    	 url : "${pageContext.request.contextPath}/home/likeBtnCancel.do",
+		                    	 type: "GET",
+		                    	 dataType : "json",
+		                    	 data : {
+		                    	
+		                    		 mNum : mNum,
+		                    		 recipeRNum : recipeRNum,
+		                    		 recipeRRecommend : recipeRRecommend
+		                    		 
+		                    	 }, success : function(data){
+		                    		 
+		                    		console.log("ajax에서 추천 성공!");
+		                    		
+		                    		
+		                    	 }, error : function(data){
+		                    		 
+		                    		 console.log("ajax 찜목록 진입 실패! ");
+		                    		 
+		                    	 }
+	                     	});
+		                } 
+		                
+		            }
+
+        		
+        		
+        		
+      		  } else {
+      			  console.log("따봉 버튼 메소드 안댐");
+    			  alert("로그인을 해주세요.");
+    			  $("#loginModal").modal();
+        		
+      		  }
+           
+		}
         
        
     </script>

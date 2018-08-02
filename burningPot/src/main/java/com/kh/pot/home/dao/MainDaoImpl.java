@@ -23,9 +23,9 @@ public class MainDaoImpl implements MainDao{
 	}
 
 	@Override
-	public List<Recipe> selectShowHome() {
-
-		return sqlSession.selectList("home.selectShowHome");
+	public List<Recipe> selectShowHome(HashMap<String, Integer> map) {
+		
+		return sqlSession.selectList("home.selectShowHome", map);
 	}
 
 	@Override
@@ -51,8 +51,14 @@ public class MainDaoImpl implements MainDao{
 		System.out.println("map : " + map.get("searchStartCount"));
 		System.out.println("map : " + map.get("searchEndCount"));
 		System.out.println("map : " + map.get("keyWord"));
+		System.out.println("map : " + map.get("mNum"));
+		List<Recipe> list = sqlSession.selectList("home.searchRecipeList", map);
+		for(int i = 0; i < list.size(); i++){
+			System.out.println("getrName : " + list.get(i).getrName());
+			System.out.println("getRcCheck : " + list.get(i).getRcCheck());
+		}
 		
-		return sqlSession.selectList("home.searchRecipeList", map);
+		return list;
 	}
 
 	@Override
@@ -68,7 +74,7 @@ public class MainDaoImpl implements MainDao{
 	}
 
 	@Override
-	public List<Recipe> inquiryRecipeListBefore(HashMap<String, String> map) {
+	public List<Recipe> inquiryRecipeListBefore(HashMap<String, Object> map) {
 
 		List<Recipe> rlist = sqlSession.selectList("home.inquiryRecipeListBefore", map);
 		
@@ -96,7 +102,7 @@ public class MainDaoImpl implements MainDao{
 	}
 
 	@Override
-	public List<Recipe> recommandRecipeListBefore(HashMap<String, String> map) {
+	public List<Recipe> recommandRecipeListBefore(HashMap<String, Object> map) {
 
 		List<Recipe> recommandRecipeListBefore = sqlSession.selectList("home.recommandRecipeListBefore", map);
 		
@@ -116,7 +122,7 @@ public class MainDaoImpl implements MainDao{
 	}
 
 	@Override
-	public List<Recipe> levelAndTimeRecipeListBefore(HashMap<String, String> map) {
+	public List<Recipe> levelAndTimeRecipeListBefore(HashMap<String, Object> map) {
 
 		return sqlSession.selectList("home.levelAndTimeRecipeListBefore", map);
 	}
@@ -134,15 +140,27 @@ public class MainDaoImpl implements MainDao{
 	}
 
 	@Override
-	public int updateRecommend(int recipeRNum) {
+	public int updatePlusRecommend(int recipeRNum) {
 
-		return sqlSession.update("home.updateRecommend", recipeRNum);
+		return sqlSession.update("home.updatePlusRecommend", recipeRNum);
 	}
 
 	@Override
 	public int insertRecommend(HashMap<String, Integer> map) {
 
 		return sqlSession.insert("home.insertRecommend", map);
+	}
+
+	@Override
+	public int updateMinusRecommend(int recipeRNum) {
+
+		return sqlSession.update("home.updateMinusRecommend", recipeRNum);
+	}
+
+	@Override
+	public int deleteRecommend(HashMap<String, Integer> map) {
+
+		return sqlSession.delete("home.deleteRecommend", map);
 	}
 
 
