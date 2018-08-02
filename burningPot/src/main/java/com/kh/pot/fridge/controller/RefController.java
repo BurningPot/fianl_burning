@@ -27,13 +27,11 @@ public class RefController {
 	FridgeService friService;
 	
 	@RequestMapping("/fridge/refMain.do")
-	public String refMain(HttpSession session, @RequestParam(value="inRef", required=false, defaultValue="") String inRef, Model model) throws FridgeException{
+	public String refMain(HttpSession session, Model model) throws FridgeException{
 		
 		Member m = (Member)session.getAttribute("m");
 		
-		if(m == null) throw new FridgeException("로그인 정보 없음!!!");
-		
-		/*if(!(inRef == "" || inRef.length() == 0))*/ friService.updateComplete(inRef, m.getmNum());
+		if(m == null) throw new FridgeException("로그인 정보 없음!!!", "냉장고는 로그인이 된 상태에서만 이용가능합니다.");
 		
 		List<Fridge> list = friService.checkFridge(m.getmNum());
 		
@@ -42,12 +40,28 @@ public class RefController {
 		return "fridge/refMain";
 	}
 
+	@RequestMapping("/fridge/updateComplete.do")
+	public String refMain(HttpSession session, @RequestParam(value="inRef", required=false, defaultValue="") String inRef, Model model) throws FridgeException{
+		
+		Member m = (Member)session.getAttribute("m");
+		
+		if(m == null) throw new FridgeException("로그인 정보 없음!!!", "냉장고는 로그인이 된 상태에서만 이용가능합니다.");
+		
+		friService.updateComplete(inRef, m.getmNum());
+		
+		List<Fridge> list = friService.checkFridge(m.getmNum());
+		
+		model.addAttribute("list", list);
+		
+		return "fridge/refMain";
+	}
+	
 	@RequestMapping("/fridge/refUpdate.do")
 	public String refUpdate(HttpSession session, Model model) throws FridgeException{
 
 		Member m = (Member)session.getAttribute("m");
 		
-		if(m == null) throw new FridgeException("로그인 정보 없음!!!");
+		if(m == null) throw new FridgeException("로그인 정보 없음!!!", "냉장고는 로그인이 된 상태에서만 이용가능합니다.");
 		
 		List<Fridge> list = friService.checkFridge(m.getmNum());
 		

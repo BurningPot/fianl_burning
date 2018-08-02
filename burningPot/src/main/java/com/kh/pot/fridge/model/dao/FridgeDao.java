@@ -22,6 +22,6 @@ public interface FridgeDao {
 
 	List<Ingredient> bringName(Map<String, String[]> data);
 
-	List<Fridge> selectIngre(Map<String, Object> data);
+	List<Ingredient> selectIngre(Map<String, Object> data);
 
 }
