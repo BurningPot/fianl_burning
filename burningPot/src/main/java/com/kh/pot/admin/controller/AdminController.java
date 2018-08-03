@@ -610,8 +610,7 @@ public class AdminController {
 			.addAttribute("exdate", exdate)
 			.addAttribute("img", img);
 		}
-	}	
-		
+	}			
 		model.addAttribute("msg","새로운 재료를 추가하였습니다!");
 		}catch(Exception e){
 			throw new PotException("재료관리 페이지 오류!", "새로운 재료를 추가하는 도중 에러가 발생했습니다");
@@ -644,9 +643,6 @@ public class AdminController {
 		//아이디와 비밀번호를 랜덤으로 생성시켜서 저장한다
 		String mId = String.valueOf((int)(ran.nextDouble()*1000000));
 		int password = (int)(ran.nextDouble()*1000000);
-		
-		System.out.println("아이디: "+mId);		
-		System.out.println("비번: "+password);		
 		
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		
