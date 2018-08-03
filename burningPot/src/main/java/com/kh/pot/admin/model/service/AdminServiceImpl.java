@@ -106,4 +106,10 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectPhoto(mNum);
 	}
 
+	@Override
+	public String selectCategoryOfMember(int mNum) {
+		
+		return adminDao.selectCategoryOfMember(mNum);
+	}
+
 }

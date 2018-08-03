@@ -53,6 +53,12 @@ public class AdminController {
 	@RequestMapping("/admin/goAdmin.do")
 	public String goAdminMenu(Model model) throws PotException{
 		model.addAttribute("commonTitle","관리자 페이지");
+		
+		//관리자페이지는 다른 유저의 접근을 철저히 막아야 하니 Session에 admin이 아닌 다른 것이 있을 경우 철저히 막자!
+		
+		/*String mCategory = adminService.selectCategoryOfMember(mNum);
+		if(!mCategory.equals("관리자")) new throw PotException("잘못된 접근입니다!","지금 접근하신 분은 관리자가 아닙니다");*/		
+		
 		//1. 연령별 회원분포 정보
 		try{
 		ArrayList<Integer> ageList = (ArrayList<Integer>) adminService.selectAgeCount();
@@ -712,5 +718,14 @@ public class AdminController {
 		
 		return adminService.deleteRecipe(rNum);			
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

@@ -105,4 +105,10 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.selectOne("member.selectPhoto", mNum);
 	}
 
+	@Override
+	public String selectCategoryOfMember(int mNum) {
+		
+		return sqlSession.selectOne("member.selectCategoryOfMember", mNum);
+	}
+
 }
