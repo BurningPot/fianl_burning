@@ -38,6 +38,14 @@
 		
 		<style>
 		
+			/* 레시피 목록 클릭 시 이동 a 태그 */
+			.recipe_move_detail{
+				width:100%; 
+				height:100%; 
+				display:block; 
+				line-height: 450px;
+			}
+			
 			/* 목록 정렬 버튼 css */
 			.searchBtnUl{
 				width: 100%;
@@ -745,7 +753,7 @@
 			opacity:1;
 			text-align : center;
 			color: red;
-			padding-top : 25%;		
+			/* padding-top : 25%;	 */	
 		    font-size: 200%;	
 		}
 		

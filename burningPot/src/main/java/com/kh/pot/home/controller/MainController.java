@@ -217,7 +217,7 @@ public class MainController {
 		
 		int mNum = 0;
 		
-		System.out.println("현재 로그인한 사람의 정보"+m);
+		System.out.println("현재 로그인한 사람의 정보 : "+m);
 		//System.out.println("사람의 번호"+ m.getmNum());
 		
 		if(m != null){
