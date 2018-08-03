@@ -367,7 +367,7 @@
 					data:{
 						mNum : mNum
 					}, success: function(data){	
-						swal('작업성공!', "회원번호 ["+data+"] 가 강제 탈퇴 되었습니다", 'success').then((value) => {
+						swal('작업성공!', "회원번호 ["+data+"] 가 강제 탈퇴 되었습니다", 'success').then((value) => { 
 							location.href="${pageContext.request.contextPath}/admin/goSearchMember.do";
 						});
 					}, error: function(data){
