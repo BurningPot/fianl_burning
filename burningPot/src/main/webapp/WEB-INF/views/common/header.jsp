@@ -1598,7 +1598,7 @@
 			        
 			        <c:if test="${m.mId == 'admin'}" >
 				        <div class="login_btn_after">
-			          		<button class="menuBtn_after" data-tooltip-text="관리자페이지!!" type="button" onclick="location.href='${pageContext.request.contextPath}/admin/goAdmin.do'">
+			          		<button class="menuBtn_after" data-tooltip-text="관리자페이지!!" type="button" onclick="areYouAdmin();">
 			          			<i class="far fa-user fa-3x"></i>
 				            </button>
 				        </div>
@@ -1618,6 +1618,15 @@
 				          </button>
 				        </div>
 			        </c:if>	
+			        <form action="${pageContext.request.contextPath}/admin/goAdmin.do" method="POST" id="areYouAdmin">
+			        	<input type="hidden" value="${m.mNum}" name="mNum"/>
+			        </form>
+			        			        
+			        <script>
+			        	function areYouAdmin(){
+			        		$('#areYouAdmin').submit();			        		
+			        	}
+			        </script>
 			        		        
 		       	</div>
 		       	<div class="b-seg-right nav navbar-nav navbar-right">
