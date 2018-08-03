@@ -100,4 +100,10 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.deleteRecipe(rNum);
 	}
 
+	@Override
+	public String selectPhoto(int mNum) {
+		
+		return adminDao.selectPhoto(mNum);
+	}
+
 }

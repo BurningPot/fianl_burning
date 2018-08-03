@@ -99,4 +99,10 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.delete("board.deleteRecipe", rNum);
 	}
 
+	@Override
+	public String selectPhoto(int mNum) {
+		
+		return sqlSession.selectOne("member.selectPhoto", mNum);
+	}
+
 }

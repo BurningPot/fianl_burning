@@ -36,4 +36,6 @@ public interface AdminDao {
 
 	int deleteRecipe(int rNum);
 
+	String selectPhoto(int mNum);
+
 }

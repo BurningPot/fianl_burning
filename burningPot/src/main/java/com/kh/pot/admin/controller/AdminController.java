@@ -610,8 +610,7 @@ public class AdminController {
 			.addAttribute("exdate", exdate)
 			.addAttribute("img", img);
 		}
-	}	
-		
+	}			
 		model.addAttribute("msg","새로운 재료를 추가하였습니다!");
 		}catch(Exception e){
 			throw new PotException("재료관리 페이지 오류!", "새로운 재료를 추가하는 도중 에러가 발생했습니다");
@@ -622,24 +621,35 @@ public class AdminController {
 	
 	@ResponseBody
 	@RequestMapping("/admin/updateExpelMember.do")
-	public int updateExpel(@RequestParam int mNum){
+	public int updateExpel(@RequestParam int mNum, HttpServletRequest request){
+		//회원강퇴할 경우 그사람의 프로필 사진을 지워야 한다!
+		String img = adminService.selectPhoto(mNum);
 		
+		if(!img.equals("defaultPerson.png")){		
+			String saveDir = request.getSession().getServletContext().getRealPath("/resources/img/member");
+			File file = new File(saveDir+"/"+img);		
+			System.out.println("기존의 이미지 이름 : "+img);
+			// 파일이 실제로 존재하는지 검사			
+			if( file.exists() ){
+				System.out.println("파일 실존함");
+				file.delete();
+				System.out.println("기존의 "+img+"를 삭제하였다!");				 
+			}	
+		}
 		//바꿔야 하는 것들(mId, password, mName)			
 		
 		Random ran = new Random();
 		
+		//아이디와 비밀번호를 랜덤으로 생성시켜서 저장한다
 		String mId = String.valueOf((int)(ran.nextDouble()*1000000));
 		int password = (int)(ran.nextDouble()*1000000);
-		
-		System.out.println("아이디: "+mId);		
-		System.out.println("비번: "+password);		
 		
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		
 		String newPw = bcrypt.encode(String.valueOf(password));
 		//1. Member Table에서 강제탈퇴 처리
 		adminService.updateExpelMember(mId, newPw, mNum);
-		
+						
 		//2. Board, Board_Comment, Fridge, Recipe, Review, Review_Comment 테이블에서 해당 회원의 글들은 모조리 삭제시켜라!
 		int result = adminService.deleteAllContent(mNum);
 		System.out.println("result는?: "+result);

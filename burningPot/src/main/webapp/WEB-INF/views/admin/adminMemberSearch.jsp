@@ -260,7 +260,7 @@
                 <div class="col-lg-3">
                     <!-- 사진과 이름 -->
                     <div class="col-lg-12" id="photo">
-                    	<img src="${pageContext.request.contextPath}/resources/img/defaultPerson.png" alt="" class="col-lg-12"/>
+                    	<img src="${pageContext.request.contextPath}/resources/img/member/defaultPerson.png" alt="" class="col-lg-12"/>
                     </div>
                     <div class="col-lg-12" id="name">이름</div>
                     <input type="hidden" id="numberOfMember" value=""/>
@@ -332,7 +332,7 @@
             		$('#numberOfMember').val(memberNumber);
             		$('#id').text(id);
             		$('#email').text(email);
-            		$('#photo').children('img').attr('src', '${pageContext.request.contextPath}/resources/img/'+picture);
+            		$('#photo').children('img').attr('src', '${pageContext.request.contextPath}/resources/img/member/'+picture);
             		if(gender == 'M'){
             			$('#gender').children('.fa-venus').css('display','none');
             			$('#gender').children('.fa-mars').css('display','inline');
@@ -367,7 +367,7 @@
 					data:{
 						mNum : mNum
 					}, success: function(data){	
-						swal('작업성공!', "회원번호 ["+data+"] 가 강제 탈퇴 되었습니다", 'success').then((value) => {
+						swal('작업성공!', "회원번호 ["+data+"] 가 강제 탈퇴 되었습니다", 'success').then((value) => { 
 							location.href="${pageContext.request.contextPath}/admin/goSearchMember.do";
 						});
 					}, error: function(data){
