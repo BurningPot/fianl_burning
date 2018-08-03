@@ -96,12 +96,10 @@ public class Ingredient implements Serializable{
 		this.keyword = keyword;
 	}
 
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public String toString() {
+		return "Ingredient [iNum=" + iNum + ", iName=" + iName + ", category=" + category + ", iImage=" + iImage
+				+ ", exDate=" + exDate + ", cName=" + cName + ", subCName=" + subCName + ", keyword=" + keyword + "]";
+	}
 	
 }

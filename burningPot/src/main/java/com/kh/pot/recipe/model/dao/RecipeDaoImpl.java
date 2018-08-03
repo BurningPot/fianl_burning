@@ -103,14 +103,7 @@ public class RecipeDaoImpl implements RecipeDao {
 		return sqlSession.update("recipe.updateCount", rNum);
 		
 	}
-
-//	@Override
-//	public List<Review> selectReview(int rNum) {
-//
-//		return sqlSession.selectList("recipe.selectReview", rNum);
-//		
-//	}
-
+	
 	@Override
 	public Recommend selectRecommend(Recommend rec) {
 
@@ -127,13 +120,7 @@ public class RecipeDaoImpl implements RecipeDao {
 
 	@Override
 	public int updateRecommend(Recommend rec) {
-//		Recipe recipe = null;
-		
-//		if (sqlSession.update("recipe.updateRecommend", rec) == 1) {
-//			recipe = sqlSession.selectOne("recipe.selectRecipeDetail", rec);
-//		};
-		
-//		return recipe.getrRecommend();
+
 		return sqlSession.update("recipe.updateRecommend", rec);
 		
 	}
@@ -211,6 +198,12 @@ public class RecipeDaoImpl implements RecipeDao {
 
 		return sqlSession.delete("recipe.deleteReviewAll", rNum);
 		
+	}
+
+	@Override
+	public List<String> selectFridgeList(int mNum) {
+
+		return sqlSession.selectList("recipe.selectFridgeList", mNum);
 	}
 
 }

@@ -406,7 +406,31 @@
                     <div>
                         <img src="${pageContext.request.contextPath}/resources/img/recipe/delveryImg.PNG" style="width:90px; height:60px;" alt="장보기아이콘">
                         <label class="mb-0 align-self-center dataTitle css2" style="width:80px;" for="shoppingData" id="shoppingData"><b>장보기</b></label>
-                        <p class="font-weight-normal mt-2 mb-1 css4">부족한 재료는 편하고 빠르게 주문하세요~!</p>
+                        <p class="font-weight-normal mt-2 mb-1 css4" style="font-size:13pt;"><b>부족한 재료는 편하고 빠르게 주문하세요~!</b></p>
+                        <p class="font-weight-normal mt-2 mb-1" style="font-size:11pt; color:red;">
+                        	<c:choose>
+                        		<c:when test="${m != null}">
+                        			<c:choose>
+		                       			<c:when test="${shoppingList.size() > 0}">
+		                       				부족한 주재료 목록 : 
+		                       				<c:forEach var="list" items="${shoppingList}" varStatus="status">
+		                       					<c:choose>
+		                       						<c:when test="${shoppingList.size() == status.count}">
+		                       							${list.iName}
+		                       						</c:when>
+		                       						<c:otherwise>
+		                       							${list.iName}, 
+		                       						</c:otherwise>
+		                       					</c:choose>
+		                       				</c:forEach>
+		                       			</c:when>	
+		                       			<c:otherwise>
+		                       				부족한 주재료가 없어요~!
+		                       			</c:otherwise>																															
+	                       			</c:choose>
+                        		</c:when>
+                        	</c:choose>
+                       	</p>
                     </div>
                 </div>
                 <a href="http://emart.ssg.com/" target="_blank"><img class="shoppingBtn mb-2" src="${pageContext.request.contextPath}/resources/img/recipe/emartIcon.png" alt="이마트"></a>

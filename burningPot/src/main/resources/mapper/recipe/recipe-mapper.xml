@@ -157,4 +157,10 @@
 		DELETE FROM REVIEW WHERE RNUM = #{rNum}
 	</delete>
 	
+	<select id="selectFridgeList" parameterType="_int" resultType="String">
+		SELECT INUM
+		FROM FRIDGE
+		WHERE MNUM = #{mNum}
+	</select>
+	
 </mapper>

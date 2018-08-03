@@ -181,8 +181,6 @@ public class RecipeServiceImpl implements RecipeService {
 
 		int startRow = (currentPage - 1) * numPerPage+1;
 		int endRow = startRow + (numPerPage-1);
-		System.out.println("startrow : " + startRow);
-		System.out.println("endRow : " + endRow);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rNum", rNum);
@@ -204,6 +202,13 @@ public class RecipeServiceImpl implements RecipeService {
 	public int deleteReviewAll(int rNum) {
 
 		return recipeDao.deleteReviewAll(rNum);
+		
+	}
+
+	@Override
+	public List<String> selectFridgeList(int mNum) {
+
+		return recipeDao.selectFridgeList(mNum);
 		
 	}
 
