@@ -186,9 +186,12 @@
 		UPDATE MEMBER SET PASSWORD = #{tmpKey} WHERE MID = #{id}
 	</update>
 	
-	
 	<select id="selectEmailConfirm" parameterType="string" resultType="string">
 		SELECT TEMPKEY FROM EMAIL_CONFIRM WHERE EMAIL=#{email}
+	</select>
+	
+	<select id="selectMemberEmail" parameterType="string" resultType="Member">
+		SELECT * FROM MEMBER WHERE EMAIL = #{email}
 	</select>	
 	<!-- 예찬 mapper 부분 끝 -->
 </mapper>

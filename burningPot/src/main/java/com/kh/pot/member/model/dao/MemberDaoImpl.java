@@ -130,6 +130,11 @@ public class MemberDaoImpl implements MemberDao {
 	public String selectEmailConfirm(String email) {
 		return sqlSession.selectOne("member.selectEmailConfirm",email);
 	}
+
+	@Override
+	public Member selectMemberEmail(String email) {
+		return sqlSession.selectOne("member.selectMemberEmail",email);
+	}
 	
 	
 	/* 예찬 부분 */
