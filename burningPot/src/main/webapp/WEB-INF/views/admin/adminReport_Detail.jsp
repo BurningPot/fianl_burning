@@ -91,7 +91,9 @@
                 <button class="btn btn-primary" id="returnList">목록으로</button>                
             </div>
                       
-            
+            <form action="${pageContext.request.contextPath}/admin/${servletMapping}" method="POST" id="toList">
+            	<input type="hidden" name="mNum" value="${m.mNum}" />
+            </form>
             <br>
             <hr class="col-lg-12"/>
     		
@@ -103,7 +105,7 @@
         	           	
             	$('#returnList').on('click', function(){
             		//목록으로 돌아간다
-            		location.href="${pageContext.request.contextPath}/admin/${servletMapping}";
+            		$('#toList').submit();
             	});
             	
             	function deleteThisRecipe(){

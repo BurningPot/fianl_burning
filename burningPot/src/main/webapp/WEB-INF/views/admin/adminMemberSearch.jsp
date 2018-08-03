@@ -130,7 +130,8 @@
 				// 카테고리 선택  O, 검색창 입력 O				
 				category = $('.custom-select').val();
 				keyword = $('.keyword').val();
-				location.href="${pageContext.request.contextPath}/admin/goSearchMember.do?customSelect="+category+"&keyword="+keyword;
+				toOtherPageWithKeyword(1,category, keyword);
+				//location.href="${pageContext.request.contextPath}/admin/goSearchMember.do?customSelect="+category+"&keyword="+keyword;
 			}
 		}		
 		</script>
@@ -161,10 +162,14 @@
         	<div class="col-lg-12" ><i class="fas fa-exclamation-triangle fa-2x"></i></div>
         	<div class="col-lg-12">검색결과가 존재하지 않습니다!</div>
         	<div class="col-lg-12">다른 검색어로 입력해보면 어떨까요?</div>    
-        </div> 
-        
-        
+        </div>
         <br /><br />
+        <form id="toOtherPage" method="POST" action="${pageContext.request.contextPath}/admin/goSearchMember.do">
+        	<input type="hidden" name="mNum" value="${m.mNum}"/>
+        	<input type="hidden" id="form_cPage" name="cPage" value=""/>
+        	<input type="hidden" id="form_customSelect" name="customSelect" value=""/>
+        	<input type="hidden" id="form_keyword" name="keyword" value=""/>        	
+        </form>
         
         <!-- 멤버검색결과가 없을경우에는? -->
         <script>
@@ -176,11 +181,22 @@
         		$('.whenEmpty').css('display', 'inline-block');
         	}
         });
+        function toOtherPageWithKeyword(cPage, customSelect, keyword){
+        	$('#form_cPage').val(cPage);
+        	$('#form_customSelect').val(customSelect);
+        	$('#form_keyword').val(keyword);
+        	$('#toOtherPage').submit();        	
+        }
+        function toOtherPage(cPage){
+        	$('#form_cPage').val(cPage);
+        	$('#toOtherPage').submit(); 
+        }
         
         </script> 
          
         <div class="col-lg-10 offset-lg-1 pagenation-member">       
         <!-- pagenation -->
+        <!-- 검색어와 함께할 경우 -->
         <c:if test="${customSelect != 'null' and keyword != 'null' }">        
 		<div class="pagingArea col-lg-12" >
 			<ul class="pagination justify-content-center">
@@ -190,7 +206,7 @@
 			</c:if>
 			<c:if test="${cPage ne 1}">
 				<li class="page-item"><a class="page-link" 
-				href="${pageContext.request.contextPath}/admin/goSearchMember.do?cPage=${cPage-1}&customSelect=${customSelect}&keyword=${keyword}">Previous</a></li>							
+				onclick='toOtherPageWithKeyword("${cPage-1}", "${customSelect}", "${keyword}");'>Previous</a></li>							
 			</c:if>			
 				
 			<!-- 각 페이지 별 리스트 작성 -->
@@ -201,7 +217,7 @@
 				<c:if test="${i ne cPage }">
 					<%-- <button onclick="location.href='${pageContext.request.contextPath}/admin/goSearchMember.do?cPage=${i}'">${i}</button> --%>
 					<li class="page-item"><a class="page-link" 
-					href="${pageContext.request.contextPath}/admin/goSearchMember.do?cPage=${i}&customSelect=${customSelect}&keyword=${keyword}">${i}</a></li>
+					onclick='toOtherPageWithKeyword("${i}", "${customSelect}", "${keyword}");'>${i}</a></li>
 				</c:if>				
 			</c:forEach>			
 				
@@ -211,12 +227,13 @@
 			</c:if>
 			<c:if test="${cPage < maxPage }">				
 				<li class="page-item"><a class="page-link" 
-				href="${pageContext.request.contextPath}/admin/goSearchMember.do?cPage=${cPage + 1 }&customSelect=${customSelect}&keyword=${keyword}">Next</a></li>
+				onclick='toOtherPageWithKeyword("${cPage + 1 }", "${customSelect}", "${keyword}");'>Next</a></li>
 			</c:if>	
 			</ul>
 		</div>
 		</c:if>
 		
+		<!-- 검색어 없이 할 경우 -->
 		<c:if test="${customSelect == 'null' and keyword == 'null' }">		
 		<div class="pagingArea col-lg-12" >
 			<ul class="pagination justify-content-center">
@@ -226,7 +243,7 @@
 			</c:if>
 			<c:if test="${cPage ne 1}">
 				<li class="page-item"><a class="page-link" 
-				href="${pageContext.request.contextPath}/admin/goSearchMember.do?cPage=${cPage-1}">Previous</a></li>							
+				onclick='toOtherPage("${cPage-1}");'>Previous</a></li>							
 			</c:if>			
 				
 			<!-- 각 페이지 별 리스트 작성 -->
@@ -235,8 +252,8 @@
 					<li class="page-item active"><a class="page-link" href="#">${i}</a></li>
 				</c:if>
 				<c:if test="${i ne cPage }">
-					<%-- <button onclick="location.href='${pageContext.request.contextPath}/admin/goSearchMember.do?cPage=${i}'">${i}</button> --%>
-					<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/admin/goSearchMember.do?cPage=${i}">${i}</a></li>
+					<li class="page-item"><a class="page-link" 
+					onclick='toOtherPage("${i}");'>${i}</a></li>
 				</c:if>				
 			</c:forEach>			
 				
@@ -245,7 +262,8 @@
 				<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>				
 			</c:if>
 			<c:if test="${cPage < maxPage }">				
-				<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/admin/goSearchMember.do?cPage=${cPage + 1 }">Next</a></li>
+				<li class="page-item"><a class="page-link"
+				onclick='toOtherPage("${cPage + 1 }");'>Next</a></li>
 			</c:if>	
 			</ul>
 		</div>

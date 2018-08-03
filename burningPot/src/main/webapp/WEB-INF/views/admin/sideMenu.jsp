@@ -457,7 +457,7 @@ body{
 </style>
 
 </head>
-<form>
+
 <div class="col-lg-12 navi">
 	<div>관리자 홈</div>
 	<div>신고</div>
@@ -466,7 +466,11 @@ body{
     <div>회원조회</div>
     <div>재료관리</div>  
 </div>
+<form id="shortCuts" method="POST">
+	<input type="hidden" value="${m.mNum}" name="mNum"></input>
 </form>
+
+
 <script>
 	$('.navi').children().hover(function(){
 		$(this).css({
@@ -481,29 +485,34 @@ body{
 		});
 	})
 
+	function goShortCut(address){
+		$('#shortCuts').attr('action', "${pageContext.request.contextPath}/"+address).submit();
+	}
+	
+	
 	$('.navi').children().eq(0).on('click',function(){
-		//신고 메뉴로가기
-		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goAdmin.do").submit();			
+		//관리자 홈메뉴로가기
+		goShortCut("admin/goAdmin.do");
 	})
 	$('.navi').children().eq(1).on('click',function(){
 		//신고 메뉴로가기
-		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goReport.do").submit();			
+		goShortCut("admin/goReport.do");		
 	})
 	$('.navi').children().eq(2).on('click',function(){
 		//문의 메뉴로가기
-		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goQNA.do").submit();				
+		goShortCut("admin/goQNA.do");		
 	})
 	$('.navi').children().eq(3).on('click',function(){
 		//재료요청 메뉴로가기
-		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goRequestIngredient.do").submit();		
+		goShortCut("admin/goRequestIngredient.do");					
 	})
 	$('.navi').children().eq(4).on('click',function(){
-		//회원조회 메뉴로가기		
-		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goSearchMember.do").submit();			
+		//회원조회 메뉴로가기	
+		goShortCut("admin/goSearchMember.do");		
 	})
 	$('.navi').children().eq(5).on('click',function(){
 		//재료추가 메뉴로가기
-		$(this).parent().parent().attr("action","${pageContext.request.contextPath}/admin/goIng.do").submit();
+		goShortCut("admin/goIng.do");		
 	})
 
 </script>
