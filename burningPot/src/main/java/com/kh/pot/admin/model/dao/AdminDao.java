@@ -38,4 +38,6 @@ public interface AdminDao {
 
 	String selectPhoto(int mNum);
 
+	String selectCategoryOfMember(int mNum);
+
 }

@@ -38,4 +38,6 @@ public interface AdminService {
 
 	String selectPhoto(int mNum);
 
+	String selectCategoryOfMember(int mNum);
+
 }
