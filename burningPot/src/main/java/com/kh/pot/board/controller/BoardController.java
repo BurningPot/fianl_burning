@@ -26,18 +26,19 @@ public class BoardController {
 			@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage,
 			@RequestParam(value="searchBoard", required=false, defaultValue="") String searchBoard,
 			@RequestParam(value="searchCondition", required=false, defaultValue="sAll") String searchCondition,
+			@RequestParam(value="searchType", required=false, defaultValue="allCon") String searchType,
 			Model model){
 		
 		/*페이징 처리 코드 부분*/
-		
 		int startPage;		//한번에 표시될 게시글들의 시작 페이지
 		int endPage;		//한번에 표시될 게시글들의 마지막 페이지
 		int maxPage;		//전체 페이지의 마지막 페이지
 		int numPerPage = 10;	// 한 페이지 당 게시글 수
 		
 		// 1. 전체 게시글 수 구하기
-		int totalContents = boardService.selectBoardTotalContents(searchBoard, searchCondition);
-
+		int totalContents = boardService.selectBoardTotalContents(searchBoard, searchCondition, searchType);
+		
+		
 		/*페이징 계산*/
 		// 총 게시글 수에 대한 페이지 계산
 		// EX> 목록의 수가 123 개라면 페이지 수는 13페이지가 된다.
@@ -62,13 +63,14 @@ public class BoardController {
 		/*페이징 계산*/
 		
 		// 2. 현재 페이지 컨텐츠 리스트 받아오기
-		List<Map<String, String>> list = boardService.selectBoardList(currentPage, numPerPage, searchBoard, searchCondition);
+		List<Map<String, String>> list = boardService.selectBoardList(currentPage, numPerPage, searchBoard, searchCondition, searchType);
 		
 		model.addAttribute("list", list).addAttribute("pi",pi);
 		
 		
 		if(searchBoard !=null || searchBoard!="") model.addAttribute("searchBoard",searchBoard);
 		if(searchCondition != null || searchCondition != "") model.addAttribute("searchCondition",searchCondition);
+		if(searchType !=null || searchType!="") model.addAttribute("searchType",searchType);
 		
 		return "board/boardList";
 	}

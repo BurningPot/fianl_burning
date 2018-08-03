@@ -145,7 +145,7 @@
 		<label><h4><i class="far fa-edit"></i> 댓글달기</h4></label>
 			<div class="form-group">
 				<input type="hidden" name="mNum" value="${m.mNum}" /> <input type="hidden" name="bNum" value="${board.bNum}"/><input type="hidden" name="mId" value="${m.mId}" id="mmId" />
-				<textarea style="height: 80px;" name="bcContent" id="bcContent" class="form-control pressEnt"></textarea>
+				<textarea style="height: 80px; resize:none;" name="bcContent" id="bcContent" class="form-control pressEnt"></textarea>
 			</div>
 			<div class="row">
 				<div class="text-left col-sm-6">
@@ -198,12 +198,12 @@
 		}
 	}
 	
-	// 댓글 엔터키
+	/* // 댓글 엔터키
 	$('.pressEnt').keypress(function(event) {
 	    if (event.key === "Enter") {
 	    	insertComment();
 	    }
-	}); 
+	});  */
 	
 	// 댓글 등록
 	function insertComment(){

@@ -39,9 +39,9 @@ public interface BoardService {
 	
 	/* 예찬 부분 */
 	
-	List<Map<String, String>> selectBoardList(int cPage, int numPerPage, String searchBoard, String searchCondition);
+	List<Map<String, String>> selectBoardList(int cPage, int numPerPage, String searchBoard, String searchCondition, String searchType);
 
-	int selectBoardTotalContents(String searchBoard, String searchCondition);
+	int selectBoardTotalContents(String searchBoard, String searchCondition, String searchType);
 
 	Board selectBoardOne(int boardNo);
 
