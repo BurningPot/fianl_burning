@@ -36,4 +36,6 @@ public interface AdminService {
 
 	int deleteRecipe(int rNum);
 
+	String selectPhoto(int mNum);
+
 }
