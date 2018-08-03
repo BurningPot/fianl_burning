@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/clock.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/cards.css" />
 
+<!-- 파비콘 테스트 -->
+<%-- <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/img/title-logo.png" type="image/lg-icon"> --%>
+<link rel="icon" href="${pageContext.request.contextPath}/resources/img/smile.png" type="image/lg-icon">
+<!-- 파비콘 테스트 -->
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
 	.graph-title{
@@ -504,8 +509,7 @@
        	    type: 'bar',
        	    data: {
        	        labels: ["10대이하", "20대", "30대", "40대", "50대이상"],
-       	        datasets: [{
-       	            
+       	        datasets: [{       	            
        	            data: [${age[0]}, ${age[1]}, ${age[2]}, ${age[3]}, ${age[4]}], 
        	            backgroundColor: [
        	                'rgba(255, 99, 132, 0.5)',
