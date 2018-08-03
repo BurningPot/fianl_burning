@@ -26,6 +26,7 @@ public interface MemberService {
 	String findMemberId(String mEmail, String mBirth);
 	void findMember(String mEmail, String memberId, boolean isId) throws Exception;
 	Member findMemberPwd(String pMId, String pEmail, String pBirth);
+	Member selectMemberEmail(String email);
 /* 예찬 부분 끝 */
 	
 }

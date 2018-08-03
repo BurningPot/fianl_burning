@@ -64,14 +64,16 @@ public class MemberController {
 	@RequestMapping(value = "/callback.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
 			throws IOException {
-		System.out.println("여기는 callback");
+		
+		String msg="";
+		String loc="/";
+		
 		OAuth2AccessToken oauthToken;
         oauthToken = naverLoginVO.getAccessToken(session, code, state);
         //로그인 사용자 정보를 읽어온다.
 	    apiResult = naverLoginVO.getUserProfile(oauthToken);
 	    
 		model.addAttribute("result", apiResult);
-		System.out.println("apiResult:"+apiResult);
 		
 		StringtoVo stv = new StringtoVo();
 		
@@ -80,13 +82,13 @@ public class MemberController {
 		
 		// 아이디 중복 검사
 		if(memberService.checkIdDuplicate(m.getmId()) == 0){
-			memberService.insertMember(m);
+			if(memberService.checkEmailDuplicate(m.getEmail()) == 0){
+				memberService.insertMember(m);
+				m = memberService.selectMemberId(m.getmId());
+			}else{
+				m = memberService.selectMemberEmail(m.getEmail());
+			}
 		}
-		
-		m = memberService.selectMemberId(m.getmId());
-		
-		String msg="";
-		String loc="/";
 		
 		msg="환영합니다.!!"+m.getmName()+" 님";
 		model.addAttribute("m",m);

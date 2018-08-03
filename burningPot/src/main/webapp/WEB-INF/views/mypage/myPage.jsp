@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
     <%@page import="com.kh.pot.member.model.vo.Member"%>
     <% Member m = (Member)session.getAttribute("m"); %>
     
@@ -71,7 +73,12 @@
             	</c:if>
                       
                <c:if test="${ m.mPicture != 'defaultPerson.png' }"> --%>
+               <c:if test="${!fn:contains(m.mPicture, 'https:')}">
                		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture }" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+				</c:if>
+				<c:if test="${fn:contains(m.mPicture, 'https:')}">
+					<img id="profileImg" src="${ m.mPicture }" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+				</c:if>
 <%--                </c:if> --%>
                 <div id="profileWrap">
                 	<form  id="fileForm" enctype="multipart/form-data"><input type="file" accept="image/*" id="profileBtn" name="profileBtn" onchange="LoadImg(this)"/>

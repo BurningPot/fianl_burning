@@ -256,6 +256,11 @@ public class MemberServiceImpl implements MemberService {
       return memberDao.findMemberPwd(map);
    }
 
+	@Override
+	public Member selectMemberEmail(String email) {
+		return memberDao.selectMemberEmail(email);
+	}
+
    /* 예찬 부분  끝*/
 
 }
