@@ -64,4 +64,6 @@ public interface RecipeDao {
 
 	int deleteReviewAll(int rNum);
 
+	List<String> selectFridgeList(int mNum);
+
 }

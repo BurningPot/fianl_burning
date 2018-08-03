@@ -88,5 +88,8 @@ public interface RecipeService {
 
 	// 레시피 삭제 시 해당 레시피 리뷰 전체 삭제 서비스 
 	int deleteReviewAll(int rNum);
+
+	// 나의 냉장고 리스트 조회 서비스
+	List<String> selectFridgeList(int mNum);
 	
 }

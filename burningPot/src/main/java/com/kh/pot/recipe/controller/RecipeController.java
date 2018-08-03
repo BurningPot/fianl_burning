@@ -209,9 +209,26 @@ public class RecipeController {
 				contentList = recipeService.selectContentList(recipe.getrNum());
 				
 				if (m != null) {
+					// 로그인 상태일 경우 좋아요 여부 확인
 					Recommend recommend = new Recommend(m.getmNum(), rNum);
 					recommend = recipeService.selectRecommend(recommend);
 					
+					// 나의 냉장고 주재료 조회
+					List<String> fridgeList = recipeService.selectFridgeList(m.getmNum());
+					System.out.println(fridgeList);
+					
+					// 나의 냉장고 주재료와 레시피 주재료 비교 후 구매해야 하는 주재료 목록 조회하는 부분
+					ArrayList<Ingredient> shoppingList = new ArrayList<Ingredient>(mainNameList);
+					for (Ingredient i : mainNameList) {
+						for (String fl : fridgeList) {
+							if (String.valueOf(i.getiNum()).equals(fl)) {
+								shoppingList.remove(i);
+								break;
+							}
+						}
+					}
+
+					model.addAttribute("shoppingList", shoppingList);
 					model.addAttribute("recommend", recommend);
 				}
 				
