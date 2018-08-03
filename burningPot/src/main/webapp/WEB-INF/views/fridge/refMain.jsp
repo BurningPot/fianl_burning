@@ -26,19 +26,19 @@
 								<c:choose>
 									<c:when test="${ingre.expiration < 0}">										
 										<div class="ingre m-1" id="${ingre.iNum}" style="position:relative;">
-											<div class="rounded-circle re-danger" title="${ingre.iName}(유통기한 ${-ingre.expiration}일 경과)"></div>
+											<div class="rounded-circle re-danger" title="${ingre.iName} (유통기한 ${-ingre.expiration}일 경과)"></div>
 											<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" style="position:relative;">
 										</div>								
 									</c:when>
 									<c:when test="${ingre.expiration < 4}">
 										<div class="ingre m-1" id="${ingre.iNum}" style="position:relative;">
-											<div class="rounded-circle re-warning" title="${ingre.iName}(유통기한 ${ingre.expiration}일 남음)"></div>
+											<div class="rounded-circle re-warning" title="${ingre.iName} (유통기한 ${ingre.expiration}일 남음)"></div>
 											<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" style="position:relative;">
 										</div>									
 									</c:when>
 									<c:otherwise>
 										<div class="ingre m-1" id="${ingre.iNum}">
-											<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${ingre.iName}">
+											<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${ingre.iName} (유통기한 ${ingre.expiration}일 남음)">
 										</div>									
 									</c:otherwise>
 								</c:choose>
@@ -60,8 +60,11 @@
 	        <div class="col-sm-1" style="margin-right:-5%"></div>
 	
 	        <div class="col-sm-7">
-	            <div id="recipe" class="p-4 rounded rec-side left-arrow">
-					<!-- 레시피 영역 -->
+	            <div id="recipe" class="p-4 rounded rec-side left-arrow" style="text-align:center">
+					 <div class="row" style="height:10vh;"></div>
+					 <img alt="레시피 없음!" src="${pageContext.request.contextPath}/resources/fridge/images/noRecipe.png">
+					 <p></p>
+					 <h2><b>에공~~ 재료에 맞는 레시피가 없네요~~^^</b></h2>
 	            </div>
 	            <div style="height:3vh;"></div>
 	        </div>
@@ -80,6 +83,10 @@
 				url : "${pageContext.request.contextPath}/fridge/findRecipe.do",
 				data : {inRef : inRef},
 				success : function(data){
+					if(data.length != 0){
+						$('#recipe').removeAttr("style");
+						$('#recipe').children().remove();		
+					}
 					$.each(data, function(key, value){
 						if(value.untilReg < 4){		
 							$('#recipe').append(

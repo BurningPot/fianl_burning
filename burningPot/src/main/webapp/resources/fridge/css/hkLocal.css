@@ -282,9 +282,15 @@
 	}	
 	.recTitle{
 		margin-left : -2vh;
-		margin-top : -1vh;
 		margin-bottom : -1vh;
 		color : green;
+  		width: 100%; 
+  		text-align:left !important;
+	}
+	.recTitle h5{
+	  	overflow: hidden; 
+  		text-overflow: ellipsis;
+  		white-space: nowrap;
 	}
 	.recTitle:hover{
 		color : #28a745;

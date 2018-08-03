@@ -1,6 +1,10 @@
 
 $( function() { 
 	
+    $('#real-ref').on("dragstart",function(e){
+        return false;
+    });
+	
     $( document ).tooltip({
         position: {
         my: "center bottom-10",
