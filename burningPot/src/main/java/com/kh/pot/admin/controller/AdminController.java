@@ -50,13 +50,8 @@ public class AdminController {
 	@RequestMapping("/admin/goAdmin.do")
 	public String goAdminMenu(Model model, @RequestParam(value="mNum", required=false, defaultValue="-1") int mNum) throws PotException{
 		model.addAttribute("commonTitle","관리자 페이지");	
-		//mNum이 넘어오지 않았을 경우 관리자페이지로의 접근을 막자
-		if(mNum == -1)throw new PotException("잘못된 접근입니다!","지금 접근하신 분은 관리자가 아닙니다");	
-		
-		//관리자페이지는 다른 유저의 접근을 철저히 막아야 하니 Session에 admin이 아닌 다른 것이 있을 경우 철저히 막자!		
-		String mCategory = adminService.selectCategoryOfMember(mNum);		
-		if(!mCategory.equals("관리자")) throw new PotException("잘못된 접근입니다!","지금 접근하신 분은 관리자가 아닙니다");
-	
+		//관리자가 맞는지 판별해주는 메소드		
+		areYouAdmin(mNum);
 		
 		/*if(!mCategory.equals("관리자")) new PotException("잘못된 접근입니다!","지금 접근하신 분은 관리자가 아닙니다");		*/
 		
@@ -100,7 +95,9 @@ public class AdminController {
 			@RequestParam(value="cPage", required=false, defaultValue="1") int cPage,
 			@RequestParam(value="customSelect", required=false, defaultValue="null") String customSelect,
 			@RequestParam(value="keyword", required=false, defaultValue="null") String keyword,
+			@RequestParam(value="mNum", required=false, defaultValue="-1") int mNum,
 			Model model) throws PotException{		
+		areYouAdmin(mNum);
 		
 		//--페이지 처리 코드 부분
 		int startPage; 	// 한번에 표시될 게시글들의 시작 페이지
@@ -202,9 +199,10 @@ public class AdminController {
 	
 	// Q&A게시판
 	@RequestMapping("/admin/goQNA.do")
-	public String goQandA(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage) throws PotException{
+	public String goQandA(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage,
+			@RequestParam(value="mNum", required=false, defaultValue="-1") int mNum) throws PotException{
 		model.addAttribute("commonTitle","Q&A 게시판");
-		
+		areYouAdmin(mNum);
 		String bCategory = "QNA";
 		int numPerPage = 10; // 한 페이지 당 게시글 수
 		try{
@@ -228,7 +226,8 @@ public class AdminController {
 		
 	//게시판 내용보기!
 	@RequestMapping("/admin/detailQNA.do")
-	public String detailQandA(Model model, @RequestParam int bNum) throws PotException{
+	public String detailQandA(Model model, @RequestParam int bNum, @RequestParam(value="mNum", required=false, defaultValue="-1") int mNum) throws PotException{
+		areYouAdmin(mNum);		
 		String bCategory = "QNA";
 		model.addAttribute("commonTitle","Q&A 게시판");
 		try{
@@ -302,8 +301,9 @@ public class AdminController {
 	// 재료요청 게시판
 	@RequestMapping("/admin/goRequestIngredient.do")
 	public String goRequestIngredient(Model model, 
-			@RequestParam(value="cPage", required=false, defaultValue= "1" ) int cPage)throws PotException{
-		
+			@RequestParam(value="cPage", required=false, defaultValue= "1" ) int cPage,
+			@RequestParam(value="mNum", required=false, defaultValue="-1") int mNum)throws PotException{
+		areYouAdmin(mNum);
 		String bCategory = "재료요청";
 		int numPerPage = 10;
 		try{
@@ -324,7 +324,10 @@ public class AdminController {
 	
 	// 재료요청 게시판 내용 보기
 	@RequestMapping("/admin/ingRequestDetail.do")
-	public String ingRequestDetail(@RequestParam int bNum, Model model)throws PotException{
+	public String ingRequestDetail(@RequestParam int bNum,
+			@RequestParam(value="mNum", required=false, defaultValue="-1") int mNum,
+			Model model)throws PotException{
+		areYouAdmin(mNum);
 		String bCategory = "재료요청";
 		
 		model.addAttribute("commonTitle","재료요청 게시판");
@@ -361,7 +364,9 @@ public class AdminController {
 	 * Move to Food Ingredient Page. 2018-07-13 [HYD]
 	 ***/
 	@RequestMapping("/admin/goIng.do")
-	public String goIng(Model model)throws PotException{
+	public String goIng(@RequestParam(value="mNum", required=false, defaultValue="-1") int mNum, 
+			Model model)throws PotException{
+		areYouAdmin(mNum);
 		model.addAttribute("commonTitle","재료관리 페이지");
 		
 		try{
@@ -413,9 +418,9 @@ public class AdminController {
 			@RequestParam(value="iNum") int iNum, @RequestParam String img, 
 			@RequestParam(value="exdate", required=false, defaultValue="0") int exdate, 
 			@RequestParam String iName, @RequestParam String keyword,
-			@RequestParam String cName, @RequestParam String subCName,
+			@RequestParam String cName, @RequestParam String subCName,			
 			Model model)throws PotException{
-				
+		
 		System.out.println("들어오나요?");
 		System.out.println("img원래것 이름은? :"+img);
 		//이미지가 변경될 경우에는 이부분도 추가		
@@ -559,7 +564,8 @@ public class AdminController {
 			@RequestParam String bigCategory,
 			@RequestParam String subCategory, 
 			@RequestParam String ingName, @RequestParam String exdate,
-			HttpServletRequest request)throws PotException{
+			HttpServletRequest request
+			)throws PotException{
 		
 		int result = 0;
 		String saveDir = request.getSession().getServletContext().getRealPath("/resources/img/ingredient");
@@ -665,7 +671,9 @@ public class AdminController {
 	
 	// 신고게시판
 	@RequestMapping("/admin/goReport.do")
-	public String goReport(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage) throws PotException{
+	public String goReport(Model model, @RequestParam(value="cPage", required=false, defaultValue="1") int cPage,
+			@RequestParam(value="mNum", required=false, defaultValue="-1") int mNum) throws PotException{
+		areYouAdmin(mNum);
 		model.addAttribute("commonTitle","신고 게시판");
 		
 		/*String bCategory = "QNA";*/
@@ -691,8 +699,9 @@ public class AdminController {
 	
 	//신고게시판 내용보기!
 	@RequestMapping("/admin/detailReport.do")
-	public String detailReport(Model model, @RequestParam int rpNum)throws PotException{			
-			
+	public String detailReport(Model model, @RequestParam int rpNum,
+			@RequestParam(value="mNum", required=false, defaultValue="-1") int mNum)throws PotException{			
+		areYouAdmin(mNum);
 		model.addAttribute("commonTitle","신고 게시판");
 		
 		try{
@@ -719,5 +728,16 @@ public class AdminController {
 		
 		return adminService.deleteRecipe(rNum);			
 	}
+		
+	public void areYouAdmin(int mNum){
+		//mNum이 넘어오지 않았을 경우 관리자페이지로의 접근을 막자
+		if(mNum == -1)throw new PotException("잘못된 접근입니다!","회원의 정보가 전달되지 않았습니다!");	
+		
+		//관리자페이지는 다른 유저의 접근을 철저히 막아야 하니 Session에 admin이 아닌 다른 것이 있을 경우 철저히 막자!		
+		String mCategory = adminService.selectCategoryOfMember(mNum);		
+		if(!mCategory.equals("관리자")) throw new PotException("잘못된 접근입니다!","지금 접근하신 분은 관리자가 아닙니다");
+	}
+	
+		
 	
 }

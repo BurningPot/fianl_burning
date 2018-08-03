@@ -61,7 +61,7 @@
     </div>
       
     <!-- db의 내용들이 들어올 곳이다 -->      
-    <form id="goDetail">
+    
     <c:forEach items="${list}" var="b" varStatus="status">
     	
     <div class="row tableContent col-lg-12">    	
@@ -71,6 +71,9 @@
         <div class="col-lg-2">${b.rpDate}</div>	<!-- 작성일 -->        
     </div>    	
     </c:forEach>
+    <form id="goDetail" method="POST">
+    	<input type="hidden" name="rpNum" value="" id="reportNumber"/>
+    	<input type="hidden" name="mNum" value="${m.mNum}" />
     </form>
     	
     <script>
@@ -112,8 +115,11 @@
 	<script>
 	$('.tableContent').on('click', function(){    			
 		var bNumber = $(this).children().eq(0).text();  
+		var address="${detailMapping}";
+		$('#reportNumber').val(bNumber);
+		$('#goDetail').attr("action", "${pageContext.request.contextPath}/admin/"+address).submit();
 		
-		location.href='${pageContext.request.contextPath}/admin/${detailMapping}?rpNum='+bNumber;
+		//location.href='${pageContext.request.contextPath}/admin/${detailMapping}?rpNum='+bNumber;
 	});
 	</script>
 

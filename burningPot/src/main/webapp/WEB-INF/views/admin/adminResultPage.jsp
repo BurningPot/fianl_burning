@@ -80,7 +80,7 @@
         		
         		<i class="far fa-grin-beam"></i>
         		<br />
-        		${msg}  
+        		${msg}
         		      		
         	</div>
         		<br /><br /><br />
@@ -115,12 +115,18 @@
         	</div>
         	<br /><br />
         	
+        	<form id="goButton">
+        		<input type="hidden" name="mNum" value="${m.mNum}" />
+        	</form>
+        	
         	<script>
         	function goAdminHome(){
-        		location.href="${pageContext.request.contextPath}/admin/goAdmin.do";
+        		$('#goButton').attr("action", "${pageContext.request.contextPath}/admin/goAdmin.do").submit();
+        		//location.href="${pageContext.request.contextPath}/admin/goAdmin.do";
         	}
         	function goAdminIngredient(){
-        		location.href="${pageContext.request.contextPath}/admin/goIng.do";
+        		$('#goButton').attr("action", "${pageContext.request.contextPath}/admin/goIng.do").submit();
+        		//location.href="${pageContext.request.contextPath}/admin/goIng.do";
         	}
         	
         	</script>

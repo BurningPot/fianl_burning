@@ -152,8 +152,16 @@
            		
            		</c:forEach>
             </div> 
+        	<form action="${pageContext.request.contextPath}/admin/${servletMapping}" method="POST" id="toList">
+        		<input type="hidden" name="mNum" value="${m.mNum}" />
+        		<input type="hidden" name="bNum" value="" id="toListBNum"/>
+        	</form>
         	
-        	 <script>
+        	 <script>        	 
+        	 	function toTheList(){        	 		
+        	 		$('#toList').submit();
+        	 	}
+        	 	
             	$('#deleteBoard').on('click',function(){
             		//게시글 지워지게 한다
             		var bNum = $('.first-row').eq(2).children().eq(1).text();            		
@@ -164,7 +172,7 @@
             				bNum : bNum
             			}, success: function(data){            				
             				swal("작업완료!", "게시글을 삭제했습니다", "success").then((value) => {
-            					location.href="${pageContext.request.contextPath}/admin/${servletMapping}";
+            					toTheList();            					
             				});            				
             			}, error: function(){
             				swal("작업실패!", "게시글을 삭제하는데 실패하였습니다", "error");            				
@@ -174,7 +182,7 @@
             	});
             	$('#returnList').on('click', function(){
             		//목록으로 돌아간다
-            		location.href="${pageContext.request.contextPath}/admin/${servletMapping}";
+            		toTheList();
             	});
            
         	$('.submitComment').on('click', function(){
@@ -253,8 +261,10 @@
         				YorN : YorN
         			},
         			success: function(data){
-        				console.log(data+'개 업데이트 완료');        				
-        				location.href="${pageContext.request.contextPath}/admin/${detailMapping}?bNum="+bNum;
+        				console.log(data+'개 업데이트 완료');    
+        				$("#toListBNum").val(bNum);
+        				$('#toList').attr("action", "${pageContext.request.contextPath}/admin/${detailMapping}").submit();
+        				//location.href="${pageContext.request.contextPath}/admin/${detailMapping}?bNum="+bNum;
         			}, error: function(){
         				console.log("답변완료 업데이트 실패");
         			}        			
@@ -281,8 +291,9 @@
  							YorN = false;
  							updateQnA(YorN);
  						}  						
-        				
-        				location.href="${pageContext.request.contextPath}/admin/${detailMapping}?bNum="+bNum;
+ 						$("#toListBNum").val(bNum); 						
+        				$('#toList').attr("action", "${pageContext.request.contextPath}/admin/${detailMapping}").submit();
+        				//location.href="${pageContext.request.contextPath}/admin/${detailMapping}?bNum="+bNum;
         			}, error: function(){
         				alert('글 삭제에 실패하였습니다!');
         				swal("작업실패!", "게시글을 삭제하는데 실패했습니다", "error");

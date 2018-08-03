@@ -62,9 +62,8 @@
     </div>
       
     <!-- db의 내용들이 들어올 곳이다 -->      
-    <form id="goDetail">
-    <c:forEach items="${list}" var="b" varStatus="status">
-    	
+   
+    <c:forEach items="${list}" var="b" varStatus="status">    
     <div class="row tableContent col-lg-12">  
     	<div class="col-lg-1 boardNumber">${b.bNum}</div>	<!-- 글번호 -->
         <div class="col-lg-6">${b.bTitle}</div>	<!-- 제목 -->
@@ -73,7 +72,11 @@
         <div class="col-lg-1">${b.reply}</div>	<!-- 답변여부 -->        
     </div>    	
     </c:forEach>
-    </form>
+   
+   <form method="POST" id="goDetail">
+   		<input type="hidden" name="bNum" value="" id="bNumber"/>
+   		<input type="hidden" name="mNum" value="${m.mNum}" />		
+   </form>
     	
     <script>
     	$('.tableContent').hover(function(){
@@ -112,10 +115,17 @@
    %>
    <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, servletMapping) %>
 	<script>
-	$('.tableContent').on('click', function(){    			
-		var bNumber = $(this).children().eq(0).text();  
+	$('.tableContent').on('click', function(){
+		var address= "${detailMapping}";
+		var bNumber = $(this).children().eq(0).text();
+		$('#bNumber').val(bNumber);
 		
-		location.href='${pageContext.request.contextPath}/admin/${detailMapping}?bNum='+bNumber;
+		$('#goDetail').attr("action", "${pageContext.request.contextPath}/admin/"+address).submit();
+		
+		
+		
+		
+		//location.href='${pageContext.request.contextPath}/admin/${detailMapping}?bNum='+bNumber;
 	});
 	</script>
 

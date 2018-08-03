@@ -94,7 +94,17 @@
 	
 	<c:import url="/WEB-INF/views/admin/adminCommonTitle.jsp"/>
 <br /><br />
+
+<form id="goWithMNum" method="POST">
+	<input type="hidden" value="${m.mNum}" name="mNum"/>
+</form>
+
 <script>
+
+function goWithMNum(address){
+	$('#goWithMNum').attr("action", "${pageContext.request.contextPath}/"+address).submit();
+}
+
 // 확장자 검사용 메소드
 function extFilter(value){
 	var ext = value.substring(value.lastIndexOf('.')+1, value.length);
@@ -320,7 +330,8 @@ $(function(){
 			        			}, success: function(data){
 			        				if(data != null)
 			        				swal("작업완료!", "선택하신 재료가 삭제되었습니다", "success").then((value) => {
-			        					location.href="${pageContext.request.contextPath}/admin/goIng.do";
+			        					goWithMNum("admin/goIng.do");
+			        					//location.href="${pageContext.request.contextPath}/admin/goIng.do";
 			        				});	
 			        			}, error: function(data){
 			        				swal("작업실패!", "재료삭제에 실패했습니다", "error");	     
@@ -440,7 +451,8 @@ $(function(){
         						}else{        							
         							swal("작업성공!", data+"개의 카테고리를 생성하였습니다!", "success").then((value) => {
         								$('#add-subCategory').val("");
-            							location.href="${pageContext.request.contextPath}/admin/goIng.do";
+        								goWithMNum("admin/goIng.do");
+            							//location.href="${pageContext.request.contextPath}/admin/goIng.do";
 			        				});	        							
         						}
         					}, error: function(data){        						
@@ -525,7 +537,8 @@ $(function(){
         							subCName: inputSubCName
         						}, success: function(data){        							
         							swal("작업성공!", data+"개의 카테고리가 삭제되었습니다", "success").then((value) => {
-        								location.href="${pageContext.request.contextPath}/admin/goIng.do";
+        								goWithMNum("admin/goIng.do");
+        								//location.href="${pageContext.request.contextPath}/admin/goIng.do";
         							});        							
         						}, error: function(data){        							
         							swal("작업실패!", "카테고리를 삭제하는데 실패하였습니다", "error");
@@ -594,20 +607,17 @@ $(function(){
         	//재료 추가하기 버튼을 누를경우 컨트롤러 실행시킨다
         	function addIngredient(){
         		
-        		console.log($('#addForUpload').prop('files').length);
+        		
         		var fileName = "";
         		
         		if($('#addForUpload').prop('files').length != 0){
         			fileName = $('#addForUpload').prop('files')[0].name;
         		}else{
         			swal('알림','재료사진을 입력해주세요','info');
-        		}        		
-        		
-        		console.log('재료추가 버튼 눌렀을떄 들어오게 해야해!: '+fileName);
+        		}  
         		var list = new Array();
         		list = '${ingNameList}'.split(', ');        	
-        		console.log('이것은 무엇인가: '+list);
-        		console.log(list.length);
+        		
         		
         		if($('#add-ing-bigCategory').val() == ""){
         			//큰분류 선택 안했을 경우
