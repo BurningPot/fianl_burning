@@ -4,36 +4,47 @@
 
 	<!-- 등록된 Recipe가 그냥 뽑힘 -->
 	<select id="selectRecipe" resultType="recipe" parameterType="hashmap">
-		
-		SELECT *
-	 	<![CDATA[
-		FROM (SELECT DISTINCT  ROWNUM AS "rcrc", R.MNUM, R.RNUM, 
-		             RNAME, RIMG, QUANTITY, RTIME, RLEVEL, 
-		             INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, 
-		             RREPORT, RRECOMMEND, RCOUNT
-        ]]>
-             	  <if test="mNum != 0">
-		             ,(select RC.RNUM from RECOMMEND RC WHERE RC.MNUM = #{mNum} AND R.RNUM = RC.RNUM) "rcCheck"
-	              </if>
-		      FROM RECIPE R) C
-      	<![CDATA[  
-		WHERE "rcrc" >= #{startNumber} AND "rcrc" <= #{endNumber}
-		ORDER BY "rcrc"
+	
+	SELECT C.*, A.GRADE
+	<![CDATA[
+      FROM (SELECT DISTINCT  ROWNUM AS "rcrc", R.MNUM, R.RNUM, 
+      				RNAME, RIMG, QUANTITY, RTIME, RLEVEL, 
+                   INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, 
+                   RREPORT, RRECOMMEND, RCOUNT
+   ]]>
+                   <if test="mNum != 0">
+                   ,(select RC.RNUM from RECOMMEND RC WHERE RC.MNUM = #{mNum} AND R.RNUM = RC.RNUM) "rcCheck"
+                   </if>
+                FROM RECIPE R) C
+    
+    LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+                  FROM REVIEW
+                  GROUP BY RNUM) A
+    ON (C.RNUM = A.RNUM)
+     <![CDATA[ 
+      WHERE "rcrc" >=#{startNumber} AND "rcrc" <= #{endNumber}
+      ORDER BY "rcrc"
 	]]>
+	
 		
 	</select>
 	
 	<select id="selectShowHome" resultType="recipe" parameterType="hashmap" >
 		
 		SELECT DISTINCT 
-		ROWNUM, R.MNUM, R.RNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
-		<if test="mNum != 0">
-		, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND R.RNUM=C.RNUM) "rcCheck"
-        </if>
-        FROM RECIPE R 
-        <![CDATA[
-        WHERE ROWNUM >=1 AND ROWNUM <=8
-       	]]>
+		      ROWNUM, R.MNUM, R.RNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+		    <if test="mNum != 0">
+		    	, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND R.RNUM=C.RNUM) "rcCheck"
+	    	</if>, A.GRADE
+	    FROM RECIPE R 
+	    LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+	            FROM REVIEW
+	            GROUP BY RNUM) A
+	    ON (R.RNUM = A.RNUM)
+     <![CDATA[
+	    WHERE ROWNUM >=1 AND ROWNUM <=8
+ 		]]>
+	
 	</select>
 	
 	<select id="selectCountAllRecipe" resultType="_int">
@@ -42,15 +53,25 @@
 	
 	<!-- parameterType="Dao에서 넘기는 값의 형태", resultType="어떤 정보들을 받아 오는지의 타입" -->
 	<select id="searchRecipe" parameterType="hashmap" resultType="recipe">
-		
-		SELECT DISTINCT 
-		ROWNUM, R.MNUM, R.RNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
-		<if test="mNum != 0">
-		, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND R.RNUM=C.RNUM) "rcCheck"
-        </if>
-        FROM RECIPE R 
-        <![CDATA[
-        WHERE R.SUBINGREDIENT LIKE '%'||#{search}||'%' OR R.RNAME LIKE '%'||#{search}||'%' AND ROWNUM >=1 AND ROWNUM <=8
+       	SELECT *
+       	FROM (SELECT DISTINCT 
+				ROWNUM, R.MNUM, R.RNUM, 
+				RNAME, RIMG, QUANTITY,
+				RTIME, RLEVEL, INUM, 
+				IQUAN, SUBINGREDIENT, RDATE, 
+				RINTRO, RREPORT, RRECOMMEND, 
+				RCOUNT, A.GRADE
+				<if test="mNum != 0">
+				, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND R.RNUM=C.RNUM) "rcCheck"
+		        </if>
+		        FROM RECIPE R 
+		         LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+			            FROM REVIEW
+			            GROUP BY RNUM) A
+			    ON (R.RNUM = A.RNUM)
+		     	<![CDATA[
+		        WHERE R.SUBINGREDIENT LIKE '%'||#{search}||'%' OR R.RNAME LIKE '%'||#{search}||'%') 
+        WHERE ROWNUM >=1 AND ROWNUM <=8
        	]]>
 	</select>
 	
@@ -61,24 +82,28 @@
 	</select>
 	
 	<select id="searchRecipeList" resultType="recipe" parameterType="hashmap">
-		
+	
 		SELECT *
-	 	<![CDATA[
-		FROM (SELECT DISTINCT  ROWNUM AS "rcrc", R.MNUM, R.RNUM, 
+		<![CDATA[
+		FROM (SELECT DISTINCT  
+		             ROWNUM AS "rcrc", R.MNUM, R.RNUM, 
 		             RNAME, RIMG, QUANTITY, RTIME, RLEVEL, 
 		             INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, 
-		             RREPORT, RRECOMMEND, RCOUNT
-        ]]>
-             	  <if test="mNum != 0">
-		             ,(select RC.RNUM from RECOMMEND RC WHERE RC.MNUM = #{mNum} AND R.RNUM = RC.RNUM) "rcCheck"
-	              </if>
-		      FROM RECIPE R
-		      WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY QUANTITY) C
-      	<![CDATA[  
+		             RREPORT, RRECOMMEND, RCOUNT, A.GRADE
+       	]]>
+      	  <if test="mNum != 0">
+             ,(select RC.RNUM from RECOMMEND RC WHERE RC.MNUM = #{mNum} AND R.RNUM = RC.RNUM) "rcCheck"
+          </if>
+      FROM RECIPE R
+      LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+                  FROM REVIEW
+                  GROUP BY RNUM) A
+      ON (R.RNUM = A.RNUM)
+      WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR R.RNAME LIKE '%'||#{keyWord}||'%' ORDER BY QUANTITY) C
+		<![CDATA[  
 		WHERE "rcrc" >= #{searchStartCount} AND "rcrc" <= #{searchEndCount}
 		ORDER BY "rcrc"
 		]]>
-		
 		
 	</select>
 		
@@ -88,39 +113,81 @@
 	
 	<!-- 조회가 많은/적은 순서대로 정렬 -->
 	<select id="inquiryTotalCount" resultType="_int">
-		SELECT COUNT(*) FROM RECIPE R WHERE R.SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR R.RNAME LIKE '%'||#{keyWord}||'%'
+		SELECT COUNT(*) 
+		<![CDATA[
+     	FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, 
+     				 RNAME, RIMG, QUANTITY, RTIME, 
+     				 RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+     				 RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+        ]]> 
+				
+              FROM (SELECT DISTINCT ROWNUM AS "R", RNUM, MNUM, 
+              			   RNAME, RIMG, QUANTITY, RTIME, 
+              			   RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+              			   RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+                    FROM RECIPE 
+                    WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%') P) R
+		      LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+	                     FROM REVIEW
+	                     GROUP BY RNUM) A
+		      ON (R.RNUM = A.RNUM)
 	</select>
 	
+	<!-- 조회수 순서대로 정렬 -->
 	<select id="inquiryRecipeListBefore" resultType="recipe" parameterType="hashmap">
 		
-		SELECT *
+		SELECT R.*, A.GRADE
 		<![CDATA[
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
-		]]> 
-			<if test="mNum != 0">
-			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
-			</if>
-		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
-		<![CDATA[
-		WHERE "rn" >= 1 AND "rn" <= 8
-		]]>
-		
+     	FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, 
+     				 RNAME, RIMG, QUANTITY, RTIME, 
+     				 RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+     				 RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+        ]]> 
+					<if test="mNum != 0">
+               		 , (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+                  	</if>
+              FROM (SELECT DISTINCT ROWNUM AS "R", RNUM, MNUM, 
+              			   RNAME, RIMG, QUANTITY, RTIME, 
+              			   RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+              			   RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+                    FROM RECIPE 
+                    WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' 
+                    ORDER BY RCOUNT ${AscAndDesc}) P) R
+		      LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+	                     FROM REVIEW
+	                     GROUP BY RNUM) A
+		      ON (R.RNUM = A.RNUM)
+      <![CDATA[
+      WHERE "rn" >= 1 AND "rn" <= 8
+	  ]]>
+	  
 	</select>
 	
 	<select id="inquiryRecipeListAfter" resultType="recipe" parameterType="hashmap">
-		SELECT *
+		SELECT DISTINCT R.*, A.GRADE
 		<![CDATA[
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
-		]]> 
-			<if test="mNum != 0">
-			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
-			</if>
-		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
-		<![CDATA[
-		WHERE "rn" >= #{inquiryStartCount} AND "rn" <= #{inquiryEndCount}
-		]]>
+     	FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, 
+     				 RNAME, RIMG, QUANTITY, RTIME, 
+     				 RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+     				 RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+        ]]> 
+					<if test="mNum != 0">
+               		 , (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+                  	</if>
+              FROM (SELECT DISTINCT ROWNUM AS "R", RNUM, MNUM, 
+              			   RNAME, RIMG, QUANTITY, RTIME, 
+              			   RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+              			   RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+                    FROM RECIPE 
+                    WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' 
+                    ORDER BY RCOUNT ${AscAndDesc}) P) R
+		      LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+	                     FROM REVIEW
+	                     GROUP BY RNUM) A
+		      ON (R.RNUM = A.RNUM)
+      <![CDATA[
+      WHERE "rn" >= #{inquiryStartCount} AND "rn" <= #{inquiryEndCount}
+	  ]]>
 	</select>
 	
 	
@@ -149,18 +216,30 @@
 	
 	<!-- 추천수 많은/적은 순서로 정렬 -->
 	<select id="recommandRecipeListBefore" resultType="recipe" parameterType="hashmap">
-		SELECT *
+		SELECT R.*, A.GRADE
 		<![CDATA[
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
-		]]> 
-			<if test="mNum != 0">
-			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
-			</if>
-		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
-		<![CDATA[
-		WHERE "rn" >= 1 AND "rn" <= 8
-		]]>
+     	FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, 
+     				 RNAME, RIMG, QUANTITY, RTIME, 
+     				 RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+     				 RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+        ]]> 
+					<if test="mNum != 0">
+               		 , (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+                  	</if>
+              FROM (SELECT DISTINCT ROWNUM AS "R", RNUM, MNUM, 
+              			   RNAME, RIMG, QUANTITY, RTIME, 
+              			   RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+              			   RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+                    FROM RECIPE 
+                    WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' 
+                    ORDER BY RRECOMMEND ${AscAndDesc}) P) R
+		      LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+	                     FROM REVIEW
+	                     GROUP BY RNUM) A
+		      ON (R.RNUM = A.RNUM)
+      <![CDATA[
+      WHERE "rn" >= 1 AND "rn" <= 8
+	  ]]>
 	</select>
 	
 	<select id="recommandTotalCount" resultType="_int">
@@ -168,34 +247,59 @@
 	</select>
 	
 	<select id="recommandRecipeListAfter" resultType="recipe" parameterType="hashmap">
-		SELECT *
+		SELECT R.*, A.GRADE
 		<![CDATA[
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
-		]]> 
-			<if test="mNum != 0">
-			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
-			</if>
-		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
-		<![CDATA[
-		WHERE "rn" >= #{recommandStartCount} AND "rn" <= #{recommandEndCount}
+     	FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, 
+     				 RNAME, RIMG, QUANTITY, RTIME, 
+     				 RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+     				 RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+        ]]> 
+					<if test="mNum != 0">
+               		 , (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+                  	</if>
+              FROM (SELECT DISTINCT ROWNUM AS "R", RNUM, MNUM, 
+              			   RNAME, RIMG, QUANTITY, RTIME, 
+              			   RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+              			   RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+                    FROM RECIPE 
+                    WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' 
+                    ORDER BY RRECOMMEND ${AscAndDesc}) P) R
+		      LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+	                     FROM REVIEW
+	                     GROUP BY RNUM) A
+		      ON (R.RNUM = A.RNUM)
+      <![CDATA[
+      WHERE "rn" >= #{recommandStartCount} AND "rn" <= #{recommandEndCount}
 		]]>
+		
 	</select>
 	
 	<!-- 난이도 및 시간으로 정렬 -->
 	<select id="levelAndTimeRecipeListBefore" resultType="recipe" parameterType="hashmap">
-		SELECT *
+		SELECT R.*, A.GRADE
 		<![CDATA[
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
-		]]> 
-			<if test="mNum != 0">
-			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
-			</if>
-		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
-		<![CDATA[
-		WHERE "rn" >= 1 AND "rn" <= 8    
-		]]>
+     	FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, 
+     				 RNAME, RIMG, QUANTITY, RTIME, 
+     				 RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+     				 RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+        ]]> 
+					<if test="mNum != 0">
+               		 , (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+                  	</if>
+              FROM (SELECT DISTINCT ROWNUM AS "R", RNUM, MNUM, 
+              			   RNAME, RIMG, QUANTITY, RTIME, 
+              			   RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+              			   RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+                    FROM RECIPE 
+                    WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' 
+                    ORDER BY RLEVEL ${AscAndDesc}) P) R
+		      LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+	                     FROM REVIEW
+	                     GROUP BY RNUM) A
+		      ON (R.RNUM = A.RNUM)
+      <![CDATA[
+      WHERE "rn" >= 1 AND "rn" <= 8
+	  ]]>
 	</select>
 	
 	<select id="levelAndTimeAfterTotalCount" resultType="_int">
@@ -203,18 +307,31 @@
 	</select>
 	
 	<select id="levelAndTimeRecipeListAfter" resultType="recipe" parameterType="hashmap">
-		SELECT *
+		SELECT R.*, A.GRADE
 		<![CDATA[
-		FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
-		]]> 
-			<if test="mNum != 0">
-			, (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
-			</if>
-		      FROM (SELECT ROWNUM AS "R", RNUM, MNUM, RNAME, RIMG, QUANTITY, RTIME, RLEVEL, INUM, IQUAN, SUBINGREDIENT, RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
-					  FROM RECIPE WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' ORDER BY RCOUNT ${AscAndDesc}) P)
-		<![CDATA[
-		WHERE "rn" >= #{levelAndTimeStartCount} AND "rn" <= #{levelAndTimeEndCount}
+     	FROM (SELECT ROWNUM AS "rn", RNUM, MNUM, 
+     				 RNAME, RIMG, QUANTITY, RTIME, 
+     				 RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+     				 RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT
+        ]]> 
+					<if test="mNum != 0">
+               		 , (select C.RNUM from RECOMMEND C WHERE C.MNUM = #{mNum} AND P.RNUM=C.RNUM) "rcCheck"
+                  	</if>
+              FROM (SELECT DISTINCT ROWNUM AS "R", RNUM, MNUM, 
+              			   RNAME, RIMG, QUANTITY, RTIME, 
+              			   RLEVEL, INUM, IQUAN, SUBINGREDIENT, 
+              			   RDATE, RINTRO, RREPORT, RRECOMMEND, RCOUNT  
+                    FROM RECIPE 
+                    WHERE SUBINGREDIENT LIKE '%'||#{keyWord}||'%' OR RNAME LIKE '%'||#{keyWord}||'%' 
+                    ORDER BY RLEVEL ${AscAndDesc}) P) R
+		      LEFT JOIN (SELECT ROUND(AVG(GRADE), 1) GRADE, RNUM
+	                     FROM REVIEW
+	                     GROUP BY RNUM) A
+		      ON (R.RNUM = A.RNUM)
+      <![CDATA[
+      WHERE "rn" >= #{levelAndTimeStartCount} AND "rn" <= #{levelAndTimeEndCount}
 		]]>
+		
 	</select>
 	
 	<!-- 따봉 클릭 시 추천수 +1 -->

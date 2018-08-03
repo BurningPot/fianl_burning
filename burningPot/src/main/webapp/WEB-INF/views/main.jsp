@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
-<body>
+<head>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400">
+</head>
+<body style="font-family: 'Nanum Gothic', sans-serif;">
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 
 	<!-- 야매로 공간할당을 주어 처리한 부분 -->
@@ -12,16 +16,8 @@
 	<div class="b-seg" id="b-seg">
 		<div class="searchResultAndsearchBtn">
 			<div class="searchRecipeCountArea">
-				<%-- <b>"${list.size()}"</b>으로 검색한 결과 입니다.<br> --%>
 				<b>BurningPot</b>에는 현재 <b>${recipeCount}</b>개의 맛있는 레시피가 있습니다.
 			</div>
-			<!-- <div class="searchBtn">
-				<ul class="searchBtnUl">
-					<li><button type="button" class="searchBtnA1" onclick="inquiry();">조회</button></li> 
-					<li><button type="button" class="searchBtnA2" onclick="recommand();">추천</button></li>
-					<li><button type="button" class="searchBtnA3" onclick="cookLevel();">난이도</button></li>
-				</ul>
-			</div> -->
 		</div>
 		<ul class="recipeList">
 			<c:forEach items="${list}" var="recipe">
@@ -42,13 +38,31 @@
 	                     	 <input id="rcCheck" type="hidden" value="${recipe.rcCheck}"/>
 						</div>
 						<div class='aver_btn_area'>
-							<h5></h5>
+							<h5>
+								<c:choose>
+									<c:when test="${recipe.grade == 0}">
+										0점
+									</c:when>
+									<c:otherwise>
+										${recipe.grade}점
+									</c:otherwise>
+								</c:choose>
+							</h5>
 						</div>
 					</div>
 					<div class='recipe_img_area'>
 						<img class='food_img img-thumbnail'
-							src='${pageContext.request.contextPath}/resources/img/1.jpg'>
-						<div class='img_hover_area'>${recipe.rName}</div>
+							src='${pageContext.request.contextPath}/resources/img/recipeContent/${recipe.rImg}'>
+						<div class='img_hover_area'>
+							<a class="recipe_move_detail" onclick="location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=${recipe.rNum}'">
+								<c:if test="${fn:length(recipe.rName)<= 6}">
+									${fn:substring(recipe.rName,0, 9)}
+								</c:if>
+								<c:if test="${fn:length(recipe.rName) > 6}">
+									${fn:substring(recipe.rName,0, 15)} . . .
+								</c:if>
+							</a>
+						</div>
 					</div>
 					<div class='recipe_levle_and_time_and_writer_area'>
 						<div class='recipe_level'>
@@ -140,7 +154,6 @@
             var mNum = '${m.mNum}';
             
             if (scrollHeight == documentHeight) { //문서의 맨끝에 도달했을때 내용 추가 
-            	console.log("끝");
             	
 	            var str1 = "★채우는 공간";   
 	            var str2 = "Recipe !";
@@ -153,15 +166,20 @@
 	               		number: count,
 	               		mNum : mNum
 	               	},success: function(data){
-	               		console.log("count는?: "+count);
 	               		count += 9;
-	               		console.log("성공?");
+	               		
 	               		var level = "";
 	               		var rTime = "";
 	               		var quantity = "";
+						var rName = "";
+						var rNameSub ="";
+						var grade = "";
+						var gradeC ="";
 	               		for (var i = 0; i < data.length; i++) {
-	               
-	            			console.log("count : " + count);
+	               			
+	               			rName = data[i].rName;
+	               			grade = data[i].grade;
+	               			
 	            			if(data[i].rLevel == 1){
 	                			level="아무나";
 	                		} else if(data[i].rLevel == 2){
@@ -195,6 +213,17 @@
 	                		} else {
 	                			quantity = "5인분 이상";
 	                		}
+	            			if(rName.length <= 6){
+		               			rNameSub = rName.substring(0, 9);
+	            			} else {
+	            				rNameSub = rName.substring(0, 15) + " . . .";
+	            			}
+	            			if( grade == 0){
+	            				gradeC = "0점";
+	            			} else {
+	            				gradeC = grade+ "점";
+	            			}
+	            			
 	            			if(data[i].rcCheck == data[i].rNum ){
 		            			$("<li>" + 
 		               				"<div class='like_and_aver_area'>" +
@@ -208,12 +237,16 @@
 		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
 		               					"</div>" + 
 		               					"<div class='aver_btn_area'>" + 
-		               						"<h5>" + str1 + "</h5>"+
+		               						"<h5>" + gradeC + "</h5>"+
 		               					"</div> " +
 		               				"</div>" + 
 		               				"<div class='recipe_img_area'>" +
-		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-		               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/recipeContent/" + data[i].rImg + "'>" +
+		               					"<div class='img_hover_area'>" +
+			               					"<a class='recipe_move_detail' onclick=\"location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=" + data[i].rNum+ "'\">" +
+				               					rNameSub +
+			    							"</a>" +
+		               					 "</div>" +
 		               				"</div>" +
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
@@ -235,12 +268,16 @@
 		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
 		    	               					"</div>" + 
 		    	               					"<div class='aver_btn_area'>" + 
-		    	               						"<h5>" + str1 + "</h5>"+
+		    	               						"<h5>" + gradeC + "</h5>"+
 		    	               					"</div> " +
 		    	               				"</div>" + 
 		    	               				"<div class='recipe_img_area'>" +
-		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/"+ 1 +".jpg'>" +
-		    	               					"<div class='img_hover_area'>" + data[i].rName + "</div>" +
+		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/recipeContent/" + data[i].rImg + "'>" +
+		    	               					"<div class='img_hover_area'>" +
+					               					"<a class='recipe_move_detail' onclick=\"location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=" + data[i].rNum+ "'\">" +
+					               					rNameSub +
+					    							"</a>" +
+		    	               					"</div>" +
 		    	               				"</div>" +
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +

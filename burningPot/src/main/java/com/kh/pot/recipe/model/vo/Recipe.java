@@ -29,7 +29,41 @@ public class Recipe implements Serializable{
 	private int rRecommend;			// 레시피 추천수
 	private int rCount;				// 레시피 조회수
 	private int rcCheck;			// Recommend의 RNUM
-//	
+	private double grade;
+	public double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(double grade) {
+		this.grade = grade;
+	}
+
+	public Recipe(int rNum, int mNum, String mName, String mId, String rName, String rImg, int quantity, int rTime,
+			int rLevel, String iNum, String iQuan, String subIngredient, Date rDate, String rIntro, int rReport,
+			int rRecommend, int rCount, int rcCheck, double grade, int untilReg) {
+		super();
+		this.rNum = rNum;
+		this.mNum = mNum;
+		this.mName = mName;
+		this.mId = mId;
+		this.rName = rName;
+		this.rImg = rImg;
+		this.quantity = quantity;
+		this.rTime = rTime;
+		this.rLevel = rLevel;
+		this.iNum = iNum;
+		this.iQuan = iQuan;
+		this.subIngredient = subIngredient;
+		this.rDate = rDate;
+		this.rIntro = rIntro;
+		this.rReport = rReport;
+		this.rRecommend = rRecommend;
+		this.rCount = rCount;
+		this.rcCheck = rcCheck;
+		this.grade = grade;
+		this.untilReg = untilReg;
+	}
+
 	private int untilReg;			// 등록한지 몇일 지났는지
 	
 	public Recipe(){
