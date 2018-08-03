@@ -53,48 +53,107 @@
 	<select id="selectBoardList" parameterType="hashmap" resultType="Board">
 		SELECT * FROM (SELECT ROWNUM RNUM, PAGING.* 
 		FROM(
-			SELECT BNUM, CATEGORY, BTITLE, MNUM, BDATE, BCONTENT, MNAME ,MID, REPLY, BCOUNT, MPICTURE, (CASE WHEN CATEGORY='공지사항' THEN '1' ELSE '0' END) CATE
+			SELECT BNUM, CATEGORY, BTITLE, MNUM, BDATE, BCONTENT, MNAME ,MID, REPLY, BCOUNT, MPICTURE
+			<if test="searchType=='allCon' || searchType=='noti'">
+			,(CASE WHEN CATEGORY='공지사항' THEN '1' ELSE '0' END) CATE
+			</if>
 			FROM BOARD JOIN MEMBER USING(MNUM)
 		<bind name="pattern" value="'%'+searchBoard+'%'"/>
 		<where>
-			<if test="!searchBoard.equals('') or searchBoard!=null">
+			<if test="searchBoard!=''">
 				<choose>
 					<when test="searchCondition=='sAll'">
-						BTITLE LIKE #{pattern} OR BCONTENT LIKE #{pattern} OR MNAME LIKE #{pattern}
+						(BTITLE LIKE #{pattern} OR BCONTENT LIKE #{pattern} OR MNAME LIKE #{pattern})
 					</when>
 					<when test="searchCondition=='sCon'">
-						BTITLE LIKE #{pattern} OR BCONTENT LIKE #{pattern}
+						(BTITLE LIKE #{pattern} OR BCONTENT LIKE #{pattern})
+					</when>
+					<when test="searchCondition=='sTit'">
+						(BTITLE LIKE #{pattern})
+					</when>
+					<when test="searchCondition=='sEnt'">
+						(BCONTENT LIKE #{pattern})
 					</when>
 					<when test="searchCondition=='sMem'">
-						MNAME LIKE #{pattern}
+						(MNAME LIKE #{pattern})
 					</when>
 				</choose>
 			</if>
+			<choose>
+				<when test="searchType=='noti'">
+					AND CATEGORY = '공지사항'
+				</when>
+				<when test="searchType=='qna'">
+					AND CATEGORY = 'QNA'
+				</when>
+				<when test="searchType=='ingre'">
+					AND CATEGORY = '재료요청'
+				</when>
+				<when test="searchType=='ex'">
+					AND CATEGORY = '기타'
+				</when>
+				<otherwise>
+				</otherwise>
+			</choose>
+			
 		</where>
-		ORDER BY CATE DESC, BDATE DESC) PAGING) 
+		ORDER BY
+		<if test="searchType=='allCon' || searchType=='noti'">
+			CATE DESC,
+		</if>
+		BDATE DESC) PAGING) 
         WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
 	<select id="selectBoardTotalContents" parameterType="hashmap" resultType="_int">
-		SELECT COUNT(*) FROM (SELECT b.*, m.* , (CASE WHEN CATEGORY='공지사항' THEN '1' ELSE '0' END) CATE 
+		SELECT COUNT(*) FROM (SELECT b.*, m.* 
+			<if test="searchType=='allCon' || searchType=='noti'">
+				,(CASE WHEN CATEGORY='공지사항' THEN '1' ELSE '0' END) CATE
+			</if>
 		FROM BOARD B JOIN MEMBER M ON(B.MNUM=M.MNUM) 
 		<bind name="pattern" value="'%'+searchBoard+'%'"/>
 		<where>
-			<if test="!searchBoard.equals('') or searchBoard!=null">
+			<if test="searchBoard!=''">
 				<choose>
 					<when test="searchCondition=='sAll'">
-						BTITLE LIKE #{pattern} OR BCONTENT LIKE #{pattern} OR MNAME LIKE #{pattern}
+						(BTITLE LIKE #{pattern} OR BCONTENT LIKE #{pattern} OR MNAME LIKE #{pattern})
 					</when>
 					<when test="searchCondition=='sCon'">
-						BTITLE LIKE #{pattern} OR BCONTENT LIKE #{pattern}
+						(BTITLE LIKE #{pattern} OR BCONTENT LIKE #{pattern})
+					</when>
+					<when test="searchCondition=='sTit'">
+						(BTITLE LIKE #{pattern})
+					</when>
+					<when test="searchCondition=='sEnt'">
+						(BCONTENT LIKE #{pattern})
 					</when>
 					<when test="searchCondition=='sMem'">
-						MNAME LIKE #{pattern}
+						(MNAME LIKE #{pattern})
 					</when>
 				</choose>
 			</if>
+			<choose>
+				<when test="searchType=='noti'">
+					AND CATEGORY = '공지사항'
+				</when>
+				<when test="searchType=='qna'">
+					AND CATEGORY = 'QNA'
+				</when>
+				<when test="searchType=='ingre'">
+					AND CATEGORY = '재료요청'
+				</when>
+				<when test="searchType=='ex'">
+					AND CATEGORY = '기타'
+				</when>
+				<otherwise>
+				</otherwise>
+			</choose>
 		</where>
-		ORDER BY CATE DESC, BDATE DESC)
+		ORDER BY 
+		<if test="searchType=='allCon' || searchType=='noti'">
+			CATE DESC, 
+		</if>
+		BDATE DESC)
 	</select>
 	
 	<select id="selectBaordOne" parameterType="_int" resultType="Board">

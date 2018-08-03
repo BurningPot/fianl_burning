@@ -92,7 +92,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	/* 예찬 부분 */
 	@Override
-	public List<Map<String, String>> selectBoardList(int cPage, int numPerPage, String searchBoard, String searchCondition) {
+	public List<Map<String, String>> selectBoardList(int cPage, int numPerPage, String searchBoard, String searchCondition, String searchType) {
 		
 		int startRow = (cPage - 1) * numPerPage+1;
 		int endRow = startRow + (numPerPage-1);
@@ -102,18 +102,20 @@ public class BoardServiceImpl implements BoardService {
 		map.put("searchCondition", searchCondition);
 		map.put("startRow", startRow);
 		map.put("endRow",endRow);
+		map.put("searchType", searchType);
 		
 		List<Map<String, String>> list = boardDao.selectBoardList(map);
 		return list;
 	}
 
 	@Override
-	public int selectBoardTotalContents(String searchBoard,String searchCondition) {
+	public int selectBoardTotalContents(String searchBoard,String searchCondition, String searchType) {
 		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("searchBoard", searchBoard);
 		map.put("searchCondition", searchCondition);
-		
+		map.put("searchType", searchType);
+		System.out.println("mapCount"+map);
 		return boardDao.selectBoardTotalContents(map);
 	}
 

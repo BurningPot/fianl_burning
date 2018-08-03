@@ -125,6 +125,11 @@ public class MemberDaoImpl implements MemberDao {
 	public int updatePwd(Map<String, String> map) {
 		return sqlSession.update("member.updatePwd",map);
 	}
+
+	@Override
+	public String selectEmailConfirm(String email) {
+		return sqlSession.selectOne("member.selectEmailConfirm",email);
+	}
 	
 	
 	/* 예찬 부분 */

@@ -28,5 +28,6 @@ public interface MemberDao {
 	String findMemberId(HashMap<String, String> map);
 	Member findMemberPwd(HashMap<String, String> map);
 	int updatePwd(Map<String, String> map);
+	String selectEmailConfirm(String email);
 	/* 예찬 부분 */
 }

@@ -87,7 +87,7 @@
 		  </div>
 		  <div class="form-group row">
 		    <div class="col-sm-8">
-		      <button type="reset" class="btn btn-warning">취소</button>
+		      <button type="reset" class="btn btn-warning" onclick="goBack();">취소</button>
 		      <button type="submit" class="btn btn-warning" id="smBtn" disabled>가입하기</button>
 		    </div>
 		  </div>
@@ -287,6 +287,14 @@
 					alert('메일 삭제 에러');
 				}
 			});
+	}
+	
+	function goBack(){
+		if(confirm('진행하던 사항을 저장하지 않고 취소하시겠습니까?')==true){
+			location.href="${pageContext.request.contextPath}/home/showHome.do";
+		}else{
+			return;
+		}
 	}
 	
 	</script>
