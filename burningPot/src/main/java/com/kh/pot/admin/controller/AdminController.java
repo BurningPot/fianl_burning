@@ -48,13 +48,17 @@ public class AdminController {
 	
 	// 관리자 홈
 	@RequestMapping("/admin/goAdmin.do")
-	public String goAdminMenu(Model model) throws PotException{
-		model.addAttribute("commonTitle","관리자 페이지");
+	public String goAdminMenu(Model model, @RequestParam(value="mNum", required=false, defaultValue="-1") int mNum) throws PotException{
+		model.addAttribute("commonTitle","관리자 페이지");	
+		//mNum이 넘어오지 않았을 경우 관리자페이지로의 접근을 막자
+		if(mNum == -1)throw new PotException("잘못된 접근입니다!","지금 접근하신 분은 관리자가 아닙니다");	
 		
-		//관리자페이지는 다른 유저의 접근을 철저히 막아야 하니 Session에 admin이 아닌 다른 것이 있을 경우 철저히 막자!
+		//관리자페이지는 다른 유저의 접근을 철저히 막아야 하니 Session에 admin이 아닌 다른 것이 있을 경우 철저히 막자!		
+		String mCategory = adminService.selectCategoryOfMember(mNum);		
+		if(!mCategory.equals("관리자")) throw new PotException("잘못된 접근입니다!","지금 접근하신 분은 관리자가 아닙니다");
+	
 		
-		/*String mCategory = adminService.selectCategoryOfMember(mNum);
-		if(!mCategory.equals("관리자")) new throw PotException("잘못된 접근입니다!","지금 접근하신 분은 관리자가 아닙니다");*/		
+		/*if(!mCategory.equals("관리자")) new PotException("잘못된 접근입니다!","지금 접근하신 분은 관리자가 아닙니다");		*/
 		
 		//1. 연령별 회원분포 정보
 		try{
