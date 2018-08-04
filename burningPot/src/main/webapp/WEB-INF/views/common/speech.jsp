@@ -34,7 +34,6 @@
 					//annyang.trigger(final_transcript); //If the sentence is "final" for the Web Speech API, we can try to trigger the sentence
 				} else {
 					interim_transcript += event.results[i][0].transcript;
-					// console.log("interim_transcript=" + interim_transcript);
 				}
 			}
 			
@@ -115,31 +114,32 @@
 				}
 				else if(final_transcript.includes("번째")){
 					if(final_transcript.includes("첫")){
-						detailRecipe(1);
+						detailRecipe(Number(1));
 					}else if(final_transcript.includes("두")){
-						detailRecipe(2);
+						detailRecipe(Number(2));
 					}else if(final_transcript.includes("세")){
-						detailRecipe(3);
+						detailRecipe(Number(3));
 					}else if(final_transcript.includes("네")){
-						detailRecipe(4);
+						detailRecipe(Number(4));
 					}else if(final_transcript.includes("다섯")){
-						detailRecipe(5);
+						detailRecipe(Number(5));
 					}else if(final_transcript.includes("여섯")){
-						detailRecipe(6);
+						detailRecipe(Number(6));
 					}else if(final_transcript.includes("일곱")){
-						detailRecipe(7);
+						detailRecipe(Number(7));
 					}else if(final_transcript.includes("여덟")){
-						detailRecipe(8);
+						detailRecipe(Number(8));
 					}else if(final_transcript.includes("아홉")){
-						detailRecipe(9);
+						detailRecipe(Number(9));
 					}else if(final_transcript.includes("열")){
-						detailRecipe(10);
+						detailRecipe(Number(10));
+					}else{
+						location.href = "${pageContext.request.contextPath}/home/searchRecipe.do?searchR="+final_transcript;
 					}
 				}else if(final_transcript.includes("번")){
 					if(final_transcript.includes("레시피")){
 						var speechToken = final_transcript.split('번');
 						goSpeech(final_transcript);
-						console.log('레시피 번호 :'+$('.recipeList').children('li').eq(Number(speechToken[0])-1).children().children().children().eq(2).val());
 						location.href="${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum="+$('.recipeList').children('li').eq(Number(speechToken[0])-1).children().children().children().eq(2).val();
 					}
 				}
@@ -183,6 +183,7 @@
 						goSpeech(final_transcript);
 						location.href ="${pageContext.request.contextPath}/login/googleLogin.do";
 					}else{
+						goSpeech(final_transcript);
 						$('#loginModal').modal();
 					}
 						
@@ -225,22 +226,8 @@
 					}, 20000);
 				}
 			}else if(final_transcript.includes("음성")){
-				if(final_transcript.includes("꺼")){
-					$('#speechInput').hide("slow");
-				  	// Remove all callbacks from all events:
-				  	console.log(annyang);
-				  	console.log('isisListening?:'+annyang.isListening());
-				  	
-				  	annyang.removeCommands();
-				  	annyang.abort();
-				  	console.log('isisListening?:'+annyang.isListening());
-				  	
-				  	$('#speechBtn').css("color","black");  
-				  	$('#spSw').val(0);
-				  	
-				  	<% 
-		     		session.removeAttribute("speechKey");
-					%>
+				  if(final_transcript.includes("꺼")){
+					  speechOff();
 				}
 			}else{
 				goSpeech(final_transcript);
@@ -258,7 +245,7 @@
 			type:"POST",
 			data : {key:key},
 			success:function(data){
-				console.log("음성검색 ajax 성공"+data);
+				console.log(data);
 			},error:function(data){
 				console.log("음성검색 ajax 실패");
 			}
@@ -270,9 +257,20 @@
 		$('#loginModal').modal();
 	}
 	
-	function detailRecipe(numbb){
-		console.log(numbb);
-		
+	function detailRecipe(num){
+		location.href="${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum="+num;
+	}
+	
+	function speechOff(){
+		$('#speechInput').hide("slow");
+	  	
+	  	annyang.removeCommands();
+	  	annyang.abort();
+	  	
+	  	$('#speechBtn').css("color","black");  
+	  	$('#spSw').val(0);
+	  	$('#speechVal').val('');
+	  	
 	}
 	
 	
