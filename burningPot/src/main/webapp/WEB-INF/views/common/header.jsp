@@ -1491,7 +1491,7 @@
 								src="${pageContext.request.contextPath }/resources/img/돋보기.PNG">
 						</button>
 						<!-- 음성 검색 -->
-						&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-microphone fa-3x" id="speechBtn" data-tooltip-text="speechMode"></i>
+						&nbsp;&nbsp;<i class="fas fa-microphone fa-3x" id="speechBtn" data-tooltip-text="speechMode"></i>
 						<form class="row col-sm-12">
 						<div id="speechInput" style="display:none; background:blue;">	
 				        	<div class="input-group">
@@ -2111,13 +2111,10 @@
 		  }else if($('#spSw').val() == 1){
 			 
 		  	$('#speechInput').hide("slow");
-		  	// Remove all callbacks from all events:
-		  	console.log(annyang);
-		  	console.log('isisListening?:'+annyang.isListening());
 		  	
 		  	annyang.removeCommands();
 		  	annyang.abort();
-		  	console.log('isisListening?:'+annyang.isListening());
+		  	$('#speechVal').val('');
 		  	
 		  	$('#speechBtn').css("color","black");  
 		  	$('#spSw').val(0);
