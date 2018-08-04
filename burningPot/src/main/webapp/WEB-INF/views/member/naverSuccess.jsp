@@ -25,27 +25,27 @@ h3 {
 }
 </style>
 <script type="text/javascript">
-	$(document).ready(function() {
-		var name = ${result}.response.name;
-		var email = ${result}.response.email;
-		var gender = ${result}.response.gender;
-		var name = ${result}.response.name;
-		var birthday = ${result}.response.birthday;
-		var id = ${result}.response.id;
-		var birthday = ${result}.response.birthday;
-		var profile_image = ${result}.response.profile_image;
-		var age = ${result}.response.age;
-		
-		$("#name").html("환영합니다. "+name+"님");
-		$("#email").html(email);
-		$("#gender").html(gender);
-		$("#name").html(name);
-		$("#birthday").html(birthday);
-		$("#id").html(id);
-		$("#profile_image").html(profile_image);
-		$("#age").html(age);
-		
-	  });
+$(document).ready(function() {
+	var name = ${result}.response.name;
+	var email = ${result}.response.email;
+	var gender = ${result}.response.gender;
+	var name = ${result}.response.name;
+	var birthday = ${result}.response.birthday;
+	var id = ${result}.response.id;
+	var birthday = ${result}.response.birthday;
+	var profile_image = ${result}.response.profile_image;
+	var age = ${result}.response.age;
+	
+	$("#name").html("환영합니다. "+name+"님");
+	$("#email").html(email);
+	$("#gender").html(gender);
+	$("#name").html(name);
+	$("#birthday").html(birthday);
+	$("#id").html(id);
+	$("#profile_image").html(profile_image);
+	$("#age").html(age);
+	
+  });
 </script>
 
 </head>

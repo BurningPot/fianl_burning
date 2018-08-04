@@ -21,7 +21,7 @@
 	<div class="row">
 	<div class="col-sm-3"></div>
 	  <div class="col-sm-9 text-center">
-	  	<form class="form-horizontal" name="memberEnrollFrm" action="${pageContext.request.contextPath}/member/memberEnrollEnd.do" method="post" onsubmit="return validate();">
+	  	<form class="form-horizontal" name="memberEnrollFrm" action="${pageContext.request.contextPath}/member/memberEnrollEnd.do" method="POST" onsubmit="return validate();">
 		  <div class="form-group row">
 		    <label for="userId" class="col-sm-2 control-label lastChk" for="userId">아이디</label>
 		    <div class="col-sm-5">

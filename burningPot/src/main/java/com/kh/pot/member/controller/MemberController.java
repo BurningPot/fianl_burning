@@ -83,8 +83,19 @@ public class MemberController {
 		// 아이디 중복 검사
 		if(memberService.checkIdDuplicate(m.getmId()) == 0){
 			if(memberService.checkEmailDuplicate(m.getEmail()) == 0){
-				memberService.insertMember(m);
-				m = memberService.selectMemberId(m.getmId());
+				
+				if(m.getmId()!=null && m.getmId()!="" 
+						&& m.getGender()!=null && m.getGender()!=""
+						&& m.getEmail()!=null && m.getEmail()!=""
+						&& m.getmName()!=null && m.getmName()!=""
+						&& m.getBirthDate() !=null){
+					
+					memberService.insertMember(m);
+					m = memberService.selectMemberId(m.getmId());
+				}else{
+					model.addAttribute("member",m);
+					return "/member/googleEnroll";
+				}
 			}else{
 				m = memberService.selectMemberEmail(m.getEmail());
 			}
@@ -97,6 +108,7 @@ public class MemberController {
 		model.addAttribute("loc",loc);
 		
 		return "/common/msg";
+		
 	}
 	
 	//	구글 로그인 성공시 callback.do
@@ -158,7 +170,7 @@ public class MemberController {
 	}
 	
 	// 구글 회원가입 
-	@RequestMapping("member/memberEnrollGoogle.do")
+	@RequestMapping(value="member/memberEnrollGoogle.do", method=RequestMethod.POST)
 	public String memberEnrollGoogle( @RequestParam String birth,
 			Member member, Model model) throws ParseException{
 
@@ -253,7 +265,7 @@ public class MemberController {
 	
 	// 아이디 찾기
 	@ResponseBody
-	@RequestMapping("/member/findMemberId.do")
+	@RequestMapping(value="/member/findMemberId.do", method = RequestMethod.POST)
 	public Map<String, Object> findMemberId(@RequestParam String mEmail, @RequestParam String mBirth){
 		Map<String, Object> map = new HashMap<String, Object>();
 		String memberId = memberService.findMemberId(mEmail, mBirth);
@@ -277,7 +289,7 @@ public class MemberController {
 	
 	// 비밀번호 찾기 
 	@ResponseBody
-	@RequestMapping("/member/findPwd.do")
+	@RequestMapping(value = "/member/findPwd.do", method=RequestMethod.POST)
 	public Map<String, Object> findMemberPwd(@RequestParam String pMId,
 											 @RequestParam String pEmail,
 											 @RequestParam String pBirth){
@@ -322,7 +334,7 @@ public class MemberController {
 	}
 	
 	// 이메일 인증
-	@RequestMapping("/member/chkEmail.do")
+	@RequestMapping(value="/member/chkEmail.do", method=RequestMethod.POST)
 	public String chkEmail(@RequestParam String chkEmail,
 							Model model){
 		
@@ -339,7 +351,7 @@ public class MemberController {
 	}
 	
 	// 이메일 재전송
-	@RequestMapping("/member/chkReEmail.do")
+	@RequestMapping(value="/member/chkReEmail.do", method=RequestMethod.POST)
 	public String chkReEmail(@RequestParam(value="confirmEmail", required=false) String confirmEmail,
 							Model model){
 		System.out.println("confirmEmail : "+confirmEmail);
@@ -390,7 +402,7 @@ public class MemberController {
 	}
 
 	// 회원가입 실행
-	@RequestMapping("member/memberEnrollEnd.do")
+	@RequestMapping(value="member/memberEnrollEnd.do", method=RequestMethod.POST)
 	public String memberEnrollEnd( @RequestParam String birth,
 			Member member, Model model) throws ParseException{
 		// 회원 설정
@@ -453,7 +465,7 @@ public class MemberController {
 		return "common/msg";
 	}
 	
-	@RequestMapping("member/memberLogout.do")
+	@RequestMapping(value="member/memberLogout.do")
 	public String memberLogout(SessionStatus status){
 
 		// 세션 종료

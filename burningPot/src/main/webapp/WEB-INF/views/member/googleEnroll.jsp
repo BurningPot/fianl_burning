@@ -20,8 +20,9 @@
 		<br />
 		<div class="text-center">
 			<h2>
-				<i class="fas fa-utensils"></i> 구글 아이디로 로그인
+				<i class="fas fa-utensils"></i> 간편 로그인 회원가입
 			</h2>
+			
 		</div>
 		<br />
 		<div class="row">
@@ -50,7 +51,7 @@
 						<div class="col-sm-5 row">
 							<div class="col-sm-9">
 								<input type="email" class="form-control lastChk" name="email"
-									id="email" placeholder="로그인한 구글 이메일로 입력해주세요" required>
+									id="email" placeholder="로그인한  이메일을 입력해주세요" required>
 								<div class="invalid-feedback text-left">
 									<p id="wrnMsg4"></p>
 								</div>
@@ -90,7 +91,15 @@
 				</form>
 			</div>
 		</div>
-
+		<div class="text-center">
+			<br /><br />
+			<i class="fas fa-exclamation-circle"></i>  간편 로그인을 했는데 회원가입은 왜 하나요?
+			<hr /><br />
+			간편 로그인 시 해당서비스에서 제공하는 정보가 부족하거나, <br />
+			정보제공에 미 동의시 회원가입에 필요한 부족한 정보를 최초 1회 입력 후 로그인하게 됩니다.
+			
+		</div>
+	
 	</div>
 
 	<script>
@@ -107,6 +116,7 @@
 				$('#userName').removeClass("is-invalid");
 				$('#userName').addClass('is-valid');
 				$('#userName').removeClass('lastChk');
+				$('#userName').attr("readonly",true);
 				if (!$('input').hasClass('is-invalid')
 						&& !$('input').hasClass('lastChk')) {
 					$('#smBtn').attr('disabled', false);
@@ -118,6 +128,7 @@
 				$('#email').removeClass("is-invalid");
 				$('#email').addClass('is-valid');
 				$('#email').removeClass('lastChk');
+				$('#email').attr("readonly",true);
 				if (!$('input').hasClass('is-invalid')
 						&& !$('input').hasClass('lastChk')) {
 					$('#smBtn').attr('disabled', false);
@@ -132,6 +143,7 @@
 				$('#birth').removeClass("is-invalid");
 				$('#birth').addClass('is-valid');
 				$('#birth').removeClass('lastChk');
+				$('#birth').attr("readonly",true);
 				if (!$('input').hasClass('is-invalid')
 						&& !$('input').hasClass('lastChk')) {
 					$('#smBtn').attr('disabled', false);
