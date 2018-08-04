@@ -182,28 +182,30 @@
 		</div>
 	</form>
 	<br /><br /><br />
+	<form action="#" method="POST" id="bNumFrm">
+		<input type="hidden" value="${board.bNum}" name="no" />
+	</form>
+	<form action="#" method="POST" id="bcNumFrm">
+		<input type="hidden" value="${board.bNum}" name="bNum" />
+		<input type="hidden" name="bcNum" id="currBcNum" />
+	</form>
 <script>
 	
 	// 게시글 수정
 	function updateBoard(){
-		location.href="${pageContext.request.contextPath}/board/updateBoard.do?no="+$('#bNum').val();
+		$('#bNumFrm').attr("action","${pageContext.request.contextPath}/board/updateBoard.do");
+		$('#bNumFrm').submit();
 	}
 	
 	// 게시글 삭제
 	function deleteBoard(){
 		if(confirm('글을 삭제 하시겠습니까?')==true){
-			location.href="${pageContext.request.contextPath}/board/deleteBoard.do?no="+$('#bNum').val();
+			$('#bNumFrm').attr("action","${pageContext.request.contextPath}/board/deleteBoard.do");
+			$('#bNumFrm').submit();
 		}else{
 			return;
 		}
 	}
-	
-	/* // 댓글 엔터키
-	$('.pressEnt').keypress(function(event) {
-	    if (event.key === "Enter") {
-	    	insertComment();
-	    }
-	});  */
 	
 	// 댓글 등록
 	function insertComment(){
@@ -223,7 +225,9 @@
 	function deleteBoardComment(obj){
 		console.log($(obj).parent().children().eq(0).val());
 		 if(confirm('댓글을 삭제 하시겠습니까?')==true){
-			location.href="${pageContext.request.contextPath}/board/deleteBoardComment.do?bNum="+$('#bNum').val()+"&bcNum="+$(obj).parent().children().eq(0).val();
+			$('#currBcNum').val($(obj).parent().children().eq(0).val());
+			$('#bcNumFrm').attr("action", "${pageContext.request.contextPath}/board/deleteBoardComment.do");
+			$('#bcNumFrm').submit(); 
 		}else{
 			return;
 		}
@@ -256,31 +260,6 @@
 		else return;
 	}
 	
-	
-	//이전 글, 다음 글 확인용  
-	$(function() {
-		$('#nextTable tr td').mouseenter(function() {
-			$(this).css({
-				"background" : "#dedede",
-				"cursor" : "pointer"
-			});
-		}).mouseleave(function() {
-			$(this).css({
-				"background" : "white"
-			});
-		})
-	});
-	function prevBoard() {
-	
-		alert('이전글이 없습니다.');
-	
-	}
-	
-	function nextBoard() {
-	
-		alert('다음글이 없습니다.');
-	
-	}
 </script>
 </body>
 </html>

@@ -1920,7 +1920,6 @@
 		
 		// 음성 검색 
 		var speech ='<c:out value="${sessionScope.speechKey}" />';
-		console.log('speech:'+speech);
 		if(speech){
 			$('#speechVal').val(speech);
 		  	$('#speechInput').show("slow");

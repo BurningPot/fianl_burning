@@ -91,7 +91,7 @@ public class BoardController {
 	}
 	
 	// 게시글 저장
-	@RequestMapping("/board/insertBoardEnd.do")
+	@RequestMapping(value="/board/insertBoardEnd.do", method=RequestMethod.POST)
 	public String insertBoardEnd(Board board, Model model){
 		
 		String msg = "";
@@ -111,7 +111,7 @@ public class BoardController {
 	}
 	
 	// 게시글 수정페이지 이동
-	@RequestMapping("/board/updateBoard.do")
+	@RequestMapping(value="/board/updateBoard.do", method=RequestMethod.POST)
 	public String updateBoard(@RequestParam("no") int boardNo, Model model){
 		model.addAttribute("board",boardService.selectBoardOne(boardNo));
 		return "board/updateBoard";
@@ -139,7 +139,7 @@ public class BoardController {
 	}
 	
 	// 게시글 삭제
-	@RequestMapping(value="/board/deleteBoard.do")
+	@RequestMapping(value="/board/deleteBoard.do", method=RequestMethod.POST)
 	public String deleteBoard(@RequestParam("no") int boardNo, Model model){
 		
 		String msg="";
@@ -184,7 +184,7 @@ public class BoardController {
 	}
 	
 	// 댓글 삭제
-	@RequestMapping(value="/board/deleteBoardComment.do")
+	@RequestMapping(value="/board/deleteBoardComment.do", method=RequestMethod.POST)
 	public String deleteBoardComment(@RequestParam("bcNum") int bcNum,
 									 @RequestParam("bNum") int bNum,
 									 Model model){
