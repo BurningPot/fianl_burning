@@ -67,6 +67,8 @@ public class MemberController {
 		
 		String msg="";
 		String loc="/";
+		String msgTitle="로그인 실패";
+		String success = "";
 		
 		OAuth2AccessToken oauthToken;
         oauthToken = naverLoginVO.getAccessToken(session, code, state);
@@ -100,14 +102,17 @@ public class MemberController {
 				m = memberService.selectMemberEmail(m.getEmail());
 			}
 		}
-		
+		msgTitle="로그인 성공";
+		success="success";
 		msg="환영합니다.!!"+m.getmName()+" 님";
 		model.addAttribute("m",m);
 		
 		model.addAttribute("msg",msg);
 		model.addAttribute("loc",loc);
+		model.addAttribute("success",success);
+		model.addAttribute("msgTitle",msgTitle);
 		
-		return "/common/msg";
+		return "/common/sweetAlert";
 		
 	}
 	
@@ -134,6 +139,9 @@ public class MemberController {
 	  
 	  String msg ="";
 	  String loc="/";
+	  String msgTitle="로그인 실패";
+	  String success = "";
+	  
 	  System.out.println("callback 실행");
 	  Member m = new Member();
 	  
@@ -158,14 +166,18 @@ public class MemberController {
 		  return "/member/googleEnroll";
 	  }else{
 		  m = memberService.selectMemberId(profile.getId());
+		  msgTitle="로그인 성공!";
 		  msg="환영합니다.!!"+m.getmName()+" 님";
+		  success="success";
 		  model.addAttribute("m",m);
 	  }
 	  
 	  model.addAttribute("msg",msg);
 	  model.addAttribute("loc",loc);
+	  model.addAttribute("success",success);
+	  model.addAttribute("msgTitle",msgTitle);
 	  
-	  return "/common/msg";
+	  return "/common/sweetAlert";
 
 	}
 	
@@ -189,17 +201,23 @@ public class MemberController {
 		
 		String msg = "";
 		String loc = "/";
+		String msgTitle="로그인 실패";
+		String success = "";
 		
 		if(result >0){
 			member = memberService.selectMemberId(member.getmId());
+			msgTitle="로그인 성공!";
 			msg="환영합니다.!!"+member.getmName()+" 님";
+			success="success";
 			model.addAttribute("m",member);
 		} else msg="회원가입에 실패하였습니다.";
 		
 		model.addAttribute("msg",msg);
 		model.addAttribute("loc",loc);
+		model.addAttribute("success",success);
+		model.addAttribute("msgTitle",msgTitle);
 		
-		return "common/msg";
+		return "/common/sweetAlert";
 	}
 	
 	//음성 세션 설정
@@ -442,27 +460,32 @@ public class MemberController {
 						@RequestParam String password,
 						Model model){
 		Member m = memberService.selectMemberId(userId);
-
+		
+		String msgTitle="로그인 실패";
 		String msg="";
 		String loc="/";
-		
+		String success = "";
 		if(m != null){
 			// 암호화 주석
 			//if(bcryptPasswordEncoder.matches(password, m.getPassword())) {
 			 if(password.equals(m.getPassword())){
+				msgTitle="로그인 성공!";
 				msg="환영합니다.!!"+m.getmName()+" 님";
+				success = "success";
 				model.addAttribute("m",m);
+				
 			}else{
 				msg="비밀번호가 틀립니다.";
 			}
 		}else{
 			msg="존재하지 않는 회원입니다.";
 		}
-		
+		model.addAttribute("msgTitle", msgTitle);
 		model.addAttribute("msg",msg);
+		model.addAttribute("success",success);
 		model.addAttribute("loc",loc);
 		
-		return "common/msg";
+		return "common/sweetAlert";
 	}
 	
 	@RequestMapping(value="member/memberLogout.do")
