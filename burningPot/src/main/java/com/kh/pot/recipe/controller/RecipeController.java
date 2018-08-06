@@ -257,7 +257,7 @@ public class RecipeController {
 	}
 	
 	// 레시피 수정 페이지
-	@RequestMapping("/recipe/selectDetail.do")
+	@RequestMapping(value="/recipe/selectDetail.do", method=RequestMethod.POST)
 	public String goUpdateForm(@RequestParam("rNum") int rNum,
 														Model model) throws PotException {
 		String page = "";
