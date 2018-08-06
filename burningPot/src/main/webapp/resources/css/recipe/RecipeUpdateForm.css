@@ -86,3 +86,7 @@
 .subImgArea:hover {
     cursor: pointer;
 }
+
+.font {
+	font-family: 'Nanum Gothic', sans-serif;
+}	
