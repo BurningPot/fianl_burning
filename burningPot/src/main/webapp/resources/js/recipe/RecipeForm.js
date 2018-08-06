@@ -20,10 +20,18 @@ $(function () {
     // ------------------------------------- 주재료 기능 영역 -------------------------------------
     // 주재료 추가 버튼
     $('#mainAddBtn').click(function() {
-        var obj = $('.mainAddForm').eq(0).clone(true);
-        $(obj).find('.ingredientList').remove();
-        $(obj).find('.mainAddText').val("");
-        $('.mainAddArea').append(obj);
+    	var chk = 0;
+    	$(".mainAddForm").each(function(index, item) {
+    		chk = index;
+    	});
+    	if (chk < 9) {
+            var obj = $('.mainAddForm').eq(0).clone(true);
+            $(obj).find('.ingredientList').remove();
+            $(obj).find('.mainAddText').val("");
+            $('.mainAddArea').append(obj);
+    	} else {
+    		alert("재료는 10개까지 입력 가능합니다.");
+    	}
     });
 
     // 주재료 삭제 버튼 보여주는 기능
@@ -48,10 +56,18 @@ $(function () {
     // ------------------------------------- 부재료 기능 영역 -------------------------------------
     // 부재료 추가 버튼
     $('#subAddBtn').click(function() {
-        var obj = $('.subAddForm').eq(0).clone(true);
-        $(obj).find('.subIngredient').val("");
-        $(obj).find('.subIngredientQuan').val("");
-        $('.subAddArea').append(obj);
+    	var chk = 0;
+    	$(".subAddForm").each(function(index, item) {
+    		chk = index;
+    	});
+    	if (chk < 9) {
+	        var obj = $('.subAddForm').eq(0).clone(true);
+	        $(obj).find('.subIngredient').val("");
+	        $(obj).find('.subIngredientQuan').val("");
+	        $('.subAddArea').append(obj);
+    	} else {
+    		alert("재료는 10개까지 입력 가능합니다.");
+    	}
     });
 
     // 부재료 삭제 버튼 보여주는 기능

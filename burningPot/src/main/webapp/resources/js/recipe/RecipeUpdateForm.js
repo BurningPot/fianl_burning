@@ -53,11 +53,20 @@ $(function () {
     // ------------------------------------- 주재료 기능 영역 -------------------------------------
     // 주재료 추가 버튼
     $('#mainAddBtn').click(function() {
-        var obj = $('.mainAddForm').eq(0).clone(true);
-        $(obj).find('.ingredientList').remove();
-        $(obj).find('.mainAddText').val("");
-        $(obj).find('.category option:eq(0)').attr("selected", "selected");
-        $('.mainAddArea').append(obj);
+    	var chk = 0;
+    	$(".mainAddForm").each(function(index, item) {
+    		chk = index;
+    	});
+    	if (chk < 9) {
+	        var obj = $('.mainAddForm').eq(0).clone(true);
+	        $(obj).find('.ingredientList').remove();
+	        $(obj).find('.mainAddText').val("");
+			$(obj).children().siblings('.ingrdient').append("<option class='ingredientList' value='0' selected>식재료</option>");
+	        $(obj).find('.category option:eq(0)').attr("selected", "selected");
+	        $('.mainAddArea').append(obj);
+    	} else {
+    		alert("재료는 10개까지 입력 가능합니다.");
+    	}
     });
     
     // 주재료 삭제 버튼 보여주는 기능
@@ -82,10 +91,18 @@ $(function () {
     // ------------------------------------- 부재료 기능 영역 -------------------------------------
     // 부재료 추가 버튼
     $('#subAddBtn').click(function() {
-        var obj = $('.subAddForm').eq(0).clone(true);
-        $(obj).find('.subIngredient').val("");
-        $(obj).find('.subIngredientQuan').val("");
-        $('.subAddArea').append(obj);
+    	var chk = 0;
+    	$(".subAddForm").each(function(index, item) {
+    		chk = index;
+    	});
+    	if (chk < 9) {
+	        var obj = $('.subAddForm').eq(0).clone(true);
+	        $(obj).find('.subIngredient').val("");
+	        $(obj).find('.subIngredientQuan').val("");
+	        $('.subAddArea').append(obj);
+    	} else {
+    		alert("재료는 10개까지 입력 가능합니다.");
+    	}
     });
     
     // 부재료 삭제 버튼 보여주는 기능
@@ -156,7 +173,6 @@ $(function () {
     		success : function(data) {
     			if (data.length > 0) {
     				$(obj).siblings('.ingrdient').children().siblings('.ingredientList').remove();
-    				$(obj).siblings('.ingrdient').append("<option class='ingredientList' value='0' selected>식재료</option>");
 	    			$.each(data, function(key, value) {
 	    				 $(obj).siblings('.ingrdient').append("<option class='ingredientList' value=" + value.iNum + ">" + value.iName + "</option>");
 	    			});
