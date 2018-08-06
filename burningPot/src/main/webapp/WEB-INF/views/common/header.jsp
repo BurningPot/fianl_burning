@@ -1933,8 +1933,17 @@
 			success : function(data){
 				console.log("top5 ajax 실행됨");
 				console.log("data 길이 : " + data.length);
+				var rNameRec ="";
 				for(var i = 0; i < data.length; i++){
-					$("<a class='rec_reipe_a badge badge-success' onclick=\"location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=" + data[i].rNum+ "'\">" + data[i].rName + "</a>").appendTo('#rec_recipe_link');
+					rNameRec = data[i].rName;
+					
+					if(rNameRec.length <= 6){
+						rNameRec = rNameRec.substring(0, 5);
+        			} else {
+        				rNameRec = rNameRec.substring(0, 5) + " ... ";
+        			}
+			
+					$("<a class='rec_reipe_a badge badge-success' onclick=\"location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=" + data[i].rNum+ "'\">" + rNameRec + "</a>").appendTo('#rec_recipe_link');
 				}
 			}, error : function(data){
 				console.log("top5 ajax 실행 안됨");

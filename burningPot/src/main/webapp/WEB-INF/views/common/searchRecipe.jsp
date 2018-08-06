@@ -411,8 +411,8 @@
 		               				"</div>" +
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
-		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		               					"<div class='recipe_time'>" + rTime + "</div>" +
+		               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		               				"</div>" +
 		               			"</li>").appendTo(".recipeList");
 		            			
@@ -442,8 +442,8 @@
 		    	               				"</div>" +
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +
-		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		    	               					"<div class='recipe_time'>" + rTime + "</div>" +
+		    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		    	               				"</div>" +
 		    	               			"</li>").appendTo(".recipeList");
 		            			}
@@ -558,8 +558,8 @@
 		               				"</div>" +
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
-		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		               					"<div class='recipe_time'>" + rTime + "</div>" +
+		               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		               				"</div>" +
 		               			"</li>").appendTo(".recipeList");
 		            			
@@ -589,8 +589,8 @@
 		    	               				"</div>" +
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +
-		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		    	               					"<div class='recipe_time'>" + rTime + "</div>" +
+		    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		    	               				"</div>" +
 		    	               			"</li>").appendTo(".recipeList");
 		            			}
@@ -719,8 +719,8 @@
 		               				"</div>" +
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
-		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		               					"<div class='recipe_time'>" + rTime + "</div>" +
+		               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		               				"</div>" +
 		               			"</li>").appendTo(".recipeList");
 		            			
@@ -750,8 +750,8 @@
 		    	               				"</div>" +
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +
-		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		    	               					"<div class='recipe_time'>" + rTime + "</div>" +
+		    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		    	               				"</div>" +
 		    	               			"</li>").appendTo(".recipeList");
 		            			}
@@ -863,8 +863,8 @@
 		               				"</div>" +
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
-		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		               					"<div class='recipe_time'>" + rTime + "</div>" +
+		               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		               				"</div>" +
 		               			"</li>").appendTo(".recipeList");
 		            			
@@ -894,8 +894,8 @@
 		    	               				"</div>" +
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +
-		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		    	               					"<div class='recipe_time'>" + rTime + "</div>" +
+		    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		    	               				"</div>" +
 		    	               			"</li>").appendTo(".recipeList");
 		            			}
@@ -1017,8 +1017,8 @@
 		               				"</div>" +
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
-		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		               					"<div class='recipe_time'>" + rTime + "</div>" +
+		               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		               				"</div>" +
 		               			"</li>").appendTo(".recipeList");
 		            			
@@ -1048,8 +1048,8 @@
 		    	               				"</div>" +
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +
-		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		    	               					"<div class='recipe_time'>" + rTime + "</div>" +
+		    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		    	               				"</div>" +
 		    	               			"</li>").appendTo(".recipeList");
 		            			}
@@ -1161,8 +1161,8 @@
 		               				"</div>" +
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
-		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		               					"<div class='recipe_time'>" + rTime  + "</div>" +
+		               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		               				"</div>" +
 		               			"</li>").appendTo(".recipeList");
 		            			
@@ -1192,8 +1192,8 @@
 		    	               				"</div>" +
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +
-		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		    	               					"<div class='recipe_time'>" + rTime  + "</div>" +
+		    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		    	               				"</div>" +
 		    	               			"</li>").appendTo(".recipeList");
 		            			}
@@ -1334,8 +1334,8 @@
 		               				"</div>" +
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
-		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		               					"<div class='recipe_time'>" + rTime + "</div>" +
+		               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		               				"</div>" +
 		               			"</li>").appendTo(".recipeList");
 		            			
@@ -1365,8 +1365,8 @@
 		    	               				"</div>" +
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +
-		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		    	               					"<div class='recipe_time'>" + rTime + "</div>" +
+		    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		    	               				"</div>" +
 		    	               			"</li>").appendTo(".recipeList");
 		            			}
@@ -1516,8 +1516,8 @@
 			               				"</div>" +
 			               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 			               					"<div class='recipe_level'>" + level + "</div>" +
-			               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-			               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+			               					"<div class='recipe_time'>" + rTime + "</div>" +
+			               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 			               				"</div>" +
 			               			"</li>").appendTo(".recipeList");
 			            			
@@ -1547,8 +1547,8 @@
 			    	               				"</div>" +
 			    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 			    	               					"<div class='recipe_level'>" + level + "</div>" +
-			    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-			    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+			    	               					"<div class='recipe_time'>" + rTime + "</div>" +
+			    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 			    	               				"</div>" +
 			    	               			"</li>").appendTo(".recipeList");
 			            			}
@@ -1692,8 +1692,8 @@
 			               				"</div>" +
 			               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 			               					"<div class='recipe_level'>" + level + "</div>" +
-			               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-			               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+			               					"<div class='recipe_time'>" + rTime + "</div>" +
+			               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 			               				"</div>" +
 			               			"</li>").appendTo(".recipeList");
 			            			
@@ -1723,8 +1723,8 @@
 			    	               				"</div>" +
 			    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 			    	               					"<div class='recipe_level'>" + level + "</div>" +
-			    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-			    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+			    	               					"<div class='recipe_time'>" + rTime + "</div>" +
+			    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 			    	               				"</div>" +
 			    	               			"</li>").appendTo(".recipeList");
 			            			}
