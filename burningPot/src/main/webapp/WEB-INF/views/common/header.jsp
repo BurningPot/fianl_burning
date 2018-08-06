@@ -43,7 +43,9 @@
 				width:100%; 
 				height:100%; 
 				display:block; 
-				line-height: 450px;
+				line-height: 300px;
+				cursor:pointer;
+    			font-size: 80%;
 			}
 			
 			/* 목록 정렬 버튼 css */
@@ -52,16 +54,17 @@
 				height:100%;
 				list-style: none;
 				float: left;
-			    padding-top: 4%;
+			    padding-top: 7%;
 			    padding-bottom : 2%;
     			padding-left: 12%;
+    			margin : 0;
 			}
 			.searchBtnUl li {
 				width: 15%; 
 				height:100%; 
 				float: left; 
 				margin: 0;
-			    margin-left: 1%;
+			    margin-left: 1.5%;
 				text-align: center;
 				
 			}
@@ -80,7 +83,7 @@
 				height: 100%;
 				background: #c3e6cb;
 				border: none;
-				
+				cursor : pointer;				
 			}
 			
 			.searchBtnUl > li:hover .searchBtnA1 {
@@ -93,6 +96,11 @@
 				height: 100%;
 				background: #bee5eb;
 				border: none;
+				cursor : pointer;
+			}
+			
+			.searchBtnUl > li:hover .searchBtnA2 {
+				background : #FFB2F5;
 			}
 			.searchBtnA3{
 				display: block; 
@@ -101,6 +109,11 @@
 				height: 100%;
 				background: #ffeeba;
 				border: none;
+				cursor : pointer;
+			}
+			
+			.searchBtnUl > li:hover .searchBtnA3 {
+				background : #FFB2F5;
 			}
 			
 			
@@ -134,11 +147,16 @@
 			}
 			
 			/* 검색 후 정렬 버튼 css */
-			.searchResultAndsearchBtn{
+			.searchResultAndsearchBtnA{
 				width:100%; 
-				height:12%; 
-				/* border:1px solid black; */
-			}			
+				height:10%; 
+				padding-top : 1%;
+			}
+			.searchResultAndsearchBtnB{
+				width:100%; 
+				height:15%; 
+				padding-top : 1%;
+			}						
 			.searchBtn{
 				width:50%;
 				height:100%; 
@@ -167,15 +185,14 @@
 			
 			/* 검색된 레시피 갯수 css */
 			.searchRecipeCountArea{
-				/* text-align: center; */
 			    font-size: 18px;
 			    color: #333;
 			    padding: 10px 0 20px 8px;
 			    width:50%; 
 			    float:left; 
 			    padding-left : 10%;
-			    padding-top : 1.5%;
-			    /* border:1px solid green; */
+				cursor : default;
+				font-weight: bolder;			   
 			}
 			.searchRecipeCountArea > b{
 				color: #74b243; /* 폰트 색상 */
@@ -211,7 +228,7 @@
 			.menu_home_btn{
 				display: none;
 				border-radius: 50%;
-				
+								
 			}
 			.menu_home_btn_after{
 				display: none;
@@ -365,6 +382,7 @@
 	        	height:100%; 
 	        	border-radius: 50%;
 	         	padding : 0 0;
+	         	cursor : pointer;
 	        }
 	        .menuBtn_after{
 	        	outline: none;
@@ -376,6 +394,7 @@
 		        height:100%; 
 		        border-radius: 50%;
 		        padding : 0 0;
+		        cursor : pointer;
 	        }
 	        
 	        .triangle {display:inline-block; width:0; height:0; border-style:solid; border-width:30px; margin-bottom: -4%;}
@@ -605,9 +624,8 @@
 		    float: right;
 		    background: #FDD692;
 		    display: inline-block;
-		    /* margin-left: 2%; */
 		    padding: 1%;
-		    /* border: 1px solid red; */
+		    cursor : default;
 		}
 		
 		.recipeList {
@@ -724,13 +742,15 @@
 			margin-top: 1%;
 			margin-left: 30%;
 			/* border: 1px solid red; */
+			cursor:pointer;
 		}
 		
 		#rec_recipe_link {
-			width: 14%;
+			width: 12%;
 			text-align: center;
 			/* margin-left: 4%; */
 			border: none;
+			cursor : default;
 			/* background: no-repeat; */
 		}
 		
@@ -777,37 +797,35 @@
 			/* padding: 3%; */
 			/* position: relative;
 			z-index: 3; */
-			width: 20%;
+			width: 30%;
 			height: 100%;
 			float: right;
 			display : inline-grid;
+			
 			/* border: 1px solid blue; */
 		}
 		
 		.aver_btn_area {
-			/* position: relative; */
-			padding: 3%;
-			/* z-index: 3; */
-			width: 78%;
+			padding-top: 1%;
+			width: 70%;
 			height: 100%;
 			float: left;
-			/* border: 1px solid green; */
+			cursor: default;
+			font-size: 150%;
+			font-weight: bolder;	
+			/* color: steelblue; */
 		}
 		
 		.like_btn {
 			width: 100%;
-			/*  height: 100%; */
 			outline: none;
 			border: none;
 			background: no-repeat;
 			font-size: 200%;
 			text-align: center;
-			color: #FDD692;
+			color: rgb(117, 79, 68);
 			display : inline-grid;
-			/* background: white;
-					border-radius: 5%; */
-			/* z-index: 4;
-			position: relative; */
+			cursor : pointer;		
 		}
 		
 		.recipe_levle_and_time_and_writer_area {
@@ -815,24 +833,28 @@
 			width: 100%;
 			height: 10%;
 		    display: inline-flex;
-			
+			cursor: default;
 			/* margin-top: 5%; */
 		}
 		.recipe_level{
 			width:33.3%;
 			height:100%;
 			border-right: 2px solid black;
-			
+			font-size: 150%;
+    		font-weight: bolder;
 		}
 		.recipe_time{
 			width:33.3%;
 			height:100%;
 			border-right: 2px solid black;
+			font-size: 150%;
+    		font-weight: bolder;
 		}
 		.recipe_quantity{
 			width:33.3%;
 			height:100%;
-			/* border: 1px solid blue; */
+			font-size: 150%;
+    		font-weight: bolder;
 		}
 		
 		.img_icon {
@@ -866,6 +888,7 @@
 			outline: none;
 			width: 150%;
 			height: 100%;
+			cursor:pointer;
 		}
 		
 		.table-head {
@@ -1477,7 +1500,7 @@
 				<div class="b-seg-logo navbar-header">
 					<div class="logo_wrap navbar-brand">
 						<%-- <a class="home_btn" data-tooltip-text="HOME!!" onclick="location.href='${pageContext.request.contextPath}/main.jsp'"> --%>
-						<a class="home_btn" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
+						<a class="home_btn" data-tooltip-text="Home" onclick="location.href='${pageContext.request.contextPath }/home/showHome.do'">
 							<img class="img-logo" src="${pageContext.request.contextPath }/resources/img/logo.png">
 						</a>
 					</div>
