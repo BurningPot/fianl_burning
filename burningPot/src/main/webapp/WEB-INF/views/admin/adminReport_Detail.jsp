@@ -127,7 +127,8 @@
             						rNum : number
             					}, success: function(data){
             						swal("작업성공!", "선택하신 레시피가 삭제되었습니다", "success").then((value) => {
-            							location.href="${pageContext.request.contextPath}/admin/goReport.do";
+            							//location.href="${pageContext.request.contextPath}/admin/goReport.do";
+            							$('#toList').submit();
             						});
             					}, error: function(data){
             						swal("작업실패!", "레시피 삭제에 실패하였습니다", "error");
@@ -143,7 +144,7 @@
             	function showRecipe(){
             		var number =${rp.rNum};            		
             		window.open(
-            				"${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum="+number, '_blank'	
+            			"${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum="+number, '_blank'	
             		);
             	}
             	
