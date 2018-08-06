@@ -120,12 +120,19 @@
 				
       </div>
       <div class="modal-footer justify-content-center">        
-        <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/admin/goIng.do'">재료추가하러가기</button>
+        <button type="button" class="btn btn-primary" onclick="goIngDo();">재료추가하러가기</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div>
     </div>
   </div>
 </div>
+<form action="${pageContext.request.contextPath}/admin/goIng.do" method="POST" id="goIngDo"><input type="hidden" value="${m.mNum}" name="mNum"/></form>
 
 
+<script>
+	function goIngDo(){
+		$('#goIngDo').submit();
+	}
+
+</script>
 </html>

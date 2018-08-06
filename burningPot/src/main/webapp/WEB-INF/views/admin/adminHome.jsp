@@ -12,7 +12,7 @@
 
 <!-- 파비콘 테스트 -->
 <%-- <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/img/title-logo.png" type="image/lg-icon"> --%>
-<link rel="icon" href="${pageContext.request.contextPath}/resources/img/smile.png" type="image/lg-icon">
+<link rel="icon" href="${pageContext.request.contextPath}/resources/img/pot.png" type="image/lg-icon">
 <!-- 파비콘 테스트 -->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
