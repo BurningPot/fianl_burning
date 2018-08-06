@@ -107,7 +107,7 @@
 			                                    </select>
 			                                    &nbsp;&nbsp;&nbsp;
 			                                    <select class="custom-select selectStyle ingrdient" name="iNum">
-			                                        <!-- <option value="0" selected>식재료</option> -->
+			                                    	<!-- <option value="0" selected>식재료</option> -->
 			                                    </select>
 			                                    &nbsp;&nbsp;&nbsp;
 			                                    <input type="text" class="form-control textStyle mainAddText" name="iQuan" placeholder="계량 정보 예) 300g or 1/2개" aria-label="mainIngredient" aria-describedby="mainIngredientTitle" value="${mainQuan}">

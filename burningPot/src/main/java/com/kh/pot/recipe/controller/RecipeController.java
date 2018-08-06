@@ -33,6 +33,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.kh.pot.admin.model.vo.PageInfo;
 import com.kh.pot.board.model.vo.Report;
+import com.kh.pot.common.exception.PotException;
 import com.kh.pot.ingredient.model.vo.Ingredient;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.recipe.model.service.RecipeService;
@@ -49,7 +50,7 @@ public class RecipeController {
 	
 	// 레시피 작성 페이지
 	@RequestMapping("/recipe/recipeForm.do")
-	public String goRecipeForm(Model model) throws Exception {
+	public String goRecipeForm(Model model) throws PotException {
 		String page = "";
 				
 		List<Ingredient> list = recipeService.selectCategoryList();
@@ -59,7 +60,7 @@ public class RecipeController {
 			
 			page = "recipe/recipeForm";
 		} else {
-			throw new Exception("잘못 된 접근입니다.");
+			throw new PotException("잘못 된 접근입니다.", "잘못 된 경로로 접근하였습니다.");
 		}
 		
 		return page;
@@ -152,7 +153,7 @@ public class RecipeController {
 														@RequestParam(value="searchReview", required=false, defaultValue="null") String searchReview,
 														@RequestParam(value="keyword", required=false, defaultValue="null") String keyword,
 														HttpSession session,
-														Model model) throws Exception {
+														Model model) throws PotException {
 		String page = "";
 		
 		// 조회수 증가
@@ -243,13 +244,13 @@ public class RecipeController {
 					model.addAttribute("avg", avgGrade);
 					model.addAttribute("keyword", keyword);
 				} else {
-					throw new Exception("레시피 조회 도중 문제가 발생하였습니다.");
+					throw new PotException("레시피 조회 에러", "레시피 조회 도중 문제가 발생하였습니다.");
 				}
 			} else {
-				throw new Exception("해당 레시피 정보를 찾을 수 없습니다.");
+				throw new PotException("레시피 조회 에러", "해당 레시피 정보를 찾을 수 없습니다.");
 			}
 		} else {
-			throw new Exception("조회수 오류 발생");
+			throw new PotException("레시피 조회 오류", "조회수 오류 발생");
 		}
 		
 		return page;
@@ -258,7 +259,7 @@ public class RecipeController {
 	// 레시피 수정 페이지
 	@RequestMapping("/recipe/selectDetail.do")
 	public String goUpdateForm(@RequestParam("rNum") int rNum,
-														Model model) throws Exception {
+														Model model) throws PotException {
 		String page = "";
 		Recipe recipe = recipeService.selectRecipeDetail(rNum);
 
@@ -286,10 +287,10 @@ public class RecipeController {
 				model.addAttribute("contentList", contentList);
 				model.addAttribute("categoryList", list);
 			} else {
-				throw new Exception("레시피 조회 도중 문제가 발생하였습니다.");
+				throw new PotException("레시피 조회 오류", "레시피 조회 도중 문제가 발생하였습니다.");
 			}
 		} else {
-			throw new Exception("해당 레시피 정보를 찾을 수 없습니다.");
+			throw new PotException("레시피 조회 오류", "해당 레시피 정보를 찾을 수 없습니다.");
 		}
 		
 		return page;
@@ -304,7 +305,7 @@ public class RecipeController {
 													@RequestParam("originTitleImg") String originTitleImg,
 													@RequestParam("originSubImg") String[] originSubImg,
 													HttpServletRequest request,
-													Model model) throws Exception {
+													Model model) throws PotException {
 		String loc = "/";
 		String msg = "";
 		int result = 0;
@@ -415,7 +416,7 @@ public class RecipeController {
 			if (deleteFile.exists()) {
 				if (deleteFile.delete()) {
 				} else {
-					throw new Exception("레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  recipe.getrNum() + "/ originTitleImgDel)");
+					throw new PotException("레시피 삭제 오류", "레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  recipe.getrNum() + "/ originTitleImgDel)");
 				}
 			}
 			loc = "/recipe/recipeDetail.do?rNum=" + recipe.getrNum();
@@ -432,7 +433,7 @@ public class RecipeController {
 	@RequestMapping("/recipe/deleteRecipe.do")
 	public String deleteRecipe(@RequestParam("rNum") int rNum,
 														HttpServletRequest request,
-														Model model) throws Exception {
+														Model model) throws PotException {
 		String page = "";
 		String deleteDir = request.getSession().getServletContext().getRealPath("/resources/img/recipeContent");
 		String loc = "/";
@@ -449,7 +450,7 @@ public class RecipeController {
 					if (deleteFile.exists()) {
 						if (deleteFile.delete()) {
 						} else {
-							throw new Exception("레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  rNum + ")");
+							throw new PotException("레시피 삭제 오류", "레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  rNum + ")");
 						}
 					}
 				}
@@ -467,12 +468,12 @@ public class RecipeController {
 							model.addAttribute("loc", loc);
 							model.addAttribute("msg", msg);
 						} else {
-							throw new Exception("레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  rNum + ")");
+							throw new PotException("레시피 삭제 오류", "레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  rNum + ")");
 						}
 					}
 				}
 			} else {
-				throw new Exception("레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  rNum + ")");
+				throw new PotException("레시피 삭제 오류", "레시피 내용 삭제 도중 문제가 발생하였습니다.\r관리자에게 문의 바랍니다. (Recipe No." +  rNum + ")");
 			}
 		}
 		
@@ -483,7 +484,7 @@ public class RecipeController {
 	@ResponseBody
 	@RequestMapping("/recipe/insertRecommend.do")
 	public int insertRecommend(@RequestParam("rNum") int rNum,
-															HttpSession session) throws Exception {
+															HttpSession session) throws PotException {
 		Member m = (Member)session.getAttribute("m");
 		int result = 0;
 		
@@ -495,12 +496,12 @@ public class RecipeController {
 			if (result == 1) {
 				result = recipeService.updateRecommend(rec);
 				if (result < 1) {
-					throw new Exception("좋아요 버튼 오류. (error : updateRecommend / 관리자에게 문의 바랍니다.)");
+					throw new PotException("좋아요 버튼 오류.", "(error : updateRecommend / 관리자에게 문의 바랍니다.)");
 				}
 				
 				result = recipeService.selectRecipeDetail(rNum).getrRecommend();
 			} else {
-				throw new Exception("좋아요 버튼 오류. (error : insertRecommend / 관리자에게 문의 바랍니다.)");
+				throw new PotException("좋아요 버튼 오류.", "(error : insertRecommend / 관리자에게 문의 바랍니다.)");
 			}
 		}
 		
@@ -511,7 +512,7 @@ public class RecipeController {
 	@ResponseBody
 	@RequestMapping("/recipe/deleteRecommend.do")
 	public int deleteRecommend (@RequestParam("rNum") int rNum,
-															HttpSession session) throws Exception {
+															HttpSession session) throws PotException {
 		Member m = (Member)session.getAttribute("m");
 		int result = 0;
 		
@@ -523,12 +524,12 @@ public class RecipeController {
 			if (result == 1) {
 				result = recipeService.updateRecommend(rec);
 				if (result < 1) {
-					throw new Exception("좋아요 버튼 오류. (error : updateRecommend / 관리자에게 문의 바랍니다.)");
+					throw new PotException("좋아요 버튼 오류.", "(error : updateRecommend / 관리자에게 문의 바랍니다.)");
 				}
 				
 				result = recipeService.selectRecipeDetail(rNum).getrRecommend();
 			} else {
-				throw new Exception("좋아요 버튼 오류. (error : insertRecommend / 관리자에게 문의 바랍니다.)");
+				throw new PotException("좋아요 버튼 오류.", "(error : insertRecommend / 관리자에게 문의 바랍니다.)");
 			}
 		}
 		
@@ -540,7 +541,7 @@ public class RecipeController {
 	public String insertReview(Review review,
 													@RequestParam(value="maxPage", required=false, defaultValue="1") int maxPage,
 													Model model,
-													HttpSession session) throws Exception {
+													HttpSession session) throws PotException {
 		String msg="";
 		String loc ="/recipe/recipeDetail.do";
 		Member m = (Member)session.getAttribute("m");
@@ -553,7 +554,7 @@ public class RecipeController {
 				msg="댓글 등록 실패";
 			}
 		} else {
-			throw new Exception("잘못된 접근입니다. (로그인 이후 이용해 주세요.)");
+			throw new PotException("잘못된 접근입니다.", "(로그인 이후 이용해 주세요.)");
 		}
 		
 		model.addAttribute("msg", msg);
@@ -576,7 +577,7 @@ public class RecipeController {
    public String deleteReview(@RequestParam("rvNum") int rvNum,
 		   											@RequestParam("rNum") int rNum,
 													@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage,
-													Model model) throws Exception {
+													Model model) throws PotException {
 	   int result = recipeService.deleteReview(rvNum);
 	   String msg="";
 	   
@@ -585,7 +586,7 @@ public class RecipeController {
 		   model.addAttribute("msg", msg);
 		   return "redirect:/recipe/recipeDetail.do?rNum="+rNum+"&keyword=review&currentPage="+currentPage;
 	   } else {
-			throw new Exception("댓글 삭제 오류 (error : deleteReview / 관리자에게 문의 바랍니다.)");
+			throw new PotException("댓글 삭제 오류.", "(error : deleteReview / 관리자에게 문의 바랍니다.)");
 	   }	
    }
 

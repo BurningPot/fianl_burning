@@ -17,10 +17,12 @@
 	</appender>
 	
 	<logger name="jdbc.sqlonly" additivity="false">
-		<level value="INFO"/>
+		<level value="info"/>
 		<appender-ref ref="sqlLogger"/>
 		<!-- <appender-ref ref="fileLogger"/> -->
 	</logger>
+	
+	
 	
 	<!-- Application Loggers -->
 	<logger name="com.kh.pot">
