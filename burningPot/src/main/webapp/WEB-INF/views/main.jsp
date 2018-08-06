@@ -14,9 +14,9 @@
 	<div style="height: 15%;"></div>
 	<div id="fakeLoader"></div>
 	<div class="b-seg" id="b-seg">
-		<div class="searchResultAndsearchBtn">
+		<div class="searchResultAndsearchBtnA">
 			<div class="searchRecipeCountArea">
-				<b>BurningPot</b>에는 현재 <b>${recipeCount}</b>개의 맛있는 레시피가 있습니다.
+				<b>BurningPot</b> 에는 현재  <b>${recipeCount}</b> 개의 맛있는 레시피가 있습니다.
 			</div>
 		</div>
 		<ul class="recipeList">
@@ -38,23 +38,21 @@
 	                     	 <input id="rcCheck" type="hidden" value="${recipe.rcCheck}"/>
 						</div>
 						<div class='aver_btn_area'>
-							<h5>
-								<c:choose>
-									<c:when test="${recipe.grade == 0}">
-										0점
-									</c:when>
-									<c:otherwise>
-										${recipe.grade}점
-									</c:otherwise>
-								</c:choose>
-							</h5>
+							<c:choose>
+								<c:when test="${recipe.grade == 0}">
+									0점
+								</c:when>
+								<c:otherwise>
+									${recipe.grade}점
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 					<div class='recipe_img_area'>
 						<img class='food_img img-thumbnail'
 							src='${pageContext.request.contextPath}/resources/img/recipeContent/${recipe.rImg}'>
 						<div class='img_hover_area'>
-							<a class="recipe_move_detail" onclick="location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=${recipe.rNum}'">
+							<a class="recipe_move_detail" style="color: palegreen;" onclick="location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=${recipe.rNum}'">
 								<c:if test="${fn:length(recipe.rName)<= 6}">
 									${fn:substring(recipe.rName,0, 9)}
 								</c:if>
@@ -237,13 +235,13 @@
 		        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
 		               					"</div>" + 
 		               					"<div class='aver_btn_area'>" + 
-		               						"<h5>" + gradeC + "</h5>"+
+		               						gradeC +
 		               					"</div> " +
 		               				"</div>" + 
 		               				"<div class='recipe_img_area'>" +
 		               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/recipeContent/" + data[i].rImg + "'>" +
 		               					"<div class='img_hover_area'>" +
-			               					"<a class='recipe_move_detail' onclick=\"location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=" + data[i].rNum+ "'\">" +
+			               					"<a class='recipe_move_detail' style='color: palegreen;' onclick=\"location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=" + data[i].rNum+ "'\">" +
 				               					rNameSub +
 			    							"</a>" +
 		               					 "</div>" +
@@ -251,7 +249,7 @@
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
 		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
 		               				"</div>" +
 		               			"</li>").appendTo(".recipeList");
 		            			
@@ -268,13 +266,13 @@
 		    	        							"<input id='rcCheck' type='hidden' value='" + data[i].rcCheck +"' />" +
 		    	               					"</div>" + 
 		    	               					"<div class='aver_btn_area'>" + 
-		    	               						"<h5>" + gradeC + "</h5>"+
+		    	               						gradeC +
 		    	               					"</div> " +
 		    	               				"</div>" + 
 		    	               				"<div class='recipe_img_area'>" +
 		    	               				"<img class='food_img img-thumbnail' src='${pageContext.request.contextPath}/resources/img/recipeContent/" + data[i].rImg + "'>" +
 		    	               					"<div class='img_hover_area'>" +
-					               					"<a class='recipe_move_detail' onclick=\"location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=" + data[i].rNum+ "'\">" +
+					               					"<a class='recipe_move_detail' style='color: palegreen;' onclick=\"location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=" + data[i].rNum+ "'\">" +
 					               					rNameSub +
 					    							"</a>" +
 		    	               					"</div>" +
@@ -282,7 +280,7 @@
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +
 		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		    	               					"<div class='recipe_writer'>" + data[i].quantity + "인분" + "</div>" +
+		    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
 		    	               				"</div>" +
 		    	               			"</li>").appendTo(".recipeList");
 		            			}

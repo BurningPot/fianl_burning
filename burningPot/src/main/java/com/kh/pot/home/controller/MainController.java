@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.pot.board.model.service.BoardService;
+import com.kh.pot.common.exception.PotException;
 import com.kh.pot.fridge.model.service.FridgeService;
 import com.kh.pot.home.service.MainService;
 import com.kh.pot.ingredient.model.service.IngredientService;
@@ -47,37 +48,31 @@ public class MainController {
 	
 	// 1. 검색(검색어에 레시피 명, 재료명이 있을 경우 레시피 전체를 보여줘야 하는) 메소드
 	@RequestMapping("/home/searchRecipe.do")
-	public String searchRecipe(@RequestParam("searchR") String search, HttpSession session, Model model){
-		Member m = (Member)session.getAttribute("m");
+	public String searchRecipe(@RequestParam("searchR") String search, HttpSession session, Model model) throws PotException{
 		
-		int mNum = 0;
+		try {
 		
-		System.out.println("현재 로그인한 사람의 정보"+m);
-		//System.out.println("사람의 번호"+ m.getmNum());
+			Member m = (Member)session.getAttribute("m");
+			
+			int mNum = 0;
 		
-		if(m != null){
-			mNum = m.getmNum();
+			if(m != null){
+				mNum = m.getmNum();
+			}
+			
+			List<Recipe> searchRecipeList = mainService.searchRecipe(search, mNum);
+			
+			int searchTotalCount = mainService.searchTotalCountHome(search);
+	
+			model.addAttribute("searchRecipeList", searchRecipeList);
+			model.addAttribute("searchTotalCount", searchTotalCount);
+			model.addAttribute("searchRecipeWord", search);
+			
+		} catch (Exception e) {
+			
+			throw new PotException("검색 오류!", "검색을 하는 도중 에러가 발생했습니다");
+		
 		}
-		
-		List<Recipe> searchRecipeList = mainService.searchRecipe(search, mNum);
-		System.out.println("검색 list : " + searchRecipeList);
-		
-		int searchTotalCount = mainService.searchTotalCountHome(search);
-
-		
-		
-//		for( int i = 0; i < searchRecipeList.size(); i++){
-//			model.addAttribute("searchRecipeListRNum", searchRecipeList.get(i).getmNum());
-//			model.addAttribute("searchRecipeListMNum", searchRecipeList.get(i).getrNum());
-//			
-//			System.out.println("mNum : " + searchRecipeList.get(i).getmNum() + "rNum : " + searchRecipeList.get(i).getrNum());
-//			
-//		}
-		
-		model.addAttribute("searchRecipeList", searchRecipeList);
-		model.addAttribute("searchTotalCount", searchTotalCount);
-		model.addAttribute("searchRecipeWord", search);
-		
 		return "common/searchRecipe";
 	}
 	
@@ -87,52 +82,47 @@ public class MainController {
 	public List<Recipe> searchRecipeObject(Model model, 
 											@RequestParam("number") int number, 
 											HttpSession session, 
-											@RequestParam("keyWord") String keyWord){
-		
-		Member m = (Member)session.getAttribute("m");
-		
-		int mNum = 0;
-		
-		System.out.println("현재 로그인한 사람의 정보"+m);
-		//System.out.println("사람의 번호"+ m.getmNum());
-		
-		if(m != null){
-			mNum = m.getmNum();
-		}
-		
-		System.out.println("number : " + number);
-		System.out.println("keyWord : " + keyWord);
-		System.out.println("mNum : " + mNum);
+											@RequestParam("keyWord") String keyWord) throws PotException{
 		
 		
-		// 레시피의 총 개수를 구한다.
-		int searchTotalCount = mainService.searchTotalCount(keyWord);
+		List<Recipe> searchList = null;
 		
-		model.addAttribute("searchTotalCount", searchTotalCount);
-//		System.out.println("searchTotalCount : " + searchTotalCount);
-		// 초기값과 최종값을 받아온다.
-		int searchStartCount = number;
-		int searchEndCount = number + 8;
+		try {
+			Member m = (Member)session.getAttribute("m");
+			
+			int mNum = 0;
+			
+			System.out.println("현재 로그인한 사람의 정보"+m);
+			//System.out.println("사람의 번호"+ m.getmNum());
+			
+			if(m != null){
+				mNum = m.getmNum();
+			}
+
+			// 레시피의 총 개수를 구한다.
+			int searchTotalCount = mainService.searchTotalCount(keyWord);
+			
+			model.addAttribute("searchTotalCount", searchTotalCount);
+
+			// 초기값과 최종값을 받아온다.
+			int searchStartCount = number;
+			int searchEndCount = number + 8;
 		
-		System.out.println("searchStartCount : " + searchStartCount);
-		System.out.println("searchEndCount : " + searchEndCount);
-		
-		// 최종값의 경우 레시피의 개수보다 커질경우 레시피의 개수로 제한한다.
-		if(searchEndCount >= searchTotalCount){
-			searchEndCount = searchTotalCount;
-			System.out.println("searchEndCount : " + searchEndCount);
-		}
-		System.out.println("searchEndCount : " + searchEndCount);
-		
-	
-		// 시작값과 최종값을 list에 담아 쿼리문으로 보낸다.
-			List<Recipe> searchList = mainService.searchRecipeList(searchStartCount, searchEndCount, keyWord, mNum);
-			for(int i = 0; i< searchList.size();i++){
-				System.out.println(searchList.get(i).getrName());
+			// 최종값의 경우 레시피의 개수보다 커질경우 레시피의 개수로 제한한다.
+			if(searchEndCount >= searchTotalCount){
+				searchEndCount = searchTotalCount;
 			}
 		
-		return searchList;
+			// 시작값과 최종값을 list에 담아 쿼리문으로 보낸다.
+			searchList = mainService.searchRecipeList(searchStartCount, searchEndCount, keyWord, mNum);
+
+		} catch (Exception e) {
+					
+			throw new PotException("검색 오류!", "검색을 하는 도중 에러가 발생했습니다");
 		
+		}
+		
+		return searchList;
 		
 	}
 	
@@ -141,12 +131,19 @@ public class MainController {
 	// 2. 추천 검색어(평점이 높은 순서 or 따봉이 많은 순서)의 레시피명을 불러오는 메소드
 	@ResponseBody
 	@RequestMapping("/home/recipeTop.do")
-	public List<Recipe> recipeTop5(Model model){
+	public List<Recipe> recipeTop5(Model model) throws PotException{
 		
-		List<Recipe> top5List = mainService.recipeTop5();
+		List<Recipe> top5List = null;
 		
-		model.addAttribute("top5List", top5List);
-		
+		try {
+			top5List = mainService.recipeTop5();
+			
+			model.addAttribute("top5List", top5List);
+		} catch (Exception e) {
+				
+				throw new PotException("추천 검색어 오류!", "추천 검색어를 불러오는 도중 에러가 발생했습니다");
+			
+			}
 		return top5List;
 	}
 	
@@ -157,47 +154,34 @@ public class MainController {
 									  @RequestParam("keyWord") String keyWord,
 									  @RequestParam("TrueAndFalse") boolean TrueAndFalse,
 									  @RequestParam("AscAndDesc") String AscAndDesc,
-									  HttpSession session){
+									  HttpSession session) throws PotException{
 		
-		Member m = (Member)session.getAttribute("m");
+		List<Recipe> inquiryRecipeListBefore = null;
 		
-		int mNum = 0;
-		
-		System.out.println("현재 로그인한 사람의 정보"+m);
-		//System.out.println("사람의 번호"+ m.getmNum());
-		
-		if(m != null){
-			mNum = m.getmNum();
-		}
-		
-		System.out.println("------------- 조회가 많은 순서대로 정렬하는 메소드 시작! ----------------");
-		System.out.println("keyWord : " + keyWord);
-		System.out.println("TrueAndFalse : " + TrueAndFalse);
-		System.out.println("AscAndDesc : " + AscAndDesc);
-		
-		List<Recipe> inquiryRecipeListBefore;
-		
-		if(TrueAndFalse == true){
+		try {
+			Member m = (Member)session.getAttribute("m");
 			
-			inquiryRecipeListBefore = mainService.inquiryRecipeListBefore(keyWord, AscAndDesc, mNum);
+			int mNum = 0;
 			
-//			TrueAndFalse = false;
-//			AscAndDesc = "ASC";
+			if(m != null){
+				mNum = m.getmNum();
+			}
+	
 			
-			System.out.println("버튼 1번 클릭 시 TrueAndFalse : " + TrueAndFalse);
-			System.out.println("버튼 1번 클릭 시 AscAndDesc : " + AscAndDesc);
-		} else {
 			
-			inquiryRecipeListBefore = mainService.inquiryRecipeListBefore(keyWord, AscAndDesc, mNum);
+			if(TrueAndFalse == true){
+				
+				inquiryRecipeListBefore = mainService.inquiryRecipeListBefore(keyWord, AscAndDesc, mNum);
+				
+			} else {
+				
+				inquiryRecipeListBefore = mainService.inquiryRecipeListBefore(keyWord, AscAndDesc, mNum);
+
+			}
+		} catch (Exception e) {
 			
-//			TrueAndFalse = true;
-//			AscAndDesc = "DESC";
-			
-			System.out.println("버튼 2번 클릭 시 TrueAndFalse : " + TrueAndFalse);
-			System.out.println("버튼 2번 클릭 시 AscAndDesc : " + AscAndDesc);
-		}
-		for(int i = 0 ; i<inquiryRecipeListBefore.size(); i++){
-			System.out.println("조회수 정렬 한 레시피 제목 : " + inquiryRecipeListBefore.get(i).getrName());
+			throw new PotException("조회 정렬 오류!", "조회 순으로 정렬 도중 에러가 발생했습니다");
+		
 		}
 		
 		return inquiryRecipeListBefore;
@@ -210,62 +194,49 @@ public class MainController {
 									 @RequestParam("number") int number,
 									 @RequestParam("TrueAndFalse") boolean TrueAndFalse,
 									 @RequestParam("AscAndDesc") String AscAndDesc,
-									 HttpSession session){
+									 HttpSession session) throws PotException{
 		
+		List<Recipe> inquiryRecipeListAfter = null;
 		
-		Member m = (Member)session.getAttribute("m");
+		try {
+			Member m = (Member)session.getAttribute("m");
+			
+			int mNum = 0;
+
+			if(m != null){
+				mNum = m.getmNum();
+			}
+			
+			int inquiryTotalCount = mainService.inquiryTotalCount(keyWord);		
+			
+			int inquiryStartCount = number;
+			int inquiryEndCount = number + 8;
+
+			if(inquiryEndCount >= inquiryTotalCount){
+				inquiryEndCount = inquiryTotalCount;
+			}
+			
+			model.addAttribute("inquiryEndCount", inquiryEndCount);
+			
+			if(TrueAndFalse == false){
+				
+				AscAndDesc = "DESC"; // 강제로 바꿔줬음
+				
+				inquiryRecipeListAfter = mainService.inquiryRecipeListAfter(keyWord, inquiryStartCount, inquiryEndCount, AscAndDesc, mNum);
+			
+			} else {
+				
+				AscAndDesc = "ASC"; // 강제로 바꿔줬음
+				
+				inquiryRecipeListAfter = mainService.inquiryRecipeListAfter(keyWord, inquiryStartCount, inquiryEndCount, AscAndDesc, mNum);
+				
+			}
+		} catch (Exception e) {
+			
+			throw new PotException("조회 정렬 오류!", "조회 순으로 정렬 도중 에러가 발생했습니다");
 		
-		int mNum = 0;
-		
-		System.out.println("현재 로그인한 사람의 정보 : "+m);
-		//System.out.println("사람의 번호"+ m.getmNum());
-		
-		if(m != null){
-			mNum = m.getmNum();
 		}
-		
-		System.out.println("------------- 조회가 많은 순서대로 정렬 후 무한스크롤 메소드 시작! ----------------");
-		System.out.println("keyWord : " + keyWord);
-		System.out.println("number : " + number);
-		
-		int inquiryTotalCount = mainService.inquiryTotalCount(keyWord);		
-		
-		System.out.println("inquiryTotalCount : " + inquiryTotalCount);
-		
-		int inquiryStartCount = number;
-		int inquiryEndCount = number + 8;
-		
-		System.out.println("inquiryStartCount : " + inquiryStartCount);
-		System.out.println("inquiryEndCount : " + inquiryEndCount);
-		
-		if(inquiryEndCount >= inquiryTotalCount){
-			inquiryEndCount = inquiryTotalCount;
-		}
-		System.out.println("if문 이후의 inquiryEndCount : " + inquiryEndCount);
-		
-		model.addAttribute("inquiryEndCount", inquiryEndCount);
-		
-		List<Recipe> inquiryRecipeListAfter;
-		
-		if(TrueAndFalse == false){
 			
-			AscAndDesc = "DESC"; // 강제로 바꿔줬음
-			
-			inquiryRecipeListAfter = mainService.inquiryRecipeListAfter(keyWord, inquiryStartCount, inquiryEndCount, AscAndDesc, mNum);
-		
-		} else {
-			
-			AscAndDesc = "ASC"; // 강제로 바꿔줬음
-			
-			inquiryRecipeListAfter = mainService.inquiryRecipeListAfter(keyWord, inquiryStartCount, inquiryEndCount, AscAndDesc, mNum);
-			
-		}
-		for(int i = 0 ; i<inquiryRecipeListAfter.size(); i++){
-			System.out.println("조회수 정렬 후 무한 스크롤 레시피 제목 : " + inquiryRecipeListAfter.get(i).getrName());
-		}
-		
-		System.out.println(inquiryRecipeListAfter.size());
-		
 		return inquiryRecipeListAfter;
 	}
 	
@@ -276,40 +247,34 @@ public class MainController {
 										  @RequestParam("keyWord") String keyWord,
 										  @RequestParam("TrueAndFalse") boolean TrueAndFalse,
 										  @RequestParam("AscAndDesc") String AscAndDesc,
-										  HttpSession session){
+										  HttpSession session) throws PotException{
 		
+		List<Recipe> recommandRecipeListBefore = null;
 		
-		Member m = (Member)session.getAttribute("m");
-		
-		int mNum = 0;
-		
-		System.out.println("현재 로그인한 사람의 정보"+m);
-		//System.out.println("사람의 번호"+ m.getmNum());
-		
-		if(m != null){
-			mNum = m.getmNum();
-		}
+		try {
+			Member m = (Member)session.getAttribute("m");
+			
+			int mNum = 0;
+				
+			if(m != null){
+				mNum = m.getmNum();
+			}
 
-										  
-		System.out.println("------------- 추천수가 많은 순서대로 정렬하는 메소드 시작! ----------------");
-		System.out.println("keyWord : " + keyWord);
-		System.out.println("TrueAndFalse : " + TrueAndFalse);
-		System.out.println("AscAndDesc : " + AscAndDesc);
+			
+			
+			if(TrueAndFalse == true){
+				
+				recommandRecipeListBefore = mainService.recommandRecipeListBefore(keyWord, AscAndDesc, mNum);
+				
+			} else {
+				
+				recommandRecipeListBefore = mainService.recommandRecipeListBefore(keyWord, AscAndDesc, mNum);
+	
+			}
+		} catch (Exception e) {
+			
+			throw new PotException("추천 정렬 오류!", "추천 순으로 정렬하는 도중 에러가 발생했습니다");
 		
-		List<Recipe> recommandRecipeListBefore;
-		
-		if(TrueAndFalse == true){
-			
-			recommandRecipeListBefore = mainService.recommandRecipeListBefore(keyWord, AscAndDesc, mNum);
-			
-		} else {
-			
-			recommandRecipeListBefore = mainService.recommandRecipeListBefore(keyWord, AscAndDesc, mNum);
-
-		}
-		for(int i = 0 ; i<recommandRecipeListBefore.size(); i++){
-			
-			System.out.println("추천수 정렬 한 레시피 제목 : " + recommandRecipeListBefore.get(i).getrName());
 		}
 		
 		return recommandRecipeListBefore;
@@ -323,43 +288,47 @@ public class MainController {
 										@RequestParam("number") int number,
 										@RequestParam("TrueAndFalse") boolean TrueAndFalse,
 										@RequestParam("AscAndDesc") String AscAndDesc,
-										HttpSession session){
+										HttpSession session) throws PotException{
 		
+		List<Recipe> recommandRecipeListAfter = null;
 		
-		Member m = (Member)session.getAttribute("m");
-		
-		int mNum = 0;
-		
-		if(m != null){
-			mNum = m.getmNum();
-		}
-		
-		int recommandTotalCount = mainService.recommandTotalCount(keyWord);		
-		
-		
-		int recommandStartCount = number;
-		int recommandEndCount = number + 8;
-	
-		if(recommandEndCount >= recommandTotalCount){
-			recommandEndCount = recommandTotalCount;
-		}
-		
-		model.addAttribute("recommandEndCount", recommandEndCount);
-		
-		List<Recipe> recommandRecipeListAfter;
-		
-		if(TrueAndFalse == false){
+		try {
+			Member m = (Member)session.getAttribute("m");
 			
-			AscAndDesc = "DESC"; // 강제로 바꿔줬음
+			int mNum = 0;
 			
-			recommandRecipeListAfter = mainService.recommandRecipeListAfter(keyWord, recommandStartCount, recommandEndCount, AscAndDesc, mNum);
+			if(m != null){
+				mNum = m.getmNum();
+			}
+			
+			int recommandTotalCount = mainService.recommandTotalCount(keyWord);		
+			
+			int recommandStartCount = number;
+			int recommandEndCount = number + 8;
 		
-		} else {
+			if(recommandEndCount >= recommandTotalCount){
+				recommandEndCount = recommandTotalCount;
+			}
 			
-			AscAndDesc = "ASC"; // 강제로 바꿔줬음
+			model.addAttribute("recommandEndCount", recommandEndCount);
 			
-			recommandRecipeListAfter = mainService.recommandRecipeListAfter(keyWord, recommandStartCount, recommandEndCount, AscAndDesc, mNum);
+			if(TrueAndFalse == false){
+				
+				AscAndDesc = "DESC"; // 강제로 바꿔줬음
+				
+				recommandRecipeListAfter = mainService.recommandRecipeListAfter(keyWord, recommandStartCount, recommandEndCount, AscAndDesc, mNum);
 			
+			} else {
+				
+				AscAndDesc = "ASC"; // 강제로 바꿔줬음
+				
+				recommandRecipeListAfter = mainService.recommandRecipeListAfter(keyWord, recommandStartCount, recommandEndCount, AscAndDesc, mNum);
+				
+			}
+		} catch (Exception e) {
+			
+			throw new PotException("추천 정렬 오류!", "추천 순으로 정렬하는 도중 에러가 발생했습니다");
+		
 		}
 	
 		return recommandRecipeListAfter;
@@ -372,9 +341,11 @@ public class MainController {
 											@RequestParam("keyWord") String keyWord,
 											@RequestParam("TrueAndFalse") boolean TrueAndFalse,
 											@RequestParam("AscAndDesc") String AscAndDesc,
-											HttpSession session){
+											HttpSession session) throws PotException{
 		
+		List<Recipe> levelAndTimeRecipeListBefore = null;
 		
+		try {
 			Member m = (Member)session.getAttribute("m");
 			
 			int mNum = 0;
@@ -382,17 +353,20 @@ public class MainController {
 			if(m != null){
 				mNum = m.getmNum();
 			}
-		
-		List<Recipe> levelAndTimeRecipeListBefore;
-		
-		if(TrueAndFalse == true){
 			
-			levelAndTimeRecipeListBefore = mainService.levelAndTimeRecipeListBefore(keyWord, AscAndDesc, mNum);
-		
-		} else {
+			if(TrueAndFalse == true){
+				
+				levelAndTimeRecipeListBefore = mainService.levelAndTimeRecipeListBefore(keyWord, AscAndDesc, mNum);
 			
-			levelAndTimeRecipeListBefore = mainService.levelAndTimeRecipeListBefore(keyWord, AscAndDesc, mNum);
-
+			} else {
+				
+				levelAndTimeRecipeListBefore = mainService.levelAndTimeRecipeListBefore(keyWord, AscAndDesc, mNum);
+	
+			}
+		} catch (Exception e) {
+			
+			throw new PotException("난이도 정렬 오류!", "난이도로 정렬하는 도중 에러가 발생했습니다");
+		
 		}
 		
 		return levelAndTimeRecipeListBefore;
@@ -405,42 +379,47 @@ public class MainController {
 											@RequestParam("number") int number,
 											@RequestParam("TrueAndFalse") boolean TrueAndFalse,
 											@RequestParam("AscAndDesc") String AscAndDesc,
-											HttpSession session){
+											HttpSession session) throws PotException{
 		
+		List<Recipe> levelAndTimeRecipeListAfter = null;
 		
-		Member m = (Member)session.getAttribute("m");
-		
-		int mNum = 0;
-		
-		if(m != null){
-			mNum = m.getmNum();
-		}
-	
-		int levelAndTimeTotalCount = mainService.levelAndTimeAfterTotalCount(keyWord);		
-		
-		int levelAndTimeStartCount = number;
-		int levelAndTimeEndCount = number + 8;
-		
-		if(levelAndTimeEndCount >= levelAndTimeTotalCount){
-			levelAndTimeEndCount = levelAndTimeTotalCount;
-		}
-		
-		model.addAttribute("levelAndTimeEndCount", levelAndTimeEndCount);
-		
-		List<Recipe> levelAndTimeRecipeListAfter;
-		
-		if(TrueAndFalse == false){
+		try {
+			Member m = (Member)session.getAttribute("m");
 			
-			AscAndDesc = "DESC"; // 강제로 바꿔줬음
+			int mNum = 0;
 			
-			levelAndTimeRecipeListAfter = mainService.levelAndTimeRecipeListAfter(keyWord, levelAndTimeStartCount, levelAndTimeEndCount, AscAndDesc, mNum);
+			if(m != null){
+				mNum = m.getmNum();
+			}
 		
-		} else {
+			int levelAndTimeTotalCount = mainService.levelAndTimeAfterTotalCount(keyWord);		
 			
-			AscAndDesc = "ASC"; // 강제로 바꿔줬음
+			int levelAndTimeStartCount = number;
+			int levelAndTimeEndCount = number + 8;
 			
-			levelAndTimeRecipeListAfter = mainService.levelAndTimeRecipeListAfter(keyWord, levelAndTimeStartCount, levelAndTimeEndCount, AscAndDesc, mNum);
+			if(levelAndTimeEndCount >= levelAndTimeTotalCount){
+				levelAndTimeEndCount = levelAndTimeTotalCount;
+			}
 			
+			model.addAttribute("levelAndTimeEndCount", levelAndTimeEndCount);
+			
+			if(TrueAndFalse == false){
+				
+				AscAndDesc = "DESC"; // 강제로 바꿔줬음
+				
+				levelAndTimeRecipeListAfter = mainService.levelAndTimeRecipeListAfter(keyWord, levelAndTimeStartCount, levelAndTimeEndCount, AscAndDesc, mNum);
+			
+			} else {
+				
+				AscAndDesc = "ASC"; // 강제로 바꿔줬음
+				
+				levelAndTimeRecipeListAfter = mainService.levelAndTimeRecipeListAfter(keyWord, levelAndTimeStartCount, levelAndTimeEndCount, AscAndDesc, mNum);
+				
+			}
+		} catch (Exception e) {
+			
+			throw new PotException("난이도 정렬 오류!", "난이도로 정렬하는 도중 에러가 발생했습니다");
+		
 		}
 		
 		return levelAndTimeRecipeListAfter;
@@ -455,29 +434,31 @@ public class MainController {
 	public boolean likeBtnCheck(Model model, 
 							@RequestParam("mNum") int mNum, 
 							@RequestParam("recipeRNum") int recipeRNum, 
-							@RequestParam("recipeRRecommend") int recipeRRecommend){
-		 
-		boolean TaF = false;
+							@RequestParam("recipeRRecommend") int recipeRRecommend) throws PotException{
 		
-		System.out.println("Controller에서의 mId : " + mNum);
-		System.out.println("Controller에서의 recipeRNum : " + recipeRNum);
-		System.out.println("Controller에서의 recipeRRecommend : " + recipeRRecommend);
+		boolean TaF;
+		try { 
+			TaF = false;
 		
-		int updateRecommend = mainService.updatePlusRecommend(recipeRNum);
-		
-		if(updateRecommend == 1) {
-			System.out.println(recipeRNum + "번 레시피의 추천수가 +1 되었습니다.");
+			int updateRecommend = mainService.updatePlusRecommend(recipeRNum);
 			
-			int insertRecommend = mainService.insertRecommend(mNum, recipeRNum);
-			
-			if(insertRecommend == 1){
-				System.out.println("Recommend Table에 정상적으로 삽입되었습니다.");
+			if(updateRecommend == 1) {
 				
-				TaF = true;
+				int insertRecommend = mainService.insertRecommend(mNum, recipeRNum);
 				
-			} else {
-				System.out.println("Recommend Table에 정보 삽입이 실패하였습니다.");
+				if(insertRecommend == 1){
+					System.out.println("Recommend Table에 정상적으로 삽입되었습니다.");
+					
+					TaF = true;
+					
+				} else {
+					System.out.println("Recommend Table에 정보 삽입이 실패하였습니다.");
+				}
 			}
+		} catch (Exception e) {
+			
+			throw new PotException("좋아요 오류!", "좋아요 버튼 클릭 도중 에러가 발생했습니다");
+		
 		}
 		
 		return TaF;
@@ -489,63 +470,69 @@ public class MainController {
 	public boolean likeBtnCancel(Model model,
 							@RequestParam("mNum") int mNum, 
 							@RequestParam("recipeRNum") int recipeRNum, 
-							@RequestParam("recipeRRecommend") int recipeRRecommend) {
+							@RequestParam("recipeRRecommend") int recipeRRecommend) throws PotException{
 		
+		boolean TaF;
 		
-		boolean TaF = false;
-		
-		System.out.println("Controller에서의 mId : " + mNum);
-		System.out.println("Controller에서의 recipeRNum : " + recipeRNum);
-		System.out.println("Controller에서의 recipeRRecommend : " + recipeRRecommend);
-		
-		int updateRecommend = mainService.updateMinusRecommend(recipeRNum);
-		
-		if(updateRecommend == 1) {
-			System.out.println(recipeRNum + "번 레시피의 추천수가 -1 되었습니다.");
+		try {
+			TaF = false;
 			
-			int insertRecommend = mainService.deleteRecommend(mNum, recipeRNum);
+			System.out.println("Controller에서의 mId : " + mNum);
+			System.out.println("Controller에서의 recipeRNum : " + recipeRNum);
+			System.out.println("Controller에서의 recipeRRecommend : " + recipeRRecommend);
 			
-			if(insertRecommend == 1){
-				System.out.println("Recommend Table에 정상적으로 삭제되었습니다.");
+			int updateRecommend = mainService.updateMinusRecommend(recipeRNum);
+			
+			if(updateRecommend == 1) {
+				System.out.println(recipeRNum + "번 레시피의 추천수가 -1 되었습니다.");
 				
-				TaF = true;
+				int insertRecommend = mainService.deleteRecommend(mNum, recipeRNum);
 				
-			} else {
-				System.out.println("Recommend Table에 정보 삭제가 실패하였습니다.");
+				if(insertRecommend == 1){
+					System.out.println("Recommend Table에 정상적으로 삭제되었습니다.");
+					
+					TaF = true;
+					
+				} else {
+					System.out.println("Recommend Table에 정보 삭제가 실패하였습니다.");
+				}
 			}
+		} catch (Exception e) {
+			
+			throw new PotException("좋아요 오류!", "좋아요 버튼 클릭 도중 에러가 발생했습니다");
+		
 		}
 		
 		return TaF;
 	}
 	
-	
-	
 	// 6. Recipe 객체를 불러와서 Main.jsp에 레시피 명, 난이도, 소요시간, 작성자 불러오는 메소드
 	
 	@RequestMapping(value = {"showHome.do", "home/showHome.do"})
-	public String showHome(Model model, HttpSession session){
+	public String showHome(Model model, HttpSession session) throws PotException{
 		
+		try {
+			Member m = (Member)session.getAttribute("m");
+			
+			int mNum = 0;
+			
+			if(m != null){
+				mNum = m.getmNum();
+			}
+			
+			int recipeCount = mainService.selectCountAllRecipe();
+			
+			List<Recipe> list = mainService.selectShowHome(mNum);
+			
+			model.addAttribute("list", list);
+			model.addAttribute("recipeCount", recipeCount);
 		
-		Member m = (Member)session.getAttribute("m");
+		} catch (Exception e) {
+			
+			throw new PotException("메인 페이지 오류!", "메인페이지에 레시피를 불러 오는 도중 에러가 발생했습니다");
 		
-		int mNum = 0;
-		
-		if(m != null){
-			mNum = m.getmNum();
 		}
-		
-		
-		System.out.println("showHome");
-		
-		int recipeCount = mainService.selectCountAllRecipe();
-		
-		List<Recipe> list = mainService.selectShowHome(mNum);
-		
-		model.addAttribute("list", list);
-		model.addAttribute("recipeCount", recipeCount);
-		
-		System.out.println("showHome list : "+list);
-		
+			
 		return "main";
 	}
 	
@@ -553,33 +540,38 @@ public class MainController {
 	@RequestMapping(value= {"recipeObject.do", "home/recipeObject.do"})
 	public List<Recipe> recipeObject(Model model, 
 										@RequestParam("number") int number,
-										HttpSession session){
+										HttpSession session) throws PotException{
 		
+		List<Recipe> list = null;
 		
-		Member m = (Member)session.getAttribute("m");
+		try {
+			Member m = (Member)session.getAttribute("m");
+			
+			int mNum = 0;
+			
+			if(m != null){
+				mNum = m.getmNum();
+			}
+			
+			
+			System.out.println("recipeObject");
+			
+			int recipeCount = mainService.selectCountAllRecipe();
+			
+			int startNumber = number;
+			int endNumber = number+8;
+			
+			if(endNumber >= recipeCount){
+				endNumber =recipeCount;
+			}
+			
+			list = mainService.selectRecipe(startNumber, endNumber, mNum);
 		
-		int mNum = 0;
+		} catch (Exception e) {
+			
+			throw new PotException("메인 페이지 오류!", "메인페이지에 레시피를 불러 오는 도중 에러가 발생했습니다");
 		
-		if(m != null){
-			mNum = m.getmNum();
 		}
-		
-		
-		System.out.println("recipeObject");
-		
-		int recipeCount = mainService.selectCountAllRecipe();
-		
-		int startNumber = number;
-		int endNumber = number+8;
-		
-		if(endNumber >= recipeCount){
-			endNumber =recipeCount;
-		}
-		System.out.println("startNumber: "+startNumber);
-		System.out.println("endNumber: "+endNumber);
-		
-		List<Recipe> list = mainService.selectRecipe(startNumber, endNumber, mNum);
-		
 		return list;
 	}
 }
