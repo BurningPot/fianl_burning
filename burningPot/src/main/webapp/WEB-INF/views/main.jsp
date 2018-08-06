@@ -219,7 +219,7 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade+ "점";
+	            				gradeC = grade + "점";
 	            			}
 	            			
 	            			if(data[i].rcCheck == data[i].rNum ){
@@ -248,8 +248,8 @@
 		               				"</div>" +
 		               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		               					"<div class='recipe_level'>" + level + "</div>" +
-		               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		               					"<div class='recipe_time'>" + rTime + "</div>" +
+		               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		               				"</div>" +
 		               			"</li>").appendTo(".recipeList");
 		            			
@@ -279,8 +279,8 @@
 		    	               				"</div>" +
 		    	               				"<div class='recipe_levle_and_time_and_writer_area'>" +
 		    	               					"<div class='recipe_level'>" + level + "</div>" +
-		    	               					"<div class='recipe_time'>" + data[i].rTime + "분" + "</div>" +
-		    	               					"<div class='recipe_quantity'>" + data[i].quantity + "인분" + "</div>" +
+		    	               					"<div class='recipe_time'>" + rTime + "</div>" +
+		    	               					"<div class='recipe_quantity'>" + quantity + "</div>" +
 		    	               				"</div>" +
 		    	               			"</li>").appendTo(".recipeList");
 		            			}

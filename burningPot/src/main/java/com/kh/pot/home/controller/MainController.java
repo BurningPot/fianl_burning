@@ -50,8 +50,17 @@ public class MainController {
 	@RequestMapping("/home/searchRecipe.do")
 	public String searchRecipe(@RequestParam("searchR") String search, HttpSession session, Model model) throws PotException{
 		
-		try {
+		String originsearchWord = "";
 		
+		try {
+			
+			originsearchWord = search;
+			
+			search = search.replaceAll("\\s", ""); 
+			
+			System.out.println("search : " + search);
+			System.out.println("originsearchWord : " + originsearchWord);
+			
 			Member m = (Member)session.getAttribute("m");
 			
 			int mNum = 0;
@@ -66,7 +75,7 @@ public class MainController {
 	
 			model.addAttribute("searchRecipeList", searchRecipeList);
 			model.addAttribute("searchTotalCount", searchTotalCount);
-			model.addAttribute("searchRecipeWord", search);
+			model.addAttribute("searchRecipeWord", originsearchWord);
 			
 		} catch (Exception e) {
 			
@@ -443,6 +452,7 @@ public class MainController {
 			int updateRecommend = mainService.updatePlusRecommend(recipeRNum);
 			
 			if(updateRecommend == 1) {
+				System.out.println(recipeRNum + "번 레시피의 추천수가 +1 되었습니다.");
 				
 				int insertRecommend = mainService.insertRecommend(mNum, recipeRNum);
 				
@@ -476,10 +486,6 @@ public class MainController {
 		
 		try {
 			TaF = false;
-			
-			System.out.println("Controller에서의 mId : " + mNum);
-			System.out.println("Controller에서의 recipeRNum : " + recipeRNum);
-			System.out.println("Controller에서의 recipeRRecommend : " + recipeRRecommend);
 			
 			int updateRecommend = mainService.updateMinusRecommend(recipeRNum);
 			
