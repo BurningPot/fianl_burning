@@ -12,6 +12,13 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
+
+/* 스크롤바 */
+::-webkit-scrollbar {width: 8px; height: 8px; border: 3px solid #fff; }
+::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {display: block; height: 10px; background: #efefef}
+::-webkit-scrollbar-track {background: #efefef; -webkit-border-radius: 10px; border-radius:10px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.2)}
+::-webkit-scrollbar-thumb {height: 50px; width: 50px; background: rgba(0,0,0,.2); -webkit-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1)}
+
 	.main{
 		background-image: url("${pageContext.request.contextPath}/resources/img/tlrekd2.jpg");
 		-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;
@@ -298,7 +305,7 @@
                      	
                      	
                      </script>
-                    <button type="button" class="btn btn-default btn-sm" id="infoDel">회원탈퇴</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="infoDel">회원탈퇴</button>
                   </div>
                 </div>
                  
@@ -699,15 +706,36 @@
                
                // 회원탈퇴
                $('#infoDel').on('click', function(){
-            	   var delConfirm = confirm('탈퇴 하시겠습니까?');
+            	   
+            	   swal({
+            		   title: "회원 탈퇴 하시겠습니까?",
+            		   text: "탈퇴 후 모든 정보는 삭제됩니다",
+            		   icon: "warning",
+            		   buttons: true,
+            		   dangerMode: true,
+            		 })
+            		 .then((willDelete) => {
+            		   if (willDelete) {
+            		     swal("삭제되었습니다!", {
+            		       icon: "success",
+            		      
+            		     });
+            		     $('#delForm').attr("action", "${pageContext.request.contextPath}/mypage/deleteUserInfo.do").submit();
+            		     
+            		   } else {
+            		     swal("회원 탈퇴 실패!");
+            		   }
+            		 });
+               
+            	   /* var delConfirm = confirm('탈퇴 하시겠습니까?');
             	   if (delConfirm) {
             	      alert('탈퇴 되었습니다.');
             	      $('#delForm').attr("action", "${pageContext.request.contextPath}/mypage/deleteUserInfo.do").submit();
             	   }
             	   else {
-            	     /*  alert('탈퇴가 취소되었습니다.'); */
+            	     /*  alert('탈퇴가 취소되었습니다.'); 
             	     swal('실패');
-            	   }
+            	   } */
                });
              </script>
              
