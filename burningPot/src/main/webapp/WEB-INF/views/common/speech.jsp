@@ -15,7 +15,7 @@
 </head>
 <script>
 	function speechOn() {
-		var m = '${m}';
+		var m = '${m}';  
 		var mNum = '${m.getmNum()}';
 		annyang.start({
 			autoRestart : false,
@@ -114,24 +114,34 @@
 				}
 				else if(final_transcript.includes("번째")){
 					if(final_transcript.includes("첫")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(1));
 					}else if(final_transcript.includes("두")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(2));
 					}else if(final_transcript.includes("세")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(3));
 					}else if(final_transcript.includes("네")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(4));
 					}else if(final_transcript.includes("다섯")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(5));
 					}else if(final_transcript.includes("여섯")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(6));
 					}else if(final_transcript.includes("일곱")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(7));
 					}else if(final_transcript.includes("여덟")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(8));
 					}else if(final_transcript.includes("아홉")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(9));
 					}else if(final_transcript.includes("열")){
+						goSpeech(final_transcript);
 						detailRecipe(Number(10));
 					}else{
 						location.href = "${pageContext.request.contextPath}/home/searchRecipe.do?searchR="+final_transcript;
