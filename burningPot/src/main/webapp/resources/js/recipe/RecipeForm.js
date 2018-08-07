@@ -30,7 +30,7 @@ $(function () {
             $(obj).find('.mainAddText').val("");
             $('.mainAddArea').append(obj);
     	} else {
-    		alert("재료는 10개까지 입력 가능합니다.");
+    		swal("주재료 추가 제한!", "재료는 10개까지 입력 가능합니다.", "error");
     	}
     });
 
@@ -49,14 +49,14 @@ $(function () {
         if ($('.mainDelIcon').length > 1) {
             $(this).parent().parent().parent().remove();
         } else {
-            alert("한 개 이상의 주재료를 입력해 주세요.");
+    		swal("주재료 제한!", "한 개 이상의 주재료를 입력해 주세요.", "error");
         }
     });
     
     // 글자수 제한 기능
     $(".mainAddText").on('keyup', function() {
     	if($(this).val().length > 15) {
-    		alert("15자 이내로 입력해주세요.");
+    		swal("글자 제한!", "15자 이내로 입력해주세요.", "error");
             $(this).val($(this).val().substring(0, 15));
         }
     });
@@ -74,7 +74,7 @@ $(function () {
 	        $(obj).find('.subIngredientQuan').val("");
 	        $('.subAddArea').append(obj);
     	} else {
-    		alert("재료는 10개까지 입력 가능합니다.");
+    		swal("부재료 추가 제한!", "재료는 10개까지 입력 가능합니다.", "error");
     	}
     });
 
@@ -93,14 +93,14 @@ $(function () {
         if ($('.subDelIcon').length > 1) {
             $(this).parent().parent().parent().remove();
         } else {
-            alert("한 개 이상의 부재료를 입력해 주세요.");
+            swal("부재료 제한!", "한 개 이상의 주재료를 입력해 주세요.", "error");
         }
     });
     
 	 // 글자수 제한 기능
 	$(".subIngredientQuan").on('keyup', function() {
 		if($(this).val().length > 15) {
-			alert("15자 이내로 입력해주세요.");
+    		swal("글자 제한!", "15자 이내로 입력해주세요.", "error");
 	        $(this).val($(this).val().substring(0, 15));
 	    }
 	});
@@ -132,7 +132,7 @@ $(function () {
         if ($('.recipeDelIcon').length > 1) {
             $(this).parent().parent().parent().remove();
         } else {
-            alert("한 개 이상의 레시피 내용을 입력해 주세요.");
+            swal("레시피 제한!", "한 개 이상의 레시피 내용을 입력해 주세요.", "error");
         }
 
         $('.recipeContentForm').each(function(index, item) {
@@ -156,32 +156,50 @@ $(function () {
 
     // ------------------------------------- 버튼 영역 -------------------------------------
     // 저장하기 버튼 클릭 시
-    $('#submitBtn').on('click', function(e) {
-        if(confirm('작성을 완료하시겠습니까?')){
-        	if(validate()){
-        		
-        		$('.recipeContentForm').each(function(index, value) {
-        			$(this).children().siblings().find('.recipeContent').val($(this).children().siblings().find('.recipeContent').val().replace(/(\n|\r\n)/g, '<br>'));
-        		});
-        		
-        		console.log("작성완료");
-        	} else {
-        		console.log("빈칸있음");
-        		e.preventDefault();
-        	}
-		} else {
-            e.preventDefault();
-            console.log("작성취소");
-        }
+    $('#submitBtn').on('click', function() {
+//        if(confirm('작성을 완료하시겠습니까?')){
+//        	if(validate()){
+//        		$('.recipeContentForm').each(function(index, value) {
+//        			$(this).children().siblings().find('.recipeContent').val($(this).children().siblings().find('.recipeContent').val().replace(/(\n|\r\n)/g, '<br>'));
+//        		});
+//        	} else {
+//        		e.preventDefault();
+//        	}
+//		} else {
+//            e.preventDefault();
+//        }
+        swal("레시피 작성을 완료하시겠습니까?", {
+    		buttons: {
+    			catch: {
+    				text: "등록",
+    				value: "catch",
+    			}, cancel: "취소"
+    		},
+    	}).then((value) => {
+    		switch (value) {
+			    case "catch":
+			    	if(validate()){
+		        		$('.recipeContentForm').each(function(index, value) {
+		        			$(this).children().siblings().find('.recipeContent').val($(this).children().siblings().find('.recipeContent').val().replace(/(\n|\r\n)/g, '<br>'));
+		        		});
+		        		$("#formId").submit();
+		        		break;
+		        	} else {
+		        		e.preventDefault();
+		        		break;
+		        	}
+			 
+			    default:
+			    	swal("등록 취소!", "댓글 등록을 취소하였습니다.", "error", {button:false});
+			  }
+    	});
     });
 
     // 취소하기 버튼 클릭 시
     $('.cancleBtn').click(function(e) {
         if(confirm('작성을 취소하시겠습니까?')){
-			console.log("작성취소-확인");
 		} else {
             e.preventDefault();
-            console.log("작성취소-취소");
         }
     });
     
@@ -200,10 +218,10 @@ $(function () {
 	    				 $(obj).siblings('.ingrdient').append("<option class='ingredientList' value=" + value.iNum + ">" + value.iName + "</option>");
 	    			});
     			} else {
-    				alert($(this).find("option:selected").text() + " 관련 식재료 조회에 실패했습니다!");
+    	            swal("식재료 조회 오류!", $(this).find("option:selected").text() + " 관련 식재료 조회에 실패했습니다!", "error");
     			}
     		}, error : function(e) {
-    			alert($(this).find("option:selected").text() + " 관련 식재료 조회에 실패했습니다!");
+    			swal("식재료 조회 오류!", $(this).find("option:selected").text() + " 관련 식재료 조회에 실패했습니다!", "error");
     		}
     	});
     });
@@ -222,7 +240,6 @@ function LoadImg(value, num) {
         var pathpoint = value.value.lastIndexOf('.');
         var filepoint = value.value.substring(pathpoint+1, value.length);
         var filetype = filepoint.toLowerCase();
-        console.log("파일타입 : " + filetype);
         
         if (filetype == 'jpg' || filetype == 'gif' || filetype == 'png' || filetype == 'jpeg') {
             reader.onload = function(e) {
@@ -237,7 +254,7 @@ function LoadImg(value, num) {
             }
             reader.readAsDataURL(value.files[0]);
         } else {
-        	alert("이미지 파일만 선택 가능합니다!");
+        	swal("이미지 제한!", "이미지 파일만 선택 가능합니다!", "error");
         }
 }
 
@@ -247,27 +264,27 @@ function validate() {
     var strArr = $('.titleImage').attr('src').split("/");
     
 	if ($('#recipeTitle').val().trim().length < 1) {
-		alert("레시피 제목을 작성해주세요.");
+    	swal("레시피 제목", "레시피 제목을 작성해주세요.", "error", {button:false});
 		$('#recipeTitle').focus();
 		return false;
 	} else if ($('#recipeIntroduce').val().trim().length < 1) {
-		alert("한줄 소개를 작성해주세요.");
-		$('#recipeIntroduce').focus();
+		swal("한줄 소개", "한줄 소개를 작성해주세요.", "error", {button:false});
+		$('#recipeTitle').focus();
 		return false;
 	} else if ($('#people option:selected').val() == '0') {
-		alert("인원 정보를 입력해주세요.");
-		$('#people').focus();
+		swal("인원 정보", "인원 정보를 작성해주세요.", "error", {button:false});
+		$('#recipeTitle').focus();
 		return false;
 	} else if ($('#cookTime option:selected').val() == '0') {
-		alert("시간 정보를 입력해주세요.");
-		$('#cookTime').focus();
+		swal("시간 정보", "시간 정보를 작성해주세요.", "error", {button:false});
+		$('#recipeTitle').focus();
 		return false;
 	} else if ($('#cookLevel option:selected').val() == '0') {
-		alert("난이도 정보를 입력해주세요.");
-		$('#cookLevel').focus();
+		swal("난이도 정보", "난이도 정보를 작성해주세요.", "error", {button:false});
+		$('#recipeTitle').focus();
 		return false;
 	} else if (strArr[strArr.length - 1] == 'titleImg.PNG') {
-		alert("타이틀 이미지를 등록해주세요.");
+		swal("타이틀 이미지", "타이틀 이미지를 작성해주세요.", "error", {button:false});
 		$('html, body').animate({
 			"scrollTop": 0
 		}, 300);
@@ -275,7 +292,7 @@ function validate() {
 	} else {
 		$('.category').each(function(index, value) {
 			if ($(this).find('option:selected').val() == '0' || $(this).siblings('.ingrdient').find('option:selected').val() == '0' || $(this).siblings('.mainAddText').val().trim().length < 1) {
-				alert("주재료에 빈 칸이 있습니다. (칸을 삭제하거나 정보를 입력해주세요.)");
+				swal("주재료", "주재료에 빈 칸이 있습니다.\n(칸을 삭제하거나 정보를 입력해주세요.)", "error", {button:false});
 				$(this).focus();
 				chk = false;
 				return false;
@@ -286,7 +303,7 @@ function validate() {
 		}
 		$('.subIngredient').each(function(index, value) {
 			if ($(this).val().trim().length < 1 || $(this).siblings('.subIngredientQuan').val().trim().length < 1) {
-				alert("부재료에 빈 칸이 있습니다. (칸을 삭제하거나 정보를 입력해주세요.)");
+				swal("부재료", "부재료에 빈 칸이 있습니다.\n(칸을 삭제하거나 정보를 입력해주세요.)", "error", {button:false});
 				$(this).focus();
 				chk = false;
 				return false;
@@ -298,7 +315,7 @@ function validate() {
 		$('.recipeContentForm').each(function(index, value) {
 			var srcArr = $(this).children().siblings().find('.subImgArea').attr('src').split("/");
 			if (srcArr[srcArr.length -1] == 'addImg.png' || $(this).children().siblings().find('.recipeContent').val().trim().length < 1){
-				alert("요리 순서에 빈 칸이 있습니다. (칸을 삭제하거나 정보를 입력해주세요.)");
+				swal("요리 순서", "요리 순서에 빈 칸이 있습니다.\n(칸을 삭제하거나 정보를 입력해주세요.)", "error", {button:false});
 				$(this).children().siblings().find('.recipeContent').focus();
 				chk = false;
 				return false;
