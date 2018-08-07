@@ -14,6 +14,7 @@
 <link
 	href="${pageContext.request.contextPath}/resources/css/board/board.css"
 	rel="stylesheet">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 	<div style="height: 20%;"></div>
@@ -199,22 +200,32 @@
 	
 	// 게시글 삭제
 	function deleteBoard(){
-		if(confirm('글을 삭제 하시겠습니까?')==true){
-			$('#bNumFrm').attr("action","${pageContext.request.contextPath}/board/deleteBoard.do");
-			$('#bNumFrm').submit();
-		}else{
-			return;
-		}
+		swal({
+			  title: "삭제!",
+			  text: "글을 삭제 하시겠습니까?",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: true,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {
+			    $('#bNumFrm').attr("action","${pageContext.request.contextPath}/board/deleteBoard.do");
+				$('#bNumFrm').submit();
+			  } else {
+			    swal("취소 되었습니다.");
+			  }
+			});
 	}
 	
 	// 댓글 등록
 	function insertComment(){
 		if($('#mmId').val()==null || $('#mmId').val()==""){
-			alert('로그인 후 이용하실 수 있습니다.');
-			$("#loginModal").modal();
+			swal("로그인 후 이용하실 수 있습니다.","", "warning").then((value) => {
+				$("#loginModal").modal();
+			});
 		}else{
 			if($('#bcContent').val() == "" || $('#bcContent').val() ==null){
-				alert('댓글을 입력 후 등록 해주세요!');
+				swal("댓글을 입력 후 등록 해주세요!","", "warning");
 			}else{
 				 $('#insertComentFrm').submit();
 			}
@@ -224,13 +235,22 @@
 	//댓글 삭제
 	function deleteBoardComment(obj){
 		console.log($(obj).parent().children().eq(0).val());
-		 if(confirm('댓글을 삭제 하시겠습니까?')==true){
-			$('#currBcNum').val($(obj).parent().children().eq(0).val());
-			$('#bcNumFrm').attr("action", "${pageContext.request.contextPath}/board/deleteBoardComment.do");
-			$('#bcNumFrm').submit(); 
-		}else{
-			return;
-		}
+		swal({
+			  title: "삭제!",
+			  text: "글을 삭제 하시겠습니까?",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: true,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {
+				$('#currBcNum').val($(obj).parent().children().eq(0).val());
+				$('#bcNumFrm').attr("action", "${pageContext.request.contextPath}/board/deleteBoardComment.do");
+				$('#bcNumFrm').submit(); 
+		  	} else {
+			    swal("취소 되었습니다.");
+			  }
+			});
 	}
 	
 	// 댓글 수정 전 확인용 함수
@@ -256,8 +276,20 @@
 
 	// 새로고침
 	function refresh() {
-		if(confirm('댓글 수정을 취소하기겠습니까?')) location.reload();
-		else return;
+		swal({
+			  title: "",
+			  text: "수정을 취소 하시겠습니까?",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: true,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {
+				  location.reload();
+			  } else {
+				    swal("취소 되었습니다.");
+				  }
+			});
 	}
 	
 </script>

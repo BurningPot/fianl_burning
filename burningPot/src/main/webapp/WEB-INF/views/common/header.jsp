@@ -1794,7 +1794,7 @@
 								<br />
 								<button type="button" class="btn btn-outline-warning"
 									data-dismiss="modal">취소</button>
-								<button type="submit" class="btn btn-outline-warning">로그인</button>
+								<button type="submit" class="btn btn-warning">로그인</button>
 							</div>
 						</div>
 						<hr />
@@ -1822,11 +1822,19 @@
 	    });
 	    	    
 	    function logoutFn(){
-	    	if (confirm("로그아웃 하시겠습니까??") == true){//확인
-		    	location.href='${pageContext.request.contextPath}/member/memberLogout.do'
-        	}else{//취소
-        	    return;
-        	}
+	    	swal({
+				  title: "로그아웃!",
+				  text: "로그아웃 하시겠습니까?",
+				  icon: "warning",
+				  buttons: true,
+				  dangerMode: true,
+				})
+				.then((willDelete) => {
+				  if (willDelete) {
+					location.href='${pageContext.request.contextPath}/member/memberLogout.do'
+				  } else {
+					    swal("취소 되었습니다.");
+				}
 	    }
     </script>
     
@@ -2104,7 +2112,7 @@
 					alert("아이디 찾기 오류");
 				}
 			});
-		}else alert('항목을 모두 입력해주세요!');
+		}else swal("항목을 모두 입력해주세요!","", "warning");
 	}
 	
 	// 비밀번호 찾기
@@ -2127,7 +2135,7 @@
 					console.log('error ajax!');
 				}
 			});
-		}else alert('항목을 모두 입력해주세요!');
+		}else swal("항목을 모두 입력해주세요!","", "warning");
 	}
 	
 	  /* 로그인 스크립트 끝 */

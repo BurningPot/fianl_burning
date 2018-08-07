@@ -132,7 +132,7 @@ public class MemberServiceImpl implements MemberService {
            MailHandler sendMail = new MailHandler(mailSender);
            sendMail.setSubject("[인증] BurningPot 이메일 인증");
            sendMail.setText(
-                   new StringBuffer().append("링크를 눌러 메일인증을 진행해주세요! <br><br>").append("<a href='http://"+serverIp+":8088/pot/member/emailConfirm.do?userEmail=")
+                   new StringBuffer().append("링크를 눌러 메일인증을 진행해주세요! <br><br>").append("<a href='http://"+serverIp+":80/pot/member/emailConfirm.do?userEmail=")
                    .append(email)
                    .append("&memberAuthKey=").append(key)
                    .append("' target='_blank'>이메일 인증 확인</a>").toString());
