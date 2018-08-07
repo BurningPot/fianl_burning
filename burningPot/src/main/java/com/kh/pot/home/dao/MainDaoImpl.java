@@ -48,15 +48,8 @@ public class MainDaoImpl implements MainDao{
 
 	@Override
 	public List<Recipe> searchRecipeList(HashMap<String, Object> map) {
-		System.out.println("map : " + map.get("searchStartCount"));
-		System.out.println("map : " + map.get("searchEndCount"));
-		System.out.println("map : " + map.get("keyWord"));
-		System.out.println("map : " + map.get("mNum"));
+		
 		List<Recipe> list = sqlSession.selectList("home.searchRecipeList", map);
-		for(int i = 0; i < list.size(); i++){
-			System.out.println("getrName : " + list.get(i).getrName());
-			System.out.println("getRcCheck : " + list.get(i).getRcCheck());
-		}
 		
 		return list;
 	}
@@ -77,9 +70,7 @@ public class MainDaoImpl implements MainDao{
 	public List<Recipe> inquiryRecipeListBefore(HashMap<String, Object> map) {
 
 		List<Recipe> rlist = sqlSession.selectList("home.inquiryRecipeListBefore", map);
-		
-		System.out.println("inquiryRecipeList DaoImpl : " + rlist);
-		
+				
 		return rlist;
 	}
 
@@ -87,11 +78,7 @@ public class MainDaoImpl implements MainDao{
 	public List<Recipe> inquiryRecipeListAfter(HashMap<String, Object> map) {
 
 		List<Recipe> rlist = sqlSession.selectList("home.inquiryRecipeListAfter", map);
-		
-		for(int i = 0 ; i<rlist.size(); i++){
-			System.out.println("조회수 순서로 정렬 후 무한 스크롤 : " + rlist.get(i).getrName());
-		}
-		
+				
 		return rlist;
 	}
 	
