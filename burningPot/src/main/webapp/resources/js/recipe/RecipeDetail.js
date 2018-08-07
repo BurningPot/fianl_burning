@@ -179,54 +179,104 @@ function refresh(){
 }
 
 // ------------------------------------- 댓글 등록 영역 -------------------------------------
-function reviewSubmit() {
-	if(confirm('댓글을 등록하시겠습니까?')){
-		if (mem != "") {
-			if ($("#reviewContent").val() != "") {
-				console.log("등록");
-				$("#formId").submit();
-				alert("댓글 작성 완료");
-			} else {
-				alert("댓글 내용을 작성해주세요!");
-			}
-		} else {
-			console.log("비어있음");
-			alert("로그인 이후 사용 가능한 서비스 입니다. (로그인 이후 사용 바랍니다.)");
-		}
-	} else {
-        e.preventDefault();
-        console.log("작성취소");
-    }
+function reviewSubmit(e) {
+	swal("댓글을 등록하시겠습니까?", {
+		buttons: {
+			catch: {
+				text: "등록",
+				value: "catch",
+			}, cancel: "취소"
+		},
+	}).then((value) => {
+		  switch (value) {
+		    case "catch":
+		    	if (mem != "") {
+					if ($("#reviewContent").val() != "") {
+						 swal("등록 완료!", "해당 댓글을 성공적으로 등록하였습니다.", "success", {button:false});
+						 $("#formId").submit();
+						 break;
+					} else {
+							swal("댓글 등록 실패!", "댓글 내용을 작성해주세요!", "error", {button:false});
+							break;
+					}
+		    	} else {
+					swal("댓글 등록 실패!", "로그인 이후 사용 가능한 서비스 입니다. \n(로그인 이후 사용 바랍니다.)", "error", {button:false});
+					break;
+				}
+		 
+		    default:
+		    	swal("등록 취소!", "댓글 등록을 취소하였습니다.", "error", {button:false});
+		  }
+	});
+//	if(confirm('댓글을 등록하시겠습니까?')){
+//		if (mem != "") {
+//			if ($("#reviewContent").val() != "") {
+//				console.log("등록");
+//				$("#formId").submit();
+//				swal("댓글 작성 완료!", "댓글이 성공적으로 작성되었습니다.", "success", {
+//		              button: false,
+//		         });				
+//			} else {
+//				swal("댓글 등록 실패!", "댓글 내용을 작성해주세요!", "error", {
+//		              button: false,
+//		         });
+//			}
+//		} else {
+//			console.log("비어있음");
+//			swal("댓글 등록 실패!", "로그인 이후 사용 가능한 서비스 입니다. \n(로그인 이후 사용 바랍니다.)", "error", {
+//	              button: false,
+//	         });
+//		}
+//	} else {
+//        e.preventDefault();
+//    }
 }
 
 // ------------------------------------- 댓글 삭제 영역 -------------------------------------
 function reviewDelete(e) {
 	var area = $(e);
-	 if(confirm('댓글을 삭제하시겠습니까?')){
-		 area.parent().parent().parent().parent().submit();
-	 } else {
-       e.preventDefault();
-   }
+	
+	swal("댓글을 삭제하시겠습니까?", {
+		buttons: {
+			catch: {
+				text: "삭제",
+				value: "catch",
+			}, cancel: "취소"
+		},
+	}).then((value) => {
+		  switch (value) {
+		    case "catch":
+				 swal("삭제 완료!", "해당 댓글을 성공적으로 삭제하였습니다.", "success", {button:false});
+				 area.parent().parent().parent().parent().submit();
+				 break;
+		 
+		    default:
+		    	swal("삭제 취소!", "해당 댓글 삭제를 취소하였습니다.", "error", {button:false});
+		    	e.preventDefault();
+		  }
+	});
 }
 
 function addGood(e) {
 	var textArr = $(e).text().split(" ");
-	console.log("확인");
 	
 	if (textArr[1] != "취소") {
-		console.log($(e).text());
 		$.ajax ({
     		url : path + "/recipe/insertRecommend.do",
     		data : {rNum : rNum},
     		dataType : "json",
     		async : false,
     		success : function(data) {
-				alert("좋아요를 눌렀습니다.");
+				swal("좋아요!", "좋아요버튼을 눌렀습니다.", "success", {
+		              button: false,
+		         });	
 				$('#goodBtn').children().remove();
 				$("#goodBtn").text("");
 				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요 취소" + ` (`+ data +`)`);
     		}, error : function(e) {
-    			alert("좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)");
+    			swal("좋아요 버튼 오류!", "좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)", "error", {
+		              button: false,
+		         });	
     		}
     	});
 	} else {
@@ -237,12 +287,16 @@ function addGood(e) {
     		dataType : "json",
     		async : false,
     		success : function(data) {
-				alert("좋아요를 취소 했습니다.");
+    			swal("좋아요 취소!", "좋아요 취소 버튼을 눌렀습니다.", "success", {
+		              button: false,
+		         });	
 				$('#goodBtn').children().remove();
 				$("#goodBtn").text("");
 				$("#goodBtn").append(`<img class="mr-1 mb-1" src="` + path + `/resources/img/recipe/goodIcon.png" alt="좋아요"/>` + "좋아요" + ` (`+ data +`)`);
     		}, error : function(e) {
-    			alert("좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)");
+    			swal("좋아요 버튼 오류!", "좋아요 버튼 오류 발생 (관리자에게 문의 바랍니다.)", "error", {
+		              button: false,
+		         });	
     		}
     	});
 	}

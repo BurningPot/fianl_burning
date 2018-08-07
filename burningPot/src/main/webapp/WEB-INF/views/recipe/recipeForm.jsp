@@ -14,6 +14,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/recipe/RecipeForm.js"></script>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     </head>
 
     <body class="font">
@@ -23,7 +24,7 @@
         
         <div class="container">
 
-           <form action="insertRecipe.do" method="POST" enctype="multipart/form-data" accept="image/*">
+           <form action="insertRecipe.do" id="formId" method="POST" enctype="multipart/form-data" accept="image/*">
 
                 <!-- 레시피 정보 입력 영역 -->
                 <div class="row recipeBox mt-5">
@@ -172,7 +173,7 @@
 
                 <!-- 작성, 취소 버튼 영역 -->
                 <div class="row justify-content-center mb-5 testCss">
-                    <input type="submit" id="submitBtn"  class="submitBtn pt-1 pb-1 pr-2 pl-2" value="저장하기">
+                    <input type="button" id="submitBtn"  class="submitBtn pt-1 pb-1 pr-2 pl-2" value="저장하기"/>
                     &nbsp;&nbsp;&nbsp;
                     <input type="reset" class="cancleBtn pt-1 pb-1 pr-2 pl-2" value="취소하기">
                 </div>
