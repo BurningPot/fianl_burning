@@ -435,9 +435,9 @@ public class MemberController {
 		
 		/******* password 암호화 *******/
 //		암호화 부분 주석 
-		/*String rawPassword = member.getPassword();
+		String rawPassword = member.getPassword();
 		System.out.println("password 암호화 전 : "+rawPassword);
-		member.setPassword(bcryptPasswordEncoder.encode(rawPassword));*/
+		member.setPassword(bcryptPasswordEncoder.encode(rawPassword));
 		
 		// 회원 저장
 		int result = memberService.insertMember(member);
@@ -467,8 +467,8 @@ public class MemberController {
 		String success = "";
 		if(m != null){
 			// 암호화 주석
-			//if(bcryptPasswordEncoder.matches(password, m.getPassword())) {
-			 if(password.equals(m.getPassword())){
+			if(bcryptPasswordEncoder.matches(password, m.getPassword())) {
+			 //if(password.equals(m.getPassword())){
 				msgTitle="로그인 성공!";
 				msg="환영합니다.!!"+m.getmName()+" 님";
 				success = "success";

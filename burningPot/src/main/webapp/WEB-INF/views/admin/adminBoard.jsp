@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import ="com.kh.pot.member.model.vo.Member" %>
  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -101,7 +102,9 @@
    	<% 
       int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
       int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
-      String servletMapping = (String)request.getAttribute("servletMapping");     
+      String servletMapping = (String)request.getAttribute("servletMapping");   
+      Member m = (Member)session.getAttribute("m");
+      int mNum = m.getmNum();
       
       //파라미터 cPage가 null이거나 "" 일 때에는 기본값 1로 세팅함.  
       String cPageTemp = request.getParameter("cPage");
@@ -113,7 +116,7 @@
       }
       
    %>
-   <%= com.kh.pot.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, servletMapping) %>
+   <%= com.kh.pot.common.util.admin_Utils.getPageBar(totalContents, cPage, numPerPage, servletMapping, mNum) %>
 	<script>
 	$('.tableContent').on('click', function(){
 		var address= "${detailMapping}";
