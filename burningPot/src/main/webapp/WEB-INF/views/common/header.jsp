@@ -83,7 +83,9 @@
 				height: 100%;
 				background: #c3e6cb;
 				border: none;
-				cursor : pointer;				
+				cursor : pointer;
+				border-radius: 5%;	
+				font-weight: bolder;			
 			}
 			
 			.searchBtnUl > li:hover .searchBtnA1 {
@@ -97,6 +99,8 @@
 				background: #bee5eb;
 				border: none;
 				cursor : pointer;
+				border-radius: 5%;
+				font-weight: bolder;	
 			}
 			
 			.searchBtnUl > li:hover .searchBtnA2 {
@@ -110,6 +114,8 @@
 				background: #ffeeba;
 				border: none;
 				cursor : pointer;
+				border-radius: 5%;	
+				font-weight: bolder;
 			}
 			
 			.searchBtnUl > li:hover .searchBtnA3 {
