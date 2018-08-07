@@ -11,6 +11,12 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
+
+/* 스크롤바 */
+::-webkit-scrollbar {width: 8px; height: 8px; border: 3px solid #fff; }
+::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {display: block; height: 10px; background: #efefef}
+::-webkit-scrollbar-track {background: #efefef; -webkit-border-radius: 10px; border-radius:10px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.2)}
+::-webkit-scrollbar-thumb {height: 50px; width: 50px; background: rgba(0,0,0,.2); -webkit-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1)}
 	
 	.main{
 		background-image: url("${pageContext.request.contextPath}/resources/img/tlrekd2.jpg");
@@ -298,7 +304,7 @@
                     			}
                     	 });
                      </script>
-                    <button type="button" class="btn btn-default btn-sm">회원탈퇴</button>
+                    <button type="button" class="btn btn-danger btn-sm">회원탈퇴</button>
                   </div>
                 </div>
                  
@@ -332,10 +338,10 @@
                 </ul>
                 <br>
                 <div id="myPostWrap">
-                	<input type="button" class="btn btn-default btn-sm" onclick="category(this);" value="전체"/>
-                	<input type="button" class="btn btn-default btn-sm" onclick="category(this);" value="재료요청"/>
-	                <input type="button" class="btn btn-default btn-sm" onclick="category(this);" value="QNA"/>
-	                <input type="button" class="btn btn-default btn-sm" onclick="category(this);"value="기타"/>
+                	<input type="button" class="btn btn-primary btn-sm" onclick="category(this);" value="전체"/>
+                	<input type="button" class="btn btn-success btn-sm" onclick="category(this);" value="재료요청"/>
+	                <input type="button" class="btn btn-info btn-sm" onclick="category(this);" value="QNA"/>
+	                <input type="button" class="btn btn-warning btn-sm" onclick="category(this);"value="기타"/>
                 </div>
                
                 <br>

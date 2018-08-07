@@ -11,6 +11,13 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
+
+/* 스크롤바 */
+::-webkit-scrollbar {width: 8px; height: 8px; border: 3px solid #fff; }
+::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {display: block; height: 10px; background: #efefef}
+::-webkit-scrollbar-track {background: #efefef; -webkit-border-radius: 10px; border-radius:10px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.2)}
+::-webkit-scrollbar-thumb {height: 50px; width: 50px; background: rgba(0,0,0,.2); -webkit-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1)}
+
 	.main{
 		background-image: url("${pageContext.request.contextPath}/resources/img/tlrekd2.jpg");
 		-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;
@@ -294,7 +301,7 @@
                     			}
                     	 });
                      </script>
-                    <button type="button" class="btn btn-default btn-sm">회원탈퇴</button>
+                    <button type="button" class="btn btn-danger btn-sm">회원탈퇴</button>
                   </div>
                 </div>
                  
