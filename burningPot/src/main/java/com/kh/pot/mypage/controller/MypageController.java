@@ -70,12 +70,12 @@ public class MypageController {
 	    	
 	    	System.out.println(nic+", " +email+", "+ password+", "+ mId);
 			int result = mypageService.mypageEnrollEnd(nic, email, password, mId);
-
+/*
 				// 세션 종료
 				if (!status.isComplete()) {
 					status.setComplete();
 				}
-				
+				*/
 			return result;
 		}
 	
@@ -101,7 +101,7 @@ public class MypageController {
 	
 	//레시피 게시글 삭제하기!
 		@ResponseBody
-		@RequestMapping("/mypage/myPagedelete.do")
+		@RequestMapping(value="/mypage/myPagedelete.do", method=RequestMethod.POST)
 		public int deleteMyRecipe(@RequestParam int rNum){
 			int result = mypageService.deleteMyRecipe(rNum);
 			
@@ -111,7 +111,7 @@ public class MypageController {
 		
 		// 내가쓴글 삭제하기
 		@ResponseBody
-		@RequestMapping("/mypage/myPostdelete.do")
+		@RequestMapping(value="/mypage/myPostdelete.do", method=RequestMethod.POST)
 		public int deleteMyPost(@RequestParam int bNum){
 			int result = mypageService.deleteMyPost(bNum);
 			
@@ -120,15 +120,15 @@ public class MypageController {
 
 		// 좋아요 취소
 		@ResponseBody
-		@RequestMapping("/mypage/myLikedelete.do")
+		@RequestMapping(value="/mypage/myLikedelete.do", method=RequestMethod.POST)
 		public int cancelMyLike(@RequestParam int rNum, @RequestParam int mNum){
 			int result = mypageService.cancelMyLike(rNum, mNum);
 			return result;
 		}
 		
-		@RequestMapping(value="/mypage/myPage.do", method = RequestMethod.POST)
+		@RequestMapping(value="/mypage/myPage.do", method=RequestMethod.POST)
 		public String myRecipe(@RequestParam int mNum, Model model,
-				@RequestParam(value="cPage", required=false, defaultValue="1") 
+				@RequestParam(value="cPage", required=false, defaultValue="1")
 		int cPage){
 			
 			Member m =  mypageService.myinfoDel(mNum);
@@ -147,15 +147,15 @@ public class MypageController {
 		}
 		
 		/*@ResponseBody*/
-		@RequestMapping(value="/mypage/myPosts.do")
+		@RequestMapping(value="/mypage/myPosts.do", method=RequestMethod.POST)
 		public String myPostList( @RequestParam int mNum, Model model,
-				@RequestParam(value="cPage", required=false, defaultValue="1") 
-		int cPage){			
+				@RequestParam(value="cPage", required=false, defaultValue="1") int cPage,
+				@RequestParam(value="cate", required=false, defaultValue="전체") String cate){	
 			Member m =  mypageService.myinfoDel(mNum);
 			
 			int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
-			List<Board> list = mypageService.myPostList(cPage, numPerPage, mNum);
-			int totalContents = mypageService.selectMyPostTotalContents(mNum);
+			List<Board> list = mypageService.myPostList(cPage, numPerPage, mNum, cate);
+			int totalContents = mypageService.selectMyPostTotalContents(mNum , cate);
 			
 			
 			List<Fridge> refList = friService.checkFridge(m.getmNum());
@@ -170,7 +170,7 @@ public class MypageController {
 		}
 		
 
-		@RequestMapping("/mypage/myLike.do")
+		@RequestMapping(value="/mypage/myLike.do", method=RequestMethod.POST)
 		public String myLikeList( @RequestParam int mNum, Model model,
 				//cPage로 받을꺼고 값이 없어도 받을수 있다 required(오버로딩처럼 쓸수있다) 값이 안들어왔을때 디폴트벨류로 1로 하겟다
 				@RequestParam(value="cPage", required=false, defaultValue="1") 

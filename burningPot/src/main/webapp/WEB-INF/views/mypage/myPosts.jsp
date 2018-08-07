@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
     <%@page import="com.kh.pot.member.model.vo.Member"%>
     <% Member m = (Member)session.getAttribute("m"); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -46,9 +48,14 @@
 	    box-shadow: 3px 3px 2px #ccc;
 	    transition: 0.5s;
       }
+         #ref{
+      	height: auto;
+      	min-height: 100px;
+      }
       #refBtn{
-      	top: 30%;
+      	top: 35%;
       	left: 70%;
+      	
       }
       
       
@@ -58,7 +65,7 @@
 <c:import url="/WEB-INF/views/common/header.jsp"/>
 <body>
 
-<div style="height:20%;"></div>
+<div style="height:15%;"></div>
 
 <div class="main col-lg-12">
 <br />
@@ -72,7 +79,12 @@
             	</c:if>
                       
                <c:if test="${ m.mPicture != 'defaultPerson.png' }"> --%>
+               		 <c:if test="${!fn:contains(m.mPicture, 'https:')}">
                		<img id="profileImg" src="${pageContext.request.contextPath }/resources/img/profile/${ m.mPicture }" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+				</c:if>
+				<c:if test="${fn:contains(m.mPicture, 'https:')}">
+					<img id="profileImg" src="${ m.mPicture }" class="rounded float-left" style="width:30%; height: 80%; padding: 1%; cursor: pointer; ">
+				</c:if>
 <%--                </c:if> --%>
                 <div id="profileWrap">
                 	<form  id="fileForm" enctype="multipart/form-data"><input type="file" accept="image/*" id="profileBtn" name="profileBtn" onchange="LoadImg(this)"/>
@@ -83,27 +95,28 @@
                 <div id="profilePlaceholder" style="display: none;">사진 변경 프로필 클릭</div>
                    
                 <input type="hidden" value="${m.mId}" id="mId"/>
-                
+                <!-- 내정보 div -->
                 <div class="row text-center">
-                    
                     <div class="col-sm-12">
                       <br>
-                      <div class="alert alert-secondary" role="alert">
-                          <td>ID : ${ m.getmId() }</td>
-                      </div>
-                      <div class="alert alert-success" role="alert">
-                          <td>닉네임 : ${ m.getmName() }</td>
-                      </div>                                           
-                      <div class="alert alert-info" role="alert">
-                            <td>이메일 : ${ m.getEmail() }</td>
-                      </div>
-                      <input type="hidden" id="mGen" value="${m.gender }" />
-                    </div>
-                    </div>
-                                 
-                  <div class="col-sm-12">
-                      
+                      	<div class="alert alert-secondary" role="alert">
+                          <td>ID : ${ minfo.mId }</td>
+                      	</div>
+                      	<div class="alert alert-success" role="alert">
+                          <td>닉네임 : ${ minfo.mName }</td>
+                      	</div>                                           
+                      	<div class="alert alert-info" role="alert">
+                            <td> 이메일 : ${minfo.email }</td>
+                      	</div>
+                      	<input type="hidden" id="mGen" value="${m.gender }" />
+                   </div>
+                 </div>
+                       
+                <!-- 이미지 변경 버튼 -->
+                <div class="col-sm-12">           
+                    <!-- <button type="button" class="btn btn-default btn-sm"  id="UpImg">이미지변경</button> -->				
                     <button type="button" class="btn btn-default btn-sm btn-toggle" data-toggle="modal" data-target="#myModal">정보수정</button>
+                    
                     <!-- 정보수정 모달창 -->
                     <div class="modal fade" id="myModal">
                         <div class="modal-dialog modal-lg">
@@ -117,43 +130,49 @@
                                     <label for="inputId" class="control-label">아이디</label>
                                   </div>
                                   <div class="col-sm-7">
-                                      <td>${ m.getmId() }</td>
+                                      <td>${ minfo.mId }</td>
                                   </div>
                               </div>
-                              <div class="form-group row" id="divPassword">
+                              <div class="form-group row">
                                   <div class="col-sm-2">
-                                    <label for="inputPassword" class="control-label">비밀번호</label>
+                                    <label for="Password" class="control-label">비밀번호</label>
                                   </div>
                                   <div class="col-sm-7">
-                                      <input type="password" class="form-control" id="password" name="excludeHangul" data-rule-required="true" placeholder="비밀번호" maxlength="20">
+                                      <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호 변경" maxlength="20">
+                                      <div class="invalid-feedback text-left"><p id="wrnMsg1"></p></div>
                                   </div>
                               </div>
-                              <div class="form-group row" id="divPasswordCheck">
+                              <div class="form-group row">
                                   <div class="col-sm-2">
-                                    <label for="inputPasswordCheck" class="control-label">비밀번호 확인</label>
+                                    <label for="password1" class="control-label">비밀번호 확인</label>
                                   </div>
                                   <div class="col-sm-7">
-                                      <input type="password" class="form-control" id="passwordCheck" data-rule-required="true" placeholder="비밀번호 확인" maxlength="20">
+                                      <input type="password"  class="form-control" id="password1" placeholder="비밀번호 변경 확인" maxlength="20">
+                                      <div class="invalid-feedback text-left"><p id="wrnMsg2"></p></div>
                                   </div>
                               </div>
-                              <div class="form-group row" id="divNickname">
-                                  <div class="col-sm-2">
-                                    <label for="nickName" class="control-label">닉네임</label>
-                                  </div>
-                                  <div class="col-sm-7">
-                                      <input type="text" class="form-control nickChk" id="nickname" data-rule-required="true" placeholder="닉네임" maxlength="15">
-                                      <div class="invalid-feedback text-left"><p id="wrnMsg4"></p></div>
-                                  </div>
-                                  <div id="ChackNic">
-                                    <button type="button" class="btn btn-default btn-sm" id="Dup">중복확인</button>
-                                  </div>
-                              </div>
+                             
+										<div class="form-group row">
+											<label for="nicName" class="col-sm-2 control-label">닉네임</label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" name="mName"
+													id="nicName"  value="${minfo.mName }" required>
+												<div class="invalid-feedback text-left">
+													<p id="wrnMsg4"></p>
+												</div>
+											</div>
+										</div>
+									
+                              
                               <div class="form-group row" id="divEmail">
                                     <div class="col-sm-2">
                                       <label for="inputEmail" class="control-label">이메일</label>
                                     </div>
                                     <div class="col-sm-7">
-                                      <input type="text" class="form-control" id="email" data-rule-required="true" placeholder="이메일" maxlength="20">
+                                      <input type="text" class="form-control" id="email" data-rule-required="true" placeholder="이메일" maxlength="20" value="${minfo.email  }">
+                                    <div class="invalid-feedback text-left">
+													<p id="wrnMsg3"></p>
+												</div>
                                     </div>
                              </div>
                              <div class="form-group row" id="gender">
@@ -166,7 +185,7 @@
                                   </div>
                          </div>                       
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal" id="sjBtn">수정</button>
+                                <button type="submit" class="btn btn-default" data-dismiss="modal" id="sjBtn">수정</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>                               
                             </div>
                           </div>
@@ -174,7 +193,42 @@
                      </div>
                      <script>
                      
-                     // 정보수정
+ // 정보수정
+                     
+                     //비밀번호 유효성 검사
+                    	$('#password').on('keyup', function(){
+                            pwd = $('#password').val();          
+                    		regexp = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
+                    		
+                            if (regexp.test(pwd)) {
+                    			$('#password').removeClass("is-invalid");
+                    		 	$('#password').addClass('is-valid');
+                    		 	$('#password').removeClass('lastChk');
+                    			
+                    		}else{
+                    			$('#password').removeClass("is-valid");
+                    			$('#password').addClass('is-invalid');
+                    			$('#password').addClass('lastChk');
+                    			$('#wrnMsg1').text('비밀번호를 확인 해주세요');
+                    		}
+                    	});
+                    	
+                    	// 비밀번호 확인
+                    	$('#password, #password1').on('keyup',function(){
+                    		 if($('#password').val() == $('#password1').val()){
+                    			 	$('#password1').removeClass("is-invalid");
+                    			 	$('#password1').addClass('is-valid');
+                    			 	$('#password1').removeClass('lastChk');
+                    				
+                    		 }else{
+                    			 $('#password1').removeClass("is-valid");
+                    			 $('#password1').addClass('is-invalid');
+                    		 	 $('#wrnMsg2').text('비밀번호가 일치하지 않습니다.');
+                    		 	$('#password1').addClass('lastChk');
+                    		 }
+                    	 });
+                    	
+                    	// 닉네임 중복확인
                      $(function(){
                     	 console.log('아이디'+$('#mId').val());
                     	 console.log($('#mGen').val());
@@ -183,24 +237,65 @@
                      });
                      	$('#sjBtn').on('click', function(){
                      		console.log("들어오냐");
-                     		               		
-                     		$.ajax({
-                     			url : "${pageContext.request.contextPath}/mypage/mypageEnrollEnd.do",
-                     			data : {
-                     				nic: $('#nicName').val(),
-                     				email : $('#email').val(),
-                     				password : $('#password').val(),
-                     				mId : $('#mId').val()  
-                     			},
-                     			success: function(data){
-                     				alert("수정완료. 재로그인하세요");
-                     				location.href="${pageContext.request.contextPath}/member/memberLogout.do";
-                     			},
-                     			error : function(){
-                     				alert("변경할 내용을 입력해주세요");
-                     			}
-                     		})
+                     		if(!$('input').hasClass('is-invalid') && !$('input').hasClass('lastChk')){
+            			 	          		
+	                     		$.ajax({
+	                     			url : "${pageContext.request.contextPath}/mypage/mypageEnrollEnd.do",
+	                     			data : {
+	                     				nic: $('#nicName').val(),
+	                     				email : $('#email').val(),
+	                     				password : $('#password').val(),
+	                     				mId : $('#mId').val()  
+	                     			},
+	                     			success: function(data){
+	                     				location.reload();
+	                     				/* alert("수정완료. 재로그인하세요");
+	                     				location.href="${pageContext.request.contextPath}/member/memberLogout.do"; */
+	                     			},
+	                     			error : function(){
+	                     				alert("변경할 내용을 입력해주세요");
+	                     			}
+	                     		});
+                     		
+            			 	}else{
+            			 		alert('수정할 정확한 정보를 입력해주세요');
+            			 	}
                      	});
+                     	
+                     // 이메일 유효성 검사
+                    	$('#email').on('keyup',function(){
+                    		 var email = $('#email').val().trim();
+                    			
+                    			if(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(email)){
+                    				$.ajax({
+                    					url:"${pageContext.request.contextPath}/member/checkEmailDup.do",
+                    					data:{email:email},
+                    					dataType:"json",
+                    					success: function(data){
+                    						if(data.isUsable == true){ 
+                    							$('#email').removeClass("is-invalid");
+                    							$('#email').addClass('is-valid');
+                    							$('#email').removeClass('lastChk');
+                    							
+                    						}else{
+                    							$('#email').removeClass("is-valid");
+                    							$('#email').addClass('is-invalid');
+                    							$('#wrnMsg3').text('이미 등록된 이메일 입니다.');
+                    							$('#email').addClass('lastChk');
+                    						}
+                    						
+                    					}, error:function(error, msg){
+                    						alert('이메일 중복 체크 에러');
+                    					}
+                    				});
+                    					
+                    			}else{
+                    				$('#email').removeClass("is-valid");
+                    				$('#email').addClass('is-invalid');
+                    				$('#email').addClass('lastChk');
+                    				$('#wrnMsg3').text('이메일 형식을 확인해 주세요!');
+                    			}
+                    	 });
                      </script>
                     <button type="button" class="btn btn-default btn-sm">회원탈퇴</button>
                   </div>
@@ -208,14 +303,14 @@
                  
             <div id="refrigerator" style="width:49%; height: 100%; float: right; border: 1px solid lightgray;">
                   <img src="${pageContext.request.contextPath }/resources/img/tmakxm.png" class="rounded float-left" style="width:30%; height: 100%; float: left; padding: 1%;">
-                  	<div id="ref" class="recipe row">
+                  	<div id="ref" class="recipe row" style="overflow:auto; width: 375px; height:200px;">
 							<c:forEach var="ingre" items="${refList}">
 								<div class="ingre m-1" id="${ingre.iNum}">
 									<img src="${pageContext.request.contextPath}/resources/img/ingredient/${ingre.iImage}" alt="ingredient image" class="rounded-circle inIngre" title="${ingre.iName}" style="height : 7vh; width : 7vh;">
 								</div>								
 							</c:forEach>
 	                    </div>
-	                    <div id="refBtn" style="position:absolute;">
+	                    <div id="refBtn" style="right:40%; bottom:0%;">
                   			<button type="button" class="btn btn-default btn-lg" onclick="gorefMain(this);">내 냉장고 가기</button>
                   		</div>     
             </div>
@@ -228,7 +323,7 @@
                     <a class="na na1 nav-link " id="recGo" href="#">내가 올린 레시피</a>
                   </li>
                   <li class="nav-item">
-                    <a class="na na2 nav-link active" id="posGo" href="#">내가 쓴 글</a>
+                    <a class="na na2 nav-link active" href="#">내가 쓴 글</a>
                   </li>
                   <li class="nav-item">
                     <a class="na na3 nav-link" id="likGo" href="#">좋아요</a>
@@ -236,31 +331,36 @@
                 </ul>
                 <br>
                 <div id="myPostWrap">
-                	<input type="button" class="btn btn-default btn-sm" value="재료요청"/>
-	                <input type="button" class="btn btn-default btn-sm" value="Q&A"/>
-	                <input type="button" class="btn btn-default btn-sm" value="신고"/>
+                	<input type="button" class="btn btn-default btn-sm" onclick="category(this);" value="전체"/>
+                	<input type="button" class="btn btn-default btn-sm" onclick="category(this);" value="재료요청"/>
+	                <input type="button" class="btn btn-default btn-sm" onclick="category(this);" value="QNA"/>
+	                <input type="button" class="btn btn-default btn-sm" onclick="category(this);"value="기타"/>
                 </div>
                
                 <br>
-                <br>
                 
-                <form id="recipeForm">
+                <form id="updateBoardForm" method="POST">
+				<input type="hidden" name="no" id="updateBoard" />
+			  </form>
+                
+                
+                <form id="recipeForm" method="POST">
 				<input type="hidden" value="${ m.mNum }" name="mNum" />
 			  </form>
 			  
-			  <form id="likeForm">
+			  <form id="likeForm" method="POST">
 				<input type="hidden" value="${ m.mNum }" name="mNum" />
 			  </form>
 			  
-			  <form id="refreshMypost" action="${pageContext.request.contextPath}/mypage/myPosts.do">
+			  <form id="refreshMypost" action="${pageContext.request.contextPath}/mypage/myPosts.do" method="POST">
              	<input type="hidden" value="${m.mNum }" name="mNum"/>
              </form>
-                
+             
              
 		<div id="mp2" class="col-lg-12" style="padding : 0">
           <table id="mypage2" class="table table-hover" style="border: 1px solid lightgray;">
               <tbody class="myS" style="background : white; border:1px solid ligntgray;">
-                <tr style="border: 2px solid saddlebrown;  text-align: center;">
+                <tr style="text-align: center;">
                   <th width="10%">번호</th>
                   <th width="30%">제목</th>
                   <th width="15%">작성자</th>
@@ -304,6 +404,18 @@
             </div>
             
           </div>
+          
+          <form id="pageFrom" method="POST">
+          	<input type="hidden" value="${m.mNum}" name="mNum"/>
+          	<input type="hidden" value=<%= cPage %> name="cPage" id="cPageNum"/>
+          </form>
+          
+          
+              <form id="cateForm" method="POST">
+				<input type="hidden" value="${ m.mNum }" name="mNum" />
+				<input type="hidden" name="cate" id="cate" />
+			  </form>
+                
           <script>
           
           // 이미지 변경 클릭시
@@ -417,7 +529,17 @@
       		}
       		
       	});
-            
+       
+       // 버튼 클릭시 보여지는 기능
+       		function category(obj){
+    	    console.log($(obj).val());
+    	    $('#cateForm').attr("action", "${pageContext.request.contextPath}/mypage/myPosts.do");
+    	    $('#cate').val($(obj).val());
+    	    $('#cateForm').submit();
+       }
+       
+       
+       			// 주요메뉴 클릭시 이동     
               $('.na1').on('click', function(){
                   $('.na1').removeClass("disabled").addClass("active");
                   $('.na2').removeClass("active").addClass("disabled");
@@ -454,6 +576,7 @@
            		console.log('sdf'+bNum);
            		 $.ajax({
            			url : "${pageContext.request.contextPath}/mypage/myPostdelete.do",
+           			type:"POST",
            			data:{
            				bNum : bNum
            			}, success: function(data){
@@ -485,9 +608,9 @@
                // 내가쓴 글 수정하러가기
                $('.updateMyBoard').on('click',function(){
             	   var bNum = $(this).parent().parent().children().eq(0).text();
-            	   console.log(bNum);
-            	  location.href="${pageContext.request.contextPath}/board/updateBoard.do?no="+bNum;
-              	  
+            	  $('#updateBoard').val(bNum);
+            	  $('#updateBoardForm').attr("action","${pageContext.request.contextPath}/board/updateBoard.do" );
+            	  $('#updateBoardForm').submit();
                });
                /* 
                function updateDev(obj){
@@ -503,18 +626,9 @@
            	  location.href="${pageContext.request.contextPath}/fridge/refMain.do?mNum="+mNum;
              	  
               }
-              /*  /board/boardDetail.do */
               
               
-               
-            
-               
-               
-               
-               
-               $('#posGo').on('click', function(){
-            	   $('#postForm').attr("action", "${pageContext.request.contextPath}/mypage/myPosts.do").submit();
-               });
+
                
                $('#recGo').on('click', function(){
             	   $('#recipeForm').attr("action", "${pageContext.request.contextPath}/mypage/myPage.do").submit();
@@ -526,5 +640,7 @@
                
                
              </script>
+             
+             </div>
 </body>
 </html>

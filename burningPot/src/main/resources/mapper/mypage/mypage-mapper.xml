@@ -15,7 +15,7 @@
 		WHERE re.MNUM= #{mNum}
 	</select>
 	
-	<!-- 토탈 -->
+	<!-- 좋아요 토탈 -->
 	<select id="selectMyLikeTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM RECOMMEND re 
 		JOIN RECIPE r ON(r.RNUM = re.RNUM)
@@ -29,26 +29,54 @@
 	</select>
 	
 	<!-- 아이페이지 내가쓴글 불러오기 -->
-	<select id="seleteMyPostList" parameterType="_int" resultType="board">
+	<select id="seleteMyPostList" parameterType="hashmap" resultType="board">
 		SELECT * FROM BOARD WHERE MNUM = #{mNum}
+		
+			<choose>
+				<when test="cate == '재료요청'">
+				 AND	CATEGORY ='재료요청'
+				</when>
+				<when test="cate == 'QNA'">
+				AND	CATEGORY ='QNA'
+				</when>
+				<when test="cate == '기타'">
+				AND	CATEGORY ='기타'
+				</when>
+				<otherwise>
+				</otherwise>
+			</choose>
+		
+		 ORDER BY BDATE DESC
 	</select>
 	
 	<!-- 마이페이지 내가쓴글 토탈 -->
-	<select id="selectMyPostTotalContents" resultType="_int">
+	<select id="selectMyPostTotalContents" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*) FROM BOARD WHERE MNUM = #{mNum}
+		<choose>
+				<when test="cate == '재료요청'">
+				 AND	CATEGORY ='재료요청'
+				</when>
+				<when test="cate == 'QNA'">
+				AND	CATEGORY ='QNA'
+				</when>
+				<when test="cate == '기타'">
+				AND	CATEGORY ='기타'
+				</when>
+				<otherwise>
+				</otherwise>
+			</choose>
 	</select>
 	
 	<!-- 마이페이지 내가 쓴 레시피 불러오기 -->
 	<select id="selectMyRecipeList" parameterType="_int" resultType="recipe">
-		SELECT * FROM RECIPE WHERE MNUM = #{mNum}
+		SELECT * FROM RECIPE WHERE MNUM = #{mNum} ORDER BY RDATE DESC
 	</select>
 	
 	<!-- 마이페이지 내가쓴 레시피 토탈 -->
 	<select id="selectMyRecipeTotalContents" resultType="_int">
-		SELECT COUNT(*) FROM BOARD WHERE MNUM = #{mNum}
+		SELECT COUNT(*) FROM RECIPE WHERE MNUM = #{mNum}
 	</select>
-	
-	
+		
 	
 	<!-- 닉네임 중복확인 -->
 	<select id="checkNicDuplicate" resultType="_int">
@@ -57,7 +85,11 @@
 	
 	<!-- 회원정보 수정 -->
 	<update id="updatemypageEnrollEnd" parameterType="hashmap">
-		UPDATE MEMBER SET MNAME = #{nic}, PASSWORD = #{password}, EMAIL = #{email} WHERE MID = #{mId}
+		UPDATE MEMBER SET MNAME = #{nic}, EMAIL = #{email} 
+		<if test ="password !='' ">
+			, PASSWORD = #{password}
+		</if>
+		WHERE MID = #{mId}
 	</update>
 	
 	<!-- 레시피 삭제 -->
