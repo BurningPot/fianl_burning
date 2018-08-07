@@ -73,13 +73,17 @@ public class sh_Utils {
 		
 		pageBar += "</ul>";
 		
+		
 		//2.스크립트 태그 작성
 		//fn_paging함수
 		pageBar += "<script>";
 		pageBar += "function fn_paging(cPage,mNum){";
-		pageBar += "location.href=' "+url+ "?cPage='+cPage+'&mNum='+mNum";
+		pageBar +="$('#pageFrom').attr('action','"+url+"');";
+		pageBar += "$('#cPageNum').val(cPage);";
+		pageBar +="$('#pageFrom').submit();";
 		pageBar += "};";
 		pageBar += "</script>";
+		
 		
 		
 		return pageBar; 

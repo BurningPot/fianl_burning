@@ -30,9 +30,9 @@ public interface MypageService {
 
 	int deleteUserInfo(int formDel);
 
-	List<Board> myPostList(int cPage, int numPerPage, int mNum);
+	List<Board> myPostList(int cPage, int numPerPage, int mNum, String cate);
 
-	int selectMyPostTotalContents(int mNum);
+	int selectMyPostTotalContents(int mNum, String cate);
 
 	List<Recipe> myRecipeList(int cPage, int numPerPage, int mNum);
 

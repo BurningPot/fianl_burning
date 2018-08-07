@@ -74,16 +74,23 @@ public class MypageDaoImpl implements MypageDao{
 	}
 
 	@Override
-	public List<Board> myPostList(int cPage, int numPerPage, int mNum) {
+	public List<Board> myPostList(int cPage, int numPerPage, int mNum, String cate) {
+		
+		HashMap<String, Object> hmap = new HashMap<String, Object>();
+		hmap.put("mNum", mNum);
+		hmap.put("cate", cate);
 		
 		RowBounds rows = new RowBounds( (cPage-1)*numPerPage, numPerPage);
 		
-		return sqlSession.selectList("mypage.seleteMyPostList", mNum, rows);
+		return sqlSession.selectList("mypage.seleteMyPostList", hmap, rows);
 	}
 
 	@Override
-	public int selectMyPostTotalContents(int mNum) {
-		return sqlSession.selectOne("mypage.selectMyPostTotalContents", mNum);	
+	public int selectMyPostTotalContents(int mNum, String cate) {
+		HashMap<String, Object> hmap = new HashMap<String, Object>();
+		hmap.put("mNum", mNum);
+		hmap.put("cate", cate);
+		return sqlSession.selectOne("mypage.selectMyPostTotalContents", hmap);	
 	
 	}
 
@@ -96,16 +103,16 @@ public class MypageDaoImpl implements MypageDao{
 	}
 	
 	@Override
+	public int selectMyRecipeTotalContents(int mNum) {
+		return sqlSession.selectOne("mypage.selectMyRecipeTotalContents", mNum);
+	}
+	
+	@Override
 	public List<Recipe> myLikeList(int cPage, int numPerPage, int mNum) {
 		
 		RowBounds rows = new RowBounds( (cPage-1)*numPerPage, numPerPage);
 		
 		return sqlSession.selectList("mypage.selectMyLikeList", mNum, rows);
-	}
-
-	@Override
-	public int selectMyRecipeTotalContents(int mNum) {
-		return sqlSession.selectOne("mypage.selectMyRecipeTotalContents", mNum);
 	}
 	
 	@Override

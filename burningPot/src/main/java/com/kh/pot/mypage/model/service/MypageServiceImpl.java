@@ -83,15 +83,15 @@ public class MypageServiceImpl implements MypageService{
 	}
 
 	@Override
-	public List<Board> myPostList(int cPage, int numPerPage, int mNum) {
+	public List<Board> myPostList(int cPage, int numPerPage, int mNum, String cate) {
 		
-		return mypageDao.myPostList(cPage, numPerPage, mNum);
+		return mypageDao.myPostList(cPage, numPerPage, mNum, cate);
 	}
 
 	@Override
-	public int selectMyPostTotalContents(int mNum) {
-
-		return mypageDao.selectMyPostTotalContents(mNum);
+	public int selectMyPostTotalContents(int mNum, String cate) {
+		
+		return mypageDao.selectMyPostTotalContents(mNum, cate);
 	}
 
 	@Override
