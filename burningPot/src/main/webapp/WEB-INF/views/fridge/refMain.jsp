@@ -16,7 +16,7 @@
 <body class="font">
 	<c:import url="/WEB-INF/views/common/header.jsp"></c:import>
 	<div class="container">
-	    <div class="row" style="height:25vh;"></div>
+	    <div class="row" style="height:18vh;"></div>
 	    <div class="row">
 	        <div class="col-sm-4 ref-side">
 	            <div class="ref">
@@ -74,7 +74,7 @@
 	            <div style="height:3vh;"></div>
 	        </div>
 	    </div>
-	    <div class="row" style="height:10vh;"></div>
+	    <div class="row" style="height:2vh;"></div>
 	</div>
 	<script>
   		$(document).ready(function(){
@@ -99,7 +99,7 @@
 				                    <div class="col-sm-4">
 				                        <div style="height: 17vh; width:100%;" class="newReg">
 				                            <a href="${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=`+value.rNum+`">
-				                        	<img src="${pageContext.request.contextPath}/resources/img/recipeContent/`+value.rImg+`" alt="food image" class="rounded recImg" style="max-height: 100%; min-width:100%;">
+				                        	<img src="${pageContext.request.contextPath}/resources/img/recipeContent/`+value.rImg+`" alt="food image" class="rounded recImg" style="height: 100%; width:100%;">
 				                        	</a>
 				                        </div>
 				                    </div>
@@ -119,7 +119,7 @@
 				                    <div class="col-sm-4">
 				                        <div style="height: 17vh;">
 				                            <a href="${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=`+value.rNum+`">
-				                        	<img src="${pageContext.request.contextPath}/resources/img/recipeContent/`+value.rImg+`" alt="food image" class="rounded recImg" style="max-height: 100%; min-width:100%;">
+				                        	<img src="${pageContext.request.contextPath}/resources/img/recipeContent/`+value.rImg+`" alt="food image" class="rounded recImg" style="height: 100%; width:100%;">
 				                        	</a>
 				                        </div>
 				                    </div>
