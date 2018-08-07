@@ -73,22 +73,6 @@ public class BoardController {
 			if(searchCondition != null || searchCondition != "") model.addAttribute("searchCondition",searchCondition);
 			if(searchType !=null || searchType!="") model.addAttribute("searchType",searchType);
 		
-		
-		
-		// 페이지 관련 변수 전달용 VO 생성
-		PageInfo pi = new PageInfo(currentPage, totalContents, numPerPage, startPage, endPage, maxPage);
-		/*페이징 계산*/
-		
-		// 2. 현재 페이지 컨텐츠 리스트 받아오기
-		List<Map<String, String>> list = boardService.selectBoardList(currentPage, numPerPage, searchBoard, searchCondition, searchType);
-		
-		model.addAttribute("list", list).addAttribute("pi",pi);
-		
-		
-		if(searchBoard !=null || searchBoard!="") model.addAttribute("searchBoard",searchBoard);
-		if(searchCondition != null || searchCondition != "") model.addAttribute("searchCondition",searchCondition);
-		if(searchType !=null || searchType!="") model.addAttribute("searchType",searchType);
-		
 		} catch (Exception e) {
 			throw new PotException("게시판 오류!", "게시판을 불러오는 도중 에러가 발생했습니다");
 		}
