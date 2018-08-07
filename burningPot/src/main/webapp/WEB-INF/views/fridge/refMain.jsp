@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/fridge/css/hkLocal.css?ver=1">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/fridge/jquery-ui/jquery-ui.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gugi">
 </head>
 <body class="font">
 	<c:import url="/WEB-INF/views/common/header.jsp"></c:import>
@@ -19,7 +20,11 @@
 	    <div class="row">
 	        <div class="col-sm-4 ref-side">
 	            <div class="ref">
-	                <div class="blank"></div>
+	                <div class="mainBlank text-center" style="padding-top:18vh; font-family: 'Gugi', cursive; font-size : 18pt;">
+                    	<div id="mainGlow">
+							- ${m.mName}님의 냉장고입니다 -
+                    	</div>
+					</div>
 	                <div id="refrigerator" class="rounded p-r m-r">
 	                    <div id="ref" class="recipe row">
 							<c:forEach var="ingre" items="${list}">

@@ -73,8 +73,18 @@
 	.font {
 		font-family: 'Nanum Gothic', sans-serif;
 	}		
+	.ingreCategory{
+	    text-align: right !important;
+		margin-right:-2.1%;
+	}
+	.ingreCategory>a{
+		 margin : 0%;
+		 margin-bottom: 0.25rem; 
+	}
+	#firstCategory{
+		margin-top : 2rem;
+	}
     .recipe.row{
-		margin-right: -0.5px;
 		margin-left: -0.5px;
     }
     .ref{
@@ -104,7 +114,11 @@
         border-radius: .80rem!important;
     }
     #refrigerator{
+    	overflow-x: hidden;
     	overflow-y: scroll;
+    }
+    #real-ref{
+    	margin-left:0.2vh;
     }
     /* width */
 	#refrigerator::-webkit-scrollbar {
@@ -163,6 +177,9 @@
     .blank{
         height : 22vh;
     }
+	.mainBlank{
+        height : 22vh;
+    }
     .m-r{
         margin : 1.2rem; 
     }
@@ -174,12 +191,37 @@
     #ingredient{
         height : 76vh;
     }
+    
     #real-ingre{
         padding-left : 2vh;
     }
-    #info{
-        float : right;
-    }
+    
+/*     #glow p, #glow span{
+  		line-height: normal;
+    	font-size: 1.3rem;
+    	font-family: 'Gugi', cursive;
+  		display: inline-block;
+  		color: #FFF;
+  		text-shadow: 0 0 15px;
+	}
+	#glow p:nth-child(odd) {
+		-webkit-animation: bglow .4s ease infinite;
+	}
+	#glow p:nth-child(even) {
+	  	-webkit-animation: rglow .4s ease infinite;
+	}
+	@-webkit-keyframes bglow {
+	  0% {
+	    color: rgb(0, 135, 211);
+	    text-shadow: 0 0 15px;
+	  }
+	}
+	@-webkit-keyframes rglow {
+	  100% {
+	    color: rgb(233, 54, 40);
+	    text-shadow: 0 0 15px;
+	} */
+	    
     .rec-side{
         height : 77vh;
         background:rgba(251, 255, 185, 0.83); 
@@ -359,33 +401,45 @@
 	.font {
 		font-family: 'Nanum Gothic', sans-serif;
 	}
+	.ingreCategory{
+	    text-align: center;	
+	}
+	.ingreCategory>a{
+		width : 12vh;
+		margin : 0%;
+		margin-right: 0.1rem; 
+		margin-bottom: 0.25rem; 
+	}
+	#ingredient{
+		margin-top: -0.3rem;
+	}
 	.recipe.row{
 		margin-right: -0.5px;
 		margin-left: -0.5px;
     }
     .com{
+    	margin-top : 0.5vh;
         color : #FBFFB9;
         background: #754F44;
     }
     .rounded{
         border-radius: .80rem!important;
     }
-    #refrigerator{
-    	overflow-x: hidden;
-    	overflow-y: scroll;
-    }
-    /* width */
-	#refrigerator::-webkit-scrollbar {
-	    width: 10px;
-	}
     #real-ingre>div:hover{
         cursor: pointer;
     }
     #real-ref>div:hover{
         cursor: pointer;
     }
+	#refrigerator{
+    	overflow-x: hidden;
+    	overflow-y: scroll;
+    }
+    #real-ref{
+    	margin-left:1.2vh;
+    }
     #real-ingre{
-        padding-left : 3.2vh;
+        padding-left : 4vh;
     }
     .ingre{
         z-index : 30;
@@ -421,11 +475,12 @@
         background: rgb(218, 241, 238);
         height:35vh;
     }
-    #ingredient{
-        height : 38vh;
+    .blank{
+    	padding-top : 3vh !important;
     }
-    #info{
-        display: none;
+	.mainBlank{
+    	height:auto;
+    	margin-top : -20vh;
     }
     .rec-side{
         height : 70vh;
@@ -433,20 +488,38 @@
         overflow-x: hidden; 
         overflow-y: scroll;
     }
+    #refrigerator{
+    	overflow-x: hidden;
+    	overflow-y: scroll;
+    }
+    #ingredient{
+        height : 38vh;
+   		overflow-x: hidden;
+		overflow-y: scroll; 
+    }
+	#refrigerator::-webkit-scrollbar {
+	    width: 10px;
+	}
+	#ingredient::-webkit-scrollbar {
+	    width: 10px;
+	}	
 	/* Track */
 	#refrigerator::-webkit-scrollbar-track {
 	    background: rgb(218, 241, 238);
 	}
+	#ingredient::-webkit-scrollbar-track{
+	    background: rgba(218, 241, 238, 0);
+	}
 	.rec-side::-webkit-scrollbar-track {
-	    background: rgba(182, 243, 208, 0.83);
+	    background: rgba(182, 243, 208, 0);
 	}
 	/* Handle */
-	.rec-side::-webkit-scrollbar-thumb, #refrigerator::-webkit-scrollbar-thumb {
+	.rec-side::-webkit-scrollbar-thumb, #refrigerator::-webkit-scrollbar-thumb, #ingredient::-webkit-scrollbar-thumb {
 	    background: #888;
 		border-radius: 10px;
 	}
 	/* Handle on hover */
-	.rec-side::-webkit-scrollbar-thumb:hover, #refrigerator::-webkit-scrollbar-thumb:hover {
+	.rec-side::-webkit-scrollbar-thumb:hover, #refrigerator::-webkit-scrollbar-thumb:hover, #ingredient::-webkit-scrollbar-thumb:hover {
 	    background: #555; 
 	}
     .ui-tooltip, .arrow:after {
@@ -544,9 +617,15 @@
 	}	
 	.recTitle{
 		margin-left : -2vh;
-		margin-top : -1vh;
 		margin-bottom : -1vh;
 		color : green;
+  		width: 100%; 
+  		text-align:left !important;
+	}
+	.recTitle h5{
+	  	overflow: hidden; 
+  		text-overflow: ellipsis;
+  		white-space: nowrap;
 	}
 	.recTitle:hover{
 		color : #28a745;
