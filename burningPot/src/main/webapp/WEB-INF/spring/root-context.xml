@@ -23,7 +23,7 @@
 	  <property name="scope"
 	    value="https://www.googleapis.com/auth/plus.login" />
 	  <property name="redirectUri"
-	    value="http://localhost:8088/pot/callbackg.do" />
+	    value="http://localhost:80/pot/callbackg.do" />
 	</bean>
 	
 	
