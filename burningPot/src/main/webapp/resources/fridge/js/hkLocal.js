@@ -1,10 +1,6 @@
 
 $( function() { 
-	
-    $('#real-ref').on("dragstart",function(e){
-        return false;
-    });
-	
+		
     $( document ).tooltip({
         position: {
         my: "center bottom-10",
@@ -30,6 +26,7 @@ function dragDrop(){
     var $ingredient = $( "#real-ingre" ),
     $ingre = $ingredient.children("div"),
     $refrigerator = $( "#refrigerator" ),
+    $refri = $("#real-ref"),
     $ref = $('#real-ref').children("div");
 	
 	$( "div", $ingredient ).draggable({
@@ -38,12 +35,12 @@ function dragDrop(){
 	    helper: "clone",
 	    cursor: "pointer"
 	});
-	
-	$( "div", $refrigerator ).draggable({
-	    cancel: "a.ui-icon",
-	    revert: "invalid",
-	    helper: "clone",
-	    cursor: "pointer"
+		
+	$( "div", $refri ).draggable({
+		cancel: "a.ui-icon",
+		revert: "invalid",
+		helper: "clone",
+		cursor: "pointer"
 	});
 	
 	$refrigerator.droppable({
