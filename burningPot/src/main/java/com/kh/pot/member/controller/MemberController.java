@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.kh.pot.common.exception.PotException;
 import com.kh.pot.common.login.StringtoVo;
 import com.kh.pot.member.model.service.MemberService;
 import com.kh.pot.member.model.vo.Member;
@@ -296,8 +297,7 @@ public class MemberController {
 			try {
 				memberService.findMember(mEmail, memberId, true);
 			} catch (Exception e) {
-				System.out.println("이메일 보내기 실패");
-				e.printStackTrace();
+				throw new PotException("아이디 찾기 에러","이메일을 보내는데 실패하였습니다.");
 			}
 			
 		}
@@ -323,8 +323,7 @@ public class MemberController {
 			try{
 				memberService.findMember(pEmail, pMId, false);
 			}catch(Exception e){
-				System.out.println("메일 보내기 실패");
-				e.printStackTrace();
+				throw new PotException("비밀번호 찾기 에러","이메일을 보내는데 실패하였습니다.");
 			}
 		}
 		else map.put("isMember", false);
@@ -361,7 +360,7 @@ public class MemberController {
 			memberService.regist(chkEmail);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PotException("이메일 인증 에러","이메일을 보내는데 실패하였습니다.");
 		}
 		model.addAttribute("chkEmail",chkEmail);
 		
@@ -378,7 +377,7 @@ public class MemberController {
 			memberService.regist(confirmEmail);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PotException("이메일 인증 에러","이메일을 보내는데 실패하였습니다.");
 		}
 		model.addAttribute("chkEmail",confirmEmail);
 		
@@ -434,9 +433,8 @@ public class MemberController {
 		member.setBirthDate(sqlDate);
 		
 		/******* password 암호화 *******/
-//		암호화 부분 주석 
+		// 암호화 부분 주석 
 		String rawPassword = member.getPassword();
-		System.out.println("password 암호화 전 : "+rawPassword);
 		member.setPassword(bcryptPasswordEncoder.encode(rawPassword));
 		
 		// 회원 저장
@@ -468,7 +466,7 @@ public class MemberController {
 		if(m != null){
 			// 암호화 주석
 			if(bcryptPasswordEncoder.matches(password, m.getPassword())) {
-			 //if(password.equals(m.getPassword())){
+			// if(password.equals(m.getPassword())){
 				msgTitle="로그인 성공!";
 				msg="환영합니다.!!"+m.getmName()+" 님";
 				success = "success";

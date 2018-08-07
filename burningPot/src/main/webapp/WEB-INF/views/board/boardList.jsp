@@ -24,6 +24,7 @@
 <link
 	href="${pageContext.request.contextPath }/resources/css/board/board.css"
 	rel="stylesheet">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 	<div style="height: 20%;"></div>
@@ -285,8 +286,9 @@
 	   
 	function insertBoard(){
 		if( $('#mNum').val() == null ||$('#mNum').val() ==""){
-			alert('로그인 후 이용하실 수 있습니다.');
-			$("#loginModal").modal();
+			swal("로그인 후 이용하실 수 있습니다.","", "warning").then((value) => {
+				$("#loginModal").modal();
+			});
 		}else location.href='${pageContext.request.contextPath}/board/insertBoard.do';
 	}
 	
