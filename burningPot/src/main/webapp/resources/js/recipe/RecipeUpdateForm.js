@@ -210,7 +210,16 @@ $(function () {
     // ------------------------------------- 버튼 영역 -------------------------------------
     $('.submitBtn').click(function(e) {
         if(confirm('레시피 수정을 완료하시겠습니까?')){
-			console.log("수정완료");
+        	if ($("#people").val() == 0) {
+        		swal("인원 정보!", "인원 정보를 체크해주세요.", "error", {button:false});
+                e.preventDefault();
+        	} else if ($("#cookTime").val() == 0) {
+        		swal("시간 정보!", "시간 정보를 체크해주세요.", "error", {button:false});
+                e.preventDefault();
+        	} else if ($("#cookLevel").val() == 0) {
+        		swal("난이도 정보!", "난이도 정보를 체크해주세요.", "error", {button:false});
+                e.preventDefault();
+        	}
 		} else {
             e.preventDefault();
             console.log("수정취소");

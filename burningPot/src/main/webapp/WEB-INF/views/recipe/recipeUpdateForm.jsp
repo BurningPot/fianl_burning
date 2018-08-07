@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap-4.1.1/bootstrap-reboot.min.css">
         <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/recipe/RecipeUpdateForm.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400">
     </head>
 

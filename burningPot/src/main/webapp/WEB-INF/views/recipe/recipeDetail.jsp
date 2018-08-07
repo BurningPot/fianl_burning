@@ -274,19 +274,21 @@
                         	<c:choose>
                         		<c:when test="${m == null}">
                         			<div class="btnFontCss p-0 mr-4"><img class="mr-1 mb-1" src="${pageContext.request.contextPath}/resources/img/recipe/goodIcon.png" alt="좋아요"/>좋아요 (${recipe.rRecommend})</div>
+                        			<div class="btnFontCss p-0 mr-4"><img class="mr-1 mb-1" src="${pageContext.request.contextPath}/resources/img/recipe/badIcon.png" alt="신고하기"/>신고하기</div>
                         		</c:when>
                         		<c:otherwise>
                         			<c:choose>
                         				<c:when test="${recommend == null}">
                         					<button type="button" class="btnFontCss btn btn-light p-0 mr-4" id="goodBtn" onclick="addGood(this);"><img class="mr-1 mb-1" src="${pageContext.request.contextPath}/resources/img/recipe/goodIcon.png" alt="좋아요"/>좋아요 (${recipe.rRecommend})</button>
+                            				<button type="button" class="btnFontCss btn btn-light p-0" id="reportBtn" data-toggle="modal" data-target="#reportModal" onclick="refresh();"><img class="mr-1 mb-1" src="${pageContext.request.contextPath}/resources/img/recipe/badIcon.png" alt="신고하기">신고하기</button>
                         				</c:when>
                         				<c:otherwise>
                         					<button type="button" class="btnFontCss btn btn-light p-0 mr-4" id="goodBtn" onclick="addGood(this);"><img class="mr-1 mb-1" src="${pageContext.request.contextPath}/resources/img/recipe/goodIcon.png" alt="좋아요"/>좋아요 취소 (${recipe.rRecommend})</button>
+                            				<button type="button" class="btnFontCss btn btn-light p-0" id="reportBtn" data-toggle="modal" data-target="#reportModal" onclick="refresh();"><img class="mr-1 mb-1" src="${pageContext.request.contextPath}/resources/img/recipe/badIcon.png" alt="신고하기">신고하기</button>
                         				</c:otherwise>
                         			</c:choose>
                         		</c:otherwise>                            	
-                            </c:choose>
-                            <button type="button" class="btnFontCss btn btn-light p-0" id="reportBtn" data-toggle="modal" data-target="#reportModal" onclick="refresh();"><img class="mr-1 mb-1" src="${pageContext.request.contextPath}/resources/img/recipe/badIcon.png" alt="신고하기">신고하기</button>                               
+                            </c:choose>                               
                         </div>
                     </div>
                 </div>
