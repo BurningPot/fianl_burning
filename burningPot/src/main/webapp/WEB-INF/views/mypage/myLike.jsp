@@ -8,6 +8,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
 	.main{
@@ -63,7 +64,7 @@
 <c:import url="/WEB-INF/views/common/header.jsp"/>
 <body>
 <div style="height:15%;"></div>
-<div class="main col-lg-12">
+<div class="main col-lg-12" style="height:95%;">
 <br />
 <br />
 
@@ -326,12 +327,12 @@
                   </li>
                 </ul><br>
                 
-                <form id="postForm" method="POST">
-				<input type="hidden" value="${ m.mNum }" name="mNum" />
+                <form id="postForm" >
+				
 			  </form>
 			  
-			  <form id="recipeForm" method="POST">
-				<input type="hidden" value="${ m.mNum }" name="mNum" />
+			  <form id="recipeForm">
+				
 			  </form>
             
             
@@ -380,13 +381,12 @@
           </div>
           </div>
           
-          <form id="pageFrom" method="POST">
-          	<input type="hidden" value="${m.mNum}" name="mNum"/>
+          <form id="pageFrom">          	
           	<input type="hidden" value=<%= cPage %> name="cPage" id="cPageNum"/>
           </form>
           
-          <form id="refreshMypage" action="${pageContext.request.contextPath}/mypage/myLike.do" method="POST">
-             	<input type="hidden" value="${m.mNum }" name="mNum"/>
+          <form id="refreshMypage" action="${pageContext.request.contextPath}/mypage/myLike.do">
+             	
              </form>
              
           <script>
@@ -540,7 +540,7 @@
         		   $(this).css('cursor','pointer');
         	   });
             
-             //레시피 삭제
+             //좋아요 취소
                $('.cancelMyLikeRecipe').on('click',function(){
             		var rNum = $(this).parent().parent().children().eq(0).text();
             		var mNum = '${m.mNum}';
@@ -553,8 +553,9 @@
             				rNum : rNum,
             				mNum:mNum
             			}, success: function(data){
-            				alert("좋아요를 취소했습니다");
-            				$('#refreshMypage').submit();
+            				swal("좋아요 취소", "좋아요를 취소했습니다").then((value) => {
+	            				$('#refreshMypage').submit();
+            			      });
             			}, error: function(){
             				alert("좋아요 취소가 실패하였습니다");
             			}

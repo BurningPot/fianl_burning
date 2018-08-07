@@ -8,6 +8,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
 	
@@ -67,7 +68,7 @@
 
 <div style="height:15%;"></div>
 
-<div class="main col-lg-12">
+<div class="main col-lg-12"  style="height:95%;">
 <br />
 <br />
 
@@ -344,16 +345,16 @@
 			  </form>
                 
                 
-                <form id="recipeForm" method="POST">
-				<input type="hidden" value="${ m.mNum }" name="mNum" />
+                <form id="recipeForm">
+				
 			  </form>
 			  
-			  <form id="likeForm" method="POST">
-				<input type="hidden" value="${ m.mNum }" name="mNum" />
+			  <form id="likeForm">
+				
 			  </form>
 			  
-			  <form id="refreshMypost" action="${pageContext.request.contextPath}/mypage/myPosts.do" method="POST">
-             	<input type="hidden" value="${m.mNum }" name="mNum"/>
+			  <form id="refreshMypost" action="${pageContext.request.contextPath}/mypage/myPosts.do">
+             	
              </form>
              
              
@@ -405,14 +406,12 @@
             
           </div>
           
-          <form id="pageFrom" method="POST">
-          	<input type="hidden" value="${m.mNum}" name="mNum"/>
+          <form id="pageFrom">          	
           	<input type="hidden" value=<%= cPage %> name="cPage" id="cPageNum"/>
           </form>
           
           
-              <form id="cateForm" method="POST">
-				<input type="hidden" value="${ m.mNum }" name="mNum" />
+              <form id="cateForm" >
 				<input type="hidden" name="cate" id="cate" />
 			  </form>
                 

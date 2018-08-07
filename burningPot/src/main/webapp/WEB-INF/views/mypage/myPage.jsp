@@ -66,7 +66,7 @@
 
 <div style="height:15%;"></div>
 
-<div class="main col-lg-12">
+<div class="main col-lg-12"  style="height:95%;">
 <br />
 <br />
 	<div class="container" style=" width : 100%; height:300px; padding: 1%; background:white; background: 1px solid lightgray;">
@@ -235,7 +235,7 @@
                     	 
                      });
                      	$('#sjBtn').on('click', function(){
-                     		console.log("들어오냐");
+                     		
                      		if(!$('input').hasClass('is-invalid') && !$('input').hasClass('lastChk')){
             			 	          		
 	                     		$.ajax({
@@ -257,7 +257,7 @@
 	                     		});
                      		
             			 	}else{
-            			 		alert('수정할 정확한 정보를 입력해주세요');
+            			 		swal("정보수정 실패", "수정할 정확한 정보를 입력해주세요");
             			 	}
                      	});
                      	
@@ -333,12 +333,12 @@
                   </li>
                 </ul><br />
                 
-               <form id="postForm" method="POST">
-				<input type="hidden" value="${ m.mNum }" name="mNum" />
+               <form id="postForm" >
+				
 			  </form>
 			  
-			  <form id="likeForm" method="POST">
-				<input type="hidden" value="${ m.mNum }" name="mNum" />
+			  <form id="likeForm" >
+				
 			  </form>
                 
 
@@ -383,7 +383,7 @@
                              <%-- 페이지바를 위한 Utils의 정적메소드 사용 --%> 
    <% 
       int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
-      int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));        
+      int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
    	  int mNum =m.getmNum();
    	  
      // int mNum = Integer.parseInt(String.valueOf(request.getAttribute("mNum")));
@@ -403,8 +403,11 @@
 <br />
           </div>
           
-          <form id="pageFrom" method="POST">
-          	<input type="hidden" value="${m.mNum}" name="mNum"/>
+          <form id="updateMyRecipeForm" method="POST">
+          	<input type="hidden" name="rNum" id="updateMyRecipe"/>
+          </form>
+          
+          <form id="pageFrom" >          	
           	<input type="hidden" value=<%= cPage %> name="cPage" id="cPageNum"/>
           </form>
           
@@ -412,8 +415,8 @@
              	<input type="hidden" value="${m.mNum }" name="formDel"/>
              </form>
              
-             <form id="refreshMypage" action="${pageContext.request.contextPath}/mypage/myPage.do" method="POST">
-             	<input type="hidden" value="${m.mNum }" name="mNum"/>
+             <form id="refreshMypage" action="${pageContext.request.contextPath}/mypage/myPage.do">
+             	
              </form>
              
              <%-- <form id="recipeForm" method="POST">
@@ -604,11 +607,21 @@
         		   $(this).css('cursor','pointer');
         	   });
                
-               // 수정
+            // 내가쓴 글 수정하러가기
+               $('.updateMyBoard').on('click',function(){
+            	   var bNum = $(this).parent().parent().children().eq(0).text();
+            	  $('#updateBoard').val(bNum);
+            	  $('#updateBoardForm').attr("action","${pageContext.request.contextPath}/board/updateBoard.do" );
+            	  $('#updateBoardForm').submit();
+               });
+               
+               // 레시피 수정 가기
                $('.updateMyRecipe').on('click',function(){
             	   var rNum = $(this).parent().parent().children().eq(0).text();
-            	   console.log(rNum);
-            	  location.href="${pageContext.request.contextPath}/recipe/selectDetail.do?rNum="+rNum;
+            	   $('#updateMyRecipe').val(rNum);
+            	   $('#updateMyRecipeForm').attr("action", "${pageContext.request.contextPath}/recipe/selectDetail.do");
+            	   $('#updateMyRecipeForm').submit();
+            	 /*  location.href="${pageContext.request.contextPath}/recipe/selectDetail.do?rNum="+rNum; */
               	  
                });
                

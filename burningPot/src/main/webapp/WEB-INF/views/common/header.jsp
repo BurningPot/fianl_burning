@@ -1615,8 +1615,8 @@
 				          </button>
 				        </div>
 			        </c:if>
-			        <form action="${pageContext.request.contextPath}/mypage/myPage.do" method="POST" id="goToMyPageForm">
-			        	<input type="hidden" value="${m.mNum}" name="mNum"/>
+			        <form action="${pageContext.request.contextPath}/mypage/myPage.do" method="GET" id="goToMyPageForm">
+			        	
 			        </form>
 			        <script> 
 			        	function goToMyPage(){
@@ -1731,7 +1731,7 @@
 			          </button>
 			        </div>
 			        <div class="fredge_btn_after" data-tooltip-text="Fredge!!">
-			          <button class="menuBtn_after">
+			          <button class="menuBtn_after" onclick="location.href='${pageContext.request.contextPath}/fridge/refMain.do'">
 			              <img class="fredge_img" src="${pageContext.request.contextPath }/resources/img/fredge_btn_img.jpg"/>
 			          </button>
 			        </div>

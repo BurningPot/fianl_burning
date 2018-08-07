@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,13 +23,13 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pot.board.model.vo.Board;
+import com.kh.pot.common.exception.PotException;
 import com.kh.pot.fridge.model.service.FridgeService;
 import com.kh.pot.fridge.model.vo.Fridge;
 import com.kh.pot.home.service.MainService;
 import com.kh.pot.member.model.vo.Member;
 import com.kh.pot.mypage.model.service.MypageService;
 import com.kh.pot.recipe.model.vo.Recipe;
-import com.kh.pot.recipe.model.vo.Recommend;
 
 //m을 세션에 넣음
 @SessionAttributes(value={"m"})
@@ -79,7 +80,7 @@ public class MypageController {
 			return result;
 		}
 	
-	@RequestMapping("/mypage/myPage2.do")
+/*	@RequestMapping("/mypage/myPage2.do")
 	public String selectMyBoardList(
 			//cPage로 받을꺼고 값이 없어도 받을수 있다 required(오버로딩처럼 쓸수있다) 값이 안들어왔을때 디폴트벨류로 1로 하겟다
 			@RequestParam(value="cPage", required=false, defaultValue="1") 
@@ -97,7 +98,7 @@ public class MypageController {
 			
 			return "mypage/myPage";
 		
-	}
+	}*/
 	
 	//레시피 게시글 삭제하기!
 		@ResponseBody
@@ -126,32 +127,43 @@ public class MypageController {
 			return result;
 		}
 		
-		@RequestMapping(value="/mypage/myPage.do", method=RequestMethod.POST)
-		public String myRecipe(@RequestParam int mNum, Model model,
-				@RequestParam(value="cPage", required=false, defaultValue="1")
-		int cPage){
-			
-			Member m =  mypageService.myinfoDel(mNum);
-			
+		@RequestMapping(value="/mypage/myPage.do",  method=RequestMethod.GET)
+		/*public String myRecipe(@RequestParam int mNum , Model model,*/
+		public String myRecipe( 
+				Model model,
+				@RequestParam(value="cPage", required=false, defaultValue="1") int cPage,
+				HttpSession session) throws PotException{
+			try{
+			/*Member m =  mypageService.myinfoDel(mNum);*/
+			Member m = (Member)session.getAttribute("m"); 
+			int mNum = m.getmNum();
+			m = mypageService.myinfoDel(mNum);
 			int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
-			List<Recipe> list = mypageService.myRecipeList(cPage, numPerPage, mNum);
-			int totalContents = mypageService.selectMyRecipeTotalContents(mNum);
 			
-			List<Fridge> refList = friService.checkFridge(m.getmNum());
+			List<Recipe> list = mypageService.myRecipeList(cPage, numPerPage, mNum);
+			int totalContents = mypageService.selectMyRecipeTotalContents(mNum);			
+			List<Fridge> refList = friService.checkFridge(mNum);
+			
 			
 			model.addAttribute("refList", refList);		
 			model.addAttribute("recipeList", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
 			model.addAttribute("minfo", m);
-			
+			}catch(Exception e){
+				throw new PotException( "마이페이지에러!","회원정보를 불러오는데 실패했습니다!");
+			}
 			return "mypage/myPage";
 		}
 		
 		/*@ResponseBody*/
-		@RequestMapping(value="/mypage/myPosts.do", method=RequestMethod.POST)
-		public String myPostList( @RequestParam int mNum, Model model,
+		@RequestMapping(value="/mypage/myPosts.do", method=RequestMethod.GET)
+		public String myPostList( Model model,
 				@RequestParam(value="cPage", required=false, defaultValue="1") int cPage,
-				@RequestParam(value="cate", required=false, defaultValue="전체") String cate){	
-			Member m =  mypageService.myinfoDel(mNum);
+				@RequestParam(value="cate", required=false, defaultValue="전체") String cate,
+				HttpSession session) throws PotException{	
+					try{
+			Member m = (Member)session.getAttribute("m"); 
+			int mNum = m.getmNum();
+			m = mypageService.myinfoDel(mNum);
 			
 			int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
 			List<Board> list = mypageService.myPostList(cPage, numPerPage, mNum, cate);
@@ -163,19 +175,25 @@ public class MypageController {
 			model.addAttribute("refList", refList);				
 			model.addAttribute("postList", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
 			model.addAttribute("minfo", m);
+					}catch(Exception e){
+						throw new PotException( "마이페이지에러!","회원정보를 불러오는데 실패했습니다!");
+					}
 			
-			/*System.out.println("에이잭스 스트링 값 확인 : "+ category);*/
 			
 			return "mypage/myPosts";
 		}
 		
 
-		@RequestMapping(value="/mypage/myLike.do", method=RequestMethod.POST)
-		public String myLikeList( @RequestParam int mNum, Model model,
+		@RequestMapping(value="/mypage/myLike.do", method=RequestMethod.GET)
+		public String myLikeList(  Model model,
 				//cPage로 받을꺼고 값이 없어도 받을수 있다 required(오버로딩처럼 쓸수있다) 값이 안들어왔을때 디폴트벨류로 1로 하겟다
 				@RequestParam(value="cPage", required=false, defaultValue="1") 
-				int cPage){
-				Member m =  mypageService.myinfoDel(mNum);
+				int cPage,
+				HttpSession session){
+			try{
+			Member m = (Member)session.getAttribute("m"); 
+			int mNum = m.getmNum();
+			m = mypageService.myinfoDel(mNum);
 				int numPerPage = 5; //한 페이지당 10개씩 자른다 (한 페이지당 게시글 수)
 				
 				List<Recipe> list = mypageService.myLikeList(cPage, numPerPage, mNum);
@@ -188,6 +206,9 @@ public class MypageController {
 				model.addAttribute("likeList", list).addAttribute("numPerPage", numPerPage).addAttribute("totalContents", totalContents);
 				model.addAttribute("minfo", m);
 				
+			}catch(Exception e){
+				throw new PotException( "마이페이지에러!","회원정보를 불러오는데 실패했습니다!");
+			}
 			return "mypage/myLike";
 		}
 		
