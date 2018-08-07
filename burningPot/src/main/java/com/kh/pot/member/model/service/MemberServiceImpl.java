@@ -222,10 +222,10 @@ public class MemberServiceImpl implements MemberService {
          
          /******* password 암호화 로직 시작 *******/
  		// 암호화 주석
-        /*String bcryptPw = bcryptPasswordEncoder.encode(tmpPwd);
- 		map.put("tmpKey", bcryptPw);*/
+        String bcryptPw = bcryptPasswordEncoder.encode(tmpPwd);
+ 		map.put("tmpKey", bcryptPw);
          
-        map.put("tmpKey", tmpPwd);
+        //map.put("tmpKey", tmpPwd);
          
         int updateR = memberDao.updatePwd(map);
          
