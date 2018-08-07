@@ -5,7 +5,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>burningPot</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="icon" href="${pageContext.request.contextPath}/resources/img/smile.png" type="image/lg-icon">
 </head>
 <body style="font-family: 'Nanum Gothic', sans-serif;">
 	<c:import url="/WEB-INF/views/common/header.jsp" />
@@ -231,8 +234,9 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade+ "점";
+	            				gradeC = parseFloat(grade).toFixed(1) + "점";
 	            			}
+	            			
 	            			if(data[i].rcCheck == data[i].rNum ){
 	            			$("<li>" + 
 	               				"<div class='like_and_aver_area'>" +
@@ -383,8 +387,9 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade+ "점";
+	            				gradeC = parseFloat(grade).toFixed(1) + "점";
 	            			}
+	            			
 	            			if(data[i].rcCheck == data[i].rNum ){
 		            			$("<li>" + 
 		               				"<div class='like_and_aver_area'>" +
@@ -530,8 +535,9 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade+ "점";
+	            				gradeC = parseFloat(grade).toFixed(1) + "점";
 	            			}
+	            			
 	            			if(data[i].rcCheck == data[i].rNum ){
 		            			$("<li>" + 
 		               				"<div class='like_and_aver_area'>" +
@@ -691,8 +697,9 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade+ "점";
+	            				gradeC = parseFloat(grade).toFixed(1) + "점";
 	            			}
+	            			
 	            			if(data[i].rcCheck == data[i].rNum ){
 		            			$("<li>" + 
 		               				"<div class='like_and_aver_area'>" +
@@ -835,7 +842,7 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade+ "점";
+	            				gradeC = parseFloat(grade).toFixed(1) + "점";
 	            			}
 	            			if(data[i].rcCheck == data[i].rNum ){
 		            			$("<li>" + 
@@ -989,7 +996,7 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade+ "점";
+	            				gradeC = parseFloat(grade).toFixed(1) + "점";
 	            			}
 	            			if(data[i].rcCheck == data[i].rNum ){
 		            			$("<li>" + 
@@ -1133,7 +1140,7 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade+ "점";
+	            				gradeC = parseFloat(grade).toFixed(1) + "점";
 	            			}
 	            			if(data[i].rcCheck == data[i].rNum ){
 		            			$("<li>" + 
@@ -1306,7 +1313,7 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade+ "점";
+	            				gradeC = parseFloat(grade).toFixed(1) + "점";
 	            			}
 	            			if(data[i].rcCheck == data[i].rNum ){
 		            			$("<li>" + 
@@ -1488,7 +1495,7 @@
 		            			if( grade == 0){
 		            				gradeC = "0점";
 		            			} else {
-		            				gradeC = grade+ "점";
+		            				gradeC = parseFloat(grade).toFixed(1) + "점";
 		            			}
 		            			if(data[i].rcCheck == data[i].rNum ){
 			            			$("<li>" + 
@@ -1664,7 +1671,7 @@
 		            			if( grade == 0){
 		            				gradeC = "0점";
 		            			} else {
-		            				gradeC = grade+ "점";
+		            				gradeC = parseFloat(grade).toFixed(1) + "점";
 		            			}
 		            			if(data[i].rcCheck == data[i].rNum ){
 			            			$("<li>" + 
@@ -1849,9 +1856,9 @@
 			            }
 
 	      		  } else {
-	      			  console.log("따봉 버튼 메소드 안댐");
-        			  alert("로그인을 해주세요.");
-        			  $("#loginModal").modal();
+		      			swal("로그인을 해야 합니다.", "", "warning").then((value) => {
+		   					$("#loginModal").modal();
+		   				});
 	      		  }
 	           
 			}

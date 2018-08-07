@@ -5,7 +5,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>burningPot</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="icon" href="${pageContext.request.contextPath}/resources/img/smile.png" type="image/lg-icon">
 </head>
 <body style="font-family: 'Nanum Gothic', sans-serif;">
 	<c:import url="/WEB-INF/views/common/header.jsp" />
@@ -219,7 +222,7 @@
 	            			if( grade == 0){
 	            				gradeC = "0점";
 	            			} else {
-	            				gradeC = grade + "점";
+	            				gradeC = parseFloat(grade).toFixed(1) + "점";
 	            			}
 	            			
 	            			if(data[i].rcCheck == data[i].rNum ){
@@ -313,24 +316,13 @@
         	
         	 /* 로그인했을 때 */ 
       		  if ('${m.mId}' != "") {
-        		console.log("따봉 버튼 메소드 실행");
-        		console.log("멤버 값 : " + '${m.mId}');
-        		
+        		        		
         		var mId = '${m.mId}'; // 로그인한 멤버 id
         		var classs = $(obj).children().attr('class');
         		var mNum = '${m.mNum}'; // 로그인한 멤버 번호
         		var recipeMNum = $(obj).siblings('#recipeMNum').val(); // 레시피를 등록한 멤버 번호
         		var recipeRNum = $(obj).siblings('#recipeRNum').val(); // 등록한 레시피 번호
         		var recipeRRecommend = $(obj).siblings('#recipeRRecommend').val(); // 등록된 레시피의 추천수
-        		
-        		console.log("mId : " + mId);
-        		console.log("mNum : " + mNum);
-        		console.log("classs : " + classs);
-        		console.log("인덱스 : " + classs.indexOf(mNum));
-        		console.log("recipeMNum : " + $(obj).siblings('#recipeMNum').val());
-        		console.log("recipeRNum : " + $(obj).siblings('#recipeRNum').val());
-        		console.log("recipeRRecommend : " + $(obj).siblings('#recipeRRecommend').val());
-        		console.log("sdf:"+$(obj).siblings('#rcCheck').val());
         		
         		 if ($(obj).children().hasClass('far fa-thumbs-up')) {
 		                $(obj).children().removeClass('far fa-thumbs-up').addClass('fas fa-thumbs-up');
@@ -392,10 +384,9 @@
         		
         		
       		  } else {
-      			  console.log("따봉 버튼 메소드 안댐");
-    			  alert("로그인을 해주세요.");
-    			  $("#loginModal").modal();
-        		
+	   				swal("로그인을 해야 합니다.", "", "warning").then((value) => {
+	   					$("#loginModal").modal();
+	   				});
       		  }
            
 		}
