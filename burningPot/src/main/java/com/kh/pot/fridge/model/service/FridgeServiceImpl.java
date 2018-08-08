@@ -60,7 +60,7 @@ public class FridgeServiceImpl implements FridgeService {
 			} else {
 				for(Fridge origin : checkFridge){
 					for(Ingredient newObj : inputIngreObj){
-						if(origin.getiNum() == newObj.getiNum()) {
+						if(origin.getiNum() == newObj.getiNum()){
 							inIngre.add(origin);
 						}
 					}
