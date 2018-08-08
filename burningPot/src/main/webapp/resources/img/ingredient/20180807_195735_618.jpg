@@ -1,0 +1,11 @@
+복습 순서
+
+1. Spring Legacy Project 세팅
+
+1-1. pom에서 자바 버전 확인
+1-2. (안될 때) maven 저장소의 라이브러리들 지우고 최신화
+
+2. Spring을 통한 의존성 주입
+
+2-1. xml 방식
+2-1. annotation 방식
