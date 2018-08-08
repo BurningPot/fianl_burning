@@ -36,6 +36,9 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
 		
+		<!-- swal -->
+		<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+		
 		<style>
 		
 			/* 레시피 목록 클릭 시 이동 a 태그 */
@@ -1835,6 +1838,7 @@
 				  } else {
 					    swal("취소 되었습니다.");
 				}
+	    });
 	    }
     </script>
     
@@ -1952,9 +1956,9 @@
 					rNameRec = data[i].rName;
 					
 					if(rNameRec.length <= 6){
-						rNameRec = rNameRec.substring(0, 5);
+						rNameRec = rNameRec.substring(0, 6);
         			} else {
-        				rNameRec = rNameRec.substring(0, 5) + " ... ";
+        				rNameRec = rNameRec.substring(0, 6) + " ... ";
         			}
 			
 					$("<a class='rec_reipe_a badge badge-success' onclick=\"location.href='${pageContext.request.contextPath}/recipe/recipeDetail.do?rNum=" + data[i].rNum+ "'\">" + rNameRec + "</a>").appendTo('#rec_recipe_link');
