@@ -50,17 +50,23 @@ public class RecipeController {
 	
 	// 레시피 작성 페이지
 	@RequestMapping("/recipe/recipeForm.do")
-	public String goRecipeForm(Model model) throws PotException {
+	public String goRecipeForm(Model model,
+							HttpSession session) throws PotException {
 		String page = "";
 				
 		List<Ingredient> list = recipeService.selectCategoryList();
+		Member m = (Member)session.getAttribute("m");
 		
-		if (list.size() > 0) {
-			model.addAttribute("categoryList", list);
-			
-			page = "recipe/recipeForm";
+		if (m != null) {
+			if (list.size() > 0) {
+				model.addAttribute("categoryList", list);
+				
+				page = "recipe/recipeForm";
+			} else {
+				throw new PotException("잘못 된 접근입니다.", "잘못 된 경로로 접근하였습니다.");
+			}
 		} else {
-			throw new PotException("잘못 된 접근입니다.", "잘못 된 경로로 접근하였습니다.");
+         throw new PotException("잘못 된 접근입니다.", "로그인 이후 사용 가능한 서비스 입니다.");
 		}
 		
 		return page;
