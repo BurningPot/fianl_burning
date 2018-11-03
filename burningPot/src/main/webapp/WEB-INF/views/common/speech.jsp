@@ -144,6 +144,7 @@
 						goSpeech(final_transcript);
 						detailRecipe(Number(10));
 					}else{
+						goSpeech(final_transcript);
 						location.href = "${pageContext.request.contextPath}/home/searchRecipe.do?searchR="+final_transcript;
 					}
 				}else if(final_transcript.includes("번")){
